@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initialscale=1, shrink-to-fit=no">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Collect'Or</title>
+    <!-- <link rel="stylesheet" href="static/css/Index.css"> -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheet" href="node_modules/bootstrap/dist/js/bootstrap.min.js">
+  
+
+    <script>
+    // ********************************************************************* //
+    // *                                                                   * //
+    // *       "Collect'Or" - Octobre-Décembre 2018                        * //
+    // *                                                                   * //
+    // ********************************************************************* //
+    // *                                                                   * //
+    // *   Dominique Hourdequin - Octobre 2018                                * //
+    // *   Projet N°2 - Type "Back-end"                                    * //
+    // *                                                                   * //
+    // *   Formation "Développeur Full Stack Javascript"                   * //
+    // *   Classe : "DIWJS08" - Printemps 2018                             * //
+    // *   IFOCOP - Paris XI                                               * //
+    // *                                                                   * //
+    // *   Contact à l'IFOCOP qui transmettra mes coordonnées sur demande  * //
+    // *   Responsable de formation                                        * //
+    // *   Madame Fabienne Thiry                                           * //
+    // *   mail : fthiry@ifocop.fr                                         * //
+    // *   Tel : 01-40-21-83-78                                            * //
+    // *                                                                   * //
+    // ********************************************************************* //
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="static/js/variables.js"></script>
+    <script src="static/js/toolBox.js"></script>
+    <script src="static/js/PlayersClientSide.js"></script>
+    <script src="static/js/SPAMgr.js"></script>
+</head>
+<body>      
+    <img id="idImgBtnList" src="static/images/Btn-Liste-joueurs.jpg" alt="Listes des joueurs" title="Listes des joueurs">
+    <div id="idPalmares">Palmarès</div>
+    <div id="idOuterBrdrWindowList">
+      <div id="idWindowList"></div>
+    </div>
+    <img id="idBtnImgBtnDisclaimer" src="static/images/MeilleurDescendeur-cadre-photo-arrondi-jaune.jpg" alt="Disclaimer" title="Présentation du jeu">
+    <div id="idGameRules">Règles du jeu</div>
+
+<!-- ******************************************************************* -->
+<!--                Formulaire de saisie du login / PWD                  -->
+<!-- ******************************************************************* -->
+  <!-- <form id="idLoginForm" onsubmit="checkForm(this)"> -->
+  <form id="idLoginForm">
+    <fieldset>
+      <legend>
+        Pour jouer à "Tour de France", vous devez vous identifier
+      </legend>
+      <ol>
+        <li>
+          <label for="pseudo">Votre Pseudo</label>
+          <input id="pseudo" name="pseudo" type="text" placeholder="Pseudo" required autofocus>
+        </li>
+        <li>
+          <input class="cButton" type="submit" value="Envoyer">
+        </li>
+      </ol>
+    </fieldset>
+  </form>
+
+  <noscript>
+      <p>Veuillez activer JavaScript</p>
+  </noscript>    
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
