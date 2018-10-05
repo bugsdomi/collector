@@ -1,8 +1,8 @@
 {
   "name": "collector",
   "version": "1.0.0",
-  "description": "Generation Collector à partir de TourDeFrance",
-  "main": "Collector.js",
+  "description": "Date : Juillet 2018",
+  "main": "collector.js",
   "dependencies": {
     "express": "^4.16.3",
     "mongodb": "^3.1.6",
@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bugsdomi/Collect-or.git"
+    "url": "git+https://github.com/bugsdomi/collector.git"
   },
   "author": "Vil-Coyote",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bugsdomi/Collect-or/issues"
+    "url": "https://github.com/bugsdomi/collector/issues"
   },
-  "homepage": "https://github.com/bugsdomi/Collect-or#readme"
+  "homepage": "https://github.com/bugsdomi/collector#readme"
 }

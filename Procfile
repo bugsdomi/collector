@@ -1,1 +1,1 @@
-web: node Collector.js
+web: node TourDeFrance.js
