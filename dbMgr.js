@@ -32,12 +32,9 @@ module.exports = function DBMgr(){
     // Flèche" pour le "this" de la CallBack
     // -------------------------------------------------------------------------
     DBMgr.prototype.checkDBConnect = function(){
-
-        console.log('process.env.MONGOLAB_URI : ',process.env.MONGOLAB_URI)
-
         mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
             if (err) {
-                console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
+                console.log('Base de données inaccessible, l\'application ne peut pas se lancer');
                 console.log('Description de l\'erreur : ',err);
                 throw "Base de données inaccessible, l\'application ne peut pas se lancer, contacter l\'Administrateur système";
             } else {  

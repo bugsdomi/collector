@@ -1,17 +1,21 @@
 doctype html
 head
   meta(charset='UTF-8')
-  meta(http-equiv='X-UA-Compatible' content='IE=edge')
-  title Tour de France
-  link(rel='stylesheet' href='static/css/Index.css')
+  meta(name='viewport' content='width=device-width, initialscale=1, shrink-to-fit=no')
+  // <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  meta(http-equiv='x-ua-compatible' content='ie=edge')
+  title Collect&apos;Or
+  // <link rel="stylesheet" href="static/css/Index.css">
+  link(rel='stylesheet' href='node_modules/bootstrap/dist/css/bootstrap.min.css')
+  link(rel='stylesheet' href='stylesheet')
   script.
     // ********************************************************************* //
     // *                                                                   * //
-    // *       "Tour de France" - Juin-juillet 2018                        * //
+    // *       "Collect'Or" - Octobre-Décembre 2018                        * //
     // *                                                                   * //
     // ********************************************************************* //
     // *                                                                   * //
-    // *   Dominique Hourdequin - Juin 2018                                * //
+    // *   Dominique Hourdequin - Octobre 2018                                * //
     // *   Projet N°2 - Type "Back-end"                                    * //
     // *                                                                   * //
     // *   Formation "Développeur Full Stack Javascript"                   * //
@@ -52,3 +56,6 @@ form#idLoginForm
         input.cButton(type='submit' value='Envoyer')
 noscript
   p Veuillez activer JavaScript
+script(src='node_modules/jquery/dist/jquery.min.js')
+script(src='node_modules/popper.js/dist/umd/popper.min.js')
+script(src='node_modules/bootstrap/dist/js/bootstrap.min.js')
