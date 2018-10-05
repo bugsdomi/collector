@@ -1,0 +1,54 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  title Tour de France
+  link(rel='stylesheet' href='static/css/Index.css')
+  script.
+    // ********************************************************************* //
+    // *                                                                   * //
+    // *       "Tour de France" - Juin-juillet 2018                        * //
+    // *                                                                   * //
+    // ********************************************************************* //
+    // *                                                                   * //
+    // *   Dominique Hourdequin - Juin 2018                                * //
+    // *   Projet N°2 - Type "Back-end"                                    * //
+    // *                                                                   * //
+    // *   Formation "Développeur Full Stack Javascript"                   * //
+    // *   Classe : "DIWJS08" - Printemps 2018                             * //
+    // *   IFOCOP - Paris XI                                               * //
+    // *                                                                   * //
+    // *   Contact à l'IFOCOP qui transmettra mes coordonnées sur demande  * //
+    // *   Responsable de formation                                        * //
+    // *   Madame Fabienne Thiry                                           * //
+    // *   mail : fthiry@ifocop.fr                                         * //
+    // *   Tel : 01-40-21-83-78                                            * //
+    // *                                                                   * //
+    // ********************************************************************* //
+  script(src='/socket.io/socket.io.js')
+  script(src='static/js/variables.js')
+  script(src='static/js/toolBox.js')
+  script(src='static/js/PlayersClientSide.js')
+  script(src='static/js/SPAMgr.js')
+img#idImgBtnList(src='static/images/Btn-Liste-joueurs.jpg' alt='Listes des joueurs' title='Listes des joueurs')
+#idPalmares Palmar&egrave;s
+#idOuterBrdrWindowList
+  #idWindowList
+img#idBtnImgBtnDisclaimer(src='static/images/MeilleurDescendeur-cadre-photo-arrondi-jaune.jpg' alt='Disclaimer' title='Présentation du jeu')
+#idGameRules R&egrave;gles du jeu
+// *******************************************************************
+// Formulaire de saisie du login / PWD
+// *******************************************************************
+// <form id="idLoginForm" onsubmit="checkForm(this)">
+form#idLoginForm
+  fieldset
+    legend
+      | Pour jouer &agrave; &quot;Tour de France&quot;, vous devez vous identifier
+    ol
+      li
+        label(for='pseudo') Votre Pseudo
+        input#pseudo(name='pseudo' type='text' placeholder='Pseudo' required='' autofocus='')
+      li
+        input.cButton(type='submit' value='Envoyer')
+noscript
+  p Veuillez activer JavaScript
