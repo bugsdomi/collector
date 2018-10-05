@@ -1,5 +1,5 @@
-# Projet Atelier N°2 (Back-End) - Tour de France
-Date : Juillet 2018
+# Projet Atelier N°3 (Full-Stack) - Collect'Or
+Date : Octobre 2018
 
 Pour garder le format de présentation original, regarder ce document en mode "RAW" ou en mode "Edit" dans GitHub 
 
@@ -11,8 +11,10 @@ Auteur :
 ------------------------------------------------------------------------------------------------------------------------------------------
 Pour lancer le jeu à partir de son hébergement : 
 ------------------------------------------------------------------------------------------------------------------------------------------
-https://tourdefranceonheroku.herokuapp.com/
 
+XXXXXXXXXXXXXXXXXXXX
+
+https://tourdefranceonheroku.herokuapp.com/
 
 
 
