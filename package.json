@@ -1,5 +1,5 @@
 {
-  "name": "tourdefrance",
+  "name": "collect-or",
   "version": "1.0.0",
   "description": "Date : Juin 2018",
   "main": "TourDeFrance.js",
@@ -8,19 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bugsdomi/TourDeFrance.git"
+    "url": "git+https://github.com/bugsdomi/Collect-or.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "vil-coyote",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bugsdomi/TourDeFrance/issues"
+    "url": "https://github.com/bugsdomi/Collect-or/issues"
   },
-  "homepage": "https://github.com/bugsdomi/TourDeFrance#readme",
+  "homepage": "https://github.com/bugsdomi/Collect-or#readme",
   "dependencies": {
     "express": "^4.16.3",
     "mongodb": "^3.1.0",
     "pug": "^2.0.3",
     "socket.io": "^2.1.1"
-  }
+  },
+  "devDependencies": {}
 }
