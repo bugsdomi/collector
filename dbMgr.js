@@ -34,7 +34,8 @@ module.exports = function DBMgr(){
     DBMgr.prototype.checkDBConnect = function(){
 
     console.log('process.env.MONGOLAB_URI : ',process.env.MONGOLAB_URI)
-        mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
+        // mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
+        mongoDB.MongoClient.connect("mongodb://Collect-OrAdmin:Collect-OrAdmin*001@ds123753.mlab.com:23753/collect-or", { useNewUrlParser: true }, (err,db) => {
             if (err) {
                 console.log('Base de données inaccessible, l\'application ne peut pas se lancer');
                 console.log('Description de l\'erreur : ',err);
