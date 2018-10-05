@@ -34,15 +34,16 @@ module.exports = function DBMgr(){
     DBMgr.prototype.checkDBConnect = function(){
         // mongoDB.MongoClient.connect("mongodb://localhost:27017/TourDeFrance", (err,db) => {
         // mongoDB.MongoClient.connect("mongodb://localhost:27017/TourDeFrance", { useNewUrlParser: true }, (err,db) => {
-        mongoDB.MongoClient.connect("mongodb://TourDeFranceAdmin:TDFAdmin*001@ds151012.mlab.com:51012/tourdefrance", { useNewUrlParser: true }, (err,db) => {
+        // mongoDB.MongoClient.connect("mongodb://TourDeFranceAdmin:TDFAdmin*001@ds151012.mlab.com:51012/tourdefrance", { useNewUrlParser: true }, (err,db) => {
+        mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
             if (err) {
-                console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
+                console.log('Base de données inaccessible, l\'application "Collector" ne peut pas se lancer');
                 console.log('Description de l\'erreur : ',err);
-                throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
+                throw 'Base de données inaccessible, l\'application "Collector" ne peut pas se lancer, contacter l\'Administrateur système';
             } else {  
                 this.myDB = db;                                                                         // Conservation de l'instance de BDD
-                this.playerCollection = this.myDB.db('tourdefrance').collection('joueurs');             // On sélectionne la collection des joueurs
-                console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
+                this.playerCollection = this.myDB.db('collect-or').collection('membres');             // On sélectionne la collection des joueurs
+                console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
             }
         });
     }
