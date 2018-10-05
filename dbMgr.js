@@ -33,19 +33,35 @@ module.exports = function DBMgr(){
     // -------------------------------------------------------------------------
     DBMgr.prototype.checkDBConnect = function(){
 
-    console.log('process.env.MONGOLAB_URI : ',process.env.MONGOLAB_URI)
-        // mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
-        mongoDB.MongoClient.connect("mongodb://Collect-OrAdmin:Collect-OrAdmin*001@ds123753.mlab.com:23753/collect-or", { useNewUrlParser: true }, (err,db) => {
-            if (err) {
-                console.log('Base de données inaccessible, l\'application ne peut pas se lancer');
-                console.log('Description de l\'erreur : ',err);
-                throw "Base de données inaccessible, l\'application ne peut pas se lancer, contacter l\'Administrateur système";
-            } else {  
-                this.myDB = db;                                                                         // Conservation de l'instance de BDD
-                this.playerCollection = this.myDB.db('collect-or').collection('membres');             // On sélectionne la collection des joueurs
-                console.log('La BDD "Collect\'Or" - Collection "membres" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
-            }
-        });
+    // console.log('process.env.MONGOLAB_URI : ',process.env.MONGOLAB_URI)
+    //     // mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
+    //     mongoDB.MongoClient.connect("mongodb://Collect-OrAdmin:Collect-OrAdmin*001@ds123753.mlab.com:23753/collect-or", { useNewUrlParser: true }, (err,db) => {
+    //         if (err) {
+    //             console.log('Base de données inaccessible, l\'application ne peut pas se lancer');
+    //             console.log('Description de l\'erreur : ',err);
+    //             throw "Base de données inaccessible, l\'application ne peut pas se lancer, contacter l\'Administrateur système";
+    //         } else {  
+    //             this.myDB = db;                                                                         // Conservation de l'instance de BDD
+    //             this.playerCollection = this.myDB.db('collect-or').collection('membres');             // On sélectionne la collection des joueurs
+    //             console.log('La BDD "Collect\'Or" - Collection "membres" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
+    //         }
+    //     });
+
+
+    mongoDB.MongoClient.connect("mongodb://TourDeFranceAdmin:TDFAdmin*001@ds151012.mlab.com:51012/tourdefrance", { useNewUrlParser: true }, (err,db) => {
+        if (err) {
+            console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
+            console.log('Description de l\'erreur : ',err);
+            throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
+        } else {  
+            this.myDB = db;                                                                         // Conservation de l'instance de BDD
+            this.playerCollection = this.myDB.db('tourdefrance').collection('joueurs');             // On sélectionne la collection des joueurs
+            console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
+        }
+    });
+
+
+
     }
     // -------------------------------------------------------------------------
     // Solution 2 Opérationnelle - Fonction classique traitée avec "bind" pour le "this" de la CallBack
