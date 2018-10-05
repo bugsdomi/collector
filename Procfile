@@ -1,1 +1,1 @@
-web: node CollectOr.js
+web: node Collector.js
