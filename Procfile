@@ -1,1 +1,1 @@
-web: node collect-or.js
+web: node TourDeFrance.js
