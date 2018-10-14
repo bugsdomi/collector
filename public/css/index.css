@@ -1,0 +1,14 @@
+/* ------------------------------------------------------------ */
+/*                           Général                            */
+/* ------------------------------------------------------------ */
+/* @import url('https://fonts.googleapis.com/css?family=Faster+One'); */
+
+/* body{
+    background-color: aqua;
+} */
+
+.txt-yellow-stroke{
+    font-family: 'Montserrat', sans-serif; 
+    color: #FFD700; 
+    text-shadow: 2px 2px #000000; 
+}
