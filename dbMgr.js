@@ -1,11 +1,11 @@
 // *************************************************************************
-// ***      DBMgr : Objet gérant la BDD "Tour de France                  ***
+// ***      DBMgr : Objet gérant la BDD "Collect'Or"                     ***
 // ***                                                                   ***
 // *** Objet : DBMgr                                                     ***
 // ***                                                                   ***
 // *** Cet objet sert à gérer :                                          ***
 // ***   - L'ouverture et le contrôle du bon fonctionnement de la BDD    ***
-// ***   - Les accès CRUD à la collection "Joueurs"                      ***
+// ***   - Les accès CRUD aux différentes collections                    ***
 // ***                                                                   ***
 // ***  Nécessite :                                                      *** 
 // ***      Le module "MongoDB"                                          ***
