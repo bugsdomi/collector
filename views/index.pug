@@ -1,0 +1,187 @@
+doctype html
+head
+  // Meta
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(http-equiv='content-type' content='text/html;charset=UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  // Nécessaire pour le coté "Responsive"
+  meta(name='description' content='Bootstrap 4 UI / Starter Kit')
+  meta(name='author' content='kingstudio.ro')
+  // Favicon
+  link(rel='icon' href='static/images/favicon.png')
+  title Collect&apos;Or
+  // Fonts
+  link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i' rel='stylesheet')
+  link(href='static/css/font-awesome.css' rel='stylesheet')
+  script(src='https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
+  // Styles
+  link(href='static/css/bootstrap.css' rel='stylesheet' type='text/css')
+  link(href='static/css/replacer.css' rel='stylesheet' type='text/css')
+  link(href='static/css/index.css' rel='stylesheet')
+  script.
+    WebFont.load({
+    google: {
+    families: ['Ranga', 'Julius Sans One', 'Montserrat']
+    }
+    });
+  script.
+    // ********************************************************************* //
+    // *                                                                   * //
+    // *       "Collect'Or" - Octobre-Novembre 2018                        * //
+    // *                                                                   * //
+    // ********************************************************************* //
+    // *                                                                   * //
+    // *   Dominique Hourdequin - Octobre 2018                             * //
+    // *   Projet N°3 - Type "Full-Stack"                                  * //
+    // *                                                                   * //
+    // *   Formation "Développeur Full Stack Javascript"                   * //
+    // *   Classe : "DIWJS08" - Printemps 2018                             * //
+    // *   IFOCOP - Paris XI                                               * //
+    // *                                                                   * //
+    // *   Contact à l'IFOCOP qui transmettra mes coordonnées sur demande  * //
+    // *   Responsable de formation                                        * //
+    // *   Madame Fabienne Thiry                                           * //
+    // *   mail : fthiry@ifocop.fr                                         * //
+    // *   Tel : 01-40-21-83-78                                            * //
+    // *                                                                   * //
+    // ********************************************************************* //
+// *************************************************************************
+// NavBar
+// *************************************************************************
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+  a.navbar-brand(href='#')
+    img.d-inline-block.align-top.mr-2(alt='' src='static/images/brand.png' height='40')
+  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#mainScreenMenu' aria-expanded='false' aria-controls='mainScreenMenu' aria-label='Toggle mainScreenMenu')
+    span.navbar-toggler-icon
+  #mainScreenMenu.collapse.navbar-collapse
+    ul.navbar-nav.ml-auto
+      li.nav-item.mx-1
+        a.nav-link(href='#idLogin' data-toggle='modal' data-target='#idLogin')
+          span.fa.fa-sign-in
+          |  Connexion
+      li.nav-item
+        a#idLinkBienvenue.nav-link(href='#idBienvenue' data-toggle='modal' data-target='#idBienvenue') Bienvenue
+      li.nav-item
+        a.nav-link(href='#gallery') Gallery
+      li.nav-item.mx-1.dropdown
+        a#templates-dropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+          span.fa.fa-user
+          |  Profil
+        .dropdown-menu(aria-labelledby='templates-dropdown')
+          a.dropdown-item(href='template-1.html') Renseignements
+          a.dropdown-item(href='template-2.html') Pr&eacute;f&eacute;rences
+          hr
+          a.dropdown-item(href='template-4.html') Administration
+      li.nav-item.mx-1
+        a.nav-link(href='' target='_top')
+          span.fa.fa-sign-out
+          |  D&eacute;connexion
+// *************************************************************************
+// Carroussel de fond d'écran
+// *************************************************************************
+#mainScreenCaroussel.carousel.slide.carousel-fade.carousel-fullscreen(data-ride='carousel' data-interval='4000' data-pause='false')
+  // Indicators de bas de slides
+  ol.carousel-indicators
+    li.active.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='0')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='1')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='2')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='3')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='4')
+  // sliders
+  .carousel-inner(role='listbox')
+    .carousel-item.active(style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 35%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 100%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 100%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/Marignan.jpg') center 50%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+  // Controls G et D
+  a.carousel-control-prev(href='#mainScreenCaroussel' role='button' data-slide='prev')
+    span.carousel-control-prev-icon(aria-hidden='true')
+    span.sr-only Previous
+  a.carousel-control-next(href='#mainScreenCaroussel' role='button' data-slide='next')
+    span.carousel-control-next-icon(aria-hidden='true')
+    span.sr-only Next
+// Fenêtre Modale de Bienvenue et de présentation
+#idBienvenue.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    .modal-content
+      .modal-header
+        h5#idModalTitle.modal-title Bienvenue dans Collect&apos;Or
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') X
+      .modal-body
+        p
+          | Collector est un r&eacute;seau social destin&eacute; aux collectionneurs de figurines, v&eacute;hicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont &eacute;galement les bienvenus
+        p
+          | Vous pourrez notamment discuter en public ou en priv&eacute; avec d&apos;autres collectionneurs, d&eacute;poser / lire des annonces de vente, d&apos;&eacute;change, de recherche, de manifestations...
+        p
+          | Vous pourrez laisser vos avis sur des sujets particuliers, acc&eacute;der &agrave; la galerie pour admirer les collections ou y d&eacute;poser vos propres photos, acc&eacute;der aux trucs et astuces de mod&eacute;liste, y d&eacute;poser vos exp&eacute;riences, et enfin poser vos questions
+      .modal-footer
+        button.btn.btn-outline-success(type='button' data-dismiss='modal') Fermer
+// Fenêtre Modale Login
+#idLogin.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    .modal-content
+      .modal-header
+        h5.modal-title Bienvenue dans Collect&apos;Or
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') X
+      .modal-body
+        form.form-sign.in
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt='' width='auto' height='72')
+          h1.h3.mb-3.font-weight-normal Please sign in
+          label.sr-only(for='inputEmail') Email address
+          input#inputEmail.form-control(type='email' placeholder='Email address' required='' autofocus='')
+          label.sr-only(for='inputPassword') Password
+          input#inputPassword.form-control(type='password' placeholder='Password' required='')
+          .checkbox.mb-3
+            label
+              input(type='checkbox' value='remember-me')
+              |  Remember me
+          button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
+          p.mt-5.mb-3.text-muted &copy; 2017-2018
+      .modal-footer
+        button.btn.btn-outline-success(type='button' data-dismiss='modal') Fermer
+// *************************************************************************
+// Vérification Javascript activé + chargement des librairies
+// *************************************************************************
+noscript
+  p Veuillez activer JavaScript
+script(src='static/js/jquery-3.3.1.slim.min.js')
+script(src='static/js/popper.min.js')
+script(src='static/js/bootstrap.min.js')
+script(src='static/js/replacer.js')
+script(src='/socket.io/socket.io.js')
+script(src='/static/js/toolBox.js')
+script(src='/static/js/variables.js')
+script(src='/static/js/SPAMgr.js')
+script(src='/static/js/PlayersClient.js')
