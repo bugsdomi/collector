@@ -4,7 +4,7 @@
 // 4 joueurs maximum - 50 pilules pour chacun 
 // -------------------------------------------------------------------------
 
-function PlayersClient(){    
+function Visiteur(){    
 // Les propriétés ci-dessous sont modifiables sans aucun problème
     this.precision = 40;                                // Distance minimum en pixels entre le centre du Jeton et le centre de la Pils pour determiner si elle est mangée (+ grand = +facile)
     this. delayToReset = 10;                            // Délai en secondes accordé aux joueurs pour admirer, faire des Screen-Shots, etc..., avant de revenir à l'écran principal
@@ -124,13 +124,12 @@ function PlayersClient(){
 // Vérifie la validité du champ "pseudo" et renvoie un message d'alerte 
 // rappelant sa structure
 // -------------------------------------------------------------------------
-PlayersClient.prototype.checkPseudo = function(pPseudo){
-    var regex = /^[A-Z]{1}[A-Za-z0-9 ._\-']{0,11}$/;
+Visiteur.prototype.checkPseudo = function(pPseudo){
+
+    var regex = /^[\w\-\.\+]{1,20}$/
     pPseudo.value = pPseudo.value.trim();
     
     if(!regex.test(pPseudo.value)){
-        this.adviseWithButton('Veuillez remplir le champ "Pseudo" en respectant le format : '+
-                    'Initiale en Majuscule, suivie de 0 à 11 caractères alphanumériques','Fermer');
         return false;
     } else {
         return true;
@@ -140,14 +139,14 @@ PlayersClient.prototype.checkPseudo = function(pPseudo){
 // --------------------------------------------------------------
 // Efface la Fenêtre simplifiée de messsage
 // --------------------------------------------------------------
-PlayersClient.prototype.clearAdvise = function(){   
+Visiteur.prototype.clearAdvise = function(){   
     this.adviseLegend.parentNode.removeChild(this.adviseLegend);
     this.adviseWindow.parentNode.removeChild(this.adviseWindow);
 }
 // --------------------------------------------------------------
 // Affiche une Fenêtre simplifiée de messsage (Sans bouton, ni action associée)
 // --------------------------------------------------------------
-PlayersClient.prototype.displayAdvise = function(pMessage){   
+Visiteur.prototype.displayAdvise = function(pMessage){   
     this.adviseWindow = window.document.createElement('form');   
     window.document.body.appendChild(this.adviseWindow);  
     this.adviseWindow.style.background = 'linear-gradient(0.75turn, rgba(252,141,50), rgba(230,159,42))';
@@ -162,7 +161,7 @@ PlayersClient.prototype.displayAdvise = function(pMessage){
 // Fenêtre améliorée de messsage, avec un bouton permettant sa validation 
 // et declenchant une action passée en paramètre
 // --------------------------------------------------------------
-PlayersClient.prototype.adviseWithButton = function(pMessage, pMessageAction, pAction, pMyPlayer, pWebSocketConnection){  
+Visiteur.prototype.adviseWithButton = function(pMessage, pMessageAction, pAction, pMyPlayer, pWebSocketConnection){  
     this.displayAdvise(pMessage);
 
     this.adviseOL = window.document.createElement('ol');   
@@ -191,7 +190,7 @@ PlayersClient.prototype.adviseWithButton = function(pMessage, pMessageAction, pA
 // Affiche et décrémente le compte_à_rebours
 // Puis efface la fenêtre, et active la partie
 // --------------------------------------------------------------
-PlayersClient.prototype.playCompteARebours = function(pWebSocketConnection){  
+Visiteur.prototype.playCompteARebours = function(pWebSocketConnection){  
     this.vCompteARebours--;
     if (this.vCompteARebours>0){
         this.adviseLegend.innerHTML = 'Le jeu va démarrer dans '+this.vCompteARebours+' secondes'; 
@@ -204,14 +203,14 @@ PlayersClient.prototype.playCompteARebours = function(pWebSocketConnection){
 // --------------------------------------------------------------
 // MAJ l'affichage du temps total passé par le joueur sur toutes ses parties
 // --------------------------------------------------------------
-PlayersClient.prototype.refreshElapsedTime = function(pMyTotalTime){  
+Visiteur.prototype.refreshElapsedTime = function(pMyTotalTime){  
     this[pMyTotalTime.monClientPlayer].timerFrame.innerHTML = vToolBox.convertSecsToDaysHoursMinsSecs(pMyTotalTime.monTotalTime);
 }
 // --------------------------------------------------------------
 // Caclule le temps total passé par le joueur sur toutes ses parties
 // Et l'envoie au serveur pour l'afficher sur tous les autres postes
 // --------------------------------------------------------------
-PlayersClient.prototype.addOneSecond = function(pWebSocketConnection){  
+Visiteur.prototype.addOneSecond = function(pWebSocketConnection){  
     this[this.myClientPlayer].totalPlayedTime++;
     
     var vMyTotalTime = { 
@@ -225,13 +224,13 @@ PlayersClient.prototype.addOneSecond = function(pWebSocketConnection){
 // Retour au formulaire de login
 // Régénération de l'écran de base from scratch;
 // --------------------------------------------------------------
-PlayersClient.prototype.restartLogin = function(){   
+Visiteur.prototype.restartLogin = function(){   
     window.location.href = window.location.href; 
 }
 // --------------------------------------------------------------
 // Effacement de l'écran de la Pils qui viuent d'être mangée
 // --------------------------------------------------------------
-PlayersClient.prototype.hideEatedPils = function(pMyPils){  
+Visiteur.prototype.hideEatedPils = function(pMyPils){  
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].setAttribute('class', 'pils');
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].style.animation = '';
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].style.display = 'none';    // La Pils est supprimée de l'affichage
@@ -241,7 +240,7 @@ PlayersClient.prototype.hideEatedPils = function(pMyPils){
 // Sélectionne au haserd une Pils qui n'a pas été mangée, et demande au 
 // serveur de la mettre en evidence sur tous les écrans
 // -------------------------------------------------------------------------
-PlayersClient.prototype.checkPilsEated = function(pMouseCoord, pWebSocketConnection){
+Visiteur.prototype.checkPilsEated = function(pMouseCoord, pWebSocketConnection){
     this.distance = Math.round(Math.sqrt(Math.pow((this.nextPilsX - pMouseCoord.left),2) + Math.pow((this.nextPilsY - pMouseCoord.top),2)));
     if (this.distance < this.precision){
         this[this.myClientPlayer].pils[this.nextPils].mangee = true;             // La Pils a été mangée
@@ -262,7 +261,7 @@ PlayersClient.prototype.checkPilsEated = function(pMouseCoord, pWebSocketConnect
 // puis Jeu proprement dit, le joueur doit manger toutes les pilules 
 // de sa couleur
 // --------------------------------------------------------------
-PlayersClient.prototype.playAndEatPils = function(pWebSocketConnection, event){   
+Visiteur.prototype.playAndEatPils = function(pWebSocketConnection, event){   
     var vMouseCoord = {
         left: event.clientX,
         top: event.clientY,
@@ -304,13 +303,13 @@ PlayersClient.prototype.playAndEatPils = function(pWebSocketConnection, event){
 // --------------------------------------------------------------
 // Activation de l'animation principale de la pilule sélectionnée
 // --------------------------------------------------------------
-PlayersClient.prototype.switchToSecondAnimation = function(pMyPils){  
+Visiteur.prototype.switchToSecondAnimation = function(pMyPils){  
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].style.animation = '0.5s linear infinite animePils'
 }
 // --------------------------------------------------------------
 // Mise en évidence de la prochaine Pils à manger
 // --------------------------------------------------------------
-PlayersClient.prototype.showNextPilsToEat = function(pMyPils){  
+Visiteur.prototype.showNextPilsToEat = function(pMyPils){  
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].setAttribute('class', 'pils selected');
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].style.animation = 'scalePils 0.4s linear 8';
     this[pMyPils.monClientPlayer].pils[pMyPils.maPils].addEventListener('animationend', this.switchToSecondAnimation.bind(this,pMyPils));
@@ -319,7 +318,7 @@ PlayersClient.prototype.showNextPilsToEat = function(pMyPils){
 // Sélectionne au haserd une Pils qui n'a pas été mangée, et demande au 
 // serveur de la mettre en evidence sur tous les écrans
 // -------------------------------------------------------------------------
-PlayersClient.prototype.selectNextPilsToEat = function(pWebSocketConnection){
+Visiteur.prototype.selectNextPilsToEat = function(pWebSocketConnection){
     if (this[this.myClientPlayer].pilsNonMangeesRestantes > 0){
         var  found = false;
         while (!found){
@@ -358,7 +357,7 @@ PlayersClient.prototype.selectNextPilsToEat = function(pWebSocketConnection){
 // Sortie automatique de la partie au bout de N secondes si le joueur n'est 
 // pas sorti de lui-même
 // -------------------------------------------------------------------------
-PlayersClient.prototype.clearParty = function(){
+Visiteur.prototype.clearParty = function(){
     this.vainqueurTrouve = true;
     window.removeEventListener("mousemove", this.playAndEatPils.bind(this)); 
     document.body.style.cursor = 'default';
@@ -371,7 +370,7 @@ PlayersClient.prototype.clearParty = function(){
 // Le serveur va notifier aux autres joueurs la fin de partie et leur statut de "Loosers"
 // et enregistrer les données de temps et de score
 // -------------------------------------------------------------------------
-PlayersClient.prototype.endOfParty = function(pWebSocketConnection){
+Visiteur.prototype.endOfParty = function(pWebSocketConnection){
     this.clearParty();
     var vMyClient = { 
         monClientPlayer : this.myClientPlayer,
@@ -387,7 +386,7 @@ PlayersClient.prototype.endOfParty = function(pWebSocketConnection){
 // Le serveur va notifier aux autres joueurs la fin de partie et leur statut de "Loosers"
 // et enregistrer les données de temps et de score
 // -------------------------------------------------------------------------
-PlayersClient.prototype.sendPartyData = function(pWebSocketConnection){
+Visiteur.prototype.sendPartyData = function(pWebSocketConnection){
     var vMyClient = { 
         monClientPlayer : this.myClientPlayer,
         monNumPlayer : this.myNumPlayer,
@@ -400,7 +399,7 @@ PlayersClient.prototype.sendPartyData = function(pWebSocketConnection){
 // -------------------------------------------------------------------------
 // Lancement du jeu
 // -------------------------------------------------------------------------
-PlayersClient.prototype.launchGame = function(pMyPlayer, pWebSocketConnection){  
+Visiteur.prototype.launchGame = function(pMyPlayer, pWebSocketConnection){  
     pWebSocketConnection.emit('adviseStartGame',pMyPlayer);
 }
 // -------------------------------------------------------------------------
@@ -408,7 +407,7 @@ PlayersClient.prototype.launchGame = function(pMyPlayer, pWebSocketConnection){
 // après la fin de la partie, s'ils n'ont pas actionné eux-même le bouton 
 // de retour à l'écran de Login
 // -------------------------------------------------------------------------
-PlayersClient.prototype.timerToExit = function(){   
+Visiteur.prototype.timerToExit = function(){   
     setTimeout(function(){
         this.adviseBtn.click();
     }.bind(this), this.delayToReset * 1000);
@@ -416,7 +415,7 @@ PlayersClient.prototype.timerToExit = function(){
 // -------------------------------------------------------------------------
 // Création physique du bouton "Liste des joueurs" à partir de la partie en cours
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawBtnPlayerListe = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
+Visiteur.prototype.drawBtnPlayerListe = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
     this.imgBtnPlayerList = window.document.createElement('img');   
     window.document.body.appendChild(this.imgBtnPlayerList);  
 
@@ -439,7 +438,7 @@ PlayersClient.prototype.drawBtnPlayerListe = function(pOuterBrdrWindowList, pWin
 // -------------------------------------------------------------------------
 // Création physique du "Control-Panel", version "Photo du Tour de France"
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawControlPanel = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
+Visiteur.prototype.drawControlPanel = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
     this.controlPanel = window.document.createElement('div');   
     window.document.body.appendChild(this.controlPanel);  
     this.controlPanel.setAttribute('class', 'controlPanel');
@@ -450,7 +449,7 @@ PlayersClient.prototype.drawControlPanel = function(pOuterBrdrWindowList, pWindo
 // -------------------------------------------------------------------------
 // Création physique de l'avatar du joueur dans le "Control-Panel"
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawAvatar = function(){
+Visiteur.prototype.drawAvatar = function(){
     this[this.indexCurrentPlayer].avatarFrame = window.document.createElement('img');   
     this[this.indexCurrentPlayer].playerFrame.appendChild(this[this.indexCurrentPlayer].avatarFrame);     
     this[this.indexCurrentPlayer].avatarFrame.setAttribute('class', 'avatar');
@@ -466,7 +465,7 @@ PlayersClient.prototype.drawAvatar = function(){
 // -------------------------------------------------------------------------
 // Création du cadre pour l'affichage du pseudonyme
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawPseudoFrame = function(){
+Visiteur.prototype.drawPseudoFrame = function(){
     this[this.indexCurrentPlayer].pseudoFrame = window.document.createElement('div');   
     this[this.indexCurrentPlayer].playerFrame.appendChild(this[this.indexCurrentPlayer].pseudoFrame);    
     this[this.indexCurrentPlayer].pseudoFrame.setAttribute('class', 'pseudoFrame'); 
@@ -494,7 +493,7 @@ PlayersClient.prototype.drawPseudoFrame = function(){
 // -------------------------------------------------------------------------
 // Création physique de l'espace d'affichage du compteur de pilules mangées
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawCounterFrame = function(){
+Visiteur.prototype.drawCounterFrame = function(){
     this[this.indexCurrentPlayer].counterFrame = window.document.createElement('div');   
     this[this.indexCurrentPlayer].playerFrame.appendChild(this[this.indexCurrentPlayer].counterFrame);     
     this[this.indexCurrentPlayer].counterFrame.setAttribute('class', 'counterFrame'); 
@@ -503,7 +502,7 @@ PlayersClient.prototype.drawCounterFrame = function(){
 // -------------------------------------------------------------------------
 // Création physique de l'espace d'affichage du compteur de temps passé
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawTimerFrame = function(){
+Visiteur.prototype.drawTimerFrame = function(){
     this[this.indexCurrentPlayer].timerFrame = window.document.createElement('div');   
     this[this.indexCurrentPlayer].playerFrame.appendChild(this[this.indexCurrentPlayer].timerFrame);  
     this[this.indexCurrentPlayer].timerFrame.setAttribute('class', 'timerFrame'); 
@@ -512,7 +511,7 @@ PlayersClient.prototype.drawTimerFrame = function(){
 // -------------------------------------------------------------------------
 // Création physique du cadre des données du joueur dans le "Control-Panel" 
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawPlayerFrame = function(){
+Visiteur.prototype.drawPlayerFrame = function(){
     this[this.indexCurrentPlayer].playerFrame = window.document.createElement('div');   
     this.controlPanel.appendChild(this[this.indexCurrentPlayer].playerFrame);    
     this[this.indexCurrentPlayer].playerFrame.setAttribute('class', 'cadreJoueur');
@@ -529,7 +528,7 @@ PlayersClient.prototype.drawPlayerFrame = function(){
 // -------------------------------------------------------------------------
 // Création physique du jeton de l'avatar qui va être piloté par la souris
 // -------------------------------------------------------------------------
-PlayersClient.prototype.drawAvatarToken = function(){
+Visiteur.prototype.drawAvatarToken = function(){
     this[this.indexCurrentPlayer].containerAvatarToken = window.document.createElement('div');   
     window.document.body.appendChild(this[this.indexCurrentPlayer].containerAvatarToken);    
     this[this.indexCurrentPlayer].containerAvatarToken.setAttribute('class', 'containerAvatarToken');
@@ -574,7 +573,7 @@ PlayersClient.prototype.drawAvatarToken = function(){
 // Affichage de la fenetre de la liste et demande au serveurs de la liste 
 // des joueurs
 // -------------------------------------------------------------------------
-PlayersClient.prototype.askPlayersList = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
+Visiteur.prototype.askPlayersList = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
     pOuterBrdrWindowList.style.display = 'block';
     pWindowList.style.display = 'block';
     pWebSocketConnection.emit('askPlayersList');
@@ -583,7 +582,7 @@ PlayersClient.prototype.askPlayersList = function(pOuterBrdrWindowList, pWindowL
 // Affichage de la fenetre de la liste et demand au serveurs de la liste 
 // des joueurs
 // -------------------------------------------------------------------------
-PlayersClient.prototype.displayDisclaimer = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
+Visiteur.prototype.displayDisclaimer = function(pOuterBrdrWindowList, pWindowList, pWebSocketConnection){
     pOuterBrdrWindowList.style.display = 'block';
     pWindowList.style.display = 'block';
     
@@ -642,7 +641,7 @@ PlayersClient.prototype.displayDisclaimer = function(pOuterBrdrWindowList, pWind
 // -------------------------------------------------------------------------
 // Affichage de la liste des joueurs
 // -------------------------------------------------------------------------
-PlayersClient.prototype.displayPlayersList = function(pWindowList, pDocuments){
+Visiteur.prototype.displayPlayersList = function(pWindowList, pDocuments){
     var vInnerHTML ='';
 
     vInnerHTML = 
@@ -683,8 +682,8 @@ PlayersClient.prototype.displayPlayersList = function(pWindowList, pDocuments){
 // --------------------------------------------------------------
 // Guette l'appui d'une touche quelconque pour fermer la fenêtre
 // --------------------------------------------------------------
-PlayersClient.prototype.hidePalmaresAndRules = function(pOuterBrdrWindowList, pWindowList, event){
+Visiteur.prototype.hidePalmaresAndRules = function(pOuterBrdrWindowList, pWindowList, event){
     pWindowList.innerHTML = '';
     pOuterBrdrWindowList.style.display = 'none';
 }
-
+// -------------------------------------------------------------------------

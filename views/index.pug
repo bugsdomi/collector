@@ -17,7 +17,6 @@ head
   script(src='https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
   // Styles
   link(href='static/css/bootstrap.css' rel='stylesheet' type='text/css')
-  link(href='static/css/replacer.css' rel='stylesheet' type='text/css')
   link(href='static/css/index.css' rel='stylesheet')
   script.
     WebFont.load({
@@ -51,19 +50,21 @@ head
 // *************************************************************************
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   a.navbar-brand(href='#')
-    img.d-inline-block.align-top.mr-2(alt='' src='static/images/brand.png' height='40')
+    img.d-inline-block.align-top.mr-2(alt="Logo du site 'Collect\'Or" src='static/images/brand.png' height='40')
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#mainScreenMenu' aria-expanded='false' aria-controls='mainScreenMenu' aria-label='Toggle mainScreenMenu')
     span.navbar-toggler-icon
   #mainScreenMenu.collapse.navbar-collapse
     ul.navbar-nav.ml-auto
       li.nav-item.mx-1
-        a.nav-link(href='#idLogin' data-toggle='modal' data-target='#idLogin')
+        a#idConnexion.nav-link(href='#idModalLogin' data-toggle='modal' data-target='#idModalLogin')
           span.fa.fa-sign-in
           |  Connexion
       li.nav-item
-        a#idLinkBienvenue.nav-link(href='#idBienvenue' data-toggle='modal' data-target='#idBienvenue') Bienvenue
+        a#idCreation.nav-link(href='#idModalSignIn' data-toggle='modal' data-target='#idModalSignIn')
+          span.fa.fa-plus
+          |   Cr&eacute;er un compte
       li.nav-item
-        a.nav-link(href='#gallery') Gallery
+        a.nav-link(href='#gallery') Galerie
       li.nav-item.mx-1.dropdown
         a#templates-dropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
           span.fa.fa-user
@@ -73,10 +74,14 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           a.dropdown-item(href='template-2.html') Pr&eacute;f&eacute;rences
           hr
           a.dropdown-item(href='template-4.html') Administration
-      li.nav-item.mx-1
-        a.nav-link(href='' target='_top')
-          span.fa.fa-sign-out
-          |  D&eacute;connexion
+          hr
+          a#idDeconnexion.dropdown-item.disabled(href='#' target='_top')
+            span.fa.fa-sign-out
+            |  D&eacute;connexion
+      li.nav-item
+        a.nav-link(href='#idAbout' data-toggle='modal' data-target='#idAbout')
+          span.fa.fa-bell
+          |  A propos
 // *************************************************************************
 // Carroussel de fond d'écran
 // *************************************************************************
@@ -132,14 +137,18 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   a.carousel-control-next(href='#mainScreenCaroussel' role='button' data-slide='next')
     span.carousel-control-next-icon(aria-hidden='true')
     span.sr-only Next
-// Fenêtre Modale de Bienvenue et de présentation
-#idBienvenue.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalTitle' aria-hidden='true')
+// *************************************************************************
+// Fenêtre Modale A propos
+// *************************************************************************
+#idAbout.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalAboutTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       .modal-header
-        h5#idModalTitle.modal-title Bienvenue dans Collect&apos;Or
+        h5#idModalTitle.modal-title A propos...
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') X
       .modal-body
+        img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+        h5 Bienvenue dans Collect&apos;Or
         p
           | Collector est un r&eacute;seau social destin&eacute; aux collectionneurs de figurines, v&eacute;hicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont &eacute;galement les bienvenus
         p
@@ -147,30 +156,62 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         p
           | Vous pourrez laisser vos avis sur des sujets particuliers, acc&eacute;der &agrave; la galerie pour admirer les collections ou y d&eacute;poser vos propres photos, acc&eacute;der aux trucs et astuces de mod&eacute;liste, y d&eacute;poser vos exp&eacute;riences, et enfin poser vos questions
       .modal-footer
-        button.btn.btn-outline-success(type='button' data-dismiss='modal') Fermer
+        button.btn.btn-success(type='button' data-dismiss='modal') Fermer
+// *************************************************************************
 // Fenêtre Modale Login
-#idLogin.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalTitle' aria-hidden='true')
+// *************************************************************************
+#idModalLogin.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
-    .modal-content
+    #idModalContent.modal-content
       .modal-header
         h5.modal-title Bienvenue dans Collect&apos;Or
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') X
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
-        form.form-sign.in
-          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt='' width='auto' height='72')
-          h1.h3.mb-3.font-weight-normal Please sign in
-          label.sr-only(for='inputEmail') Email address
-          input#inputEmail.form-control(type='email' placeholder='Email address' required='' autofocus='')
-          label.sr-only(for='inputPassword') Password
-          input#inputPassword.form-control(type='password' placeholder='Password' required='')
-          .checkbox.mb-3
-            label
-              input(type='checkbox' value='remember-me')
-              |  Remember me
-          button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
-          p.mt-5.mb-3.text-muted &copy; 2017-2018
-      .modal-footer
-        button.btn.btn-outline-success(type='button' data-dismiss='modal') Fermer
+        form#idLoginForm.form-signin
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+          h1.h3.mb-3.font-weight-normal Veuillez vous identifier
+          label.sr-only(for='LoginPseudo') Pseudonyme
+          input#idLoginPseudo.form-control(type='text' name='LoginPseudo' placeholder='Pseudonyme' required='' autofocus='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
+          br
+          label.sr-only(for='LoginPassword') Mot de passe
+          input#idLoginPassword.form-control(type='password' name='LoginPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+          #idForgottenPWD.mt-1.mb-2.text-muted.text-right(data-dismiss='modal')  Mot de passe oubli&eacute; ?
+          p#idLoginAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Pseudo et/ou mot de passe inconnus
+          .modal-footer
+            button#idConnectionBtn.btn.btn-lg.btn-success.btn-block(type='submit') Connexion
+// *************************************************************************
+// Fenêtre Modale Inscription
+// *************************************************************************
+#idModalSignIn.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    #idModalContent.modal-content
+      .modal-header
+        h5.modal-title Bienvenue dans Collect&apos;Or
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      .modal-body
+        form#idSignInForm.form-signin
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+          h1.h3.mb-3.font-weight-normal Veuillez saisir vos informations
+          .mb-3
+            label.sr-only(for='SignInEmail')
+              | Email 
+              span.text-muted
+            .input-group
+              .input-group-prepend
+                span.input-group-text @
+              input#idSignInEmail.form-control(type='email' name='SignInEmail' placeholder='exemple@provider.com' required='' autofocus='')
+              .invalid-feedback
+                | Veuillez saisir une adresse mail valide  (xxxxxx@yyyy.zz)
+          label.sr-only(for='SignInPseudo') Pseudonyme
+          input#idSignInPseudo.form-control(type='text' name='SignInPseudo' placeholder='Pseudonyme' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
+          br
+          label.sr-only(for='SignInPassword') Mot de passe
+          input#idSignInPassword.form-control(type='password' name='SignInPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+          input#idSignInConfirmPassword.form-control(type='password' name='SignInConfirmPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+          label.sr-only(for='SignInConfirmPassword') Confirmez le mot de passe
+          p#idSignInAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Le mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
+          .modal-footer
+            button#idSignInBtn.btn.btn-lg.btn-success.btn-block(type='submit') Cr&eacute;ation
 // *************************************************************************
 // Vérification Javascript activé + chargement des librairies
 // *************************************************************************
@@ -179,9 +220,10 @@ noscript
 script(src='static/js/jquery-3.3.1.slim.min.js')
 script(src='static/js/popper.min.js')
 script(src='static/js/bootstrap.min.js')
-//- script(src='static/js/replacer.js')
 script(src='/socket.io/socket.io.js')
 script(src='/static/js/toolBox.js')
 script(src='/static/js/variables.js')
 script(src='/static/js/SPAMgr.js')
-script(src='/static/js/PlayersClient.js')
+script(src='/static/js/PlayersClientSide.js')
+script.
+  giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');

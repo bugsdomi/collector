@@ -20,7 +20,6 @@
 
     <!-- Styles -->
     <link href="static/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="static/css/replacer.css" rel="stylesheet" type="text/css"> 
     <link href="static/css/index.css" rel="stylesheet" >
     <script>
         WebFont.load({
@@ -29,7 +28,6 @@
             }
         });
     </script>
-
 
     <script>
     // ********************************************************************* //
@@ -62,7 +60,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">
-            <img class="d-inline-block align-top mr-2" alt="" src="static/images/brand.png" height="40">
+            <img class="d-inline-block align-top mr-2" alt="Logo du site 'Collect\'Or" src="static/images/brand.png" height="40">
         </a>
         <button
             class="navbar-toggler"
@@ -77,15 +75,15 @@
         <div class="collapse navbar-collapse" id="mainScreenMenu">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mx-1">
-                    <a class="nav-link" href="#idLogin" data-toggle="modal" data-target="#idLogin" ><span class="fa fa-sign-in"></span> Connexion</a>
+                    <a class="nav-link" id="idConnexion" href="#idModalLogin" data-toggle="modal" data-target="#idModalLogin" ><span class="fa fa-sign-in"></span> Connexion</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#idBienvenue" data-toggle="modal" data-target="#idBienvenue" id="idLinkBienvenue">Bienvenue</a>
+                    <a class="nav-link" id="idCreation" href="#idModalSignIn" data-toggle="modal" data-target="#idModalSignIn"><span class="fa fa-plus"></span>  Créer un compte</a>
                 </li>
 
                 <li class="nav-item">
-                        <a class="nav-link" href="#gallery">Gallery</a>
+                    <a class="nav-link" href="#gallery">Galerie</a>
                 </li>
     
                 <li class="nav-item mx-1 dropdown">
@@ -96,12 +94,14 @@
                             <a class="dropdown-item" href="template-2.html">Préférences</a>
                             <hr />
                             <a class="dropdown-item" href="template-4.html">Administration</a>
+                            <hr />
+                            <a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><span class="fa fa-sign-out"></span> Déconnexion</a>
                         </div>
                     </li>
+                </li>
 
-                    <li class="nav-item mx-1">
-                        <a class="nav-link" href="" target="_top"><span class="fa fa-sign-out"></span> Déconnexion</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#idAbout" data-toggle="modal" data-target="#idAbout"><span class="fa fa-bell"></span> A propos</a>
                 </li>
             </ul>
         </div>
@@ -192,84 +192,135 @@
         </a>
     </div>
         
-
-    <!-- Fenêtre Modale de Bienvenue et de présentation -->
+    <!-- ************************************************************************* -->
+    <!--                            Fenêtre Modale A propos                        -->
+    <!-- ************************************************************************* -->
         
-    <div class="modal fade" tabindex="-1" role="dialog" id="idBienvenue" aria-labelledby="idModalTitle" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" role="dialog" id="idAbout" aria-labelledby="idModalAboutTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="idModalTitle">Bienvenue dans Collect'Or</h5>
+                    <h5 class="modal-title" id="idModalTitle">A propos...</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">X</button>
                 </div>
                 <div class="modal-body">
+                    <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+
+                    <h5>Bienvenue dans Collect'Or</h5>
                     <p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus
-                        </p>
-                        <p>
-                            Vous pourrez notamment discuter en public ou en privé avec d'autres collectionneurs, déposer / lire des annonces de vente, d'échange, de recherche, de manifestations...
-                        </p>
-                        <p>
-                            Vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions
-                        </p>
-                    </div>
+                    </p>
+                    <p>
+                        Vous pourrez notamment discuter en public ou en privé avec d'autres collectionneurs, déposer / lire des annonces de vente, d'échange, de recherche, de manifestations...
+                    </p>
+                    <p>
+                        Vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions
+                    </p>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
     </div>       
 
 
-    <!-- Fenêtre Modale Login -->
-        
-    <div class="modal fade" tabindex="-1" role="dialog" id="idLogin" aria-labelledby="idModalTitle" aria-hidden="true">
+    <!-- ************************************************************************* -->
+    <!--                             Fenêtre Modale Login                          -->
+    <!-- ************************************************************************* -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idModalLoginTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="idModalContent">
                 <div class="modal-header">
-                    <h5 class="modal-title" >Bienvenue dans Collect'Or</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">X</button>
+                    <h5 class="modal-title">Bienvenue dans Collect'Or</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-sign in">
-                        <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt=""  width="auto" height="72">
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <label for="inputEmail" class="sr-only">Email address</label>
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                        <label for="inputPassword" class="sr-only">Password</label>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                        <div class="checkbox mb-3">
-                            <label>
-                            <input type="checkbox" value="remember-me"> Remember me
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                        <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Fermer</button>
+                    <form class="form-signin" id="idLoginForm">
+                        <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+                        <h1 class="h3 mb-3 font-weight-normal">Veuillez vous identifier</h1>
+
+                        <label for="LoginPseudo" class="sr-only">Pseudonyme</label>
+                        <input type="text" id="idLoginPseudo" name="LoginPseudo" class="form-control" placeholder="Pseudonyme" required autofocus pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
+
+                        <label for="LoginPassword" class="sr-only">Mot de passe</label>
+                        <input type="password" id="idLoginPassword" name="LoginPassword" class="form-control" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+
+                        <div id="idForgottenPWD" class="mt-1 mb-2 text-muted text-right" data-dismiss="modal"> Mot de passe oublié ?</div>
+                        <p id="idLoginAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">Pseudo et/ou mot de passe inconnus</p>
+                        <div class="modal-footer">
+                            <button id='idConnectionBtn' class="btn btn-lg btn-success btn-block" type="submit">Connexion</button>
+                        </div> 
+                    </form> 
                 </div>
             </div>
         </div>
     </div>       
+    <!-- ************************************************************************* -->
+    <!--                             Fenêtre Modale Inscription                          -->
+    <!-- ************************************************************************* -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idModalSignInTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="idModalContent">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bienvenue dans Collect'Or</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-signin" id="idSignInForm">
+                        <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+                        <h1 class="h3 mb-3 font-weight-normal">Veuillez saisir vos informations</h1>
     
+                        <div class="mb-3">
+                            <label for="SignInEmail" class="sr-only">Email <span class="text-muted"></span></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@</span>
+                                </div>
+                                <input type="email" name="SignInEmail" class="form-control" id="idSignInEmail" placeholder="exemple@provider.com" required autofocus >
+                                <div class="invalid-feedback">
+                                    Veuillez saisir une adresse mail valide  (xxxxxx@yyyy.zz)
+                                </div>
+                            </div>
+                        </div>
 
+                        <label for="SignInPseudo" class="sr-only">Pseudonyme</label>
+                        <input type="text" id="idSignInPseudo" name="SignInPseudo" class="form-control" placeholder="Pseudonyme" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
+                        
+                        <label for="SignInPassword" class="sr-only">Mot de passe</label>
+                        <input type="password" id="idSignInPassword" class="form-control" name="SignInPassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 
-       
+                        <input type="password" id="idSignInConfirmPassword" class="form-control" name="SignInConfirmPassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+                        <label for="SignInConfirmPassword" class="sr-only">Confirmez le mot de passe</label>
+
+                        <p id="idSignInAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">Le mail et/ou le pseudo sont déjà attribués</p>
+                        <div class="modal-footer">
+                            <button id='idSignInBtn' class="btn btn-lg btn-success btn-block" type="submit">Création</button>
+                        </div> 
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>       
+
     <!-- ************************************************************************* -->
     <!--        Vérification Javascript activé + chargement des librairies         -->
     <!-- ************************************************************************* -->
 
     <noscript><p>Veuillez activer JavaScript</p></noscript>    
-    
+
     <script src="static/js/jquery-3.3.1.slim.min.js"></script>
     <script src="static/js/popper.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
-    <!-- <script src="static/js/replacer.js"></script> -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/static/js/toolBox.js"></script>
     <script src="/static/js/variables.js"></script>
     <script src="/static/js/SPAMgr.js"></script>
-    <script src="/static/js/PlayersClient.js"></script>
+    <script src="/static/js/PlayersClientSide.js"></script>
+
+    <script>
+        giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');
+    </script>
 </body>
 </html>

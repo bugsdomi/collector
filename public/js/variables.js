@@ -7,5 +7,6 @@
 // ***                                                                  ***
 // ************************************************************************
 // --------------------------------------------------------------
-var vLoginForm;                  // Instance du formaulaire de saisie du Login
+var vLoginForm;                  // Instance du formulaire de saisie du Login
 var vToolBox;                    // Instance de la Boîte à outils
+var webSocketConnection;         // Variable pour la connexion WebSocket

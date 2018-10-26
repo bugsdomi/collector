@@ -28,7 +28,7 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     // Initialisation coté client de la connexion SocketIO
     // -------------------------------------------------------------------------
-    var webSocketConnection = io();
+    webSocketConnection = io();
     // var webSocketConnection = io('http://192.168.0.20:3000');        // Endormi car je ne veux pas utiliser une adresse IP en dur
     // var webSocketConnection = io('http://localhost:3000');           // Endormi car je veux pouvoir travailler sur plusieurs ordi
 
@@ -36,35 +36,35 @@ window.addEventListener('DOMContentLoaded', function(){
     // La partie est pleine, un message prévient le joueur 
     // -------------------------------------------------------------------------
     webSocketConnection.on('alertPartyFull', function(){
-        // vPlayersClient.adviseWithButton('La partie est pleine, revenez plus tard', 'Recommencer', vPlayersClient.restartLogin);
+        // vVisiteur.adviseWithButton('La partie est pleine, revenez plus tard', 'Recommencer', vVisiteur.restartLogin);
     });
     // -------------------------------------------------------------------------
     // Le joueur qui essaie de se connecter est deja dans la partie
     // -------------------------------------------------------------------------
     webSocketConnection.on('playerAlreadyInGame', function(){
-        // vPlayersClient.adviseWithButton('Vous êtes déjà dans la partie dans une autre session','Recommencer', vPlayersClient.restartLogin);
+        // vVisiteur.adviseWithButton('Vous êtes déjà dans la partie dans une autre session','Recommencer', vVisiteur.restartLogin);
     });
     // -------------------------------------------------------------------------
     // La partie a déjà commencée et le joueur potentiel est refoulé
     // -------------------------------------------------------------------------
     webSocketConnection.on('partyAlreadyStarted', function(){
-        // vPlayersClient.adviseWithButton('La partie a déjà débuté, revenez plus tard','Recommencer', vPlayersClient.restartLogin);
+        // vVisiteur.adviseWithButton('La partie a déjà débuté, revenez plus tard','Recommencer', vVisiteur.restartLogin);
     });
     // -------------------------------------------------------------------------
     // On notifie au joueur qu'il est le Maître de la partie
     // -------------------------------------------------------------------------
     webSocketConnection.on('masterOfGame', function(pMyPlayer){
-        // vPlayersClient.adviseWithButton('Vous êtes le Maître de la partie et avez le privilège de la lancer','Démarrer la partie',vPlayersClient.launchGame, pMyPlayer, webSocketConnection);
+        // vVisiteur.adviseWithButton('Vous êtes le Maître de la partie et avez le privilège de la lancer','Démarrer la partie',vVisiteur.launchGame, pMyPlayer, webSocketConnection);
     });
     // -------------------------------------------------------------------------
     // On previent le joueur que le jeu va demartrer dans n secondes
     // -------------------------------------------------------------------------
     webSocketConnection.on('adviseStartGame', function(){
-        // vPlayersClient.vCompteARebours = vPlayersClient.compteARebours;
-        // vPlayersClient.displayAdvise('Le jeu va démarrer dans '+vPlayersClient.vCompteARebours+' secondes'); 
+        // vVisiteur.vCompteARebours = vVisiteur.compteARebours;
+        // vVisiteur.displayAdvise('Le jeu va démarrer dans '+vVisiteur.vCompteARebours+' secondes'); 
 
-        // vPlayersClient.refreshCompteARebours = setInterval(function(){
-        //     vPlayersClient.playCompteARebours(webSocketConnection)
+        // vVisiteur.refreshCompteARebours = setInterval(function(){
+        //     vVisiteur.playCompteARebours(webSocketConnection)
         // },1000);
     });
     // -------------------------------------------------------------------------
@@ -72,14 +72,14 @@ window.addEventListener('DOMContentLoaded', function(){
     // se cacher sous une plaque d'égout
     // -------------------------------------------------------------------------
     webSocketConnection.on('youLost', function(){
-        // vPlayersClient.clearParty();
-        // vPlayersClient.adviseWithButton('Défaite !!!! Vous avez perdu','recommencer',vPlayersClient.restartLogin);
+        // vVisiteur.clearParty();
+        // vVisiteur.adviseWithButton('Défaite !!!! Vous avez perdu','recommencer',vVisiteur.restartLogin);
     });
     // -------------------------------------------------------------------------
     // On demande aux joueurs d'envoyer leurs stats de jeu
     // -------------------------------------------------------------------------
     webSocketConnection.on('askPartyData', function(){
-        // vPlayersClient.sendPartyData(webSocketConnection);
+        // vVisiteur.sendPartyData(webSocketConnection);
     });
     // -------------------------------------------------------------------------
     // Le serveur a sollicité la saisie du Login du joueur qui vient de se connecter
@@ -106,7 +106,7 @@ window.addEventListener('DOMContentLoaded', function(){
         // vPlayerBackground.style.height = '100%';
         // vPlayerBackground.style.width = '100%';
 
-        // vPlayersClient.drawControlPanel(vOuterBrdrWindowList, vWindowList, webSocketConnection);
+        // vVisiteur.drawControlPanel(vOuterBrdrWindowList, vWindowList, webSocketConnection);
     });
     // -------------------------------------------------------------------------
     // Création et Affichage l'ensemble des pilules du joueurs qui ont été instanciées, 
@@ -116,37 +116,37 @@ window.addEventListener('DOMContentLoaded', function(){
     webSocketConnection.on('drawPils', function(pPlayerData){
         // var vCurrentPlayer = 'player'+pPlayerData.currentPlayer; 
 
-        // vPlayersClient.indexCurrentPlayer = vCurrentPlayer; 
-        // vPlayersClient.currentPlayer = pPlayerData.currentPlayer; 
-        // vPlayersClient.isItMe = pPlayerData.isItMe; 
-        // if (vPlayersClient.isItMe){
-        //     vPlayersClient.myClientPlayer = vPlayersClient.indexCurrentPlayer;      // Identification de cette session-client car toutes les donnees type                       
+        // vVisiteur.indexCurrentPlayer = vCurrentPlayer; 
+        // vVisiteur.currentPlayer = pPlayerData.currentPlayer; 
+        // vVisiteur.isItMe = pPlayerData.isItMe; 
+        // if (vVisiteur.isItMe){
+        //     vVisiteur.myClientPlayer = vVisiteur.indexCurrentPlayer;      // Identification de cette session-client car toutes les donnees type                       
         //                                                                             // "CurrentPlayer" evoluent avec les nouvelles sessions
-        //     vPlayersClient.myNumPlayer = vPlayersClient.currentPlayer;
+        //     vVisiteur.myNumPlayer = vVisiteur.currentPlayer;
         // }
-        // vPlayersClient.maxPlayers = pPlayerData.maxPlayers; 
-        // vPlayersClient.maxPilsByPlayer = pPlayerData.maxPilsByPlayer; 
-        // vPlayersClient[vCurrentPlayer].pseudo= pPlayerData.objectPlayer[vCurrentPlayer].pseudo;
-        // vPlayersClient[vCurrentPlayer].totalPlayedTime= pPlayerData.objectPlayer[vCurrentPlayer].totalPlayedTime;
+        // vVisiteur.maxPlayers = pPlayerData.maxPlayers; 
+        // vVisiteur.maxPilsByPlayer = pPlayerData.maxPilsByPlayer; 
+        // vVisiteur[vCurrentPlayer].pseudo= pPlayerData.objectPlayer[vCurrentPlayer].pseudo;
+        // vVisiteur[vCurrentPlayer].totalPlayedTime= pPlayerData.objectPlayer[vCurrentPlayer].totalPlayedTime;
 
-        // vPlayersClient[vCurrentPlayer].couleur= pPlayerData.objectPlayer[vCurrentPlayer].couleur;
-        // vPlayersClient[vCurrentPlayer].avatar= pPlayerData.objectPlayer[vCurrentPlayer].avatar;
-        // vPlayersClient[vCurrentPlayer].pilsNonMangeesRestantes = pPlayerData.maxPilsByPlayer;
+        // vVisiteur[vCurrentPlayer].couleur= pPlayerData.objectPlayer[vCurrentPlayer].couleur;
+        // vVisiteur[vCurrentPlayer].avatar= pPlayerData.objectPlayer[vCurrentPlayer].avatar;
+        // vVisiteur[vCurrentPlayer].pilsNonMangeesRestantes = pPlayerData.maxPilsByPlayer;
 
-        // for (var i=0; i<=vPlayersClient.maxPilsByPlayer-1; i++){
-        //     vPlayersClient[vCurrentPlayer].pils[i] = window.document.createElement('div');   // Création physique dynamique et ajout au DOM de chaque pilule
-        //     window.document.body.appendChild(vPlayersClient[vCurrentPlayer].pils[i]);     
-        //     vPlayersClient[vCurrentPlayer].pils[i].setAttribute('class', 'pils');
+        // for (var i=0; i<=vVisiteur.maxPilsByPlayer-1; i++){
+        //     vVisiteur[vCurrentPlayer].pils[i] = window.document.createElement('div');   // Création physique dynamique et ajout au DOM de chaque pilule
+        //     window.document.body.appendChild(vVisiteur[vCurrentPlayer].pils[i]);     
+        //     vVisiteur[vCurrentPlayer].pils[i].setAttribute('class', 'pils');
             
-        //     vPlayersClient[vCurrentPlayer].pils[i].style.zIndex= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].zIndex;
-        //     vPlayersClient[vCurrentPlayer].pils[i].style.backgroundImage= 'url("'+pPlayerData.objectPlayer[vCurrentPlayer].fichier+'")';
-        //     vPlayersClient[vCurrentPlayer].pils[i].style.left= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].left;
-        //     vPlayersClient[vCurrentPlayer].pils[i].style.top = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].top;
-        //     vPlayersClient[vCurrentPlayer].pils[i].style.transform='rotate('+(pPlayerData.objectPlayer[vCurrentPlayer].pils[i].orientation)+'deg)';
-        //     vPlayersClient[vCurrentPlayer].pils[i].mangee = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].mangee;
+        //     vVisiteur[vCurrentPlayer].pils[i].style.zIndex= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].zIndex;
+        //     vVisiteur[vCurrentPlayer].pils[i].style.backgroundImage= 'url("'+pPlayerData.objectPlayer[vCurrentPlayer].fichier+'")';
+        //     vVisiteur[vCurrentPlayer].pils[i].style.left= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].left;
+        //     vVisiteur[vCurrentPlayer].pils[i].style.top = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].top;
+        //     vVisiteur[vCurrentPlayer].pils[i].style.transform='rotate('+(pPlayerData.objectPlayer[vCurrentPlayer].pils[i].orientation)+'deg)';
+        //     vVisiteur[vCurrentPlayer].pils[i].mangee = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].mangee;
         // }           
-        // vPlayersClient.drawPlayerFrame();           // dessine le cadre du joueur avec son pseudo, son avatar, et son score
-        // vPlayersClient.drawAvatarToken();           // Dessine le jeton du joueur (qui sera en fait le nouveau curseur de la souris)
+        // vVisiteur.drawPlayerFrame();           // dessine le cadre du joueur avec son pseudo, son avatar, et son score
+        // vVisiteur.drawAvatarToken();           // Dessine le jeton du joueur (qui sera en fait le nouveau curseur de la souris)
     });
     // -------------------------------------------------------------------------
     // Suppression et effacement de l'ensemble des pilules du joueurs qui s'est déconnecté 
@@ -155,16 +155,16 @@ window.addEventListener('DOMContentLoaded', function(){
         // var vCurrentPlayer = 'player'+pPlayerData.currentPlayer;   
         
         // for (var i=0; i<=pPlayerData.maxPilsByPlayer-1; i++){
-        //     vPlayersClient[vCurrentPlayer].pils[i].parentNode.removeChild(vPlayersClient[vCurrentPlayer].pils[i]);
+        //     vVisiteur[vCurrentPlayer].pils[i].parentNode.removeChild(vVisiteur[vCurrentPlayer].pils[i]);
         // }
 
-        // vPlayersClient[vCurrentPlayer].avatarToken.parentNode.removeChild(vPlayersClient[vCurrentPlayer].avatarToken);
-        // vPlayersClient[vCurrentPlayer].containerAvatarToken.parentNode.removeChild(vPlayersClient[vCurrentPlayer].containerAvatarToken);
-        // vPlayersClient[vCurrentPlayer].timerFrame.parentNode.removeChild(vPlayersClient[vCurrentPlayer].timerFrame);
-        // vPlayersClient[vCurrentPlayer].counterFrame.parentNode.removeChild(vPlayersClient[vCurrentPlayer].counterFrame);
-        // vPlayersClient[vCurrentPlayer].pseudoFrame.parentNode.removeChild(vPlayersClient[vCurrentPlayer].pseudoFrame);
-        // vPlayersClient[vCurrentPlayer].avatarFrame.parentNode.removeChild(vPlayersClient[vCurrentPlayer].avatarFrame);
-        // vPlayersClient[vCurrentPlayer].playerFrame.parentNode.removeChild(vPlayersClient[vCurrentPlayer].playerFrame);
+        // vVisiteur[vCurrentPlayer].avatarToken.parentNode.removeChild(vVisiteur[vCurrentPlayer].avatarToken);
+        // vVisiteur[vCurrentPlayer].containerAvatarToken.parentNode.removeChild(vVisiteur[vCurrentPlayer].containerAvatarToken);
+        // vVisiteur[vCurrentPlayer].timerFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].timerFrame);
+        // vVisiteur[vCurrentPlayer].counterFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].counterFrame);
+        // vVisiteur[vCurrentPlayer].pseudoFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].pseudoFrame);
+        // vVisiteur[vCurrentPlayer].avatarFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].avatarFrame);
+        // vVisiteur[vCurrentPlayer].playerFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].playerFrame);
     });
     // ------------------------------------------------------------
     // Le serveur a demandé les caractéristiques physiques de l'écran
@@ -186,70 +186,84 @@ window.addEventListener('DOMContentLoaded', function(){
     // puis Gestion du déplacement de la souris et collecte des pils
     // --------------------------------------------------------------
     webSocketConnection.on('playAndEatPils', function(){   
-        // vPlayersClient.selectNextPilsToEat(webSocketConnection);
-        // window.addEventListener('mousemove', vPlayersClient.playAndEatPils.bind(vPlayersClient, webSocketConnection));
+        // vVisiteur.selectNextPilsToEat(webSocketConnection);
+        // window.addEventListener('mousemove', vVisiteur.playAndEatPils.bind(vVisiteur, webSocketConnection));
     });
     // --------------------------------------------------------------
     // Actualisation de la position du token du joueur envoyé en paramètre
     // --------------------------------------------------------------
     webSocketConnection.on('refreshToken', function(pMyToken){   
-        // vPlayersClient[pMyToken.monClientPlayer].containerAvatarToken.style.left = pMyToken.left;
-        // vPlayersClient[pMyToken.monClientPlayer].containerAvatarToken.style.top = pMyToken.top;
+        // vVisiteur[pMyToken.monClientPlayer].containerAvatarToken.style.left = pMyToken.left;
+        // vVisiteur[pMyToken.monClientPlayer].containerAvatarToken.style.top = pMyToken.top;
     });
     // --------------------------------------------------------------
     // Mise en evidence de la prochaine Pils a manger, du joueur envoyé en paramètre
     // --------------------------------------------------------------
     webSocketConnection.on('showNextPilsToEat', function(pMyPils){ 
-        // vPlayersClient.showNextPilsToEat(pMyPils);
+        // vVisiteur.showNextPilsToEat(pMyPils);
     });
     // --------------------------------------------------------------
     // Mise en evidence de la prochaine Pils a manger, du joueur envoyé en paramètre
     // --------------------------------------------------------------
     webSocketConnection.on('hideEatedPils', function(pMyPils){ 
-        // vPlayersClient.hideEatedPils(pMyPils);
+        // vVisiteur.hideEatedPils(pMyPils);
     });
     // --------------------------------------------------------------
     // Ajoute 1 seconde au temps total du joueur
     // --------------------------------------------------------------
     webSocketConnection.on('addOneSecond', function(){  
-        // vPlayersClient.addOneSecond(webSocketConnection);
+        // vVisiteur.addOneSecond(webSocketConnection);
     });
     // --------------------------------------------------------------
     // Met à jour le temps passé sur le client courant
     // --------------------------------------------------------------
     webSocketConnection.on('refreshElapsedTime', function(pMyTotalTime){  
-        // vPlayersClient.refreshElapsedTime(pMyTotalTime);
+        // vVisiteur.refreshElapsedTime(pMyTotalTime);
     });
     // --------------------------------------------------------------
     // Réception de la liste des joueurs pour affichage
     // --------------------------------------------------------------
     webSocketConnection.on('displayPlayersList', function(pDocuments){  
-        // vPlayersClient.displayPlayersList(vWindowList, pDocuments);
+        // vVisiteur.displayPlayersList(vWindowList, pDocuments);
     });
-    // -------------------------------------------------------------------------
-    // Envoi des infos de login du client lorsque la saisie est validée syntaxiquement 
-    // par appel du check provoqué la Form par la validation globale de celle-ci
-    // -------------------------------------------------------------------------
-    // vLoginForm = window.document.getElementById('idLoginForm');
-    // vLoginForm.addEventListener('submit', function (event){ 
-    //     event.preventDefault();                
-    
-    //     var pseudoOk = vPlayersClient.checkPseudo(vLoginForm.pseudo);
-    //     var playerLoginData = 
-    //     {
-    //         pseudo : vLoginForm.pseudo.value,
-    //     }
-    //     if (pseudoOk){
-    //         webSocketConnection.emit('playerLoginData', playerLoginData);
-    //         vLoginForm.style.display='none';
-    //     }
-    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // -------------------------------------------------------------------------
     // Initialisations
     // -------------------------------------------------------------------------
     vToolBox = new ToolBox();
-    // var vPlayersClient = new PlayersClient();       // Instanciation de l'objet descrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
+    var vVisiteur = new Visiteur();       // Instanciation de l'objet descrivant un visiteur et les méthodes de gestion de ce visiteur
 
+    // Eléments de menu
+    var vConnexion = document.getElementById('idConnexion');
+    var vCreation = document.getElementById('idCreation');
+    var vDeconnexion = document.getElementById('idDeconnexion');
+
+    // Eléments de fenêtres modales
+    var vModalLogin = document.getElementById('idModalLogin');
+    var vModalContent = document.getElementById('idModalContent');
+
+    // Eléments de champs de saisie de la fenêtre de Login
+    var vLoginForm = document.getElementById('idLoginForm');
+    var vLoginAlertMsg = document.getElementById('idLoginAlertMsg');
+
+    // Eléments de champs de saisie de la fenêtre de Création
+    var vSignInForm = document.getElementById('idSignInForm');
+    var vSignInAlertMsg = document.getElementById('idSignInAlertMsg');
+
+    
     // var vBtnImgBtnListMainScreen = document.getElementById('idImgBtnList');
     // var vBtnImgBtnDisclaimer = document.getElementById('idBtnImgBtnDisclaimer');
     // var vOuterBrdrWindowList = document.getElementById('idOuterBrdrWindowList');
@@ -258,29 +272,90 @@ window.addEventListener('DOMContentLoaded', function(){
     // var vPalmares = document.getElementById('idPalmares');
     // var vGameRules = document.getElementById('idGameRules');
     
-    // window.addEventListener('keydown',vPlayersClient.hidePalmaresAndRules.bind(vPlayersClient,vOuterBrdrWindowList,vWindowList));   
+    // window.addEventListener('keydown',vVisiteur.hidePalmaresAndRules.bind(vVisiteur,vOuterBrdrWindowList,vWindowList));   
     
     // vBtnImgBtnListMainScreen.addEventListener('click', function(){
-    //     vPlayersClient.askPlayersList(vOuterBrdrWindowList, vWindowList, webSocketConnection);
+    //     vVisiteur.askPlayersList(vOuterBrdrWindowList, vWindowList, webSocketConnection);
     // });    
     // vBtnImgBtnDisclaimer.addEventListener('click', function(){
-    //     vPlayersClient.displayDisclaimer(vOuterBrdrWindowList, vWindowList, webSocketConnection);
+    //     vVisiteur.displayDisclaimer(vOuterBrdrWindowList, vWindowList, webSocketConnection);
     // });    
 
 
-
-
     // -------------------------------------------------------------------------
-    // Envoi des infos de login du client lorsque la saisie est validée syntaxiquement 
-    // par appel du check provoqué la Form par la validation globale de celle-ci
+    // Envoi des infos de login du visiteur lorsque la saisie est validée syntaxiquement 
+    // et par la validation globale de celle-ci
     // -------------------------------------------------------------------------
-    // var vLinkBienvenue = document.getElementById('idLinkBienvenue');
-    // console.log('vLinkBienvenue : ',vLinkBienvenue);
-    // vLinkBienvenue.addEventListener('click', function (event){ 
-    //     event.preventDefault();                
-    //     var vBienvenue = document.getElementById('idBienvenue');
-    //     console.log('vBienvenue : ',vBienvenue);
-    //     vBienvenue.style.display='block';
-    // });
-});        
+    vLoginForm.addEventListener('submit', function (event){ 
+        event.preventDefault();                
+
+        vLoginForm = window.document.getElementById('idLoginForm'); // Recupération dess informationss saisies
+        var visiteurLoginData =                                     // Mise en forme pour transmission au serveur des données saisies
+            {
+                pseudo : vLoginForm.idLoginPseudo.value,
+                password : vLoginForm.idInputPassword.value,
+            }
+        webSocketConnection.emit('visiteurLoginData', visiteurLoginData);   // Transmission au serveur des infos saisies
+        
+        // vLoginForm.idLoginPseudo.value = ''                                 // RAZ des données de login saisies
+        // vLoginForm.idInputPassword.value = ''
+
+        $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+    });
+    // -------------------------------------------------------------------------
+    // Envoi des infos de création du visiteur lorsque la saisie est validée syntaxiquement 
+    // et par la validation globale de celle-ci
+    // -------------------------------------------------------------------------
+    vLoginForm.addEventListener('submit', function (event){ 
+        event.preventDefault();                
+
+        vLoginForm = window.document.getElementById('idLoginForm'); // Recupération dess informationss saisies
+        var visiteurLoginData =                                     // Mise en forme pour transmission au serveur des données saisies
+            {
+                pseudo : vLoginForm.idLoginPseudo.value,
+                password : vLoginForm.idInputPassword.value,
+            }
+        webSocketConnection.emit('visiteurLoginData', visiteurLoginData);   // Transmission au serveur des infos saisies
+        
+        // vLoginForm.idLoginPseudo.value = ''                                 // RAZ des données de login saisies
+        // vLoginForm.idInputPassword.value = ''
+
+        $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+    });
+    // --------------------------------------------------------------
+    // Le serveur a rejeté la demande Login, et redemande au visiteur 
+    // de réessayer de se loger
+    // --------------------------------------------------------------
+    webSocketConnection.on('retryLoginForm', function(){   
+        var myClass = vModalContent.getAttribute('class');
+        myClass += ' border border-danger';                                     // Bordure de la fenêtre en rouge
+        vModalContent.setAttribute('class', myClass);
+
+        vLoginAlertMsg.style.visibility = 'visible'                                  // Affichage du message d'alerte de connexion erronée
+        setTimeout(function(){$("#idModalLogin").modal('toggle')},300);         // Obligation de temporiser la réouverture sinon ça ne marche pas
+        giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Focus sur 1er champ de la Form de connexion
+    });
+    // --------------------------------------------------------------
+    // Le visiteur s'est loggé avec succès et est donc reconnu comme membre
+    // ==> Désactivation du bouton "Connexion"
+    // ==> Désactivation du bouton "Créer un compte"
+    // ==> Activation du bouton "Deconnexion"
+    // --------------------------------------------------------------
+    webSocketConnection.on('disableConnectBtn', function(){   
+        vConnexion.disabled = true;                     //
+        vConnexion.style.visibility = 'hidden';         //      Désactivation du bouton 'Connexion'
+
+        vCreation.disabled = true;                      //
+        vCreation.style.visibility = 'hidden';          //      Désactivation du bouton 'Creation de compte'
+
+        vDeconnexion.setAttribute('class','dropdown-item');
+        vDeconnexion.style.color = '#212529';           //      Activation du bouton 'Déconnexion'
+    });
+});
 // -----------------------------------------------------------------------------
+    function giveFocusToModalFirstField(pIdModal, pIdField){
+        $('#'+pIdModal).on('shown.bs.modal', function() {
+            $('#'+pIdField).focus();
+        })
+    }
+// -------------------------- Fin du module ----------------------------------------

@@ -1,6 +1,5 @@
 // *************************************************************************
-// *** PlayersServer : Objet représentant les joueurs-candidats et ceux  ***
-// ***                admis dans la partie                               ***
+// *** PlayersServer : Objet représentant les visiteurs et membres       ***
 // ***                                                                   ***
 // *** Objet : PlayersServer                                             ***
 // ***                                                                   ***
@@ -507,4 +506,47 @@ module.exports = function PlayersServer(){  // Fonction constructeur exportée
     PlayersServer.prototype.checkDBConnect = function(){
         vDBMgr.checkDBConnect();
     }
+
+
+
+
+
+
+
+
+
+
+    // ------------------------------------------------------------
+    // Vérification des données du joueur (Pseudo) :
+    // - Soit il existe dans la BDD
+    // ------------------------------------------------------------
+    PlayersServer.prototype.checkVisitorIsMember = function(pVisiteurLoginData, pWebSocketConnection){
+            vDBMgr.playerCollection.find(
+            { 
+                "pseudo": pVisiteurLoginData.pseudo, 
+                "password": pVisiteurLoginData.password, 
+            }).toArray((error, documents) => {
+                if (error) {
+                    console.log('Erreur d\'accès à la collection',error);   // Si erreur technique...
+                    return false;
+                } else {
+                    if (!documents.length){
+                        pWebSocketConnection.emit('retryLoginForm'); 
+                        return false;                 // Si le visiteur n'a pas été trouvé (pas de documents), on le rejette
+                    } else {                          // Sinon cela veut dire que  le visiteur est bien membre et on recupere ses information
+                        pWebSocketConnection.emit('disableConnectBtn'); 
+
+    // XXXXXXXXXX Récuperer les infos du membre
+                        // this.objectPlayer['player'+ this.currentPlayer].pseudo = documents[0].pseudo;                                        
+                        // this.objectPlayer['player'+ this.currentPlayer].nbrWonParties = documents[0].nbrWonParties;
+                        // this.objectPlayer['player'+ this.currentPlayer].nbrLostParties =  documents[0].nbrLostParties;                                       
+                        // this.objectPlayer['player'+ this.currentPlayer].totalPlayedTime = documents[0].totalPlayedTime;                                      
+                        // this.objectPlayer['player'+ this.currentPlayer].totalPoints = documents[0].totalPoints;
+                        // this.objectPlayer['player'+ this.currentPlayer].ranking = documents[0].ranking;    
+                        return true
+                    }
+                }
+            });
+    }
+// -----------------------------------------------------------------------------------
 }
