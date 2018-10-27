@@ -108,7 +108,7 @@ body {
 
 
 
-/* Définition responsive des tailles d'afficha ge des textes */
+/* Définition responsive des tailles d'affichage des textes */
 @media (max-width: 767.98px) {
     .display-1 {
         font-size: 3.3rem;
@@ -124,13 +124,14 @@ body {
     } 
 }
 
-.aaaalertMsg{
+.alertMsg{
     visibility: hidden;
 }
 
 a.disabled {
     color: text-muted;
     pointer-events: none;
+    cursor: not-allowed;
     cursor: default;
 }
 

@@ -79,7 +79,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             span.fa.fa-sign-out
             |  D&eacute;connexion
       li.nav-item
-        a.nav-link(href='#idAbout' data-toggle='modal' data-target='#idAbout')
+        a.nav-link(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
           span.fa.fa-bell
           |  A propos
 // *************************************************************************
@@ -140,21 +140,15 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 // Fenêtre Modale A propos
 // *************************************************************************
-#idAbout.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalAboutTitle' aria-hidden='true')
+#idGenericModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       .modal-header
-        h5#idModalTitle.modal-title A propos...
+        h5#idModalTitle.modal-title
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') X
       .modal-body
         img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-        h5 Bienvenue dans Collect&apos;Or
-        p
-          | Collector est un r&eacute;seau social destin&eacute; aux collectionneurs de figurines, v&eacute;hicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont &eacute;galement les bienvenus
-        p
-          | Vous pourrez notamment discuter en public ou en priv&eacute; avec d&apos;autres collectionneurs, d&eacute;poser / lire des annonces de vente, d&apos;&eacute;change, de recherche, de manifestations...
-        p
-          | Vous pourrez laisser vos avis sur des sujets particuliers, acc&eacute;der &agrave; la galerie pour admirer les collections ou y d&eacute;poser vos propres photos, acc&eacute;der aux trucs et astuces de mod&eacute;liste, y d&eacute;poser vos exp&eacute;riences, et enfin poser vos questions
+        #idModalBodyText
       .modal-footer
         button.btn.btn-success(type='button' data-dismiss='modal') Fermer
 // *************************************************************************
@@ -200,16 +194,15 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
               .input-group-prepend
                 span.input-group-text @
               input#idSignInEmail.form-control(type='email' name='SignInEmail' placeholder='exemple@provider.com' required='' autofocus='')
-              .invalid-feedback
-                | Veuillez saisir une adresse mail valide  (xxxxxx@yyyy.zz)
-          label.sr-only(for='SignInPseudo') Pseudonyme
-          input#idSignInPseudo.form-control(type='text' name='SignInPseudo' placeholder='Pseudonyme' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
-          br
-          label.sr-only(for='SignInPassword') Mot de passe
-          input#idSignInPassword.form-control(type='password' name='SignInPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-          input#idSignInConfirmPassword.form-control(type='password' name='SignInConfirmPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-          label.sr-only(for='SignInConfirmPassword') Confirmez le mot de passe
-          p#idSignInAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Le mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
+          fieldset
+            label.sr-only(for='SignInPseudo') Pseudonyme
+            input#idSignInPseudo.form-control(type='text' name='SignInPseudo' placeholder='Pseudonyme' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
+            br
+            label.sr-only(for='SignInPassword') Mot de passe
+            input#idSignInPassword.form-control(type='password' name='SignInPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+            input#idSignInConfirmPassword.form-control(type='password' name='SignInConfirmPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+            label.sr-only(for='SignInConfirmPassword') Confirmez le mot de passe
+          p#idSignInAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
           .modal-footer
             button#idSignInBtn.btn.btn-lg.btn-success.btn-block(type='submit') Cr&eacute;ation
 // *************************************************************************
@@ -225,5 +218,3 @@ script(src='/static/js/toolBox.js')
 script(src='/static/js/variables.js')
 script(src='/static/js/SPAMgr.js')
 script(src='/static/js/PlayersClientSide.js')
-script.
-  giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');

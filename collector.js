@@ -55,7 +55,11 @@ socketIo.on('connection', function(webSocketConnection){                        
     
     let vCurrentPlayerInSession=-1;   
     
-    webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){vPlayersServer.checkVisitorIsMember(pVisiteurLoginData, webSocketConnection)})    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre existe bien
+    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre existe bien
+    webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){vPlayersServer.checkVisitorIsMember(pVisiteurLoginData, webSocketConnection)})    
+    
+    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre existe bien
+    webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){vPlayersServer.checkVisitorSignInValid(pVisiteurSignInData, webSocketConnection)})    
         
     
 

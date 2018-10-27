@@ -21,7 +21,7 @@ const mongoDB = require('mongodb');
 
 module.exports = function DBMgr(){
     this.myDB;                           // Instance de la base de données
-    this.playerCollection;               // Sélectionne la collection que l'on veut utiliser
+    this.memberCollection;               // Sélectionne la collection que l'on veut utiliser
     
     // -------------------------------------------------------------------------
     // On se connecte à mongoDB, on vérifie qu elle est lancée et que la BDD 
@@ -32,9 +32,6 @@ module.exports = function DBMgr(){
     // Flèche" pour le "this" de la CallBack
     // -------------------------------------------------------------------------
     DBMgr.prototype.checkDBConnect = function(){
-        // mongoDB.MongoClient.connect("mongodb://localhost:27017/TourDeFrance", (err,db) => {
-        // mongoDB.MongoClient.connect("mongodb://localhost:27017/TourDeFrance", { useNewUrlParser: true }, (err,db) => {
-        // mongoDB.MongoClient.connect("mongodb://TourDeFranceAdmin:TDFAdmin*001@ds151012.mlab.com:51012/tourdefrance", { useNewUrlParser: true }, (err,db) => {
         mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
             if (err) {
                 console.log('Base de données inaccessible, l\'application "Collector" ne peut pas se lancer');
@@ -42,7 +39,7 @@ module.exports = function DBMgr(){
                 throw 'Base de données inaccessible, l\'application "Collector" ne peut pas se lancer, contacter l\'Administrateur système';
             } else {  
                 this.myDB = db;                                                                         // Conservation de l'instance de BDD
-                this.playerCollection = this.myDB.db('collect-or').collection('membres');             // On sélectionne la collection des joueurs
+                this.memberCollection = this.myDB.db('collect-or').collection('membres');             // On sélectionne la collection des joueurs
                 console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
             }
         });
@@ -56,7 +53,7 @@ module.exports = function DBMgr(){
     //         throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
     //     } else {  
     //         this.myDB = db;                                                                   // Conservation de l'instance de BDD
-    //         this.playerCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
+    //         this.memberCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
     //         console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');
     //     }
     // }
@@ -76,7 +73,7 @@ module.exports = function DBMgr(){
     //                 throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
     //             } else {  
     //                 this.myDB = db;                                                                   // Conservation de l'instance de BDD
-    //                 this.playerCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
+    //                 this.memberCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
     //                 console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');
     //             }
     //         });
@@ -95,7 +92,7 @@ module.exports = function DBMgr(){
     //             } else {
     //                 ok({
     //                     this.myDB : db,
-    //                     this.playerCollection : this.myDB.db('TourDeFrance').collection('joueurs'),       // On sélectionne la collection des joueurs
+    //                     this.memberCollection : this.myDB.db('TourDeFrance').collection('joueurs'),       // On sélectionne la collection des joueurs
 
     //                 })
     //             }
@@ -106,13 +103,12 @@ module.exports = function DBMgr(){
     // DBMgr.prototype.myConnect("mongodb://localhost:27017/TourDeFrance")
     // .then (function (
     //     // this.myDB = db;                                                                   // Conservation de l'instance de BDD
-    //     // this.playerCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
+    //     // this.memberCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
     //     console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');
     // ))
     // .catch(){
     //     console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
     //     throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
     // }
-
 
 

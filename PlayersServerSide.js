@@ -20,6 +20,12 @@
 const DBMgr = require('./dbMgr');
 let vDBMgr = new DBMgr();       // Instanciation de l'objet descrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
 
+const cstSuperAdmin = 1;  // Statut définissant le Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
+const cstAdmin = 2;       // Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
+const cstMembre= 4;       // Membre standard qui ne peut qu'utiliser la partie publique de l'application 
+
+
+
 const Pils = require('./pils');
 
 module.exports = function PlayersServer(){  // Fonction constructeur exportée
@@ -125,30 +131,6 @@ module.exports = function PlayersServer(){  // Fonction constructeur exportée
             this.objectPlayer['player'+pCurrentPlayer].pils[i] = pils;  // On ajoute la pilule qu'on vient de créer dans la liste des pilules du Player
             delete pils;
         };
-    }
-    // ------------------------------------------------------------
-    // Ajout des données du joueur (Pseudo, score, TimeStamp
-    // (au format brut) dans la BDD
-    // ------------------------------------------------------------
-    PlayersServer.prototype.addPlayerInDatabase = function(pPseudo){
-        let playerRecord = 
-        {
-            pseudo: pPseudo,
-            nbrWonParties : 0,                  // Nbre de parties gagnées
-            nbrLostParties : 0,                 // Nbre de parties perdues
-            totalPlayedTime : 0,                // temps total de jeu
-            totalPoints : 0,                    // Nbre total de points du joueur
-            ranking : 0,                        // Classement du joueur en fonction de ses points
-        }
-        vDBMgr.playerCollection.insert(playerRecord);
-
-        this.objectPlayer['player'+ this.currentPlayer].pseudo = playerRecord.pseudo;                                        
-        this.objectPlayer['player'+ this.currentPlayer].nbrWonParties = playerRecord.nbrWonParties;
-        this.objectPlayer['player'+ this.currentPlayer].nbrLostParties =  playerRecord.nbrLostParties;                                       
-        this.objectPlayer['player'+ this.currentPlayer].totalPlayedTime = playerRecord.totalPlayedTime;                                      
-        this.objectPlayer['player'+ this.currentPlayer].totalPoints = playerRecord.totalPoints;
-        this.objectPlayer['player'+ this.currentPlayer].ranking = playerRecord.ranking;    
-
     }
     // ------------------------------------------------------------
     // Vérification des données du joueur (Pseudo) :
@@ -496,57 +478,138 @@ module.exports = function PlayersServer(){  // Fonction constructeur exportée
             }
         }
     }
-    // -------------------------------------------------------------------------
-    // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
-    // mais en tout état de cause, normalement, professionnellement, je devrais 
-    // m'assurer qu'elle est toujours accessible en cours de partie, mais dans le 
-    // contexte ultra-limité de cet atelier, ce n'est pas nécessaire
+
+
+
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Ajout des données du visiteur (futur membre) (Email, Pseudo, MDP, timestamp (au format brut), et statut dans la BDD)
+    // ATTENTION !!!!
+    // S'il n'y aucun membre dans la BDD, le Premier membre qui est créé est le Super-Administrateur
+    // 
+    // Codification des privilèges
+    // 1 --> SuperAdmin
+    // 2 --> Admin
+    // 4 --> Membre
+    // ---------------------------------------------------------------------------------------------------------------------------
+    PlayersServer.prototype.addMemberInDatabase = function(pMember, pWebSocketConnection){
+        var myRang;
+
+        vDBMgr.memberCollection.countDocuments(function(error, count){        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
+            if (error){
+                console.log('Erreur de comptage dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                throw error;
+            } else {
+                count === 0 ? myRang = cstSuperAdmin : myRang = cstMembre;      // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin
+
+                let memberRecord = 
+                {
+                    email: pMember.email,
+                    pseudo: pMember.pseudo,
+                    password : pMember.password,
+                    rang : myRang,
+                    dateCreation : new Date(),                                  // Timestamp de la création du record
+                }
+
+                vDBMgr.memberCollection.insertOne(memberRecord, function(error, result){
+                    if (error){
+                        console.log('Erreur d\'insertion dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                        throw error;
+                    } else {
+                        pWebSocketConnection.emit('congratNewMember'); 
+
+                        console.log("addMemberInDatabase - 1 document inserted : ",memberRecord);            
+    // XXXXXXXXXX  
+    // Affichage Création OK
+    // Envoi de mail
+                    }
+                });
+            }
+        });
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Procédure raccourcie de recherche d'infos dans la BDD
+    // On lui passe un objet avec la Query à rechercher, et les CallBacks a appeler en cas de succès ou d'échec
+    // ---------------------------------------------------------------------------------------------------------------------------
+    PlayersServer.prototype.findDataInDB = function(pQuery, pResolveProc, pRejectProc, pWebSocketConnection){
+    console.log('findDataInDB - pQuery : ',pQuery)
+        vDBMgr.memberCollection.find(pQuery).toArray((error, documents) => {
+            if (error) {
+                console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                throw error
+            } else {
+                if (!documents.length){
+                    pWebSocketConnection.emit(pRejectProc); 
+                } else {                          
+                    pWebSocketConnection.emit(pResolveProc); 
+                }
+            }
+        });
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Vérification des données du visiteur (Pseudo + MDP) :
+    // On cherche la combinaison Pseudo et MDP
+    // - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
+    // - Par contre, si elle existe, on demande au client de désactiver l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
+    // ---------------------------------------------------------------------------------------------------------------------------
+    PlayersServer.prototype.checkVisitorIsMember = function(pVisiteurLoginData, pWebSocketConnection){
+        this.findDataInDB({ 
+            "pseudo": pVisiteurLoginData.pseudo, 
+            "password": pVisiteurLoginData.password, 
+        }, 
+        'disableConnectBtn',
+        'retryLoginForm', 
+        pWebSocketConnection);
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Vérification des données de Sign-in du visiteur  :
+    // 1) Vérification de la non-préexistence de l'Email
+    // 2) Vérification de la non-préexistence du Pseudo
+    // Si ces 2 conditions sont vérifiées, on ajoute le visiteur à 
+    // la BDD et il devient membre
+    // - Sinon, on le rejette 
+    // ---------------------------------------------------------------------------------------------------------------------------
+    PlayersServer.prototype.checkVisitorSignInValid = function(pVisiteurSignInData, pWebSocketConnection){
+        vDBMgr.memberCollection.find(
+        { 
+            "email": pVisiteurSignInData.email, 
+        }).toArray((error, documents) => {
+            if (error){
+                console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                throw error;
+            } else {
+                if (!documents.length){                            // Si email non trouvé --> Ok pour l'instant, donc on vérifie que le Pseudo n'existe pas
+                    vDBMgr.memberCollection.find(
+                    { 
+                        "pseudo": pVisiteurSignInData.pseudo, 
+                    }).toArray((error, documents) => {
+                        if (error){
+                            console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                            throw error;
+                        } else {
+                            if (!documents.length){                     // Si pseudo non trouvé --> On valide l'inscription en créant le membre
+                                this.addMemberInDatabase(pVisiteurSignInData, pWebSocketConnection);
+                            } else {
+                                pWebSocketConnection.emit('retrySignInForm'); 
+                            }
+                        }
+                    });
+                } else {
+                    pWebSocketConnection.emit('retrySignInForm'); 
+                }
+            }
+        });
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, mais en tout état de cause, normalement, 
+    // professionnellement, je devrais m'assurer qu'elle est toujours accessible en cours de partie, mais dans le contexte 
+    // ultra-limité de cet atelier, ce n'est pas nécessaire
     // Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
-    // -------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------
     PlayersServer.prototype.checkDBConnect = function(){
         vDBMgr.checkDBConnect();
     }
-
-
-
-
-
-
-
-
-
-
-    // ------------------------------------------------------------
-    // Vérification des données du joueur (Pseudo) :
-    // - Soit il existe dans la BDD
-    // ------------------------------------------------------------
-    PlayersServer.prototype.checkVisitorIsMember = function(pVisiteurLoginData, pWebSocketConnection){
-            vDBMgr.playerCollection.find(
-            { 
-                "pseudo": pVisiteurLoginData.pseudo, 
-                "password": pVisiteurLoginData.password, 
-            }).toArray((error, documents) => {
-                if (error) {
-                    console.log('Erreur d\'accès à la collection',error);   // Si erreur technique...
-                    return false;
-                } else {
-                    if (!documents.length){
-                        pWebSocketConnection.emit('retryLoginForm'); 
-                        return false;                 // Si le visiteur n'a pas été trouvé (pas de documents), on le rejette
-                    } else {                          // Sinon cela veut dire que  le visiteur est bien membre et on recupere ses information
-                        pWebSocketConnection.emit('disableConnectBtn'); 
-
-    // XXXXXXXXXX Récuperer les infos du membre
-                        // this.objectPlayer['player'+ this.currentPlayer].pseudo = documents[0].pseudo;                                        
-                        // this.objectPlayer['player'+ this.currentPlayer].nbrWonParties = documents[0].nbrWonParties;
-                        // this.objectPlayer['player'+ this.currentPlayer].nbrLostParties =  documents[0].nbrLostParties;                                       
-                        // this.objectPlayer['player'+ this.currentPlayer].totalPlayedTime = documents[0].totalPlayedTime;                                      
-                        // this.objectPlayer['player'+ this.currentPlayer].totalPoints = documents[0].totalPoints;
-                        // this.objectPlayer['player'+ this.currentPlayer].ranking = documents[0].ranking;    
-                        return true
-                    }
-                }
-            });
-    }
-// -----------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------------------------
 }
