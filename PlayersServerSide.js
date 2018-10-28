@@ -13,16 +13,18 @@
 // ***                                                                   ***
 // *************************************************************************
 // -------------------------------------------------------------------------
-// stockage des informations techniques des joueurs et des  coordonnées de leurs 
-// pilules qui vont être générées pour le player
-// 4 joueurs maximum - 50 pilules pour chacun 
-// -------------------------------------------------------------------------
 const DBMgr = require('./dbMgr');
-let vDBMgr = new DBMgr();       // Instanciation de l'objet descrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
+let vDBMgr = new DBMgr();       // Instanciation de l'objet décrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
 
 const cstSuperAdmin = 1;  // Statut définissant le Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 const cstAdmin = 2;       // Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
-const cstMembre= 4;       // Membre standard qui ne peut qu'utiliser la partie publique de l'application 
+const cstMembre = 4;      // Membre standard qui ne peut qu'utiliser la partie publique de l'application 
+
+const cstText = 1;        // Spécifie que le corps du mail sera purement textuel
+const cstHTML = 2;        // Spécifie que le coprs du mail sera en HTML
 
 
 
@@ -483,6 +485,9 @@ module.exports = function PlayersServer(){  // Fonction constructeur exportée
 
 
 
+
+
+
     // ---------------------------------------------------------------------------------------------------------------------------
     // Ajout des données du visiteur (futur membre) (Email, Pseudo, MDP, timestamp (au format brut), et statut dans la BDD)
     // ATTENTION !!!!
@@ -517,16 +522,23 @@ module.exports = function PlayersServer(){  // Fonction constructeur exportée
                         console.log('Erreur d\'insertion dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
                         throw error;
                     } else {
+                        console.log("addMemberInDatabase - 1 document inserted : ",memberRecord);    
+                        
+                        let messageToSend = {
+                            to       : pMember.email,
+                            from     : 'collector@vcp.com',
+                            subject  : 'Votre inscription à Collect\'Or',
+                            // text  : 'Félicitations\n\nVous êtes dorénavant membre de la Communité \'Collect\'Or\'',
+                            html     : '<h1 style="color: black;">Félicitations</h1><p><h2>Vous êtes dorénavant membre de la Communité \'Collect\'Or\'.</h2><br />' +
+                                        'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+pMember.pseudo+'<p><strong>Mot de passe : </strong>'+pMember.password +
+                                        '</p><br /><br /><br /><i>Vil-Coyote Products</i>',
+                        }
+                        sgMail.send(messageToSend);
                         pWebSocketConnection.emit('congratNewMember'); 
-
-                        console.log("addMemberInDatabase - 1 document inserted : ",memberRecord);            
-    // XXXXXXXXXX  
-    // Affichage Création OK
-    // Envoi de mail
                     }
-                });
+                }.bind(this));
             }
-        });
+        }.bind(this));
     }
 
     // ---------------------------------------------------------------------------------------------------------------------------

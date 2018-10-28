@@ -279,3 +279,6 @@ console.log('findDataInDB - pQuery : ',pQuery)
     }
 // -----------------------------------------------------------------------------------
 }
+
+
+sgMail.setApiKey('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');
