@@ -523,7 +523,7 @@ module.exports = function PlayersServer(){  // Fonction constructeur exportée
                         throw error;
                     } else {
                         console.log("addMemberInDatabase - 1 document inserted : ",memberRecord);    
-                        
+                    
                         let messageToSend = {
                             to       : pMember.email,
                             from     : 'collector@vcp.com',
