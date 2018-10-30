@@ -17,7 +17,7 @@ const DBMgr = require('./dbMgr');
 let vDBMgr = new DBMgr();       // Instanciation de l'objet décrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const cstSuperAdmin = 1;  // Statut définissant le Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 const cstAdmin = 2;       // Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))

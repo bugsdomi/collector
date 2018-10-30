@@ -262,8 +262,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
     // Eléments de fenêtres modales
     var vModalLogin = document.getElementById('idModalLogin');
-    var vModalContent = document.getElementById('idModalContent');
-    var vModalContent = document.getElementById('idModalContent');
     var vModalTitle = document.getElementById('idModalTitle');
     var vModalBodyText = document.getElementById('idModalBodyText');
     
