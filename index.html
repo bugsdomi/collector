@@ -82,9 +82,9 @@
                     <a class="nav-link" id="idCreation" href="#idModalSignIn" data-toggle="modal" data-target="#idModalSignIn"><span class="fa fa-plus"></span>  Créer un compte</a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#gallery">Galerie</a>
-                </li>
+                </li> -->
     
                 <li class="nav-item mx-1 dropdown">
                         <a class="nav-link dropdown-toggle" id="templates-dropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span> Profil</a>
@@ -120,6 +120,7 @@
             <li data-target="#mainScreenCaroussel" data-slide-to="2" class="txt-yellow-stroke"></li>
             <li data-target="#mainScreenCaroussel" data-slide-to="3" class="txt-yellow-stroke"></li>
             <li data-target="#mainScreenCaroussel" data-slide-to="4" class="txt-yellow-stroke"></li>
+            <li data-target="#mainScreenCaroussel" data-slide-to="5" class="txt-yellow-stroke"></li>
         </ol>
 
         <!-- sliders -->
@@ -168,7 +169,18 @@
                     </div>
                 </div>
             </div>
-            <div class="carousel-item" style="background: url('static/images/Marignan.jpg') center 50%; background-size: cover;">
+            <div class="carousel-item" style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;">
                 <div class="overlay"></div>
                 <div class="carousel-caption">
                     <div class="row my-auto">
@@ -239,7 +251,8 @@
                         <label for="LoginPassword" class="sr-only">Mot de passe</label>
                         <input type="password" id="idLoginPassword" name="LoginPassword" class="form-control" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 
-                        <div id="idForgottenPWD" class="mt-1 mb-2 text-muted text-right" data-dismiss="modal"> Mot de passe oublié ?</div>
+                        <!-- <div id="idLostPWD" class="mt-1 mb-2 text-right" data-dismiss="modal"> Mot de passe oublié ?</div> -->
+                        <div id="idLostPWD" class="mt-1 mb-2 text-right"> Mot de passe oublié ?</div>
                         <p id="idLoginAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">Pseudo et/ou mot de passe inconnus</p>
                         <div class="modal-footer">
                             <button id='idConnectionBtn' class="btn btn-lg btn-success btn-block" type="submit">Connexion</button>
@@ -287,6 +300,42 @@
                         <p id="idSignInAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail et/ou le pseudo sont déjà attribués</p>
                         <div class="modal-footer">
                             <button id='idSignInBtn' class="btn btn-lg btn-success btn-block" type="submit">Création</button>
+                        </div> 
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>       
+
+
+    <!-- ************************************************************************* -->
+    <!--                     Fenêtre Modale de Mot de passe perdu                  -->
+    <!-- ************************************************************************* -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idModalLostPWDTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bienvenue dans Collect'Or</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-LostPWD" id="idLostPWDForm">
+                        <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+                        <h1 class="h3 mb-3 font-weight-normal">Récupération du mot de passe</h1>
+    
+                        <div class="mb-3">
+                            <label for="LostPWDEmail" class="sr-only">Email <span class="text-muted"></span></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@</span>
+                                </div>
+                                <input type="email" name="LostPWDEmail" class="form-control" id="idLostPWDEmail" placeholder="exemple@provider.com" required autofocus >
+                            </div>
+                        </div>
+                        <p id="idLostPWDAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
+                        <div class="modal-footer">
+                            <button id='idLostPWDBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
                         </div> 
                     </form> 
                 </div>

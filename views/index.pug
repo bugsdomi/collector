@@ -6,7 +6,7 @@ head
   meta(http-equiv='content-type' content='text/html;charset=UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
   // Nécessaire pour le coté "Responsive"
-  meta(name='description' content='Bootstrap 4 UI / Starter Kit')
+  meta(name='description' content="Réseau social des Collectionneurs de sujet d'Histoire Militaire")
   meta(name='author' content='kingstudio.ro')
   // Favicon
   link(rel='icon' href='static/images/favicon.png')
@@ -63,8 +63,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a#idCreation.nav-link(href='#idModalSignIn' data-toggle='modal' data-target='#idModalSignIn')
           span.fa.fa-plus
           |   Cr&eacute;er un compte
-      li.nav-item
-        a.nav-link(href='#gallery') Galerie
+      //
+        <li class="nav-item">
+        <a class="nav-link" href="#gallery">Galerie</a>
+        </li>
       li.nav-item.mx-1.dropdown
         a#templates-dropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
           span.fa.fa-user
@@ -93,6 +95,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
     li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='2')
     li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='3')
     li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='4')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='5')
   // sliders
   .carousel-inner(role='listbox')
     .carousel-item.active(style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;")
@@ -123,7 +126,14 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
             h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
             p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-    .carousel-item(style="background: url('static/images/Marignan.jpg') center 50%; background-size: cover;")
+    .carousel-item(style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            p.lead.mt-5.display-4.txt-yellow-stroke(style='opacity: .95;') R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;")
       .overlay
       .carousel-caption
         .row.my-auto
@@ -137,9 +147,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   a.carousel-control-next(href='#mainScreenCaroussel' role='button' data-slide='next')
     span.carousel-control-next-icon(aria-hidden='true')
     span.sr-only Next
-// *************************************************************************
-// Fenêtre Modale A propos
-// *************************************************************************
+// ***********************************************************************************
+// Fenêtre Modale générique - Le titre "idModalTitle" et le contenu "idModalBodyText"
+// sont alimentés par javascript
+// ***********************************************************************************
 #idGenericModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
@@ -156,7 +167,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 #idModalLogin.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
-    #idModalContent.modal-content
+    .modal-content
       .modal-header
         h5.modal-title Bienvenue dans Collect&apos;Or
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
@@ -169,7 +180,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           br
           label.sr-only(for='LoginPassword') Mot de passe
           input#idLoginPassword.form-control(type='password' name='LoginPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-          #idForgottenPWD.mt-1.mb-2.text-muted.text-right(data-dismiss='modal')  Mot de passe oubli&eacute; ?
+          // <div id="idLostPWD" class="mt-1 mb-2 text-right" data-dismiss="modal"> Mot de passe oublié ?</div>
+          #idLostPWD.mt-1.mb-2.text-right  Mot de passe oubli&eacute; ?
           p#idLoginAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Pseudo et/ou mot de passe inconnus
           .modal-footer
             button#idConnectionBtn.btn.btn-lg.btn-success.btn-block(type='submit') Connexion
@@ -178,7 +190,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 #idModalSignIn.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
-    #idModalContent.modal-content
+    .modal-content
       .modal-header
         h5.modal-title Bienvenue dans Collect&apos;Or
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
@@ -205,6 +217,30 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           p#idSignInAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
           .modal-footer
             button#idSignInBtn.btn.btn-lg.btn-success.btn-block(type='submit') Cr&eacute;ation
+// *************************************************************************
+// Fenêtre Modale de Mot de passe perdu
+// *************************************************************************
+#idModalLostPWD.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document')
+    .modal-content
+      .modal-header
+        h5.modal-title Bienvenue dans Collect&apos;Or
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      .modal-body
+        form#idLostPWDForm.form-LostPWD
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+          h1.h3.mb-3.font-weight-normal R&eacute;cup&eacute;ration du mot de passe
+          .mb-3
+            label.sr-only(for='LostPWDEmail')
+              | Email 
+              span.text-muted
+            .input-group
+              .input-group-prepend
+                span.input-group-text @
+              input#idLostPWDEmail.form-control(type='email' name='LostPWDEmail' placeholder='exemple@provider.com' required='' autofocus='')
+          p#idLostPWDAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail fourni n&apos;a pas &eacute;t&eacute; trouv&eacute;, veuillez le resaisir
+          .modal-footer
+            button#idLostPWDBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
 // *************************************************************************
 // Vérification Javascript activé + chargement des librairies
 // *************************************************************************

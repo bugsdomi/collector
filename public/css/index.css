@@ -128,11 +128,15 @@ body {
     visibility: hidden;
 }
 
-a.disabled {
-    color: text-muted;
+.disabled {
+    color: darkgray ;
     pointer-events: none;
     cursor: not-allowed;
-    cursor: default;
+}
+
+#idLostPWD:hover{
+    color: red;
+    cursor: pointer;
 }
 
 /* ******************************* */

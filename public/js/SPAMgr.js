@@ -242,50 +242,103 @@ window.addEventListener('DOMContentLoaded', function(){
 
     // -------------------------------------------------------------------------
     // Initialisations
+    // Recupération des Elements du DOM nécessaires
+    // Mise en oeuvre des captures d'évenements nécessaires
+    // Prépositionnement (Focus) sur les champs des différentes fenêtres modales
+    // Réinitialisations des valeurs des champs de saisies des différentes fenêtres
     // -------------------------------------------------------------------------
-    
-    // window.addEventListener('keydown',vVisiteur.hidePalmaresAndRules.bind(vVisiteur,vOuterBrdrWindowList,vWindowList));   
-    // });    
-    // vBtnImgBtnDisclaimer.addEventListener('click', function(){
-    //     vVisiteur.displayDisclaimer(vOuterBrdrWindowList, vWindowList, webSocketConnection);
-    // });    
-    
-        
     vToolBox = new ToolBox();
     var vVisiteur = new Visiteur();       // Instanciation de l'objet descrivant un visiteur et les méthodes de gestion de ce visiteur
     
+    // -------------------------------------------------------------------------
     // Eléments de menu
+    // -------------------------------------------------------------------------
     var vConnexion = document.getElementById('idConnexion');
     var vCreation = document.getElementById('idCreation');
     var vDeconnexion = document.getElementById('idDeconnexion');
     var vGenericModal = document.getElementById('idGenericModal');
 
-    // Eléments de fenêtres modales
-    var vModalLogin = document.getElementById('idModalLogin');
+    // -------------------------------------------------------------------------
+    // Eléments de la fenêtre modale générique
+    // Initialisation du texte de la fenetre modale en mode "A propos" (par défaut 
+    // et également en cas de réaction au "Click")
+    // -------------------------------------------------------------------------
     var vModalTitle = document.getElementById('idModalTitle');
     var vModalBodyText = document.getElementById('idModalBodyText');
-    
-    initGenericModalText(vModalTitle, vModalBodyText);                        // Initialisation primaire de la fenetre modale en mode "A propos"
+    initGenericModalTextAboutMode(vModalTitle, vModalBodyText);                       
 
+    vGenericModal.addEventListener('click', function(){
+        initGenericModalTextAboutMode(vModalTitle, vModalBodyText);                     
+    });
 
-    // Eléments de champs de saisie de la fenêtre de Login
+    // -------------------------------------------------------------------------
+    // Eléments de champs de saisie de la Form de Login
+    // -------------------------------------------------------------------------
+    var vModalLogin = document.getElementById('idModalLogin');
     var vLoginForm = document.getElementById('idLoginForm');
+    var vLostPWD = document.getElementById('idLostPWD');
     var vLoginAlertMsg = document.getElementById('idLoginAlertMsg');
+    
+    giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
+    giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
 
-    // Eléments de champs de saisie de la fenêtre de Création
+    idConnexion.addEventListener('click', function(){
+        vLoginForm.idLoginPseudo.value = '';                                 
+        vLoginForm.idLoginPassword.value = '';
+        vLoginAlertMsg.style.visibility = 'hidden';                         
+    });
+
+    // -------------------------------------------------------------------------
+    // Eléments de champs de saisie de la Form de Création de compte
+    // -------------------------------------------------------------------------
     var vSignInForm = document.getElementById('idSignInForm');
     var vSignInAlertMsg = document.getElementById('idSignInAlertMsg');
     var vSignInPassword = document.getElementById('idSignInPassword');
     var vSignInConfirmPassword = document.getElementById('idSignInConfirmPassword');
+    
+    giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               
+
+    vCreation.addEventListener('click', function(){
+        vSignInForm.idSignInEmail.value = '';                                
+        vSignInForm.idSignInPseudo.value = '';                              
+        vSignInForm.idSignInPassword.value = '';
+        vSignInForm.idSignInConfirmPassword.value = '';
+        vSignInAlertMsg.style.visibility = 'hidden';                          
+    });
 
     vSignInPassword.onchange = function(){validatePassword(vSignInPassword, vSignInConfirmPassword)};           // Vérification que les MDP sont identiques
     vSignInConfirmPassword.onkeyup = function(){validatePassword(vSignInPassword, vSignInConfirmPassword)};     //
 
-    // Initialisations comportementales
-    giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');                                                // Donne le Focus au 1er de la Form
-    giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               //
-    vGenericModal.addEventListener('click', function(){
-        initGenericModalText(vModalTitle, vModalBodyText)                     // Initialisation secondaire de la fenetre modale en mode "A propos" (réaction au "Click")
+    // -------------------------------------------------------------------------
+    // Gestion du Mot de Passe oublié
+    // -------------------------------------------------------------------------
+    var vLostPWDForm = document.getElementById('idLostPWDForm');
+    var vLostPWDAlertMsg = document.getElementById('idLostPWDAlertMsg');
+
+    vLostPWD.addEventListener('click', function(){
+        vLostPWDForm.idLostPWDEmail.value = '';
+        vLostPWDAlertMsg.style.visibility = 'hidden';                       // Cache du message d'alerte de saisie d'email erroné
+        $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+        $('#idModalLostPWD').modal('toggle');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
+    });
+
+        
+    // -------------------------------------------------------------------------
+    // Envoi des infos de récupération du Mot de Passe lorsque la saisie du mail 
+    // est validée syntaxiquement et par la validation globale de celle-ci
+    // -------------------------------------------------------------------------
+    vLostPWDForm.addEventListener('submit', function (event){ 
+        event.preventDefault();                
+
+        webSocketConnection.emit('LostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   // Transmission au serveur des infos saisies
+        $('#idModalLostPWD').modal('toggle');                                        // Fermeture de la fenêtre modale de Login
+    });
+
+    // -------------------------------------------------------------------------
+    // Gestion de la déconnexion
+    // -------------------------------------------------------------------------
+    vDeconnexion.addEventListener('click', function(){
+        ActiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
     });
 
     // -------------------------------------------------------------------------
@@ -300,14 +353,12 @@ window.addEventListener('DOMContentLoaded', function(){
                 pseudo : vLoginForm.idLoginPseudo.value,
                 password : vLoginForm.idLoginPassword.value,
             }
+
         webSocketConnection.emit('visiteurLoginData', visiteurLoginData);   // Transmission au serveur des infos saisies
         
-        vLoginForm.idLoginPseudo.value = ''                                 // RAZ des données de login saisies
-        vLoginForm.idLoginPassword.value = ''
-
         $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+        vLoginAlertMsg.style.visibility = 'hidden';  
     });
-
     // -------------------------------------------------------------------------
     // Envoi des infos de création du visiteur lorsque la Création de compte est 
     // validée syntaxiquement et par la validation globale de celle-ci
@@ -323,41 +374,41 @@ window.addEventListener('DOMContentLoaded', function(){
             }
 
         webSocketConnection.emit('visiteurSignInData', visiteurSignInData);     // Transmission au serveur des infos saisies
-        
-        vSignInForm.idSignInEmail.value = ''                                    // RAZ des données de Sign-in saisies
-        vSignInForm.idSignInPseudo.value = ''                                    // RAZ des données de Sign-in saisies
-        vSignInForm.idSignInPassword.value = ''
-        vSignInForm.idSignInConfirmPassword.value = ''
-
         $('#idModalSignIn').modal('toggle');                                    // Fermeture de la fenêtre modale de Sign-In
+        vSignInAlertMsg.style.visibility = 'hidden';                               // Affichage du message d'alerte de connexion erronée
     });
 
+
+
+
+
+
+
+    // ================================= Reception des messages en provenance du serveur =================================================
+    // --------------------------------------------------------------
+    // Le serveur a rejeté le mail de Mot de passe perdu, et redemande 
+    // au visiteur de le ressaisir
+    // --------------------------------------------------------------
+    webSocketConnection.on('retryLostPWDForm', function(){   
+        vLostPWDAlertMsg.style.visibility = 'visible'                                 // Affichage du message d'alerte de saisie d'email erroné
+        setTimeout(function(){$("#idModalLostPWD").modal('toggle')},300);             // Obligation de temporiser la réouverture sinon ça ne marche pas
+    });
     // --------------------------------------------------------------
     // Le serveur a rejeté la demande Login, et redemande au visiteur 
     // de réessayer de se loger
     // --------------------------------------------------------------
     webSocketConnection.on('retryLoginForm', function(){   
-
         vLoginAlertMsg.style.visibility = 'visible'                                 // Affichage du message d'alerte de connexion erronée
         setTimeout(function(){$("#idModalLogin").modal('toggle')},300);             // Obligation de temporiser la réouverture sinon ça ne marche pas
-        giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');                // Focus sur 1er champ de la Form de connexion
     });
-
     // --------------------------------------------------------------
     // Le serveur a rejeté la demande Signin, et redemande au visiteur 
     // de ressaisir ses infos de Sign-In
     // --------------------------------------------------------------
     webSocketConnection.on('retrySignInForm', function(){   
-        // var myClass = vModalContent.getAttribute('class');
-        // myClass += ' border border-danger';                                     // Bordure de la fenêtre en rouge
-        // vModalContent.setAttribute('class', myClass);
-        // Equivalent a "element.classList.add("mystyle");" / "element.classList.remove("mystyle");""
-
         vSignInAlertMsg.style.visibility = 'visible'                               // Affichage du message d'alerte de connexion erronée
         setTimeout(function(){$("#idModalSignIn").modal('toggle')},300);           // Obligation de temporiser la réouverture sinon ça ne marche pas
-        giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');              // Focus sur 1er champ de la Form de connexion
     });
-
     // --------------------------------------------------------------
     // Le visiteur s'est loggé avec succès et est donc reconnu comme membre
     // ==> Désactivation du bouton "Connexion"
@@ -365,7 +416,7 @@ window.addEventListener('DOMContentLoaded', function(){
     // ==> Activation du bouton "Deconnexion"
     // --------------------------------------------------------------
     webSocketConnection.on('disableConnectBtn', function(){   
-        toggleLoginLogoutBtn(vConnexion, vCreation, vDeconnexion);
+        UnactiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
     });
 
     // --------------------------------------------------------------
@@ -376,12 +427,22 @@ window.addEventListener('DOMContentLoaded', function(){
     // ==> Activation du bouton "Deconnexion"
     // --------------------------------------------------------------
     webSocketConnection.on('congratNewMember', function(){ 
-console.log('Congratulations')
         initModalWelcomeText(vModalTitle, vModalBodyText);
         $('#idGenericModal').modal('toggle');                                    // ouverture de la fenêtre modale de Félicitations
-        toggleLoginLogoutBtn(vConnexion, vCreation, vDeconnexion);
+        UnactiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
     });    
-});
+    // -----------------------------------------------------------------------------
+}); // Fin de la Boucle "DOMContentLoaded"
+
+
+
+
+
+
+
+
+
+// ===================================================== Fonctions ===========================================================
 // -----------------------------------------------------------------------------
 //  Cette fonction donne le focus au champs pIdField  de la fenêtre modale pIdModal
 //  passée en paramètre car le composant "Modal" court-circuite l'attibut "Auto-focus"
@@ -390,21 +451,26 @@ function giveFocusToModalFirstField(pIdModal, pIdField){
     $('#'+pIdModal).on('shown.bs.modal', function() {
         $('#'+pIdField).focus();
     })
+
+    // $('#'+pIdModal).on('shown.bs.modal', function() {
+    //     $(this).find('[autofocus]').focus();
+    //   });
+
 }
 // -----------------------------------------------------------------------------
 // Cette fonction vérifie que le MDP et sa confirmation sont bien identiques
 // -----------------------------------------------------------------------------
 function validatePassword(pSignInPassword, pSignInConfirmPassword){
-    if(pSignInPassword.value != pSignInConfirmPassword.value) {
+    if (pSignInPassword.value != pSignInConfirmPassword.value){
         pSignInConfirmPassword.setCustomValidity("Les mots de passe ne correspondent pas");
     } else {
         pSignInConfirmPassword.setCustomValidity('');
     }
 }
 // -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre générique modale en mode "About"
+// Cette fonction initialise le contenu de la fenetre générique modale en mode "A propos"
 // -----------------------------------------------------------------------------
-function initGenericModalText(pModalTitle, pModalBodyText){
+function initGenericModalTextAboutMode(pModalTitle, pModalBodyText){
     pModalTitle.innerText = 'A propos...'
     pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
     pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus</p>';
@@ -413,28 +479,41 @@ function initGenericModalText(pModalTitle, pModalBodyText){
 }
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
-// apr-s la création réussi du nouveau membre
+// après la création réussie du nouveau membre
 // -----------------------------------------------------------------------------
 function initModalWelcomeText(pModalTitle, pModalBodyText){
     pModalTitle.innerText = 'Bienvenue dans Collect\'Or'
     pModalBodyText.innerHTML = '<h5>Félicitations !</h5>';
     pModalBodyText.innerHTML += '<br /><p>Votre compte a été créé avec succès</p>';
-    pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous le voyez pas, veuillez regarder dans le dosssier des SPAMs</p>';
+    pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs</p>';
     pModalBodyText.innerHTML += '<br /><p>Bonne navigation...</p>';
 }
 // -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
-// apr-s la création réussi du nouveau membre
+// Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
+// connecté ou après la création réussie de son compte, car il se trouve de fait, 
+// déjà connecté
 // -----------------------------------------------------------------------------
-function toggleLoginLogoutBtn(pConnexion, pCreation, pDeconnexion){
+function UnactiveLoginAndCreateBtn(pConnexion, pCreation, pDeconnexion){
+    pConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
+    pCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
 
-    pConnexion.disabled = true;                     //
-    pConnexion.style.visibility = 'hidden';         //      Désactivation du bouton 'Connexion'
-
-    pCreation.disabled = true;                      //
-    pCreation.style.visibility = 'hidden';          //      Désactivation du bouton 'Creation de compte'
-
-    pDeconnexion.setAttribute('class','dropdown-item');
+    pDeconnexion.classList.remove('disabled');
     pDeconnexion.style.color = '#212529';           //      Activation du bouton 'Déconnexion'
 }
-    // -------------------------- Fin du module ----------------------------------------
+// -----------------------------------------------------------------------------
+// Cette fonction réactive les options de menu Login et Création de compte lorsque
+//  le visiteur se déconnecte, et désactive le bouton "Déconnexion"
+// -----------------------------------------------------------------------------
+function ActiveLoginAndCreateBtn(pConnexion, pCreation, pDeconnexion){
+    // pConnexion.style.display = 'block';         //      Désactivation du bouton 'Connexion'
+    // pCreation.style.display = 'block';          //      Désactivation du bouton 'Creation de compte'
+
+    // pDeconnexion.classList.add('disabled');
+
+// XXXXXXXXXX Voir si on peut faire une vraie deconnexion
+webSocketConnection.emit('disconnect','');   // Transmission au serveur des infos saisies
+vToolBox.refreshScreen();
+
+}
+// -------------------------- Fin du module ----------------------------------------
+

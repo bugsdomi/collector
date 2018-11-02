@@ -1,14 +1,21 @@
+const DBMgr = require('./dbMgr');
 const express = require('express');
 const SocketIo = require('socket.io');
-const PlayersServer = require('./PlayersServerSide');
+const MemberServer = require('./MemberServerSide');
 
 // -------------------------------------------------------------------------
 // Initilisations des variables, structures, constantes...
 // -------------------------------------------------------------------------
-let vPlayersServer = new PlayersServer();   // Instanciation de l'objet descrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
-let vNbrConnectionsAlive=0;                 // Nombre total de connexions en cours sur ce serveur     !!! ATTENTION !!! Il ne's'agit pas encore de joueurs valides , juste de connexions
-let vGameStarted = false;                   // Indicateur de lancement de la partie
-let refreshElapsedTimeInterval = undefined;        // Variable du SetInterval pour pouvoir le stopper proprement
+let objectPopulation = 
+{
+    vMembers : {},
+    vNbrConnections : 0,
+    vNbrMembersInSession : 0,
+}
+
+// let vMembers = {}                            // On définit un objet vide pour accueillir les membres.
+// let vNbrConnectionsAlive = 0;               // Nombre total de connexions en cours sur ce serveur     !!! ATTENTION !!! Il ne's'agit pas encore de membres valides , juste de visiteurs
+// let vNbrMembersInSession = 0;                // Nombre de membres connectés 
 
 // -------------------------------------------------------------------------
 // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
@@ -17,7 +24,8 @@ let refreshElapsedTimeInterval = undefined;        // Variable du SetInterval po
 // contexte ultra-limité de cet atelier, ce n'est pas nécessaire
 // Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
 // -------------------------------------------------------------------------
-vPlayersServer.checkDBConnect();
+let vDBMgr = new DBMgr();       // Instanciation de l'objet décrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
+vDBMgr.checkDBConnect();
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
 // Création des routes ExppressJS, car je vais utiliser cet outil pour transferer
@@ -48,118 +56,60 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // -------------------------------------------------------------------------
 let socketIo = new SocketIo(server);
 
-socketIo.on('connection', function(webSocketConnection){                        // Une connexion au serveur vient d être faite
-    vNbrConnectionsAlive++;                                                     // Nombre de visiteurs ou membres 
+socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
+    objectPopulation.vNbrConnections++;                         // Nombre de visiteurs incluant les [membres + Admins]
+    let vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
+
     console.log('--------------------------------------------------------------------------------------------------------------------')
-    console.log('Connection : Nombre de visiteurs : ', vNbrConnectionsAlive);
+    console.log('Connection : Nbre de visiteurs : ', objectPopulation.vNbrConnections,'--- Nbre de membres : ',objectPopulation.vNbrMembersInSession);
     
-    let vCurrentPlayerInSession=-1;   
     
-    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre existe bien
-    webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){vPlayersServer.checkVisitorIsMember(pVisiteurLoginData, webSocketConnection)})    
-    
-    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre existe bien
-    webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){vPlayersServer.checkVisitorSignInValid(pVisiteurSignInData, webSocketConnection)})    
-        
-    
+    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
+    webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
+console.log('====================================================================================================================')
+console.log('Avant then(objectPopulation) - objectPopulation : ',objectPopulation);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+        vMemberServer.checkVisitorIsMember(pVisiteurLoginData, objectPopulation, webSocketConnection)
+        .then(() => {
+console.log('Apres then(objectPopulation) - objectPopulation : ',objectPopulation);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then(objectPopulation) - objectMember : ',vMemberServer.objectMember);
+console.log('====================================================================================================================')
+        });
+    });
 
 
-    vCurrentPlayerInSession++;   
-    
-    // No de joueur courant validé dans la partie
-    // webSocketConnection.on('askPlayersList',function(){
-    //     vPlayersServer.askPlayersList(socketIo, webSocketConnection.id);
-    // });
-    // webSocketConnection.emit('callLoginForm');                                             // Demande au client d'afficher le formulaire de saisie du login
-    // webSocketConnection.on('playerLoginData',function(playerLoginData){                    // Réception des infos de Login du futur joueur envoyées par le client
-    //     if (!vPlayersServer.playerAlreadyInParty(playerLoginData, webSocketConnection)){   // Vérification que le joueur n'est pas déjà dans la partie dans une autre session
-    //         if (!vPlayersServer.partyFull(webSocketConnection)){                           // Vérification de place encore disponible dans la partie
-    //             if (!vPlayersServer.partyStarted(webSocketConnection, vGameStarted)){      // Vérification que la partie n'a pas déja commencé
-    //                 if (vPlayersServer.selectSlotInParty(playerLoginData)){                // Recherche et selection du 1er slot libre dans la partie
-    //                     vCurrentPlayerInSession = vPlayersServer.currentPlayer;            // Le candidat-joueur passe au statut de joueur courant validé
-    //                     console.log('--------------------------------------------------------------------------------------------------------------------')
-    //                     console.log('Connection : Nombre de connectés : ', vNbrConnectionsAlive,'--- Nombre de joueurs en jeu : ',vPlayersServer.NbrPlayersInParty,'--- N° du joueur dans la partie : ',vCurrentPlayerInSession);
-                        
-    //                     // Alimentation de la structure de data coté serveur recensant les données de tous les joueurs admis :
-    //                     //  Stockage de l'Id du WebSocket pour communiquer individuellement
-    //                     vPlayersServer.objectPlayer['player'+vCurrentPlayerInSession].webSocketID = webSocketConnection.id; 
-                        
-    //                     // Génère le jeu du joueur et le transmet au client et à tous les joueurs déjà connectés dans la partie
-    //                     vPlayersServer.genPlayerDeck(vCurrentPlayerInSession, webSocketConnection, socketIo);   
-    //                     if (!vGameStarted){                                                              // Si la partie n'est pas déjà lancée
-    //                         vPlayersServer.searchMasterOfGame(socketIo);
-    //                     }
 
-    //                     webSocketConnection.on('adviseStartGame',function(){
-    //                         vPlayersServer.adviseStartGame(socketIo);
-    //                     });
 
-    //                     webSocketConnection.on('startGame',function(){
-    //                         if (vCurrentPlayerInSession === vPlayersServer.numPlayerMasterOfGame){             // Seule la session appartenant au maitre du jeu peut activer la partie
-    //                             vGameStarted = true;
-    //                             vPlayersServer.elapsedTime = 0;
-    //                             refreshElapsedTimeInterval = setInterval(function(){
-    //                                 vPlayersServer.addOneSecond(socketIo)},1000);
-    //                             vPlayersServer.startGame(socketIo);
-    //                         }
-    //                     });
+    // On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
+    webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
+        vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection)
+    });    
 
-    //                     webSocketConnection.on('broadcastTokenCoord',function(pMyToken){
-    //                         vPlayersServer.broadcastTokenCoord(pMyToken, socketIo);
-    //                     });
-
-    //                     webSocketConnection.on('broadcastNextPilsToEat',function(pMyPils){
-    //                         vPlayersServer.broadcastNextPilsToEat(pMyPils, socketIo);
-    //                     });
-
-    //                     webSocketConnection.on('broadcastEatedPils',function(pMyPils){
-    //                         vPlayersServer.broadcastEatedPils(pMyPils, socketIo);
-    //                     });
-
-    //                     webSocketConnection.on('broadcastTotalTime',function(vMyTotalTime){
-    //                         vPlayersServer.broadcastTotalTime(vMyTotalTime, socketIo);
-    //                     });
-
-    //                     webSocketConnection.on('stopGame',function(pMyClient){
-    //                         clearInterval(refreshElapsedTimeInterval);              // Arrêt du chrono
-    //                         vPlayersServer.stopGame(pMyClient, socketIo);
-    //                     });
-
-    //                     webSocketConnection.on('sendPartyData',function(pMyClient){
-    //                         vPlayersServer.recordPartyData(pMyClient);
-    //                     });
-    //                 } //    selectSlotInParty
-    //             } //    partyStarted
-    //         } //    partyFull
-         
-            
-
+    // On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
+    webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
+        vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection)
+    });
                         
     webSocketConnection.on('disconnect', function() {
-        if (vCurrentPlayerInSession > -1){                                              // S'il s'agit d'un joueur qui était connecté dans une partie
-            vPlayersServer.deletePlayerDeck(vCurrentPlayerInSession, socketIo);               // Efface le jeu du joueur et le transmet au client et à tous les joueurs déjà connectés
-            vPlayersServer.razPlayerData('player'+vCurrentPlayerInSession);
+        objectPopulation.vNbrConnections--;
+console.log('disconnect - vMemberServer.objectMember.id : ',vMemberServer.objectMember.id);
+        if (vMemberServer.objectMember.id){                                     // Le visiteur qui se deconnecte était un membre
+            console.log('=================================================================================================================');
+            console.log('=================================================================================================================');
+            console.log('=================================================================================================================');
+            console.log('Avant Suppression - objectPopulation : ',objectPopulation);
+            console.log('-----------------------------------------------------------------------------------------------------------------');
 
-            vPlayersServer.currentPlayer=-1;                                                  // Ré-initialisation du joueur courant
-            vPlayersServer.NbrPlayersInParty--;                                               // Décrémentation du nombre de joueurs dans la partie
-            vPlayersServer.isItMe = false;                                                    // Flag permettant de savoir si le joueur courant qui va être communiqué aux clients est moi 
-
-            if (vPlayersServer.NbrPlayersInParty === 0){                                      // S'il n'y a plus de joueurs encore dans la partie, la partie s'arrête
-                clearInterval(refreshElapsedTimeInterval);
-                vGameStarted = false;
-            }
-
-            if (!vGameStarted){                                                                    // Si la partie n'est pas déjà lancée
-                if (vCurrentPlayerInSession === vPlayersServer.numPlayerMasterOfGame){             // Si le joueur qui quitte la partie est le Maître du jeu...
-                        vPlayersServer.numPlayerMasterOfGame = -1;
-                        vPlayersServer.searchMasterOfGame(socketIo);                               // ... on désigne le joueur suivant comme Maître du jeu
-                    }
-            }
-        }
-        vCurrentPlayerInSession = -1
-        vNbrConnectionsAlive--;
             
-        console.log('disconnect après : Nombre de connectés : ', vNbrConnectionsAlive,'--- Nombre de joueurs en jeu : ',vPlayersServer.NbrPlayersInParty,'--- N° du joueur de la session en cours de deconnexion : ',vCurrentPlayerInSession);
-        console.log('=================================================================================================================');
+            objectPopulation.vNbrMembersInSession--;                               // Nombre de visiteurs incluant les [membres + Admins]
+// delete objectPopulation.vMembers[vMemberServer.objectMember.id];    // Suppression du membre de la liste des membres connectés
+            delete objectPopulation.vMembers[vMemberServer.objectMember.id];        // Suppression du membre de la liste des membres connectés
+
+            console.log('Après Suppression - objectPopulation : ',objectPopulation);
+            console.log('=================================================================================================================');
+            console.log('=================================================================================================================');
+            console.log('=================================================================================================================');
+        }    
     });
 });

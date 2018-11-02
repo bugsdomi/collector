@@ -1,65 +1,3 @@
-height="72px"
-
-
-position: absolute;
-height: 175px;
-left: -0.28%;
-right: 0%;
-top: 13px;
-
-font-family: Montserrat;
-font-style: normal;
-font-weight: normal;
-line-height: normal;
-font-size: 36px;
-text-align: center;
-
-color: #FAFE30;
-
-border: 2px solid #000000;
-
-
-style="font-family: 'Montserrat', sans-serif; color: #FAFE30; text-shadow: 2px 2px #000000;
-style="color: #FAFE30; text-shadow: 2px 2px #000000;
-
-a.dropdown-item
-font-weight-normal
-
-
-
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
-        <a class="navbar-brand p-0" target="_top"><img src="static/images/favicon.png" height="40">
-            <span class="lead txt-yellow-stroke"> Collect'Or - Réseau Social dédiés aux collectionneurs de sujets militaires</span>
-        </a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        
-        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-        <div id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item mx-1">
-
-
-
-    <!-- <li class="nav-item mx-1">
-    <a class="nav-link" href="static/icons.html">Profil </a>
-</li>
-<li class="nav-item mx-1">
-    <a class="nav-link" href="documentation.html">Documentation</a>
-</li>
-<li class="nav-item ml-1 mr-3">
-    <a class="nav-link" href="mailto:hello@getreplacer.com">Support </a>
-</li>
-<li class="nav-item">
-    <a class="btn mr-2 btn-light" id="buy-button" href="https://themes.getbootstrap.com/product/replacer-2/">Purchase</a>
-</li> -->
-
-
-
-
 
 
 Annonces
@@ -81,204 +19,670 @@ Breaking news
 
 
 
-body {
-    font-family: 'Roboto', sans-serif;
-}
 
-/* carousel fullscreen */
-.carousel-fullscreen .carousel-inner .carousel-item {
-    height: 100vh;
-    min-height: 600px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-/* carousel fullscreen - vertically centered caption*/
-.carousel-fullscreen .carousel-caption {
-    top: 50%;
-    bottom: auto;
-    transform: translateY(-50%);
-}
+   objectPopulation.vNbrConnectionsAlive++;                    // Nombre de visiteurs incluant les [membres + Admins]
+    let vMemberServer = new MemberServer(vDBMgr);               // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
 
 
-
-
-
-
-
-
-socketIo.on('visiteurLoginData', function(webSocketConnection){                        // Une connexion au serveur vient d être faite
-    vNbrConnectionsAlive++;                                                     // Nombre de visiteurs ou membres 
-    
-    
-    let vCurrentPlayerInSession=-1;                                             // No de joueur courant validé dans la partie
     console.log('--------------------------------------------------------------------------------------------------------------------')
-    console.log('Connection : Nombre de visiteurs : ', vNbrConnectionsAlive);
-
-
-/* overlay for better readibility of the caption  */
-.overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.3;
-    transition: all 0.2s ease-out;
-}
-
-.carousel .carousel-item {
-    transition-duration: 1.5s;
-}
-
-.carousel-indicators li {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    margin:6px;
-    text-indent: 0;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    background-color: grey;
-    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);    
-}
-.carousel-indicators .active {
-    /* width: 24px;
-    height: 24px;
-    margin: 10px; */
-    background-color: #ffff99;
-}
-
-/* demo typography */
-h1,
-h2,
-h3,
-h4 {
-    font-weight: 700;
-}
-
-@media (max-width: 767.98px) {
-    .display-1 {
-        font-size: 3.3rem;
-    }
-    .display-2 {
-        font-size: 2.5rem;
-    }
-    .display-3 {
-        font-size: 2rem;
-    }
-
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Fermer</button>
-                </div>
-
-class="carousel-caption"
-lead
-data-dismiss='modal'
-
-
-
-
-    // ------------------------------------------------------------
-    // Ajout des données du visiteur (futur membre) (Email, Pseudo, 
-    // MDP, timestamp (au format brut), et statut dans la BDD)
-    // ATTENTION !!!!
-    // S'il n'y aucun memebre dans la BDD, le Premier membre qui est créé
-    // est le Super-Administrateur
-    // Codification des privilèges
-    // 1 --> Super-Admin
-    // 2 --> Admin
-    // 4 --> Membre
-    // ------------------------------------------------------------
-    PlayersServer.prototype.addMemberInDatabase = function(pQuery){
-console.log('addMemberInDatabase - pQuery : ',pQuery)
-
-console.log('Count : ',vDBMgr.memberCollection.count()
-        // let playerRecord = 
-        // {
-        //     pseudo: pPseudo,
-        //     nbrWonParties : 0,                  // Nbre de parties gagnées
-        //     nbrLostParties : 0,                 // Nbre de parties perdues
-        //     totalPlayedTime : 0,                // temps total de jeu
-        //     totalPoints : 0,                    // Nbre total de points du joueur
-        //     ranking : 0,                        // Classement du joueur en fonction de ses points
-        // }
-        // vDBMgr.memberCollection.insert(playerRecord);
-
-        // this.objectPlayer['player'+ this.currentPlayer].pseudo = playerRecord.pseudo;                                        
-        // this.objectPlayer['player'+ this.currentPlayer].nbrWonParties = playerRecord.nbrWonParties;
-        // this.objectPlayer['player'+ this.currentPlayer].nbrLostParties =  playerRecord.nbrLostParties;                                       
-        // this.objectPlayer['player'+ this.currentPlayer].totalPlayedTime = playerRecord.totalPlayedTime;                                      
-        // this.objectPlayer['player'+ this.currentPlayer].totalPoints = playerRecord.totalPoints;
-        // this.objectPlayer['player'+ this.currentPlayer].ranking = playerRecord.ranking;    
-
-    }
-
-    // ------------------------------------------------------------
-    PlayersServer.prototype.findDataInDB = function(pQuery, pResolveProc, pRejectProc, pWebSocketConnection){
-console.log('findDataInDB - pQuery : ',pQuery)
-        vDBMgr.memberCollection.find(pQuery).toArray((error, documents) => {
-            if (error) {
-                console.log('Erreur d\'accès à la collection',error);   // Si erreur technique...
-            } else {
-                if (!documents.length){
-                    pWebSocketConnection.emit(pRejectProc); 
-                } else {                          
-                    pWebSocketConnection.emit(pResolveProc); 
-                }
-            }
+    console.log('Connection : Nbre de visiteurs : ', objectPopulation.vNbrConnectionsAlive,'--- Nbre de membres : ',objectPopulation.vNbrMembersInSession);
+    
+    
+    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
+    webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
+console.log('Avant then(objectPopulation) - objectPopulation : ',objectPopulation)
+        vMemberServer.checkVisitorIsMember(pVisiteurLoginData, objectPopulation, webSocketConnection).then(() => {
+console.log('Apres then(objectPopulation) - objectPopulation : ',objectPopulation)
         });
-    }
-    // ------------------------------------------------------------
+    });
+
+
+
+
+
+        if (vMemberServer.objectMember.id){                                     // Le visiteur qui se deconnecte était un membre
+console.log('=================================================================================================================');
+console.log('=================================================================================================================');
+console.log('=================================================================================================================');
+console.log('Avant Suppression - objectPopulation : ',objectPopulation)
+
+            objectPopulation.vNbrMembersInSession--;                            // Nombre de visiteurs incluant les [membres + Admins]
+            delete objectPopulation.vMembers[vMemberServer.objectMember.id];    // Suppression du membre de la liste des membres connectés
+console.log('Après Suppression - objectPopulation : ',objectPopulation)
+console.log('=================================================================================================================');
+console.log('=================================================================================================================');
+console.log('=================================================================================================================');
+        }
+
+******************************************************
+
+
+
+
+
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
     // Vérification des données du visiteur (Pseudo + MDP) :
-    // Oncherche la combinaison Pseudo et MDP
+    // On cherche la combinaison Pseudo et MDP
     // - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
-    // - Par contre, si elle existe, on demande au client de désactiver 
-    // l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
-    // ------------------------------------------------------------
-    PlayersServer.prototype.checkVisitorIsMember = function(pVisiteurLoginData, pWebSocketConnection){
-        this.findDataInDB({ 
-            "pseudo": pVisiteurLoginData.pseudo, 
-            "password": pVisiteurLoginData.password, 
-        }, 
-        'disableConnectBtn',
-        'retryLoginForm', 
-        pWebSocketConnection);
-    }
-    // ------------------------------------------------------------
-    // Vérification des données de Sign-in du visiteur  :
-    // 1) Vérification de la non-préexistence de l'Email
-    // 2) Vérification de la non-préexistence du Pseudo
-    // Si ces 2 conditions sont vérifiées, on ajoute le visiteur à 
-    // la BDD et il devient membre
-    // - Sinon, on le rejette 
-    // ------------------------------------------------------------
-    PlayersServer.prototype.checkVisitorSignInValid = function(pVisiteurSignInData, pWebSocketConnection){
-        vDBMgr.memberCollection.find(
-        { 
-            "email": pVisiteurSignInData.email, 
-        }).toArray((error, documents) => {
-            if (!documents.length){                            // Si email non trouvé --> Ok pour l'instant, donc on vérifie que le Pseudo n'existe pas
-                vDBMgr.memberCollection.find(
+    // - Par contre, si elle existe, on demande au client de désactiver l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.checkVisitorIsMember = async (pVisiteurLoginData, pObjectPopulation, pWebSocketConnection) => {
+        let promiseResult = await this.checkVisitorIsMemberPromise(pVisiteurLoginData, pObjectPopulation, pWebSocketConnection);
+        return promiseResult;
+    };
+
+    MemberServer.prototype.checkVisitorIsMemberPromise = (pVisiteurLoginData, pObjectPopulation, pWebSocketConnection) => {
+        return new Promise((resolve, reject) => {
+            this.DBMgr.memberCollection.find(
                 { 
-                    "pseudo": pVisiteurSignInData.pseudo, 
-                }).toArray((error, documents) => {
-                    if (!documents.length){                     // Si pseudo non trouvé --> On valide l'inscription en créant le membre
-                        this.addMemberInDatabase(pVisiteurSignInData);
+                    "pseudo": pVisiteurLoginData.pseudo, 
+                    "password": pVisiteurLoginData.password, 
+                },
+                )
+                .limit(1)
+                .toArray((error, documents) => {
+                    if (error) {
+                        reject(error);
+                        console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                        throw error;
+                    }
+
+                    resolve(pObjectPopulation);
+                    if (!documents.length){
+                        pWebSocketConnection.emit('retryLoginForm');                  //  Le login est erroné et n a pas ete trouvé dans la BDD, et la tentative de connexion est refusée
                     } else {
-                        pWebSocketConnection.emit('retrySignInForm'); 
+                        pWebSocketConnection.emit('disableConnectBtn');               // Le visiteur est bien un membre, on l'ajoute à la liste des membres
+                        this.objectMember.email = documents[0].email;                                        
+                        this.objectMember.pseudo = documents[0].pseudo;                                        
+                        this.objectMember.password = documents[0].password;
+                        this.objectMember.role =  documents[0].role;                                       
+                        this.objectMember.dateCreation = documents[0].dateCreation;                                      
+                
+                        this.objectMember.id = Math.round(Math.random() * 10000) + (new Date()).getTime();
+                        pObjectPopulation.vMembers[this.objectMember.id] = this.objectMember;  // On ajoute le membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+                        pObjectPopulation.vNbrMembersInSession++;
                     }
                 });
+        });
+    };
+
+
+
+                    let ObjectMemberLocal = {
+                        email = documents[0].email;                                        
+                        pseudo = documents[0].pseudo;                                        
+                        password = documents[0].password;
+                        role =  documents[0].role;                                       
+                        dateCreation = documents[0].dateCreation;                                      
+                        id = Math.round(Math.random() * 10000) + (new Date()).getTime();
+                    };
+                
+
+
+
+
+
+
+
+
+
+
+
+***************************************************************************************************************
+    // this.NbrPlayersInParty = 0;             // Nombre de joueurs en jeu, c.a.d. de candidats-joueurs validés et acceptés dans la partie (0) ==> Aucun joueur en jeu
+    // this.currentPlayer = -1;                // Joueur en cours d'admission dans la partie 
+    // this.isItMe = false;                    // Flag permettant de savoir si le joueur courant qui va être communiqué aux clients est moi ou non
+
+
+    // -------------------------------------------------------------------------
+    // A la détection de la connexion,on initialise la partie player sur le client :
+    // - Vérification du nombre de joueurs (Ok, si <= 4)
+    // - Login
+    //      |_ Affichage du formulaire de saisie du login
+    //      |_ Attente du login
+    //      |_ Vérification de la validité du login
+    //      |_ calcul des positions des pilules du player
+    //      |_ Generation des surfaces de jeu sur le client
+    //          |_ Fond d'écran
+    //          |_ Control-panel
+    //          |_ Cartes des joueurs
+    //          |_ Jeton du joueur (capturé par la souris)
+
+    // ------------------------------------------------------------
+    // Initialisation des targets - Les targets representent des pilules 
+    // de produits dopants que les cyclistes doivent s'approprier
+    // avant que les autres joueurs aient mangé les leurs
+    // Génération du Deck de pilules de la bonne couleur (Position, 
+    // orientation, statut, z-index) pour le joueur courant (celui 
+    // qui vient de se connecter avec succès et admis a jouer)
+    // ------------------------------------------------------------
+    MemberServer.prototype.initPilsDeck = function(pCurrentPlayer,pDataScreenSize){
+        for (let i=0; i < this.maxPilsByPlayer; i++){
+            let pils = new Pils()
+            pils.initVar(pDataScreenSize);                              // Création de chaque pilule individuelle pour le player 
+            this.objectMember['player'+pCurrentPlayer].pils[i] = pils;  // On ajoute la pilule qu'on vient de créer dans la liste des pilules du Player
+            delete pils;
+        };
+    }
+    // ------------------------------------------------------------
+    // Vérification des données du joueur (Pseudo) :
+    // - Soit il existe dans la BDD
+    // - Soit il n'existe pas dans la DB, auquel cas, on le crée
+    // ------------------------------------------------------------
+    MemberServer.prototype.reachPlayerInDatabase = function(pPseudo, pSocketIo){
+        vDBMgr.playerCollection.find( { pseudo: pPseudo, }).toArray((error, documents) => {
+            if (error) {
+                console.log('Erreur d\'accès à la collection',error);
+                return false;
             } else {
-                pWebSocketConnection.emit('retrySignInForm'); 
+                if (!documents.length){
+                    this.addPlayerInDatabase(pPseudo);                 // Si le profil du joueur n'a pas été trouvé (pas de documents), on l'ajoute à la BDD
+                } else {
+                    this.objectMember['player'+ this.currentPlayer].pseudo = documents[0].pseudo;                                        
+                    this.objectMember['player'+ this.currentPlayer].nbrWonParties = documents[0].nbrWonParties;
+                    this.objectMember['player'+ this.currentPlayer].nbrLostParties =  documents[0].nbrLostParties;                                       
+                    this.objectMember['player'+ this.currentPlayer].totalPlayedTime = documents[0].totalPlayedTime;                                      
+                    this.objectMember['player'+ this.currentPlayer].totalPoints = documents[0].totalPoints;
+                    this.objectMember['player'+ this.currentPlayer].ranking = documents[0].ranking;    
+                }
+                this.displayMyPlayerOnEachPlayer(pSocketIo);
+                return true
             }
         });
     }
-// -----------------------------------------------------------------------------------
-}
+    // ------------------------------------------------------------
+    // Récupération des infos de tous les joueurs connus dans la BDD
+    // et envoi de la liste des joueurs et de leurs données au client 
+    // demandeur
+    // ------------------------------------------------------------
+    MemberServer.prototype.askPlayersList = function(pSocketIo, pWebSocketConnectionId){
+
+        vDBMgr.playerCollection.find().sort({ranking:-1, totalPoints:-1}).toArray(function(error, documents) {
+        if (!error) {  
+            pSocketIo.to(pWebSocketConnectionId).emit('displayPlayersList',documents);     // Envoi au client demandeur de la liste des joueurs
+        } else {
+            console.log('Erreur d\'accès à la BDD - Erreur : ',error);
+        };  
+        });
+    }
+    // ------------------------------------------------------------
+    // Vérification que le joueur n'est pas déjà dans la partie 
+    // mais sous une autre session
+    // ------------------------------------------------------------
+    MemberServer.prototype.playerAlreadyInParty = function(pPlayerLoginData, pWebSocketConnection){
+        let i=-1;   
+        let found  = false;
+        while (!found && (i < this.maxPlayers-1)){
+            i++;
+            if (this.objectMember['player'+i].pseudo === pPlayerLoginData.pseudo){              // Il y a déjà le même Pseudo dans le jeu
+                pWebSocketConnection.emit('playerAlreadyInGame');                               // Demande au client d'afficher le message d'avertissement approrprié
+                found =  true;
+            }
+        }
+        return found;
+    }
+    // ------------------------------------------------------------
+    // Vérification qqu'il y a au moins encore une place de dispo 
+    // dans la partie
+    // ------------------------------------------------------------
+    MemberServer.prototype.partyFull = function(pWebSocketConnection){
+        if (this.NbrPlayersInParty === this.maxPlayers){  
+            pWebSocketConnection.emit('alertPartyFull');         // Si la partie est pleine (> à maxPlayers), on rejette le joueur
+            return true         
+        } else {
+            return false                                         // S'il y a encore de la place dans la partie, on continue le process d'acceptation du joueur
+        }
+    }
+    // ------------------------------------------------------------
+    // Recherche de la 1ere place dispo dans la partie
+    // S'il y en a une, ce qui est normalement le cas à ce stade, 
+    // on lui affecte l'indice de ce slot libre
+    // ------------------------------------------------------------
+    MemberServer.prototype.selectSlotInParty = function(pPlayerLoginData){
+        let i=-1;   
+        let found = false;
+        while (!found && (i<this.maxPlayers-1)){
+            i++;
+            if (!this.objectMember['player'+i].pseudo.length){
+                this.objectMember['player'+i].pseudo = pPlayerLoginData.pseudo;
+                this.currentPlayer = i;
+                this.NbrPlayersInParty++;
+                found=true;
+            }
+        }
+        return found;
+    }
+
+    // ------------------------------------------------------------
+    // Affichage sur les autres joueurs de mon jeu (Pils, avatar, score...) 
+    // M'affiche sur les autres joueurs deja en jeu et moi-meme, 
+    // MAIS n'affiche pas les autres joueurs sur moi-meme
+    // ------------------------------------------------------------
+    MemberServer.prototype.displayMyPlayerOnEachPlayer = function(pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){       // Pour chaque joueur UNIQUEMENT DANS la partie (dont moi) (et non ceux qui sont simplement connectés) ...
+                if (i === this.currentPlayer){
+                    this.isItMe = true;                             // Set du flag qui indique que la session en cours est la mienne, et servira de reference pour chaque client
+                } else {
+                    this.isItMe = false;
+                }
+                pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('drawPils',this);     // ... Envoi à son client d'un message individuel pour afficher mes pilules
+            }
+        }
+    }
+    // ------------------------------------------------------------
+    // Nous avons tout ce qu'il faut pour que le client affiche la 
+    // surface de jeu et le deck des pilules du nouveau joueur
+    // Donc, demande à chaque client des joueurs déjà admis dans la partie 
+    // d'afficher le deck du joueur qui vient d'être admis à jouer
+    // ------------------------------------------------------------
+    MemberServer.prototype.displayMeInGame = function(pWebSocketConnection, pSocketIo){
+        pWebSocketConnection.emit('drawGameBackground');            // Affichage du plateau de jeu, de la barre des scores, et des joueurs
+
+        // Recherche du joueur dans la base (et récupération des infos) et éventuellement ajout de celui-ci s'il n'existe pas déjà
+        this.reachPlayerInDatabase(this.objectMember['player'+this.currentPlayer].pseudo, pSocketIo)        
+
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){       // Pour chaque joueur UNIQUEMENT DANS la partie (dont moi) (et non ceux qui sont simplement connectés) ...
+                if (i === this.currentPlayer){
+                    this.isItMe = true;                             // Set du flag qui indique que la session en cours est la mienne, et servira de reference pour chaque client
+                } else {
+                    this.isItMe = false;
+                }
+
+                let saveCurrentPlayer = this.currentPlayer;
+                if (i !== saveCurrentPlayer){                        // Je ne reaffiche pas sur mon propre client mes pils car elles sont déjà affichées
+                    this.currentPlayer = i;  
+                    this.isItMe = false;
+                    pWebSocketConnection.emit('drawPils',this);      // Affichage sur mon client les données de tous les autres joueurs déjà dans la partie (Pils, avatr, score...)
+                }
+                this.currentPlayer = saveCurrentPlayer;
+            }
+        }
+    }
+    // ------------------------------------------------------------
+    // Génère l'ensemble des pilules (le deck de pils) du joueur et 
+    // les envoie à tous les joueurs déjà dans la partie
+    // ------------------------------------------------------------
+    MemberServer.prototype.genPlayerDeck = function(pCurrentPlayerInSession, pWebSocketConnection, pSocketIo){
+        let vDataScreenSize;
+        pWebSocketConnection.emit('askScreenSize');             // Demande la taille d'écran du client pour pouvoir calculer la positions des Pils de façon                                                                                 adaptée
+        pWebSocketConnection.on('receiveScreenSize',vDataScreenSize =>{
+            this.initPilsDeck(pCurrentPlayerInSession, vDataScreenSize);        // Génération du deck de pilules (position, couleur, orientation)
+            this.displayMeInGame(pWebSocketConnection, pSocketIo);       // Envoi du deck à tous les clients dejà en jeu
+        });
+    }
+    // -------------------------------------------------------------------------
+    // Demande à tous les joueurs dans la partie d'effacer les pils du joueur 
+    // qui vient de se déconnecter
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.deletePlayerDeck = function(pCurrentPlayerInSession, pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){       // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)            
+                let saveCurrentPlayer = this.currentPlayer;
+                if (i !== pCurrentPlayerInSession){                 // On évite au client d'un autre joueur d'effacer ses propres Pils
+                    this.currentPlayer = pCurrentPlayerInSession;   // On indique au client d'un autre joueur, le N° de joueur dont il faut effacer les Pils                      
+                    pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('erasePils',this);     // Envoi à chaque client d'un message individuel pour effacer mes pilules
+                }
+                this.currentPlayer = saveCurrentPlayer;
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Vérification que la partie à laquelle le joueur vet se connecter
+    // n'a pas déjà débuté
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.partyStarted = function(pWebSocketConnection, pGameStarted){
+        if (pGameStarted){
+            pWebSocketConnection.emit('partyAlreadyStarted');         // Si la partie est pleine (> à maxPlayers), on rejette le joueur
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Recherche du Maître de jeu --> C'est le joueur correspondant au 1er slot 
+    // occupé qui est désigné et affichage du bouton de lancement uniquement sur 
+    // son ecran
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.searchMasterOfGame = function(pSocketIo){
+        if (this.numPlayerMasterOfGame === -1){                         // Si le Maître de jeu n'a pas encore été désigné
+            let i=-1;   
+            let found  = false;
+            while (!found && (i<this.maxPlayers-1)){
+                i++;
+                if (this.objectMember['player'+i].pseudo.length){
+                    this.numPlayerMasterOfGame = i;
+
+                    // Envoi au client adequat d'un message individuel pour lui signaler son état de "Maître du jeu"
+                    pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('masterOfGame',('player'+i));     
+                    found = true;
+                }
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Le Maître du jeu a lancé la partie
+    // Le serveur envoie la fenêtre de compte-à-rebours a tous les joueurs
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.adviseStartGame = function(pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){                                       // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)
+                pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('adviseStartGame');     // Envoi à chaque client d'un message individuel lui donnanty le compmte-à-rebours
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Le Maître du jeu a lancé la partie
+    // Le serveur envoie l'ordre à tous les joueurs d'aller capturer leur jeton 
+    // et de commencer la collecte des Pils
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.startGame = function(pSocketIo){
+        this.elapsedTime = 0;                                                                       // RAZ du chrono
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){                                       // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)
+                pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('playAndEatPils');     // Envoi à chaque client d'un message individuel pour lui dire de jouer
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // La partie est terminée, un vainqueur a été désigné
+    // Stockage des resultats "Vainqueur / perdant" et accumulation du temps de 
+    // jeu au temps de jeu total du joueur
+    // Le serveur envoie la notification de défaite à tous les autres joueurs 
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.stopGame = function(pMyClient, pSocketIo){
+        this.numPlayerMasterOfGame = -1;
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){                                    // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)
+                if (i !== pMyClient.monNumPlayer){                                               // Je n affiche pas le message de defaite sur mon propre écran puisque j'ai gagné
+                    pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('youLost');     // Envoi à chaque client d'un message pour leur notifier la défaite
+                }
+                pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('askPartyData');    // Envoi à chaque client d'un message pour leur demander d'envoyer leurs stats de jeu
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // RAZ des données du joueur en mémoire
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.razPlayerData = function(pClientPlayer){
+        this.objectMember[pClientPlayer].webSocketID = null;
+        this.objectMember[pClientPlayer].pseudo = '';
+        this.objectMember[pClientPlayer].nbrWonParties = 0;
+        this.objectMember[pClientPlayer].nbrLostParties = 0;
+        this.objectMember[pClientPlayer].totalPlayedTime = 0;
+        this.objectMember[pClientPlayer].totalPoints = 0;
+        this.objectMember[pClientPlayer].ranking = 0;
+        this.objectMember[pClientPlayer].pils = {};
+    }
+    // -------------------------------------------------------------------------
+    // Enregistrement des scores, et du temps de la partie
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.recordPartyData = function(pMyClient){
+        if (pMyClient.monVainqueur){
+            this.objectMember[pMyClient.monClientPlayer].nbrWonParties++;
+        } else {
+            this.objectMember[pMyClient.monClientPlayer].nbrLostParties++;
+        }
+        
+        this.objectMember[pMyClient.monClientPlayer].totalPlayedTime = pMyClient.monTotalTime;
+        let vMyWinner = pMyClient.monVainqueur ? CoeffVainqueur : 0;
+
+        let vNbrePointsBruts =  (   pMyClient.monNbrePilsMangees * CoeffPilsMangee) +
+                                    CoeffPartieJouee + 
+                                    vMyWinner;
+                                    
+        let vRatioEfficacite = (pMyClient.monNbrePilsMangees > 0) ? this.elapsedTime / pMyClient.monNbrePilsMangees : 0;
+
+
+        this.objectMember[pMyClient.monClientPlayer].totalPoints    = (vRatioEfficacite == 0)  
+                                                                    ? this.objectMember[pMyClient.monClientPlayer].totalPoints 
+                                                                    : this.objectMember[pMyClient.monClientPlayer].totalPoints += Math.round(vNbrePointsBruts / vRatioEfficacite);
+
+        this.objectMember[pMyClient.monClientPlayer].ranking =  Math.round(this.objectMember[pMyClient.monClientPlayer].totalPoints / 
+                                                                (this.objectMember[pMyClient.monClientPlayer].nbrWonParties + 
+                                                                this.objectMember[pMyClient.monClientPlayer].nbrLostParties));
+
+        vDBMgr.playerCollection.update( 
+                                {pseudo : this.objectMember[pMyClient.monClientPlayer].pseudo}, 
+                                {$set:  
+                                    {   nbrWonParties : this.objectMember[pMyClient.monClientPlayer].nbrWonParties,
+                                        nbrLostParties : this.objectMember[pMyClient.monClientPlayer].nbrLostParties,
+                                        totalPlayedTime : this.objectMember[pMyClient.monClientPlayer].totalPlayedTime,
+                                        totalPoints : this.objectMember[pMyClient.monClientPlayer].totalPoints,
+                                        ranking : this.objectMember[pMyClient.monClientPlayer].ranking,
+                                    }
+                                });
+    }
+    // -------------------------------------------------------------------------
+    // Actualise la position du token du joueur sur les autres clients
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.broadcastTokenCoord = function(pMyToken, pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){               // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)            
+                if (i !== pMyToken.monNumPlayer){                           // Je ne reaffiche pas sur mon propre client mon token
+                    pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('refreshToken',pMyToken);     // Envoi à chaque joueur la nouvelle position du token
+                }
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Actualise et met en évidence la nouvelle Pils cible sur les autres clients
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.broadcastNextPilsToEat = function(pMyPils, pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){               // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)            
+                if (i !== pMyPils.monNumPlayer){                            // Je ne reaffiche pas sur mon propre client ma prochaine Pils à manger
+                    pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('showNextPilsToEat',pMyPils);     // Envoi à chaque joueur la nouvelle Pils a manger
+                }
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Actualise et met en évidence sur les clients la Pils qui vient d être mangée 
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.broadcastEatedPils = function(pMyPils, pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){                                              // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)            
+                pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('hideEatedPils',pMyPils);     // Envoi à chaque joueur de la disparition de la derniere Pils mangée
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Le timer event et envoyé à tous les joueurs dans la partie par le serveur
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.addOneSecond = function(pSocketIo){
+        this.elapsedTime++;
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){                                         // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)            
+                pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('addOneSecond');         // Envoi à chaque joueur du Top-Synchro avec le chrono du serveur
+            }
+        }
+    }
+    // -------------------------------------------------------------------------
+    // Actualise et le temps total de jeu de chaque joueur sur les autres clients
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.broadcastTotalTime = function(pMyTotalTime, pSocketIo){
+        for (let i=0; i <= this.maxPlayers-1; i++){
+            if (this.objectMember['player'+i].pseudo.length){                                           // Pour chaque joueur UNIQUEMENT DANS la partie (et non ceux qui sont simplement connectés)            
+                    pSocketIo.to(this.objectMember['player'+i].webSocketID).emit('refreshElapsedTime',pMyTotalTime);     // Envoi à chaque joueur du temps total du joueur courant
+            }
+        }
+    }
+
+
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
+// *******************************************************************************************************************************************
 
 
 
+
+   // ---------------------------------------------------------------------------------------------------------------------------
+    // Vérification des données du visiteur (Pseudo + MDP) :
+    // On cherche la combinaison Pseudo et MDP
+    // - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
+    // - Par contre, si elle existe, on demande au client de désactiver l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
+    // ---------------------------------------------------------------------------------------------------------------------------
+
+// MemberServer.prototype.checkVisitorIsMember = function(pVisiteurLoginData, pObjectPopulation, pWebSocketConnection){
+
+// console.log('Avant checkVisitorIsMember : objectPopulation : ',pObjectPopulation);
+
+
+//     this.DBMgr.memberCollection.find(
+//         { 
+//             "pseudo": pVisiteurLoginData.pseudo, 
+//             "password": pVisiteurLoginData.password, 
+//         },
+//         ).toArray((error, documents) => {
+//             if (error) {
+//                 console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+//                 throw error
+//             } 
+            
+//             if (!documents.length){
+//                 pWebSocketConnection.emit('retryLoginForm');              //  Le login est erroné et n a pas ete trouvé dans la BDD, et la tentative de connexion est refusée
+//                 return false
+//             } 
+                    
+//             pWebSocketConnection.emit('disableConnectBtn');               // Le visiteur est bien un membre, on l'ajoute à la liste des membres
+//             this.objectMember.email = documents[0].email;                                        
+//             this.objectMember.pseudo = documents[0].pseudo;                                        
+//             this.objectMember.password = documents[0].password;
+//             this.objectMember.role =  documents[0].role;                                       
+//             this.objectMember.dateCreation = documents[0].dateCreation;                                      
+
+//             this.objectMember.id = Math.round(Math.random() * 10000) + (new Date()).getTime();
+//             pObjectPopulation.members[this.objectMember.id] = this.objectMember;                     // On ajoute le membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+//             pObjectPopulation.nbrMembersInSession++;
+
+//             console.log('Apres checkVisitorIsMember : objectPopulation : ',pObjectPopulation);
+//             return pObjectPopulation;
+//         });
+//     }
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+    
+    // No de joueur courant validé dans la partie
+    // webSocketConnection.on('askPlayersList',function(){
+    //     vMemberServer.askPlayersList(socketIo, webSocketConnection.id);
+    // });
+    // webSocketConnection.emit('callLoginForm');                                             // Demande au client d'afficher le formulaire de saisie du login
+    // webSocketConnection.on('playerLoginData',function(playerLoginData){                    // Réception des infos de Login du futur joueur envoyées par le client
+    //     if (!vMemberServer.playerAlreadyInParty(playerLoginData, webSocketConnection)){   // Vérification que le joueur n'est pas déjà dans la partie dans une autre session
+    //         if (!vMemberServer.partyFull(webSocketConnection)){                           // Vérification de place encore disponible dans la partie
+    //             if (!vMemberServer.partyStarted(webSocketConnection, vGameStarted)){      // Vérification que la partie n'a pas déja commencé
+    //                 if (vMemberServer.selectSlotInParty(playerLoginData)){                // Recherche et selection du 1er slot libre dans la partie
+    //                     objectPopulation.vNbrMembersInSession = vMemberServer.currentPlayer;            // Le candidat-joueur passe au statut de joueur courant validé
+    //                     console.log('--------------------------------------------------------------------------------------------------------------------')
+    //                     console.log('Connection : Nombre de connectés : ', objectPopulation.vNbrConnections,'--- Nombre de joueurs en jeu : ',vMemberServer.NbrPlayersInParty,'--- N° du joueur dans la partie : ',objectPopulation.vNbrMembersInSession);
+                        
+    //                     // Alimentation de la structure de data coté serveur recensant les données de tous les joueurs admis :
+    //                     //  Stockage de l'Id du WebSocket pour communiquer individuellement
+    //                     vMemberServer.objectPlayer['player'+objectPopulation.vNbrMembersInSession].webSocketID = webSocketConnection.id; 
+                        
+    //                     // Génère le jeu du joueur et le transmet au client et à tous les joueurs déjà connectés dans la partie
+    //                     vMemberServer.genPlayerDeck(objectPopulation.vNbrMembersInSession, webSocketConnection, socketIo);   
+    //                     if (!vGameStarted){                                                              // Si la partie n'est pas déjà lancée
+    //                         vMemberServer.searchMasterOfGame(socketIo);
+    //                     }
+
+    //                     webSocketConnection.on('adviseStartGame',function(){
+    //                         vMemberServer.adviseStartGame(socketIo);
+    //                     });
+
+    //                     webSocketConnection.on('startGame',function(){
+    //                         if (objectPopulation.vNbrMembersInSession === vMemberServer.numPlayerMasterOfGame){             // Seule la session appartenant au maitre du jeu peut activer la partie
+    //                             vGameStarted = true;
+    //                             vMemberServer.elapsedTime = 0;
+    //                             refreshElapsedTimeInterval = setInterval(function(){
+    //                                 vMemberServer.addOneSecond(socketIo)},1000);
+    //                             vMemberServer.startGame(socketIo);
+    //                         }
+    //                     });
+
+    //                     webSocketConnection.on('broadcastTokenCoord',function(pMyToken){
+    //                         vMemberServer.broadcastTokenCoord(pMyToken, socketIo);
+    //                     });
+
+    //                     webSocketConnection.on('broadcastNextPilsToEat',function(pMyPils){
+    //                         vMemberServer.broadcastNextPilsToEat(pMyPils, socketIo);
+    //                     });
+
+    //                     webSocketConnection.on('broadcastEatedPils',function(pMyPils){
+    //                         vMemberServer.broadcastEatedPils(pMyPils, socketIo);
+    //                     });
+
+    //                     webSocketConnection.on('broadcastTotalTime',function(vMyTotalTime){
+    //                         vMemberServer.broadcastTotalTime(vMyTotalTime, socketIo);
+    //                     });
+
+    //                     webSocketConnection.on('stopGame',function(pMyClient){
+    //                         clearInterval(refreshElapsedTimeInterval);              // Arrêt du chrono
+    //                         vMemberServer.stopGame(pMyClient, socketIo);
+    //                     });
+
+    //                     webSocketConnection.on('sendPartyData',function(pMyClient){
+    //                         vMemberServer.recordPartyData(pMyClient);
+    //                     });
+    //                 } //    selectSlotInParty
+    //             } //    partyStarted
+    //         } //    partyFull
+
+            
+
+//////////////////////////////////////////////////////////////////////////////
+
+/ XXXXXXXXXX Gerer deconnexion NbreVisiteurs et NbreMembres
+
+        // if (objectPopulation.vNbrMembersInSession > -1){                                              // S'il s'agit d'un joueur qui était connecté dans une partie
+        //     vMemberServer.deletePlayerDeck(objectPopulation.vNbrMembersInSession, socketIo);               // Efface le jeu du joueur et le transmet au client et à tous les joueurs déjà connectés
+        //     vMemberServer.razPlayerData('player'+objectPopulation.vNbrMembersInSession);
+
+        //     vMemberServer.currentPlayer=-1;                                                  // Ré-initialisation du joueur courant
+        //     vMemberServer.NbrPlayersInParty--;                                               // Décrémentation du nombre de joueurs dans la partie
+        //     vMemberServer.isItMe = false;                                                    // Flag permettant de savoir si le joueur courant qui va être communiqué aux clients est moi 
+
+        //     if (vMemberServer.NbrPlayersInParty === 0){                                      // S'il n'y a plus de joueurs encore dans la partie, la partie s'arrête
+        //         clearInterval(refreshElapsedTimeInterval);
+        //         vGameStarted = false;
+        //     }
+
+        //     // if (!vGameStarted){                                                                    // Si la partie n'est pas déjà lancée
+        //     //     if (objectPopulation.vNbrMembersInSession === vMemberServer.numPlayerMasterOfGame){             // Si le joueur qui quitte la partie est le Maître du jeu...
+        //     //             vMemberServer.numPlayerMasterOfGame = -1;
+        //     //             vMemberServer.searchMasterOfGame(socketIo);                               // ... on désigne le joueur suivant comme Maître du jeu
+        //     //         }
+        //     // }
+        // }
+        // objectPopulation.vNbrMembersInSession = -1
+            
+        // console.log('disconnect après : Nombre de connectés : ', objectPopulation.vNbrConnections,'--- Nombre de joueurs en jeu : ',vMemberServer.NbrPlayersInParty,'--- N° du joueur de la session en cours de deconnexion : ',objectPopulation.vNbrMembersInSession);
