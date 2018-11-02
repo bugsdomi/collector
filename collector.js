@@ -70,10 +70,10 @@ console.log('===================================================================
 console.log('Avant then(objectPopulation) - objectPopulation : ',objectPopulation);
 console.log('--------------------------------------------------------------------------------------------------------------------')
         vMemberServer.checkVisitorIsMember(pVisiteurLoginData, objectPopulation, webSocketConnection)
-        .then(() => {
+        .then((MemberServer) => {
 console.log('Apres then(objectPopulation) - objectPopulation : ',objectPopulation);
 console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then(objectPopulation) - objectMember : ',vMemberServer.objectMember);
+console.log('Apres then(objectPopulation) - objectMember : ',MemberServer);
 console.log('====================================================================================================================')
         });
     });

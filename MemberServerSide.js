@@ -164,7 +164,7 @@ console.log('-------------------------------------------------------------------
 console.log('myPromise 001 - this.objectMember : ',this.objectMember)
 console.log('====================================================================================================================')
                     // resolve(pObjectPopulation);
-                    resolve('titi');
+                    resolve(this.objectMember);
                 });
         });
     };
