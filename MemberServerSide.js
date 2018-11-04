@@ -20,24 +20,194 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const cstSuperAdmin = 1;  // Statut définissant le Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 const cstAdmin = 2;       // Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
 const cstMembre = 4;      // Membre standard qui ne peut qu'utiliser la partie publique de l'application 
+const cstMailFrom = 'collector@vcp.com';    // Adresse "From" du mail
+const constFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'    // Caractères autorisés pour le 1er caractère du PWD
+const constNextCharString = constFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
 
-const cstText = 1;        // Spécifie que le corps du mail sera purement textuel
-const cstHTML = 2;        // Spécifie que le coprs du mail sera en HTML
 
 module.exports = function MemberServer(pDBMgr){   // Fonction constructeur exportée
     this.DBMgr = pDBMgr;
+    this.objectFound;                               // Objet d'acceuil utilisé lors de la recherche d'un objet dans la table des membres
 
-    this.objectMember =                          // Structure du membre
-    {   
-        id              : -1,                    // Id du membre connecté
-        email           : '',
-        pseudo          : '',
-        password        : '',
-        role            : 0,                     // Membre, Admin ou SuperAdmin
-        dateCreation    : -1,                    // Timestamp de la création du record
+    this.objectPopulation = 
+    {
+        members             : [],                   // Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
+        nbrConnections      : 0,                    // Nbre de connexions actives sans préjuger de leur rôle
+        nbrMembersInSession : 0,                    // ?bre de membres connectés (Membres + Admin)
+        nbrAdminsInSessions : 0,                    // Nombre d'Admins connectés
     }
 
+    this.member =                                   // Structure de stockage proviisoire du membre
+    {   
+            email           : '',
+            pseudo          : '',
+            password        : '',
+            newPassworld    : '',
+            role            : 0,                     // Membre, Admin ou SuperAdmin
+            dateCreation    : -1,                    // Timestamp de la création du record
+    }
 
+    // --------------------------------------------------------------
+    // Fonction retournant un entien aléatoire entre une valeur 
+    // inférieure (pas nécessairement zéro), et une valeur supérieure
+    // --------------------------------------------------------------
+    MemberServer.prototype.random = function(pValInf, pValSup){
+        return Math.round(((pValSup - pValInf) * Math.random()) + pValInf);
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Cette fonction recherche dans la table des membres, celui qui a la propriété "idMember" correspondant à l'id du socket
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.searchIndexInMembers = (pWebSocketConnection) => {
+        let myIndex = this.objectPopulation.members.map((propertyFilter) => {
+            return propertyFilter.idMember;
+        })
+        .indexOf(pWebSocketConnection.id);
+    
+        this.objectFound = this.objectPopulation.members[myIndex];
+        return myIndex;
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Vérification des données du visiteur (Pseudo + MDP) :
+    // On cherche la combinaison Pseudo et MDP
+    // - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
+    // - Par contre, si elle existe, on demande au client de désactiver l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection) => {
+        return new Promise((resolve, reject) => {
+            this.DBMgr.memberCollection.find(
+                { 
+                    "pseudo": pVisiteurLoginData.pseudo, 
+                    "password": pVisiteurLoginData.password, 
+                })
+                .limit(1)
+                .toArray((error, documents) => {
+                    if (error) {
+                        reject(error);
+                        console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                        throw error;
+                    }
+
+                    if (!documents.length){                                 // Le login n'a pas été trouvé dans la BDD et est donc erroné --> la tentative de connexion est refusée
+                        pWebSocketConnection.emit('retryLoginForm');   
+                        return resolve('Login Erroné');
+                    } 
+
+                    this.member = documents[0];                                     // Récupération des infos du membre dans l'objet de stockage provisoire
+                    let myIndex = this.searchIndexInMembers(pWebSocketConnection);  // Recherche du membre dans le tableau des membres
+                    
+                    this.objectPopulation.members[myIndex].memberData.email        = this.member.email;
+                    this.objectPopulation.members[myIndex].memberData.pseudo       = this.member.pseudo;
+                    this.objectPopulation.members[myIndex].memberData.password     = this.member.password;
+                    this.objectPopulation.members[myIndex].memberData.oldPassword  = this.member.oldPassword;
+                    this.objectPopulation.members[myIndex].memberData.role         = this.member.role;                            // Membre, Admin ou SuperAdmin
+                    this.objectPopulation.members[myIndex].memberData.dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
+
+                    this.addMemberToActiveMembers(myIndex);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
+                    pWebSocketConnection.emit('disableConnectBtn',this.member);     
+                    resolve('Membre loggé');
+                });
+        });
+    };
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Point d'appel pour la fonction de Login en mode 'async / await'
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.visitorTryToLogin = async (pVisiteurLoginData, pWebSocketConnection) => {
+        var result = await (this.visitorTryToLoginPromise(pVisiteurLoginData, pWebSocketConnection));
+        return result;
+    };
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Création d'un PWD de 12 caractères, respectant le masque de saisie du PWD
+    // - envoi de celui par mail
+    // - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.buildAndSendNewPWD = function(){
+        this.member.newPassword = constFirstCharString[this.random(0, 61)];
+        for (let i=1; i<=11; i++){
+            this.member.newPassword += constNextCharString[this.random(0, 67)];
+        }
+
+        this.sendEMail(
+            this.member.email, 
+            'Votre demande de renouvellement de mot de passe', 
+            '<h1 style="color: black;">Votre nouveau mot de passe ...</h1><p><h2>Voici vos nouveaux identifiants :</h2><br />' +
+            'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+this.member.pseudo+'<p><strong>Mot de passe : </strong>'+this.member.newPassword +
+            '</p><br /><br /><br /><i>Vil-Coyote Products</i>'
+        );
+    console.log('buildAndSendNewPWD - this.member.email : ',this.member.email,'--- newPassword : ',this.member.newPassword)
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.updatePasswordInBDD = function(){
+        this.DBMgr.memberCollection.updateOne(
+        { 
+            "email": this.member.email, 
+        },
+        {$set:  
+            {   oldPassword : this.member.password,
+                password    : this.member.newPassword,
+            }
+        }, (error) => {
+            if (error) {
+                console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                throw error;
+            };
+        });
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Vérification que l'email fourni pour la récupération du PWD existe :
+    // - Si le mail n'existe pas --> Rejet de la demande de récupération du PWD ('retryLostPWDForm')
+    // - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
+        this.DBMgr.memberCollection.find(
+        { 
+            "email": pLostPWDEmail, 
+        }).toArray((error, documents) => {
+            if (error) {
+                console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                throw error
+            } 
+            
+            if (!documents.length){                                                         // Si mail non trouvé dans la BDD, on resoumet le formulaire
+                return pWebSocketConnection.emit('retryLostPWDForm'); 
+            } 
+
+            // La mail est valide, récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
+            this.member.email = documents[0].email;                                     // Récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
+            this.member.pseudo = documents[0].pseudo;                                        
+            this.member.password = documents[0].password;
+            this.member.oldPassword = documents[0].oldPassword;
+
+            this.buildAndSendNewPWD();
+            this.updatePasswordInBDD();
+            pWebSocketConnection.emit('notifyNewPWDSent'); 
+        });
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Ajoute le membre nouvellement créé ou Loggé avec succès à la liste des membres connectés
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.addMemberToActiveMembers = function(pIndex){
+        this.objectPopulation.members[pIndex].isMember  = true;
+        this.objectPopulation.nbrMembersInSession++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+
+        if (this.objectPopulation.members[pIndex].memberData.role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
+            this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+        }
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Envoi de mail générique en format HTML
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.sendEMail = function(pEMail, pSubject, pHTML){
+        let messageToSend = {
+            to       : pEMail,
+            from     : cstMailFrom,
+            subject  : pSubject,
+            // text  : 'Félicitations\n\nVous êtes dorénavant membre de la Communauté \'Collect\'Or\'',
+            html     : pHTML,
+        }
+        sgMail.send(messageToSend);
+    }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Ajout des données du visiteur (futur membre) (Email, Pseudo, MDP, timestamp (au format brut), et statut dans la BDD)
     // ATTENTION !!!!
@@ -55,162 +225,42 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             if (error){
                 console.log('Erreur de comptage dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
                 throw error;
-            } else {
-                count === 0 ? myRole = cstSuperAdmin : myRole = cstMembre;      // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin
+            } 
+            
+            count === 0 ? myRole = cstSuperAdmin : myRole = cstMembre;      // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin
 
-                this.objectMember.email = pMember.email,
-                this.objectMember.pseudo = pMember.pseudo,
-                this.objectMember.password = pMember.password,
-                this.objectMember.role = myRole,
-                this.objectMember.dateCreation = new Date(),                                  // Timestamp de la création du record
-
-                this.DBMgr.memberCollection.insertOne(this.objectMember, (error, result) => {
-                    if (error){
-                        console.log('Erreur d\'insertion dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-                        throw error;
-                    } else {
-                        console.log("addMemberInDatabase - 1 document inserted : ",memberRecord);    
-                    
-                        let messageToSend = {
-                            to       : pMember.email,
-                            from     : 'collector@vcp.com',
-                            subject  : 'Votre inscription à Collect\'Or',
-                            // text  : 'Félicitations\n\nVous êtes dorénavant membre de la Communauté \'Collect\'Or\'',
-                            html     : '<h1 style="color: black;">Félicitations</h1><p><h2>Vous êtes dorénavant membre de la Communauté \'Collect\'Or\'.</h2><br />' +
-                                        'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+pMember.pseudo+'<p><strong>Mot de passe : </strong>'+pMember.password +
-                                        '</p><br /><br /><br /><i>Vil-Coyote Products</i>',
-                        }
-                        sgMail.send(messageToSend);
-                        pWebSocketConnection.emit('congratNewMember'); 
-                    }
-                });
+            let memberLocal = {
+                email           : pMember.email,                                       
+                pseudo          : pMember.pseudo,
+                password        : pMember.password,
+                oldPassword     : '',
+                role            : myRole,                        
+                dateCreation    : new Date(),         // Timestamp de la création du record
             }
-        });
-    }
 
-    // ---------------------------------------------------------------------------------------------------------------------------
-    // Procédure raccourcie de recherche d'infos dans la BDD
-    // On lui passe un objet avec la Query à rechercher, et les CallBacks a appeler en cas de succès ou d'échec
-    // ---------------------------------------------------------------------------------------------------------------------------
-//     MemberServer.prototype.findDataInDB = function(pQuery, pResolveProc, pRejectProc, pWebSocketConnection){
-// console.log('findDataInDB - pQuery : ',pQuery)
-//         this.DBMgr.memberCollection.find(pQuery).toArray((error, documents) => {
-//             if (error) {
-//                 console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-//                 throw error
-//             } else {
-//                 if (!documents.length){
-//                     pWebSocketConnection.emit(pRejectProc); 
-//                 } else {                          
-//                     pWebSocketConnection.emit(pResolveProc); 
-//                 }
-//             }
-//         });
-//     }
-    // ---------------------------------------------------------------------------------------------------------------------------
-    // Vérification des données du visiteur (Pseudo + MDP) :
-    // On cherche la combinaison Pseudo et MDP
-    // - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
-    // - Par contre, si elle existe, on demande au client de désactiver l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
-    // ---------------------------------------------------------------------------------------------------------------------------
+            this.DBMgr.memberCollection.insertOne(memberLocal, (error, result) => {
+                if (error){
+                    console.log('Erreur d\'insertion dans la collection \'membres\' : ',memberLocal);   // Si erreur technique... Message et Plantage
+                    throw error;
+                } 
 
-    MemberServer.prototype.checkVisitorIsMemberPromise = (pVisiteurLoginData, pObjectPopulation, pWebSocketConnection) => {
-        return new Promise((resolve, reject) => {
-            this.DBMgr.memberCollection.find(
-                { 
-                    "pseudo": pVisiteurLoginData.pseudo, 
-                    "password": pVisiteurLoginData.password, 
-                })
-                .limit(1)
-                .toArray((error, documents) => {
-                    if (error) {
-                        reject(error);
-                        console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-                        throw error;
-                    }
-
-                    if (!documents.length){
-                        resolve('toto');
-                        pWebSocketConnection.emit('retryLoginForm');              //  Le login est erroné et n a pas ete trouvé dans la BDD, et la tentative de connexion est refusée
-                        return false
-                    } 
-
-                    pWebSocketConnection.emit('disableConnectBtn');               // Le visiteur est bien un membre, on l'ajoute à la liste des membres
-
-                    let objectMemberLocal = {
-                        email : documents[0].email,                                        
-                        pseudo : documents[0].pseudo,                                        
-                        password : documents[0].password,
-                        role :  documents[0].role,                                
-                        dateCreation : documents[0].dateCreation,                                      
-                        id : Math.round(Math.random() * 10000) + (new Date()).getTime() + '-Membre',
-                    };
-
-                    pObjectPopulation.vMembers[objectMemberLocal.id] = objectMemberLocal;     // On ajoute le membre qu'on vient de lire pour cette connexion dans un objet qui les recense
-                    pObjectPopulation.vNbrMembersInSession++;
-
-console.log('====================================================================================================================')
-console.log('myPromise 000 - this.objectMember : ',this.objectMember)
-console.log('--------------------------------------------------------------------------------------------------------------------')
-                    // this.objectMember = ObjectMemberLocal;
-
-                    this.objectMember.email = objectMemberLocal.email;                                        
-                    this.objectMember.pseudo = objectMemberLocal.pseudo;                                        
-                    this.objectMember.password = objectMemberLocal.password;
-                    this.objectMember.role = objectMemberLocal.role;                                
-                    this.objectMember.dateCreation = objectMemberLocal.dateCreation;                                      
-                    this.objectMember.id = objectMemberLocal.id;
- 
-console.log('myPromise 001 - this.objectMember : ',this.objectMember)
-console.log('====================================================================================================================')
-                    // resolve(pObjectPopulation);
-                    resolve(this.objectMember);
-                });
-        });
-    };
-
-    MemberServer.prototype.checkVisitorIsMember = async (pVisiteurLoginData, pObjectPopulation, pWebSocketConnection) => {
-        var result = await (this.checkVisitorIsMemberPromise(pVisiteurLoginData, pObjectPopulation, pWebSocketConnection));
-        // return pObjectPopulation;
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('checkVisitorIsMember - result : ',result);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-        return result;
-    };
-
-
-
-
-
-
-    // ---------------------------------------------------------------------------------------------------------------------------
-    // Vérification que l'email fourni pour la récupération du PWD existe :
-    // - Si le mail n'existe pas --> Rejet de la demande de récupération du PWD ('retryLostPWDForm')
-    // - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
-    // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
-        this.DBMgr.memberCollection.find(
-        { 
-            "email": pLostPWDEmail, 
-        }).toArray((error, documents) => {
-            if (error) {
-                console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-                throw error
-            } else {
-                if (!documents.length){                                                     // Si mail non trouvé, on rejette
-                    pWebSocketConnection.emit('retryLostPWDForm'); 
-                } else {        
-                    this.objectMember.email = documents[0].email;                                        
-                    this.objectMember.pseudo = documents[0].pseudo;                                        
-                    this.objectMember.password = documents[0].password;
-                    // this.objectMember.role =  documents[0].role;                                       
-                    // this.objectMember.dateCreation = documents[0].dateCreation;                                      
-
-                    buildAndSendNewPWD()
-                    // sendNewPWD();                  
-                    // pWebSocketConnection.emit(pResolveProc); 
-                }
-            }
+                // L'ajout d'enregistrement a reussi
+                this.member = memberLocal;
+                console.log("addMemberInDatabase - 1 membre inséré : ",this.member);  
+                
+                let myIndex = this.searchIndexInMembers(pWebSocketConnection);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
+                this.addMemberToActiveMembers(myIndex)
+                
+                this.sendEMail(
+                    pMember.email, 
+                    'Votre inscription à Collect\'Or', 
+                    '<h1 style="color: black;">Félicitations</h1><p><h2>Vous êtes dorénavant membre de la Communauté \'Collect\'Or\'.</h2><br />' +
+                    'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+pMember.pseudo+'<p><strong>Mot de passe : </strong>'+pMember.password +
+                    '</p><br /><br /><br /><i>Vil-Coyote Products</i>'
+                    );
+            
+                pWebSocketConnection.emit('congratNewMember',this.member); 
+            });
         });
     }
     // ---------------------------------------------------------------------------------------------------------------------------
@@ -222,35 +272,90 @@ console.log('-------------------------------------------------------------------
     // - Sinon, on le rejette 
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.checkVisitorSignInISValid = function(pVisiteurSignInData, pWebSocketConnection){
-        this.DBMgr.memberCollection.find(
+        this.DBMgr.memberCollection.find(                                                   // Vérification de non-pré-existence du mail
         { 
             "email": pVisiteurSignInData.email, 
-        }).toArray((error, documents) => {
+        })
+        .limit(1)
+        .toArray((error, documents) => {
             if (error){
                 console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
                 throw error;
-            } else {
-                if (!documents.length){                            // Si email non trouvé --> Ok pour l'instant, donc on vérifie que le Pseudo n'existe pas
-                    this.DBMgr.memberCollection.find(
-                    { 
-                        "pseudo": pVisiteurSignInData.pseudo, 
-                    }).toArray((error, documents) => {
-                        if (error){
-                            console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-                            throw error;
-                        } else {
-                            if (!documents.length){                     // Si pseudo non trouvé --> On valide l'inscription en créant le membre
-                                this.addMemberInDatabase(pVisiteurSignInData, pWebSocketConnection);
-                            } else {
-                                pWebSocketConnection.emit('retrySignInForm'); 
-                            }
-                        }
-                    });
-                } else {
-                    pWebSocketConnection.emit('retrySignInForm'); 
-                }
+            } 
+
+            // Si mail trouvé --> KO pour la création de nouveau membre
+            if (documents.length){                            
+                return pWebSocketConnection.emit('retrySignInForm'); 
             }
+
+            // Le mail n a pas été trouvé, on vérifie maintenant la non-existence du Pseudo
+            this.DBMgr.memberCollection.find(                  
+            { 
+                "pseudo": pVisiteurSignInData.pseudo, 
+            })
+            .limit(1)
+            .toArray((error, documents) => {
+                if (error){
+                    console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+                    throw error;                                                          
+                } 
+
+                if (documents.length){                     
+                    return pWebSocketConnection.emit('retrySignInForm');                        // Si pseudo trouvé --> KO pour la création de nouveau membre
+                } 
+
+                // Si mail + pseudo non trouvé --> On valide l'inscription en créant le membre
+                this.addMemberInDatabase(pVisiteurSignInData, pWebSocketConnection);         
+            });
         });
     }
     // ---------------------------------------------------------------------------------------------------------------------------
+    // Deconnexion d'un visiteur et eventuellement d'un membre  :
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.disconnectMember = function(pWebSocketConnection){
+        let myIndex = this.searchIndexInMembers(pWebSocketConnection);
+        if (this.objectPopulation.members[myIndex].isMember){                    // Le visiteur qui se deconnecte était un membre
+            this.objectPopulation.nbrMembersInSession--;                         // Nombre de visiteurs incluant les [membres + Admins]
+
+            if (this.objectPopulation.members[myIndex].memberData.role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
+                this.objectPopulation.nbrAdminsInSessions--;  // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
+            }
+        }    
+        this.objectPopulation.members.splice(myIndex, 1);
+        this.objectPopulation.nbrConnections--;
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Initialisation d'un visiteur :
+    // 1) Stockage de sson socket
+    // 2) Mise a zero de tous les champs
+    // 3) Ajout du visiteur dans le tableau global des personnes connextées
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.initVisiteur = function(pWebSocketConnection){
+
+        let memberLocal = {
+            idMember        : pWebSocketConnection.id,
+            isMember        : false,
+
+            memberData : {
+                email           : '',
+                pseudo          : '',
+                password        : '',
+                oldPassword     : '',
+                role            : 0,                        // Membre, Admin ou SuperAdmin
+                dateCreation    : -1,                       // Timestamp de la création du record
+            }
+        }
+
+        this.objectPopulation.members.push(memberLocal);
+        this.objectPopulation.nbrConnections++;             // Nombre de visiteurs incluant les [membres + Admins]
+
+        console.log('--------------------------------------------------------------------------------------------------------------------')
+        console.log('initVisiteur - 000 - : this.objectPopulation.members.length : ',this.objectPopulation.members.length,
+                    '--- Nbre de visiteurs : ', this.objectPopulation.nbrConnections,
+                    '--- Nbre de membres : ',this.objectPopulation.nbrMembersInSession,
+                    '--- Nbre d\'Admin : ',this.objectPopulation.nbrAdminsInSessions,
+                    '--- pWebSocketConnection.id : ',pWebSocketConnection.id);
+        console.log('--------------------------------------------------------------------------------------------------------------------')
+    }
+    // ------------------------------------------- Fin du module -------------------------------------------------------------------------
 }

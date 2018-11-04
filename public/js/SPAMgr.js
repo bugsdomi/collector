@@ -36,35 +36,35 @@ window.addEventListener('DOMContentLoaded', function(){
     // La partie est pleine, un message prévient le joueur 
     // -------------------------------------------------------------------------
     webSocketConnection.on('alertPartyFull', function(){
-        // vVisiteur.adviseWithButton('La partie est pleine, revenez plus tard', 'Recommencer', vVisiteur.restartLogin);
+        // vMemberClient.adviseWithButton('La partie est pleine, revenez plus tard', 'Recommencer', vMemberClient.restartLogin);
     });
     // -------------------------------------------------------------------------
     // Le joueur qui essaie de se connecter est deja dans la partie
     // -------------------------------------------------------------------------
     webSocketConnection.on('playerAlreadyInGame', function(){
-        // vVisiteur.adviseWithButton('Vous êtes déjà dans la partie dans une autre session','Recommencer', vVisiteur.restartLogin);
+        // vMemberClient.adviseWithButton('Vous êtes déjà dans la partie dans une autre session','Recommencer', vMemberClient.restartLogin);
     });
     // -------------------------------------------------------------------------
     // La partie a déjà commencée et le joueur potentiel est refoulé
     // -------------------------------------------------------------------------
     webSocketConnection.on('partyAlreadyStarted', function(){
-        // vVisiteur.adviseWithButton('La partie a déjà débuté, revenez plus tard','Recommencer', vVisiteur.restartLogin);
+        // vMemberClient.adviseWithButton('La partie a déjà débuté, revenez plus tard','Recommencer', vMemberClient.restartLogin);
     });
     // -------------------------------------------------------------------------
     // On notifie au joueur qu'il est le Maître de la partie
     // -------------------------------------------------------------------------
     webSocketConnection.on('masterOfGame', function(pMyPlayer){
-        // vVisiteur.adviseWithButton('Vous êtes le Maître de la partie et avez le privilège de la lancer','Démarrer la partie',vVisiteur.launchGame, pMyPlayer, webSocketConnection);
+        // vMemberClient.adviseWithButton('Vous êtes le Maître de la partie et avez le privilège de la lancer','Démarrer la partie',vMemberClient.launchGame, pMyPlayer, webSocketConnection);
     });
     // -------------------------------------------------------------------------
     // On previent le joueur que le jeu va demartrer dans n secondes
     // -------------------------------------------------------------------------
     webSocketConnection.on('adviseStartGame', function(){
-        // vVisiteur.vCompteARebours = vVisiteur.compteARebours;
-        // vVisiteur.displayAdvise('Le jeu va démarrer dans '+vVisiteur.vCompteARebours+' secondes'); 
+        // vMemberClient.vCompteARebours = vMemberClient.compteARebours;
+        // vMemberClient.displayAdvise('Le jeu va démarrer dans '+vMemberClient.vCompteARebours+' secondes'); 
 
-        // vVisiteur.refreshCompteARebours = setInterval(function(){
-        //     vVisiteur.playCompteARebours(webSocketConnection)
+        // vMemberClient.refreshCompteARebours = setInterval(function(){
+        //     vMemberClient.playCompteARebours(webSocketConnection)
         // },1000);
     });
     // -------------------------------------------------------------------------
@@ -72,14 +72,14 @@ window.addEventListener('DOMContentLoaded', function(){
     // se cacher sous une plaque d'égout
     // -------------------------------------------------------------------------
     webSocketConnection.on('youLost', function(){
-        // vVisiteur.clearParty();
-        // vVisiteur.adviseWithButton('Défaite !!!! Vous avez perdu','recommencer',vVisiteur.restartLogin);
+        // vMemberClient.clearParty();
+        // vMemberClient.adviseWithButton('Défaite !!!! Vous avez perdu','recommencer',vMemberClient.restartLogin);
     });
     // -------------------------------------------------------------------------
     // On demande aux joueurs d'envoyer leurs stats de jeu
     // -------------------------------------------------------------------------
     webSocketConnection.on('askPartyData', function(){
-        // vVisiteur.sendPartyData(webSocketConnection);
+        // vMemberClient.sendPartyData(webSocketConnection);
     });
     // -------------------------------------------------------------------------
     // Le serveur a sollicité la saisie du Login du joueur qui vient de se connecter
@@ -106,7 +106,7 @@ window.addEventListener('DOMContentLoaded', function(){
         // vPlayerBackground.style.height = '100%';
         // vPlayerBackground.style.width = '100%';
 
-        // vVisiteur.drawControlPanel(vOuterBrdrWindowList, vWindowList, webSocketConnection);
+        // vMemberClient.drawControlPanel(vOuterBrdrWindowList, vWindowList, webSocketConnection);
     });
     // -------------------------------------------------------------------------
     // Création et Affichage l'ensemble des pilules du joueurs qui ont été instanciées, 
@@ -116,37 +116,37 @@ window.addEventListener('DOMContentLoaded', function(){
     webSocketConnection.on('drawPils', function(pPlayerData){
         // var vCurrentPlayer = 'player'+pPlayerData.currentPlayer; 
 
-        // vVisiteur.indexCurrentPlayer = vCurrentPlayer; 
-        // vVisiteur.currentPlayer = pPlayerData.currentPlayer; 
-        // vVisiteur.isItMe = pPlayerData.isItMe; 
-        // if (vVisiteur.isItMe){
-        //     vVisiteur.myClientPlayer = vVisiteur.indexCurrentPlayer;      // Identification de cette session-client car toutes les donnees type                       
+        // vMemberClient.indexCurrentPlayer = vCurrentPlayer; 
+        // vMemberClient.currentPlayer = pPlayerData.currentPlayer; 
+        // vMemberClient.isItMe = pPlayerData.isItMe; 
+        // if (vMemberClient.isItMe){
+        //     vMemberClient.myClientPlayer = vMemberClient.indexCurrentPlayer;      // Identification de cette session-client car toutes les donnees type                       
         //                                                                             // "CurrentPlayer" evoluent avec les nouvelles sessions
-        //     vVisiteur.myNumPlayer = vVisiteur.currentPlayer;
+        //     vMemberClient.myNumPlayer = vMemberClient.currentPlayer;
         // }
-        // vVisiteur.maxPlayers = pPlayerData.maxPlayers; 
-        // vVisiteur.maxPilsByPlayer = pPlayerData.maxPilsByPlayer; 
-        // vVisiteur[vCurrentPlayer].pseudo= pPlayerData.objectPlayer[vCurrentPlayer].pseudo;
-        // vVisiteur[vCurrentPlayer].totalPlayedTime= pPlayerData.objectPlayer[vCurrentPlayer].totalPlayedTime;
+        // vMemberClient.maxPlayers = pPlayerData.maxPlayers; 
+        // vMemberClient.maxPilsByPlayer = pPlayerData.maxPilsByPlayer; 
+        // vMemberClient[vCurrentPlayer].pseudo= pPlayerData.objectPlayer[vCurrentPlayer].pseudo;
+        // vMemberClient[vCurrentPlayer].totalPlayedTime= pPlayerData.objectPlayer[vCurrentPlayer].totalPlayedTime;
 
-        // vVisiteur[vCurrentPlayer].couleur= pPlayerData.objectPlayer[vCurrentPlayer].couleur;
-        // vVisiteur[vCurrentPlayer].avatar= pPlayerData.objectPlayer[vCurrentPlayer].avatar;
-        // vVisiteur[vCurrentPlayer].pilsNonMangeesRestantes = pPlayerData.maxPilsByPlayer;
+        // vMemberClient[vCurrentPlayer].couleur= pPlayerData.objectPlayer[vCurrentPlayer].couleur;
+        // vMemberClient[vCurrentPlayer].avatar= pPlayerData.objectPlayer[vCurrentPlayer].avatar;
+        // vMemberClient[vCurrentPlayer].pilsNonMangeesRestantes = pPlayerData.maxPilsByPlayer;
 
-        // for (var i=0; i<=vVisiteur.maxPilsByPlayer-1; i++){
-        //     vVisiteur[vCurrentPlayer].pils[i] = window.document.createElement('div');   // Création physique dynamique et ajout au DOM de chaque pilule
-        //     window.document.body.appendChild(vVisiteur[vCurrentPlayer].pils[i]);     
-        //     vVisiteur[vCurrentPlayer].pils[i].setAttribute('class', 'pils');
+        // for (var i=0; i<=vMemberClient.maxPilsByPlayer-1; i++){
+        //     vMemberClient[vCurrentPlayer].pils[i] = window.document.createElement('div');   // Création physique dynamique et ajout au DOM de chaque pilule
+        //     window.document.body.appendChild(vMemberClient[vCurrentPlayer].pils[i]);     
+        //     vMemberClient[vCurrentPlayer].pils[i].setAttribute('class', 'pils');
             
-        //     vVisiteur[vCurrentPlayer].pils[i].style.zIndex= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].zIndex;
-        //     vVisiteur[vCurrentPlayer].pils[i].style.backgroundImage= 'url("'+pPlayerData.objectPlayer[vCurrentPlayer].fichier+'")';
-        //     vVisiteur[vCurrentPlayer].pils[i].style.left= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].left;
-        //     vVisiteur[vCurrentPlayer].pils[i].style.top = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].top;
-        //     vVisiteur[vCurrentPlayer].pils[i].style.transform='rotate('+(pPlayerData.objectPlayer[vCurrentPlayer].pils[i].orientation)+'deg)';
-        //     vVisiteur[vCurrentPlayer].pils[i].mangee = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].mangee;
+        //     vMemberClient[vCurrentPlayer].pils[i].style.zIndex= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].zIndex;
+        //     vMemberClient[vCurrentPlayer].pils[i].style.backgroundImage= 'url("'+pPlayerData.objectPlayer[vCurrentPlayer].fichier+'")';
+        //     vMemberClient[vCurrentPlayer].pils[i].style.left= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].left;
+        //     vMemberClient[vCurrentPlayer].pils[i].style.top = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].top;
+        //     vMemberClient[vCurrentPlayer].pils[i].style.transform='rotate('+(pPlayerData.objectPlayer[vCurrentPlayer].pils[i].orientation)+'deg)';
+        //     vMemberClient[vCurrentPlayer].pils[i].mangee = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].mangee;
         // }           
-        // vVisiteur.drawPlayerFrame();           // dessine le cadre du joueur avec son pseudo, son avatar, et son score
-        // vVisiteur.drawAvatarToken();           // Dessine le jeton du joueur (qui sera en fait le nouveau curseur de la souris)
+        // vMemberClient.drawPlayerFrame();           // dessine le cadre du joueur avec son pseudo, son avatar, et son score
+        // vMemberClient.drawAvatarToken();           // Dessine le jeton du joueur (qui sera en fait le nouveau curseur de la souris)
     });
     // -------------------------------------------------------------------------
     // Suppression et effacement de l'ensemble des pilules du joueurs qui s'est déconnecté 
@@ -155,16 +155,16 @@ window.addEventListener('DOMContentLoaded', function(){
         // var vCurrentPlayer = 'player'+pPlayerData.currentPlayer;   
         
         // for (var i=0; i<=pPlayerData.maxPilsByPlayer-1; i++){
-        //     vVisiteur[vCurrentPlayer].pils[i].parentNode.removeChild(vVisiteur[vCurrentPlayer].pils[i]);
+        //     vMemberClient[vCurrentPlayer].pils[i].parentNode.removeChild(vMemberClient[vCurrentPlayer].pils[i]);
         // }
 
-        // vVisiteur[vCurrentPlayer].avatarToken.parentNode.removeChild(vVisiteur[vCurrentPlayer].avatarToken);
-        // vVisiteur[vCurrentPlayer].containerAvatarToken.parentNode.removeChild(vVisiteur[vCurrentPlayer].containerAvatarToken);
-        // vVisiteur[vCurrentPlayer].timerFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].timerFrame);
-        // vVisiteur[vCurrentPlayer].counterFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].counterFrame);
-        // vVisiteur[vCurrentPlayer].pseudoFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].pseudoFrame);
-        // vVisiteur[vCurrentPlayer].avatarFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].avatarFrame);
-        // vVisiteur[vCurrentPlayer].playerFrame.parentNode.removeChild(vVisiteur[vCurrentPlayer].playerFrame);
+        // vMemberClient[vCurrentPlayer].avatarToken.parentNode.removeChild(vMemberClient[vCurrentPlayer].avatarToken);
+        // vMemberClient[vCurrentPlayer].containerAvatarToken.parentNode.removeChild(vMemberClient[vCurrentPlayer].containerAvatarToken);
+        // vMemberClient[vCurrentPlayer].timerFrame.parentNode.removeChild(vMemberClient[vCurrentPlayer].timerFrame);
+        // vMemberClient[vCurrentPlayer].counterFrame.parentNode.removeChild(vMemberClient[vCurrentPlayer].counterFrame);
+        // vMemberClient[vCurrentPlayer].pseudoFrame.parentNode.removeChild(vMemberClient[vCurrentPlayer].pseudoFrame);
+        // vMemberClient[vCurrentPlayer].avatarFrame.parentNode.removeChild(vMemberClient[vCurrentPlayer].avatarFrame);
+        // vMemberClient[vCurrentPlayer].playerFrame.parentNode.removeChild(vMemberClient[vCurrentPlayer].playerFrame);
     });
     // ------------------------------------------------------------
     // Le serveur a demandé les caractéristiques physiques de l'écran
@@ -186,45 +186,45 @@ window.addEventListener('DOMContentLoaded', function(){
     // puis Gestion du déplacement de la souris et collecte des pils
     // --------------------------------------------------------------
     webSocketConnection.on('playAndEatPils', function(){   
-        // vVisiteur.selectNextPilsToEat(webSocketConnection);
-        // window.addEventListener('mousemove', vVisiteur.playAndEatPils.bind(vVisiteur, webSocketConnection));
+        // vMemberClient.selectNextPilsToEat(webSocketConnection);
+        // window.addEventListener('mousemove', vMemberClient.playAndEatPils.bind(vMemberClient, webSocketConnection));
     });
     // --------------------------------------------------------------
     // Actualisation de la position du token du joueur envoyé en paramètre
     // --------------------------------------------------------------
     webSocketConnection.on('refreshToken', function(pMyToken){   
-        // vVisiteur[pMyToken.monClientPlayer].containerAvatarToken.style.left = pMyToken.left;
-        // vVisiteur[pMyToken.monClientPlayer].containerAvatarToken.style.top = pMyToken.top;
+        // vMemberClient[pMyToken.monClientPlayer].containerAvatarToken.style.left = pMyToken.left;
+        // vMemberClient[pMyToken.monClientPlayer].containerAvatarToken.style.top = pMyToken.top;
     });
     // --------------------------------------------------------------
     // Mise en evidence de la prochaine Pils a manger, du joueur envoyé en paramètre
     // --------------------------------------------------------------
     webSocketConnection.on('showNextPilsToEat', function(pMyPils){ 
-        // vVisiteur.showNextPilsToEat(pMyPils);
+        // vMemberClient.showNextPilsToEat(pMyPils);
     });
     // --------------------------------------------------------------
     // Mise en evidence de la prochaine Pils a manger, du joueur envoyé en paramètre
     // --------------------------------------------------------------
     webSocketConnection.on('hideEatedPils', function(pMyPils){ 
-        // vVisiteur.hideEatedPils(pMyPils);
+        // vMemberClient.hideEatedPils(pMyPils);
     });
     // --------------------------------------------------------------
     // Ajoute 1 seconde au temps total du joueur
     // --------------------------------------------------------------
     webSocketConnection.on('addOneSecond', function(){  
-        // vVisiteur.addOneSecond(webSocketConnection);
+        // vMemberClient.addOneSecond(webSocketConnection);
     });
     // --------------------------------------------------------------
     // Met à jour le temps passé sur le client courant
     // --------------------------------------------------------------
     webSocketConnection.on('refreshElapsedTime', function(pMyTotalTime){  
-        // vVisiteur.refreshElapsedTime(pMyTotalTime);
+        // vMemberClient.refreshElapsedTime(pMyTotalTime);
     });
     // --------------------------------------------------------------
     // Réception de la liste des joueurs pour affichage
     // --------------------------------------------------------------
     webSocketConnection.on('displayPlayersList', function(pDocuments){  
-        // vVisiteur.displayPlayersList(vWindowList, pDocuments);
+        // vMemberClient.displayPlayersList(vWindowList, pDocuments);
     });
 
 
@@ -248,7 +248,7 @@ window.addEventListener('DOMContentLoaded', function(){
     // Réinitialisations des valeurs des champs de saisies des différentes fenêtres
     // -------------------------------------------------------------------------
     vToolBox = new ToolBox();
-    var vVisiteur = new Visiteur();       // Instanciation de l'objet descrivant un visiteur et les méthodes de gestion de ce visiteur
+    var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
     
     // -------------------------------------------------------------------------
     // Eléments de menu
@@ -265,22 +265,21 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     var vModalTitle = document.getElementById('idModalTitle');
     var vModalBodyText = document.getElementById('idModalBodyText');
-    initGenericModalTextAboutMode(vModalTitle, vModalBodyText);                       
+    vMemberClient.initModalTextAboutMode(vModalTitle, vModalBodyText);                       
 
     vGenericModal.addEventListener('click', function(){
-        initGenericModalTextAboutMode(vModalTitle, vModalBodyText);                     
+        vMemberClient.initModalTextAboutMode(vModalTitle, vModalBodyText);                     
     });
 
     // -------------------------------------------------------------------------
     // Eléments de champs de saisie de la Form de Login
     // -------------------------------------------------------------------------
-    var vModalLogin = document.getElementById('idModalLogin');
     var vLoginForm = document.getElementById('idLoginForm');
     var vLostPWD = document.getElementById('idLostPWD');
     var vLoginAlertMsg = document.getElementById('idLoginAlertMsg');
     
-    giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
-    giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
+    vMemberClient.giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
+    vMemberClient.giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
 
     idConnexion.addEventListener('click', function(){
         vLoginForm.idLoginPseudo.value = '';                                 
@@ -296,7 +295,7 @@ window.addEventListener('DOMContentLoaded', function(){
     var vSignInPassword = document.getElementById('idSignInPassword');
     var vSignInConfirmPassword = document.getElementById('idSignInConfirmPassword');
     
-    giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               
+    vMemberClient.giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               
 
     vCreation.addEventListener('click', function(){
         vSignInForm.idSignInEmail.value = '';                                
@@ -306,8 +305,8 @@ window.addEventListener('DOMContentLoaded', function(){
         vSignInAlertMsg.style.visibility = 'hidden';                          
     });
 
-    vSignInPassword.onchange = function(){validatePassword(vSignInPassword, vSignInConfirmPassword)};           // Vérification que les MDP sont identiques
-    vSignInConfirmPassword.onkeyup = function(){validatePassword(vSignInPassword, vSignInConfirmPassword)};     //
+    vSignInPassword.onchange = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};           // Vérification que les MDP sont identiques
+    vSignInConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};     //
 
     // -------------------------------------------------------------------------
     // Gestion du Mot de Passe oublié
@@ -322,8 +321,8 @@ window.addEventListener('DOMContentLoaded', function(){
         $('#idModalLostPWD').modal('toggle');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
     });
 
-        
     // -------------------------------------------------------------------------
+    // Demande du Mot de passe
     // Envoi des infos de récupération du Mot de Passe lorsque la saisie du mail 
     // est validée syntaxiquement et par la validation globale de celle-ci
     // -------------------------------------------------------------------------
@@ -335,13 +334,14 @@ window.addEventListener('DOMContentLoaded', function(){
     });
 
     // -------------------------------------------------------------------------
-    // Gestion de la déconnexion
+    // Déconnexion
     // -------------------------------------------------------------------------
     vDeconnexion.addEventListener('click', function(){
-        ActiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
+        vMemberClient.activeLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
     });
 
     // -------------------------------------------------------------------------
+    // Login
     // Envoi des infos de login du visiteur lorsque la saisie du Login est validée 
     // syntaxiquement et par la validation globale de celle-ci
     // -------------------------------------------------------------------------
@@ -360,6 +360,7 @@ window.addEventListener('DOMContentLoaded', function(){
         vLoginAlertMsg.style.visibility = 'hidden';  
     });
     // -------------------------------------------------------------------------
+    // Sign-In
     // Envoi des infos de création du visiteur lorsque la Création de compte est 
     // validée syntaxiquement et par la validation globale de celle-ci
     // -------------------------------------------------------------------------
@@ -415,105 +416,30 @@ window.addEventListener('DOMContentLoaded', function(){
     // ==> Désactivation du bouton "Créer un compte"
     // ==> Activation du bouton "Deconnexion"
     // --------------------------------------------------------------
-    webSocketConnection.on('disableConnectBtn', function(){   
-        UnactiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
+    webSocketConnection.on('disableConnectBtn', function(pMember){   
+        vMemberClient.member =  pMember;                                    // Affecte les données du membre à l'objet "Membre"
+        vMemberClient.unactiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);     // Desactive Bouton Login et Création
     });
-
     // --------------------------------------------------------------
     // Le visiteur a créé son compte avec succès et est donc reconnu comme membre
-    // Message d'accueil et de b=Bienvenue
+    // Message d'accueil et de Bienvenue
     // ==> Désactivation du bouton "Connexion"
     // ==> Désactivation du bouton "Créer un compte"
     // ==> Activation du bouton "Deconnexion"
     // --------------------------------------------------------------
-    webSocketConnection.on('congratNewMember', function(){ 
-        initModalWelcomeText(vModalTitle, vModalBodyText);
-        $('#idGenericModal').modal('toggle');                                    // ouverture de la fenêtre modale de Félicitations
-        UnactiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);
+    webSocketConnection.on('congratNewMember', function(pMember){ 
+        vMemberClient.member =  pMember;                                                // Affecte les données du membre à l'objet "Membre"
+        vMemberClient.initModalWelcomeText(vModalTitle, vModalBodyText);                // Affiche la fenêtre de bienvenue
+        $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
+        vMemberClient.unactiveLoginAndCreateBtn(vConnexion, vCreation, vDeconnexion);   // Desactive Bouton Login et Création
+    });    
+    // --------------------------------------------------------------
+    // Le visiteur a demandé un nouveau mot de passe
+    // Message de notification de renouvellement du PWD
+    // --------------------------------------------------------------
+    webSocketConnection.on('notifyNewPWDSent', function(){ 
+        vMemberClient.initModalNewPWDText(vModalTitle, vModalBodyText);                // Affiche la fenêtre de notification
+        $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de notification
     });    
     // -----------------------------------------------------------------------------
 }); // Fin de la Boucle "DOMContentLoaded"
-
-
-
-
-
-
-
-
-
-// ===================================================== Fonctions ===========================================================
-// -----------------------------------------------------------------------------
-//  Cette fonction donne le focus au champs pIdField  de la fenêtre modale pIdModal
-//  passée en paramètre car le composant "Modal" court-circuite l'attibut "Auto-focus"
-// -----------------------------------------------------------------------------
-function giveFocusToModalFirstField(pIdModal, pIdField){
-    $('#'+pIdModal).on('shown.bs.modal', function() {
-        $('#'+pIdField).focus();
-    })
-
-    // $('#'+pIdModal).on('shown.bs.modal', function() {
-    //     $(this).find('[autofocus]').focus();
-    //   });
-
-}
-// -----------------------------------------------------------------------------
-// Cette fonction vérifie que le MDP et sa confirmation sont bien identiques
-// -----------------------------------------------------------------------------
-function validatePassword(pSignInPassword, pSignInConfirmPassword){
-    if (pSignInPassword.value != pSignInConfirmPassword.value){
-        pSignInConfirmPassword.setCustomValidity("Les mots de passe ne correspondent pas");
-    } else {
-        pSignInConfirmPassword.setCustomValidity('');
-    }
-}
-// -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre générique modale en mode "A propos"
-// -----------------------------------------------------------------------------
-function initGenericModalTextAboutMode(pModalTitle, pModalBodyText){
-    pModalTitle.innerText = 'A propos...'
-    pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
-    pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus</p>';
-    pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
-    pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions</p>';
-}
-// -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
-// après la création réussie du nouveau membre
-// -----------------------------------------------------------------------------
-function initModalWelcomeText(pModalTitle, pModalBodyText){
-    pModalTitle.innerText = 'Bienvenue dans Collect\'Or'
-    pModalBodyText.innerHTML = '<h5>Félicitations !</h5>';
-    pModalBodyText.innerHTML += '<br /><p>Votre compte a été créé avec succès</p>';
-    pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs</p>';
-    pModalBodyText.innerHTML += '<br /><p>Bonne navigation...</p>';
-}
-// -----------------------------------------------------------------------------
-// Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
-// connecté ou après la création réussie de son compte, car il se trouve de fait, 
-// déjà connecté
-// -----------------------------------------------------------------------------
-function UnactiveLoginAndCreateBtn(pConnexion, pCreation, pDeconnexion){
-    pConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
-    pCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
-
-    pDeconnexion.classList.remove('disabled');
-    pDeconnexion.style.color = '#212529';           //      Activation du bouton 'Déconnexion'
-}
-// -----------------------------------------------------------------------------
-// Cette fonction réactive les options de menu Login et Création de compte lorsque
-//  le visiteur se déconnecte, et désactive le bouton "Déconnexion"
-// -----------------------------------------------------------------------------
-function ActiveLoginAndCreateBtn(pConnexion, pCreation, pDeconnexion){
-    // pConnexion.style.display = 'block';         //      Désactivation du bouton 'Connexion'
-    // pCreation.style.display = 'block';          //      Désactivation du bouton 'Creation de compte'
-
-    // pDeconnexion.classList.add('disabled');
-
-// XXXXXXXXXX Voir si on peut faire une vraie deconnexion
-webSocketConnection.emit('disconnect','');   // Transmission au serveur des infos saisies
-vToolBox.refreshScreen();
-
-}
-// -------------------------- Fin du module ----------------------------------------
-

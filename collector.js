@@ -4,20 +4,6 @@ const SocketIo = require('socket.io');
 const MemberServer = require('./MemberServerSide');
 
 // -------------------------------------------------------------------------
-// Initilisations des variables, structures, constantes...
-// -------------------------------------------------------------------------
-let objectPopulation = 
-{
-    vMembers : {},
-    vNbrConnections : 0,
-    vNbrMembersInSession : 0,
-}
-
-// let vMembers = {}                            // On définit un objet vide pour accueillir les membres.
-// let vNbrConnectionsAlive = 0;               // Nombre total de connexions en cours sur ce serveur     !!! ATTENTION !!! Il ne's'agit pas encore de membres valides , juste de visiteurs
-// let vNbrMembersInSession = 0;                // Nombre de membres connectés 
-
-// -------------------------------------------------------------------------
 // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
 // mais en tout état de cause, normalement, professionnellement, je devrais 
 // m'assurer qu'elle est toujours accessible en cours de partie, mais dans le 
@@ -26,6 +12,11 @@ let objectPopulation =
 // -------------------------------------------------------------------------
 let vDBMgr = new DBMgr();       // Instanciation de l'objet décrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
 vDBMgr.checkDBConnect();
+
+// -------------------------------------------------------------------------
+// Initilisations des variables, structures, constantes...
+// -------------------------------------------------------------------------
+let vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
 // Création des routes ExppressJS, car je vais utiliser cet outil pour transferer
@@ -47,6 +38,9 @@ const server = app.listen(process.env.PORT || 3000, function() {
     const portEcoute = server.address().port
     console.log('Écoute du serveur http://%s:%s',addressHote,portEcoute);
 });
+
+
+
 // ------------------------------------------------------------
 // Fin de la partie HTTP - Début de la partie WebSocket avec "Socket.io"
 // ------------------------------------------------------------
@@ -57,29 +51,35 @@ const server = app.listen(process.env.PORT || 3000, function() {
 let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
-    objectPopulation.vNbrConnections++;                         // Nombre de visiteurs incluant les [membres + Admins]
-    let vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
-
-    console.log('--------------------------------------------------------------------------------------------------------------------')
-    console.log('Connection : Nbre de visiteurs : ', objectPopulation.vNbrConnections,'--- Nbre de membres : ',objectPopulation.vNbrMembersInSession);
-    
+    vMemberServer.initVisiteur(webSocketConnection);    
     
     // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
     webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-console.log('====================================================================================================================')
-console.log('Avant then(objectPopulation) - objectPopulation : ',objectPopulation);
+        vMemberServer.visitorTryToLogin(pVisiteurLoginData, webSocketConnection)
+        .then((result) => {
+console.log('=======================================================================---------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[0] : ',vMemberServer.objectPopulation.members[0]);
 console.log('--------------------------------------------------------------------------------------------------------------------')
-        vMemberServer.checkVisitorIsMember(pVisiteurLoginData, objectPopulation, webSocketConnection)
-        .then((MemberServer) => {
-console.log('Apres then(objectPopulation) - objectPopulation : ',objectPopulation);
+console.log('Apres then() - vMemberServer.objectPopulation.members[1] : ',vMemberServer.objectPopulation.members[1]);
 console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then(objectPopulation) - objectMember : ',MemberServer);
+console.log('Apres then() - vMemberServer.objectPopulation.members[2] : ',vMemberServer.objectPopulation.members[2]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[3] : ',vMemberServer.objectPopulation.members[3]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[4] : ',vMemberServer.objectPopulation.members[4]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[5] : ',vMemberServer.objectPopulation.members[5]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[6] : ',vMemberServer.objectPopulation.members[6]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[7] : ',vMemberServer.objectPopulation.members[7]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[8] : ',vMemberServer.objectPopulation.members[8]);
+console.log('--------------------------------------------------------------------------------------------------------------------')
+console.log('Apres then() - vMemberServer.objectPopulation.members[9] : ',vMemberServer.objectPopulation.members[9]);
 console.log('====================================================================================================================')
         });
     });
-
-
-
 
     // On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
     webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
@@ -90,26 +90,9 @@ console.log('===================================================================
     webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
         vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection)
     });
-                        
+
+    // Un membre se déconnecte
     webSocketConnection.on('disconnect', function() {
-        objectPopulation.vNbrConnections--;
-console.log('disconnect - vMemberServer.objectMember.id : ',vMemberServer.objectMember.id);
-        if (vMemberServer.objectMember.id){                                     // Le visiteur qui se deconnecte était un membre
-            console.log('=================================================================================================================');
-            console.log('=================================================================================================================');
-            console.log('=================================================================================================================');
-            console.log('Avant Suppression - objectPopulation : ',objectPopulation);
-            console.log('-----------------------------------------------------------------------------------------------------------------');
-
-            
-            objectPopulation.vNbrMembersInSession--;                               // Nombre de visiteurs incluant les [membres + Admins]
-// delete objectPopulation.vMembers[vMemberServer.objectMember.id];    // Suppression du membre de la liste des membres connectés
-            delete objectPopulation.vMembers[vMemberServer.objectMember.id];        // Suppression du membre de la liste des membres connectés
-
-            console.log('Après Suppression - objectPopulation : ',objectPopulation);
-            console.log('=================================================================================================================');
-            console.log('=================================================================================================================');
-            console.log('=================================================================================================================');
-        }    
+        vMemberServer.disconnectMember(webSocketConnection);
     });
 });
