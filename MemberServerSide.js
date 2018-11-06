@@ -27,7 +27,8 @@ const constNextCharString = constFirstCharString+'&#$*_-'                       
 
 module.exports = function MemberServer(pDBMgr){   // Fonction constructeur exportée
     this.DBMgr = pDBMgr;
-    this.objectFound;                               // Objet d'acceuil utilisé lors de la recherche d'un objet dans la table des membres
+    this.objectFound;                               // Objet d'accueil utilisé lors de la recherche d'un objet dans la table des membres
+    this.newPassword;                               // Variable de stockage du nouveau mot de passe créé
 
     this.objectPopulation = 
     {
@@ -42,7 +43,6 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             email           : '',
             pseudo          : '',
             password        : '',
-            newPassworld    : '',
             role            : 0,                     // Membre, Admin ou SuperAdmin
             dateCreation    : -1,                    // Timestamp de la création du record
     }
@@ -57,20 +57,20 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // ---------------------------------------------------------------------------------------------------------------------------
     // Cette fonction recherche dans la table des membres, celui qui a la propriété "idMember" correspondant à l'id du socket
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.searchIndexInMembers = (pWebSocketConnection) => {
+    MemberServer.prototype.searchMmeberInTableOfMembers = (pProperty, pValue) => {
         let myIndex = this.objectPopulation.members.map((propertyFilter) => {
-            return propertyFilter.idMember;
+            return propertyFilter[pProperty];
         })
-        .indexOf(pWebSocketConnection.id);
-    
+        .indexOf(pValue);
         this.objectFound = this.objectPopulation.members[myIndex];
-        return myIndex;
+        return myIndex; 
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Vérification des données du visiteur (Pseudo + MDP) :
     // On cherche la combinaison Pseudo et MDP
     // - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
-    // - Par contre, si elle existe, on demande au client de désactiver l'icône de Login et d'activer l'icône de déconnexion ('disableConnectBtn')
+    // - Par contre, si elle existe, il s'agit d'un membre et on demande au client de désactiver l'icône de Login et d'activer 
+    // l'icône de déconnexion ('welcomeMember')
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection) => {
         return new Promise((resolve, reject) => {
@@ -93,17 +93,25 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                     } 
 
                     this.member = documents[0];                                     // Récupération des infos du membre dans l'objet de stockage provisoire
-                    let myIndex = this.searchIndexInMembers(pWebSocketConnection);  // Recherche du membre dans le tableau des membres
-                    
-                    this.objectPopulation.members[myIndex].memberData.email        = this.member.email;
-                    this.objectPopulation.members[myIndex].memberData.pseudo       = this.member.pseudo;
-                    this.objectPopulation.members[myIndex].memberData.password     = this.member.password;
-                    this.objectPopulation.members[myIndex].memberData.oldPassword  = this.member.oldPassword;
-                    this.objectPopulation.members[myIndex].memberData.role         = this.member.role;                            // Membre, Admin ou SuperAdmin
-                    this.objectPopulation.members[myIndex].memberData.dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
+
+
+                    // Recherche du pseudo du membre dans le tableau des membres
+                    let myIndex = this.searchMmeberInTableOfMembers('pseudo', this.member.pseudo)
+                    if (myIndex !== -1){                                            // Si membre trouvé dans la table ddes membres connectés, on le rejette, sinon, on le connecte
+                        resolve('Membre dejà loggé');
+                        return pWebSocketConnection.emit('memberAlreadyConnected',this.member);     
+                    }
+
+                    myIndex = this.searchMmeberInTableOfMembers('idMember', pWebSocketConnection.id);  // Recherche du visiteur dans le tableau des membres
+                    this.objectPopulation.members[myIndex].email        = this.member.email;
+                    this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
+                    this.objectPopulation.members[myIndex].password     = this.member.password;
+                    this.objectPopulation.members[myIndex].oldPassword  = this.member.oldPassword;
+                    this.objectPopulation.members[myIndex].role         = this.member.role;                            // Membre, Admin ou SuperAdmin
+                    this.objectPopulation.members[myIndex].dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
 
                     this.addMemberToActiveMembers(myIndex);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
-                    pWebSocketConnection.emit('disableConnectBtn',this.member);     
+                    pWebSocketConnection.emit('welcomeMember',this.member);     
                     resolve('Membre loggé');
                 });
         });
@@ -121,19 +129,18 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.buildAndSendNewPWD = function(){
-        this.member.newPassword = constFirstCharString[this.random(0, 61)];
+        this.newPassword = constFirstCharString[this.random(0, 61)];
         for (let i=1; i<=11; i++){
-            this.member.newPassword += constNextCharString[this.random(0, 67)];
+            this.newPassword += constNextCharString[this.random(0, 67)];
         }
 
         this.sendEMail(
             this.member.email, 
             'Votre demande de renouvellement de mot de passe', 
             '<h1 style="color: black;">Votre nouveau mot de passe ...</h1><p><h2>Voici vos nouveaux identifiants :</h2><br />' +
-            'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+this.member.pseudo+'<p><strong>Mot de passe : </strong>'+this.member.newPassword +
+            'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+this.member.pseudo+'<p><strong>Mot de passe : </strong>'+this.newPassword +
             '</p><br /><br /><br /><i>Vil-Coyote Products</i>'
         );
-    console.log('buildAndSendNewPWD - this.member.email : ',this.member.email,'--- newPassword : ',this.member.newPassword)
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
@@ -145,7 +152,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
         },
         {$set:  
             {   oldPassword : this.member.password,
-                password    : this.member.newPassword,
+                password    : this.newPassword,
             }
         }, (error) => {
             if (error) {
@@ -176,8 +183,6 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             // La mail est valide, récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
             this.member.email = documents[0].email;                                     // Récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
             this.member.pseudo = documents[0].pseudo;                                        
-            this.member.password = documents[0].password;
-            this.member.oldPassword = documents[0].oldPassword;
 
             this.buildAndSendNewPWD();
             this.updatePasswordInBDD();
@@ -191,7 +196,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
         this.objectPopulation.members[pIndex].isMember  = true;
         this.objectPopulation.nbrMembersInSession++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
 
-        if (this.objectPopulation.members[pIndex].memberData.role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
+        if (this.objectPopulation.members[pIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
             this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
         }
     }
@@ -248,7 +253,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                 this.member = memberLocal;
                 console.log("addMemberInDatabase - 1 membre inséré : ",this.member);  
                 
-                let myIndex = this.searchIndexInMembers(pWebSocketConnection);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
+                let myIndex = this.searchMmeberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
                 this.addMemberToActiveMembers(myIndex)
                 
                 this.sendEMail(
@@ -313,11 +318,12 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // Deconnexion d'un visiteur et eventuellement d'un membre  :
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.disconnectMember = function(pWebSocketConnection){
-        let myIndex = this.searchIndexInMembers(pWebSocketConnection);
+        let myIndex = this.searchMmeberInTableOfMembers('idMember' ,pWebSocketConnection.id);
+
         if (this.objectPopulation.members[myIndex].isMember){                    // Le visiteur qui se deconnecte était un membre
             this.objectPopulation.nbrMembersInSession--;                         // Nombre de visiteurs incluant les [membres + Admins]
 
-            if (this.objectPopulation.members[myIndex].memberData.role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
+            if (this.objectPopulation.members[myIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
                 this.objectPopulation.nbrAdminsInSessions--;  // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
             }
         }    
@@ -335,15 +341,13 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
         let memberLocal = {
             idMember        : pWebSocketConnection.id,
             isMember        : false,
-
-            memberData : {
-                email           : '',
-                pseudo          : '',
-                password        : '',
-                oldPassword     : '',
-                role            : 0,                        // Membre, Admin ou SuperAdmin
-                dateCreation    : -1,                       // Timestamp de la création du record
-            }
+        
+            email           : '',
+            pseudo          : '',
+            password        : '',
+            oldPassword     : '',
+            role            : 0,                        // Membre, Admin ou SuperAdmin
+            dateCreation    : -1,                       // Timestamp de la création du record
         }
 
         this.objectPopulation.members.push(memberLocal);

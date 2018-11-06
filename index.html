@@ -87,7 +87,9 @@
                 </li> -->
     
                 <li class="nav-item mx-1 dropdown">
-                        <a class="nav-link dropdown-toggle" id="templates-dropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span> Profil</a>
+                        <a class="nav-link dropdown-toggle" id="idDropDownProfilMenu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-user" id="idMemberName"></span> 
+                        </a>
                         <div class="dropdown-menu" aria-labelledby="templates-dropdown">
     
                             <a class="dropdown-item" href="template-1.html">Renseignements</a>
@@ -205,20 +207,20 @@
     </div>
         
     <!-- *********************************************************************************** -->
-    <!--  Fenêtre Modale générique - Le titre "idModalTitle" et le contenu "idModalBodyText" -->
-    <!--  sont alimentés par javascript                                                      -->
+    <!--  Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu            -->
+    <!-- "idModalBodyText" sont alimentés par javascript                                     -->
     <!-- *********************************************************************************** -->
         
     <div class="modal fade" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idGenericModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="idModalTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">X</button>
+                <div class="modal-header" id="idGenericModalHeader">
+                    <h5 class="modal-title" id="idGenericModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
-                    <div id="idModalBodyText">
+                    <div id="idGenericModalBodyText">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -236,7 +238,7 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idModalLoginTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="idModalLoginHeader">
                     <h5 class="modal-title">Bienvenue dans Collect'Or</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
                 </div>
@@ -251,7 +253,7 @@
                         <label for="LoginPassword" class="sr-only">Mot de passe</label>
                         <input type="password" id="idLoginPassword" name="LoginPassword" class="form-control" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 
-                        <!-- <div id="idLostPWD" class="mt-1 mb-2 text-right" data-dismiss="modal"> Mot de passe oublié ?</div> -->
+<!-- <div id="idLostPWD" class="mt-1 mb-2 text-right" data-dismiss="modal"> Mot de passe oublié ?</div> -->
                         <div id="idLostPWD" class="mt-1 mb-2 text-right"> Mot de passe oublié ?</div>
                         <p id="idLoginAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">Pseudo et/ou mot de passe inconnus</p>
                         <div class="modal-footer">
@@ -269,7 +271,7 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idModalSignInTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="idModalSignInHeader">
                     <h5 class="modal-title">Bienvenue dans Collect'Or</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
                 </div>
@@ -315,7 +317,7 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idModalLostPWDTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" id="idModalLostPWDHeader">
                     <h5 class="modal-title">Bienvenue dans Collect'Or</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
                 </div>

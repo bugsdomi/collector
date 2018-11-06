@@ -10,7 +10,6 @@ function MemberClient(pDBMgr){   // Fonction constructeur exportée
         email           : '',
         pseudo          : '',
         password        : '',
-        newPassworld    : '',
         role            : 0,                     // Membre, Admin ou SuperAdmin
         dateCreation    : -1,                    // Timestamp de la création du record
     }
@@ -69,36 +68,51 @@ MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyTe
 MemberClient.prototype.initModalNewPWDText = function(pModalTitle, pModalBodyText){
     pModalTitle.innerText = 'Mot de passe perdu'
     pModalBodyText.innerHTML = '<h5>Votre nouveau mot de passe ...</h5>';
-    pModalBodyText.innerHTML += '<br /><p>Suite à votre demande, votre nouveau mot de passe a été généré.</p>';
-    pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
+    pModalBodyText.innerHTML += '<br /><p>Suite à votre demande, un nouveau mot de passe a été généré.</p>';
+    pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
     pModalBodyText.innerHTML += '<br /><p>Vous pouvez le modifier dans la fiche de votre profil.</p>';
 }
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
+// après la création réussie du nouveau membre
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pModalBodyText){
+    pModalTitle.innerText = 'Collect\'Or';
+    pModalBodyText.innerHTML = '<h5>Connexion impossible</h5>';
+    pModalBodyText.innerHTML += '<br /><p>Vous ne pouvez pas vous connecter à \'Collect\'Or\', car vous vous êtes déjà connecté dans une autre session.</p>';
+    // pModalBodyText.innerHTML += '<br /><p></p>';
+}
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
+// après la création réussie du nouveau membre
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText, pMemberPseudo){
+    pModalTitle.innerText = 'Connexion à Collect\'Or';
+    pModalBodyText.innerHTML = '<h5>Bonjour '+pMemberPseudo+'</h5>';
+    pModalBodyText.innerHTML += '<br /><p>Vous êtes bien connecté à \'Collect\'Or\', bonne navigation...</p>';
+}
+
+
 // -----------------------------------------------------------------------------
 // Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
 // connecté ou après la création réussie de son compte, car il se trouve de fait, 
 // déjà connecté
 // -----------------------------------------------------------------------------
-MemberClient.prototype.unactiveLoginAndCreateBtn = function(pConnexion, pCreation, pDeconnexion){
+MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation, pDropDownProfilMenu, pMemberName, pPseudo, pDeconnexion){
     pConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
     pCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
 
+    pDropDownProfilMenu.style.display = 'block';
+    pDropDownProfilMenu.innerHTML += ' '+pPseudo;
+
     pDeconnexion.classList.remove('disabled');
-    pDeconnexion.style.color = '#212529';           //      Activation du bouton 'Déconnexion'
 }
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
 // -----------------------------------------------------------------------------
-MemberClient.prototype.activeLoginAndCreateBtn = function(pConnexion, pCreation, pDeconnexion){
-    // pConnexion.style.display = 'block';         //      Désactivation du bouton 'Connexion'
-    // pCreation.style.display = 'block';          //      Désactivation du bouton 'Creation de compte'
-
-    // pDeconnexion.classList.add('disabled');
-
-// XXXXXXXXXX Voir si on peut faire une vraie deconnexion
-// webSocketConnection.emit('disconnect',this.member);   // Transmission au serveur des infos saisies
-// webSocketConnection.emit('disconnect');   // Transmission au serveur des infos saisies
-vToolBox.refreshScreen();
+MemberClient.prototype.restartLandinPage = function(pConnexion, pCreation, pDeconnexion){
+    vToolBox.refreshScreen();
 }
 // -------------------------- Fin du module ----------------------------------------
 

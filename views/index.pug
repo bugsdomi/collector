@@ -68,9 +68,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         <a class="nav-link" href="#gallery">Galerie</a>
         </li>
       li.nav-item.mx-1.dropdown
-        a#templates-dropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-          span.fa.fa-user
-          |  Profil
+        a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+          span#idMemberName.fa.fa-user
         .dropdown-menu(aria-labelledby='templates-dropdown')
           a.dropdown-item(href='template-1.html') Renseignements
           a.dropdown-item(href='template-2.html') Pr&eacute;f&eacute;rences
@@ -148,18 +147,18 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
     span.carousel-control-next-icon(aria-hidden='true')
     span.sr-only Next
 // ***********************************************************************************
-// Fenêtre Modale générique - Le titre "idModalTitle" et le contenu "idModalBodyText"
-// sont alimentés par javascript
+// Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
+// "idModalBodyText" sont alimentés par javascript
 // ***********************************************************************************
 #idGenericModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      .modal-header
-        h5#idModalTitle.modal-title
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') X
+      #idGenericModalHeader.modal-header
+        h5#idGenericModalTitle.modal-title
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-        #idModalBodyText
+        #idGenericModalBodyText
       .modal-footer
         button.btn.btn-success(type='button' data-dismiss='modal') Fermer
 // *************************************************************************
@@ -168,7 +167,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 #idModalLogin.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      .modal-header
+      #idModalLoginHeader.modal-header
         h5.modal-title Bienvenue dans Collect&apos;Or
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
@@ -191,7 +190,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 #idModalSignIn.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      .modal-header
+      #idModalSignInHeader.modal-header
         h5.modal-title Bienvenue dans Collect&apos;Or
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
@@ -223,7 +222,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 #idModalLostPWD.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      .modal-header
+      #idModalLostPWDHeader.modal-header
         h5.modal-title Bienvenue dans Collect&apos;Or
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
