@@ -146,6 +146,8 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.updatePasswordInBDD = function(){
+
+console.log('updatePasswordInBDD - this.member.password : ',this.member.password,'--- this.newPassword : ',this.newPassword)        
         this.DBMgr.memberCollection.updateOne(
         { 
             "email": this.member.email, 
@@ -183,6 +185,8 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             // La mail est valide, récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
             this.member.email = documents[0].email;                                     // Récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
             this.member.pseudo = documents[0].pseudo;                                        
+            this.member.password = documents[0].password;                                        
+console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.password)        
 
             this.buildAndSendNewPWD();
             this.updatePasswordInBDD();
