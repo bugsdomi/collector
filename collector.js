@@ -51,11 +51,11 @@ const server = app.listen(process.env.PORT || 3000, function() {
 let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
-    vMemberServer.initVisiteur(webSocketConnection);    
+    vMemberServer.initVisiteur(webSocketConnection, socketIo);    
     
     // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
     webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-        vMemberServer.visitorTryToLogin(pVisiteurLoginData, webSocketConnection)
+        vMemberServer.visitorTryToLogin(pVisiteurLoginData, webSocketConnection, socketIo)
         .then((result) => {
 console.log('=======================================================================---------------------------------------------')
 console.log('Apres then() - vMemberServer.objectPopulation.members[0] : ',vMemberServer.objectPopulation.members[0]);
@@ -83,7 +83,7 @@ console.log('===================================================================
 
     // On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
     webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
-        vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection)
+        vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo)
     });    
 
     // On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
@@ -93,6 +93,7 @@ console.log('===================================================================
 
     // Un membre se déconnecte
     webSocketConnection.on('disconnect', function() {
-        vMemberServer.disconnectMember(webSocketConnection);
+console.log('disconnect')        
+        vMemberServer.disconnectMember(webSocketConnection, socketIo);
     });
 });

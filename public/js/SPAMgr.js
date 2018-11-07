@@ -259,6 +259,8 @@ window.addEventListener('DOMContentLoaded', function(){
     var vGenericModal = document.getElementById('idGenericModal');
     var vDropDownProfilMenu = document.getElementById('idDropDownProfilMenu');
     var vMemberName = document.getElementById('idMemberName');
+    var vNbrPopulation = document.getElementById('idNbrPopulation');
+
 
 
     // -------------------------------------------------------------------------
@@ -270,9 +272,11 @@ window.addEventListener('DOMContentLoaded', function(){
     var vGenericModalTitle = document.getElementById('idGenericModalTitle');
     var vGenericModalBodyText = document.getElementById('idGenericModalBodyText');
     
+    vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
     vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                       
 
     vGenericModal.addEventListener('click', function(){
+        vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
         vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                     
     });
 
@@ -281,8 +285,9 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     var vLoginForm = document.getElementById('idLoginForm');
     var vLostPWD = document.getElementById('idLostPWD');
+    var vSignIn = document.getElementById('idSignIn');
     var vLoginAlertMsg = document.getElementById('idLoginAlertMsg');
-    var vModalLoginHeader = document.getElementById('idModalLoginHeader')
+    var vModalLoginHeader = document.getElementById('idModalLoginHeader');
     
     vMemberClient.giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
     vMemberClient.giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
@@ -290,11 +295,13 @@ window.addEventListener('DOMContentLoaded', function(){
     idConnexion.addEventListener('click', function(){
         vLoginForm.idLoginPseudo.value = '';                                 
         vLoginForm.idLoginPassword.value = '';
-        vLoginAlertMsg.style.visibility = 'hidden';                         
+        vLoginAlertMsg.style.visibility = 'hidden';  
+        vMemberClient.InitHeaderColor('bg-warning', vModalLoginHeader);
     });
 
+
     // -------------------------------------------------------------------------
-    // Eléments de champs de saisie de la Form de Création de compte
+    // Eléments de champs de saisie de la Form de Création de compte (SignIn)
     // -------------------------------------------------------------------------
     var vSignInForm = document.getElementById('idSignInForm');
     var vModalSignInHeader = document.getElementById('idModalSignInHeader');
@@ -305,18 +312,21 @@ window.addEventListener('DOMContentLoaded', function(){
     vMemberClient.giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               
 
     vCreation.addEventListener('click', function(){
-        vSignInForm.idSignInEmail.value = '';                                
-        vSignInForm.idSignInPseudo.value = '';                              
-        vSignInForm.idSignInPassword.value = '';
-        vSignInForm.idSignInConfirmPassword.value = '';
-        vSignInAlertMsg.style.visibility = 'hidden';                          
+        initModalSignIn(vSignInForm, vSignInAlertMsg, vModalSignInHeader);
     });
 
     vSignInPassword.onchange = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};           // Vérification que les MDP sont identiques
     vSignInConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};     //
-
     // -------------------------------------------------------------------------
-    // Gestion du Mot de Passe oublié
+    // Gestion du raccourci de la création de compte
+    // -------------------------------------------------------------------------
+    vSignIn.addEventListener('click', function(){
+        initModalSignIn(vSignInForm, vSignInAlertMsg, vModalSignInHeader);
+        $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+        $('#idModalSignIn').modal('toggle');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
+    });
+    // -------------------------------------------------------------------------
+    // Gestion du raccourci de Mot de Passe oublié
     // -------------------------------------------------------------------------
     var vLostPWDForm = document.getElementById('idLostPWDForm');
     var vModalLostPWDHeader = document.getElementById('idModalLostPWDHeader');
@@ -325,14 +335,10 @@ window.addEventListener('DOMContentLoaded', function(){
     vLostPWD.addEventListener('click', function(){
         vLostPWDForm.idLostPWDEmail.value = '';
         vLostPWDAlertMsg.style.visibility = 'hidden';                       // Cache du message d'alerte de saisie d'email erroné
-        vModalLostPWDHeader.classList.remove('bg-danger');
-        vModalLostPWDHeader.classList.remove('bg-success');
-        vModalLostPWDHeader.classList.remove('txt-yellow-stroke');
-
+        vMemberClient.InitHeaderColor('bg-warning', vModalLostPWDHeader);
         $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
         $('#idModalLostPWD').modal('toggle');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
     });
-
     // -------------------------------------------------------------------------
     // Demande du Mot de passe
     // Envoi des infos de récupération du Mot de Passe lorsque la saisie du mail 
@@ -340,18 +346,15 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     vLostPWDForm.addEventListener('submit', function (event){ 
         event.preventDefault();                
-
         webSocketConnection.emit('LostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   // Transmission au serveur des infos saisies
         $('#idModalLostPWD').modal('toggle');                                        // Fermeture de la fenêtre modale de Login
     });
-
     // -------------------------------------------------------------------------
     // Déconnexion
     // -------------------------------------------------------------------------
     vDeconnexion.addEventListener('click', function(){
-        vMemberClient.restartLandinPage(vConnexion, vCreation, vDeconnexion);
+        vMemberClient.restartLandingPage();
     });
-
     // -------------------------------------------------------------------------
     // Login
     // Envoi des infos de login du visiteur lorsque la saisie du Login est validée 
@@ -404,8 +407,7 @@ window.addEventListener('DOMContentLoaded', function(){
     // --------------------------------------------------------------
     webSocketConnection.on('retryLostPWDForm', function(){   
         vLostPWDAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de saisie d'email erroné
-        vModalLostPWDHeader.classList.add('bg-danger');
-        vModalLostPWDHeader.classList.add('txt-yellow-stroke');
+        vMemberClient.InitHeaderColor('bg-danger', vModalLostPWDHeader);
         setTimeout(function(){$("#idModalLostPWD").modal('toggle')},300);             // Obligation de temporiser la réouverture sinon ça ne marche pas
     });
     // --------------------------------------------------------------
@@ -414,9 +416,8 @@ window.addEventListener('DOMContentLoaded', function(){
     // --------------------------------------------------------------
     webSocketConnection.on('retryLoginForm', function(){   
         vLoginAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de connexion erronée
-        vModalLoginHeader.classList.add('bg-danger');
-        vModalLoginHeader.classList.add('txt-yellow-stroke');
-        setTimeout(function(){$("#idModalLogin").modal('toggle')},300);             // Obligation de temporiser la réouverture sinon ça ne marche pas
+        vMemberClient.InitHeaderColor('bg-danger', vModalLoginHeader);
+        setTimeout(function(){$("#idModalLogin").modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
     });
     // --------------------------------------------------------------
     // Le serveur a rejeté la demande Signin, et redemande au visiteur 
@@ -424,8 +425,7 @@ window.addEventListener('DOMContentLoaded', function(){
     // --------------------------------------------------------------
     webSocketConnection.on('retrySignInForm', function(){   
         vSignInAlertMsg.style.visibility = 'visible';                               // Affichage du message d'alerte de connexion erronée
-        vModalSignInHeader.classList.add('bg-danger');
-        vModalSignInHeader.classList.add('txt-yellow-stroke');
+        vMemberClient.InitHeaderColor('bg-danger', vModalSignInHeader);
         setTimeout(function(){$("#idModalSignIn").modal('toggle')},300);           // Obligation de temporiser la réouverture sinon ça ne marche pas
     });
     // --------------------------------------------------------------
@@ -437,8 +437,7 @@ window.addEventListener('DOMContentLoaded', function(){
     webSocketConnection.on('welcomeMember', function(pMember){   
         vMemberClient.member =  pMember;                                                // Affecte les données du membre à l'objet "Membre"
         vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText, pMember.pseudo);  // Affiche la fenêtre de bienvenue
-        vGenericModalHeader.classList.add('bg-success');
-        vGenericModalHeader.classList.add('txt-yellow-stroke');
+        vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
         $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
         vMemberClient.disableLoginAndCreateBtn(vConnexion, vCreation, vDropDownProfilMenu, vMemberName, vMemberClient.member.pseudo, vDeconnexion);   // Desactive Bouton Login et Création
     });
@@ -451,9 +450,8 @@ window.addEventListener('DOMContentLoaded', function(){
     // --------------------------------------------------------------
     webSocketConnection.on('congratNewMember', function(pMember){ 
         vMemberClient.member =  pMember;                                                // Affecte les données du membre à l'objet "Membre"
-        vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText);                // Affiche la fenêtre de bienvenue
-        vGenericModalHeader.classList.add('bg-success');
-        vGenericModalHeader.classList.add('txt-yellow-stroke');
+        vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText, pMember.pseudo);                // Affiche la fenêtre de bienvenue
+        vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
         $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
         vMemberClient.disableLoginAndCreateBtn(vConnexion, vCreation, vDropDownProfilMenu, vMemberName, vMemberClient.member.pseudo, vDeconnexion);   // Desactive Bouton Login et Création
     });    
@@ -462,21 +460,59 @@ window.addEventListener('DOMContentLoaded', function(){
     // Message de notification de renouvellement du PWD
     // --------------------------------------------------------------
     webSocketConnection.on('notifyNewPWDSent', function(){ 
-        vGenericModalHeader.classList.add('bg-success');
-        vGenericModalHeader.classList.add('txt-yellow-stroke');
-        vMemberClient.initModalNewPWDText(vGenericModalTitle, vGenericModalBodyText);                // Affiche la fenêtre de notification
-        $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de notification
+        vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
+        vMemberClient.initModalNewPWDText(vGenericModalTitle, vGenericModalBodyText);               // Affiche la fenêtre de notification
+        $('#idGenericModal').modal('toggle');                                                       // ouverture de la fenêtre modale de notification
     });    
     // --------------------------------------------------------------
     // Le serveur a rejeté la demande Login, car le visiteur est dejà 
     // coonnecté avec une autre session
     // --------------------------------------------------------------
     webSocketConnection.on('memberAlreadyConnected', function(pMember){ 
-        vMemberClient.initModalAlreadyConnectedText(vGenericModalTitle, vGenericModalBodyText);                // Affiche la fenêtre de bienvenue
-        vGenericModalHeader.classList.add('bg-danger');
-        vGenericModalHeader.classList.add('txt-yellow-stroke');
-        $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
+        vMemberClient.initModalAlreadyConnectedText(vGenericModalTitle, vGenericModalBodyText);     // Affiche la fenêtre de bienvenue
+        vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
+        $('#idGenericModal').modal('toggle');                                                       // ouverture de la fenêtre modale de Félicitations
+    });    
+    // --------------------------------------------------------------
+    // Le serveur a rejeté la demande Login, car le visiteur est dejà 
+    // coonnecté avec une autre session
+    // --------------------------------------------------------------
+    webSocketConnection.on('displayNbrConnectedMembers', function(pPopulation){ 
+console.log('displayNbrConnectedMembers - pPopulation : ',pPopulation)        
+        let vNbrAdmin = pPopulation.nbreAdmins;
+        let vNbrMembers = pPopulation.nbreMembers - vNbrAdmin;
+        let vNbrVisitors   = pPopulation.nbreVisitors - (vNbrMembers + pPopulation.nbreAdmins);
+
+        // Affichage du nombre de visiteurs connectés sur la barre de menu
+        vNbrPopulation.innerHTML    = vNbrVisitors < 2 
+                                    ? vNbrVisitors + ' visiteur'        
+                                    : vNbrVisitors + ' visiteurs'      
+
+        vNbrPopulation.innerHTML += ', ';
+
+        vNbrPopulation.innerHTML    += vNbrMembers < 2 
+                                    ? vNbrMembers + ' membre'        // Affichage du nombre de membres connectés sur la barre de menu
+                                    : vNbrMembers + ' membres'      // Affichage du nombre de membres connectés sur la barre de menu
+
+        vNbrPopulation.innerHTML += ', ';
+
+        vNbrPopulation.innerHTML    += vNbrAdmin < 2 
+                                    ? vNbrAdmin + ' Admin'        // Affichage du nombre de membres connectés sur la barre de menu
+                                    : vNbrAdmin + ' Admins'      // Affichage du nombre de membres connectés sur la barre de menu
+
+        vNbrPopulation.innerHTML += ' sont connectés';
     });    
     // -----------------------------------------------------------------------------
+    // Cette fonction initalise la modale de création, quel quez soit sont mode 
+    // d'appel (par l'option de menu ou par le raccourci de la fenetre de Login
+    // -----------------------------------------------------------------------------
+    function initModalSignIn(pSignInForm, pSignInAlertMsg, pModalSignInHeader){
+        pSignInForm.idSignInEmail.value = '';                                
+        pSignInForm.idSignInPseudo.value = '';                              
+        pSignInForm.idSignInPassword.value = '';
+        pSignInForm.idSignInConfirmPassword.value = '';
+        pSignInAlertMsg.style.visibility = 'hidden';                          
+        vMemberClient.InitHeaderColor('bg-warning', pModalSignInHeader);
+    }
     
 }); // Fin de la Boucle "DOMContentLoaded"

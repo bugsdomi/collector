@@ -51,6 +51,7 @@ head
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   a.navbar-brand(href='#')
     img.d-inline-block.align-top.mr-2(alt="Logo du site 'Collect\'Or" src='static/images/brand.png' height='40')
+  span#idNbrPopulation.infosOnNavBar
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#mainScreenMenu' aria-expanded='false' aria-controls='mainScreenMenu' aria-label='Toggle mainScreenMenu')
     span.navbar-toggler-icon
   #mainScreenMenu.collapse.navbar-collapse
@@ -168,7 +169,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLoginHeader.modal-header
-        h5.modal-title Bienvenue dans Collect&apos;Or
+        h5.modal-title Connexion
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         form#idLoginForm.form-signin
@@ -179,8 +180,11 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           br
           label.sr-only(for='LoginPassword') Mot de passe
           input#idLoginPassword.form-control(type='password' name='LoginPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-          // <div id="idLostPWD" class="mt-1 mb-2 text-right" data-dismiss="modal"> Mot de passe oublié ?</div>
-          #idLostPWD.mt-1.mb-2.text-right  Mot de passe oubli&eacute; ?
+          .row.justify-content-between
+            #idSignIn.mt-1.mb-2.col-6.xs-col-6.text-left.speedKey
+              | Cr&eacute;er un compte
+            #idLostPWD.mt-1.mb-2.col-6.xs-col-6.text-right.speedKey
+              | Mot de passe oubli&eacute; ?
           p#idLoginAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Pseudo et/ou mot de passe inconnus
           .modal-footer
             button#idConnectionBtn.btn.btn-lg.btn-success.btn-block(type='submit') Connexion
@@ -191,7 +195,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalSignInHeader.modal-header
-        h5.modal-title Bienvenue dans Collect&apos;Or
+        h5.modal-title Cr&eacute;ation de compte
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         form#idSignInForm.form-signin
@@ -223,12 +227,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLostPWDHeader.modal-header
-        h5.modal-title Bienvenue dans Collect&apos;Or
+        h5.modal-title Mot de passe perdu
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         form#idLostPWDForm.form-LostPWD
           img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-          h1.h3.mb-3.font-weight-normal R&eacute;cup&eacute;ration du mot de passe
+          h1.h3.mb-3.font-weight-normal Veuillez saisir votre e-mail
           .mb-3
             label.sr-only(for='LostPWDEmail')
               | Email 

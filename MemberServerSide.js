@@ -72,7 +72,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // - Par contre, si elle existe, il s'agit d'un membre et on demande au client de désactiver l'icône de Login et d'activer 
     // l'icône de déconnexion ('welcomeMember')
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection) => {
+    MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
         return new Promise((resolve, reject) => {
             this.DBMgr.memberCollection.find(
                 { 
@@ -110,7 +110,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                     this.objectPopulation.members[myIndex].role         = this.member.role;                            // Membre, Admin ou SuperAdmin
                     this.objectPopulation.members[myIndex].dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
 
-                    this.addMemberToActiveMembers(myIndex);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
+                    this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
                     pWebSocketConnection.emit('welcomeMember',this.member);     
                     resolve('Membre loggé');
                 });
@@ -119,8 +119,8 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // ---------------------------------------------------------------------------------------------------------------------------
     // Point d'appel pour la fonction de Login en mode 'async / await'
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.visitorTryToLogin = async (pVisiteurLoginData, pWebSocketConnection) => {
-        var result = await (this.visitorTryToLoginPromise(pVisiteurLoginData, pWebSocketConnection));
+    MemberServer.prototype.visitorTryToLogin = async (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
+        var result = await (this.visitorTryToLoginPromise(pVisiteurLoginData, pWebSocketConnection, pSocketIo));
         return result;
     };
     // ---------------------------------------------------------------------------------------------------------------------------
@@ -146,8 +146,6 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.updatePasswordInBDD = function(){
-
-console.log('updatePasswordInBDD - this.member.password : ',this.member.password,'--- this.newPassword : ',this.newPassword)        
         this.DBMgr.memberCollection.updateOne(
         { 
             "email": this.member.email, 
@@ -186,7 +184,6 @@ console.log('updatePasswordInBDD - this.member.password : ',this.member.password
             this.member.email = documents[0].email;                                     // Récupération des infos nécessaires et suffisantes pour renvoyer le nouveau MDP
             this.member.pseudo = documents[0].pseudo;                                        
             this.member.password = documents[0].password;                                        
-console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.password)        
 
             this.buildAndSendNewPWD();
             this.updatePasswordInBDD();
@@ -194,15 +191,28 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
         });
     }
     // ---------------------------------------------------------------------------------------------------------------------------
+    // Prépare les données de population et les envoie à tous clients connectés
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.UpdateDisplayPopulation = function(pSocketIo){
+        population = {
+            nbreVisitors    : this.objectPopulation.nbrConnections,
+            nbreMembers     : this.objectPopulation.nbrMembersInSession,
+            nbreAdmins      : this.objectPopulation.nbrAdminsInSessions,
+        }
+
+        pSocketIo.emit('displayNbrConnectedMembers', population); // Affichage sur tous les clients de la MAJ du nombre de membres connectés
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
     // Ajoute le membre nouvellement créé ou Loggé avec succès à la liste des membres connectés
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.addMemberToActiveMembers = function(pIndex){
+    MemberServer.prototype.addMemberToActiveMembers = function(pIndex, pSocketIo){
         this.objectPopulation.members[pIndex].isMember  = true;
         this.objectPopulation.nbrMembersInSession++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
-
+        
         if (this.objectPopulation.members[pIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
-            this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
-        }
+        this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+        }   
+        this.UpdateDisplayPopulation(pSocketIo);
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Envoi de mail générique en format HTML
@@ -227,7 +237,7 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
     // 2 --> Admin
     // 4 --> Membre
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.addMemberInDatabase = function(pMember, pWebSocketConnection){
+    MemberServer.prototype.addMemberInDatabase = function(pMember, pWebSocketConnection, pSocketIo){
         var myRole;
 
         this.DBMgr.memberCollection.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
@@ -258,12 +268,12 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
                 console.log("addMemberInDatabase - 1 membre inséré : ",this.member);  
                 
                 let myIndex = this.searchMmeberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
-                this.addMemberToActiveMembers(myIndex)
+                this.addMemberToActiveMembers(myIndex, pSocketIo)
                 
                 this.sendEMail(
                     pMember.email, 
                     'Votre inscription à Collect\'Or', 
-                    '<h1 style="color: black;">Félicitations</h1><p><h2>Vous êtes dorénavant membre de la Communauté \'Collect\'Or\'.</h2><br />' +
+                    '<h1 style="color: black;">Félicitations '+pMember.pseudo+'</h1><p><h2>Vous êtes dorénavant membre de la Communauté \'Collect\'Or\'.</h2><br />' +
                     'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+pMember.pseudo+'<p><strong>Mot de passe : </strong>'+pMember.password +
                     '</p><br /><br /><br /><i>Vil-Coyote Products</i>'
                     );
@@ -280,7 +290,7 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
     // la BDD et il devient membre
     // - Sinon, on le rejette 
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.checkVisitorSignInISValid = function(pVisiteurSignInData, pWebSocketConnection){
+    MemberServer.prototype.checkVisitorSignInISValid = function(pVisiteurSignInData, pWebSocketConnection, pSocketIo){
         this.DBMgr.memberCollection.find(                                                   // Vérification de non-pré-existence du mail
         { 
             "email": pVisiteurSignInData.email, 
@@ -314,25 +324,28 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
                 } 
 
                 // Si mail + pseudo non trouvé --> On valide l'inscription en créant le membre
-                this.addMemberInDatabase(pVisiteurSignInData, pWebSocketConnection);         
+                this.addMemberInDatabase(pVisiteurSignInData, pWebSocketConnection, pSocketIo);         
             });
         });
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Deconnexion d'un visiteur et eventuellement d'un membre  :
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.disconnectMember = function(pWebSocketConnection){
+    MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){
         let myIndex = this.searchMmeberInTableOfMembers('idMember' ,pWebSocketConnection.id);
 
         if (this.objectPopulation.members[myIndex].isMember){                    // Le visiteur qui se deconnecte était un membre
             this.objectPopulation.nbrMembersInSession--;                         // Nombre de visiteurs incluant les [membres + Admins]
-
+            
             if (this.objectPopulation.members[myIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
-                this.objectPopulation.nbrAdminsInSessions--;  // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
+            this.objectPopulation.nbrAdminsInSessions--;  // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
             }
-        }    
+    
+        }
+
         this.objectPopulation.members.splice(myIndex, 1);
         this.objectPopulation.nbrConnections--;
+        this.UpdateDisplayPopulation(pSocketIo);
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Initialisation d'un visiteur :
@@ -340,7 +353,7 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
     // 2) Mise a zero de tous les champs
     // 3) Ajout du visiteur dans le tableau global des personnes connextées
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.initVisiteur = function(pWebSocketConnection){
+    MemberServer.prototype.initVisiteur = function(pWebSocketConnection, pSocketIo){
 
         let memberLocal = {
             idMember        : pWebSocketConnection.id,
@@ -356,6 +369,7 @@ console.log('checkLostPWDMailIsValid - this.member.password : ',this.member.pass
 
         this.objectPopulation.members.push(memberLocal);
         this.objectPopulation.nbrConnections++;             // Nombre de visiteurs incluant les [membres + Admins]
+        this.UpdateDisplayPopulation(pSocketIo);
 
         console.log('--------------------------------------------------------------------------------------------------------------------')
         console.log('initVisiteur - 000 - : this.objectPopulation.members.length : ',this.objectPopulation.members.length,

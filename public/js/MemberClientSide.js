@@ -21,11 +21,11 @@ function MemberClient(pDBMgr){   // Fonction constructeur exportée
 //  passée en paramètre car le composant "Modal" court-circuite l'attibut "Auto-focus"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField){
-    $('#'+pIdModal).on('shown.bs.modal', function() {
+    $('#'+pIdModal).on('shown.bs.modal', function(){
         $('#'+pIdField).focus();
     })
 
-    // $('#'+pIdModal).on('shown.bs.modal', function() {
+    // $('#'+pIdModal).on('shown.bs.modal', function({
     //     $(this).find('[autofocus]').focus();
     //   });
 
@@ -54,15 +54,15 @@ MemberClient.prototype.initModalTextAboutMode = function(pModalTitle, pModalBody
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
 // après la création réussie du nouveau membre
 // -----------------------------------------------------------------------------
-MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyText){
+MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyText, pMemberPseudo){
     pModalTitle.innerText = 'Bienvenue dans Collect\'Or'
-    pModalBodyText.innerHTML = '<h5>Félicitations !</h5>';
+    pModalBodyText.innerHTML = '<h5>Félicitations '+ pMemberPseudo +' !</h5>';
     pModalBodyText.innerHTML += '<br /><p>Votre compte a été créé avec succès.</p>';
     pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
     pModalBodyText.innerHTML += '<br /><p>Bonne navigation...</p>';
 }
 // -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
+// Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
 // après la création réussie du nouveau membre
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalNewPWDText = function(pModalTitle, pModalBodyText){
@@ -91,8 +91,6 @@ MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText
     pModalBodyText.innerHTML = '<h5>Bonjour '+pMemberPseudo+'</h5>';
     pModalBodyText.innerHTML += '<br /><p>Vous êtes bien connecté à \'Collect\'Or\', bonne navigation...</p>';
 }
-
-
 // -----------------------------------------------------------------------------
 // Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
 // connecté ou après la création réussie de son compte, car il se trouve de fait, 
@@ -111,8 +109,37 @@ MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
 // -----------------------------------------------------------------------------
-MemberClient.prototype.restartLandinPage = function(pConnexion, pCreation, pDeconnexion){
-    vToolBox.refreshScreen();
+MemberClient.prototype.restartLandingPage = function(){
+    vToolBox.simpleRefreshScreen();
 }
 // -------------------------- Fin du module ----------------------------------------
+// -----------------------------------------------------------------------------
+// Cette fonction réactive les options de menu Login et Création de compte lorsque
+//  le Membre se déconnecte, et désactive le bouton "Déconnexion"
+// -----------------------------------------------------------------------------
+MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
+    if (pACtiveColor === "bg-warning"){
+        pHeader.classList.remove('bg-danger');
+        pHeader.classList.remove('bg-success');
+        pHeader.classList.remove('txt-yellow-stroke');                       
+        pHeader.classList.add('bg-warning');    // Jaune Or     
+        return
+    }
+
+    if (pACtiveColor === 'bg-danger'){
+        pHeader.classList.remove('bg-success');
+        pHeader.classList.remove('bg-warning');    // Jaune Or               
+        pHeader.classList.add('bg-danger');
+        pHeader.classList.add('txt-yellow-stroke');
+        return
+    }
+    
+    if (pACtiveColor === 'bg-success'){
+        pHeader.classList.remove('bg-danger');
+        pHeader.classList.remove('bg-warning');    // Jaune Or               
+        pHeader.classList.add('bg-success');
+        pHeader.classList.add('txt-yellow-stroke');
+    }
+}
+
 

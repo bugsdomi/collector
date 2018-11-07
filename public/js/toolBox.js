@@ -78,7 +78,7 @@ ToolBox.prototype.convertSecsToDaysHoursMinsSecs = function(pNbreSecondes) {
     return this.addZero(nbJours)+'j ' + this.convertSecsToHoursMinsSecs(pNbreSecondes);
 }
 // --------------------------------------------------------------
-ToolBox.prototype.refreshScreen = function(){   
-    window.location.href = window.location.href; // Régénération de l'écran from scratch;
+ToolBox.prototype.simpleRefreshScreen = function(){   
+    self.location.reload();                                 // Régénération de l'écran from scratch;
     // window.location.assign(window.location.href)
 }
