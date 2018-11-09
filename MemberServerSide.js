@@ -28,7 +28,8 @@ const constNextCharString = constFirstCharString+'&#$*_-'                       
 module.exports = function MemberServer(pDBMgr){   // Fonction constructeur exportée
     this.DBMgr = pDBMgr;
     this.objectFound;                               // Objet d'accueil utilisé lors de la recherche d'un objet dans la table des membres
-    this.newPassword;                               // Variable de stockage du nouveau mot de passe créé
+    this.newPassword;                               // Variable de stockage provisoire du nouveau mot de passe créé
+    this.nbrPublicMsgs;                             // Nbre de messages publics
 
     this.objectPopulation = 
     {
@@ -55,9 +56,9 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
         return Math.round(((pValSup - pValInf) * Math.random()) + pValInf);
     }
     // ---------------------------------------------------------------------------------------------------------------------------
-    // Cette fonction recherche dans la table des membres, celui qui a la propriété "idMember" correspondant à l'id du socket
+    // Cette fonction recherche dans la table des membres, celui qui a la propriété passée en parametre
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.searchMmeberInTableOfMembers = (pProperty, pValue) => {
+    MemberServer.prototype.searchMemberInTableOfMembers = (pProperty, pValue) => {
         let myIndex = this.objectPopulation.members.map((propertyFilter) => {
             return propertyFilter[pProperty];
         })
@@ -74,7 +75,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
         return new Promise((resolve, reject) => {
-            this.DBMgr.memberCollection.find(
+            this.DBMgr.collectionMembers.find(
                 { 
                     "pseudo": pVisiteurLoginData.pseudo, 
                     "password": pVisiteurLoginData.password, 
@@ -94,15 +95,14 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
 
                     this.member = documents[0];                                     // Récupération des infos du membre dans l'objet de stockage provisoire
 
-
-                    // Recherche du pseudo du membre dans le tableau des membres
-                    let myIndex = this.searchMmeberInTableOfMembers('pseudo', this.member.pseudo)
+                    // Recherche du pseudo du membre dans le tableau des membres car je ne veux pas qu'un membre se connecte plusieurs fois sur des sessions différentes
+                    let myIndex = this.searchMemberInTableOfMembers('pseudo', this.member.pseudo)
                     if (myIndex !== -1){                                            // Si membre trouvé dans la table ddes membres connectés, on le rejette, sinon, on le connecte
                         resolve('Membre dejà loggé');
                         return pWebSocketConnection.emit('memberAlreadyConnected',this.member);     
                     }
 
-                    myIndex = this.searchMmeberInTableOfMembers('idMember', pWebSocketConnection.id);  // Recherche du visiteur dans le tableau des membres
+                    myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // Recherche du visiteur dans le tableau des membres
                     this.objectPopulation.members[myIndex].email        = this.member.email;
                     this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
                     this.objectPopulation.members[myIndex].password     = this.member.password;
@@ -146,7 +146,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.updatePasswordInBDD = function(){
-        this.DBMgr.memberCollection.updateOne(
+        this.DBMgr.collectionMembers.updateOne(
         { 
             "email": this.member.email, 
         },
@@ -167,7 +167,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
-        this.DBMgr.memberCollection.find(
+        this.DBMgr.collectionMembers.find(
         { 
             "email": pLostPWDEmail, 
         }).toArray((error, documents) => {
@@ -195,9 +195,10 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.UpdateDisplayPopulation = function(pSocketIo){
         population = {
-            nbreVisitors    : this.objectPopulation.nbrConnections,
-            nbreMembers     : this.objectPopulation.nbrMembersInSession,
-            nbreAdmins      : this.objectPopulation.nbrAdminsInSessions,
+            nbrVisitors    : this.objectPopulation.nbrConnections,
+            nbrMembers     : this.objectPopulation.nbrMembersInSession,
+            nbrAdmins      : this.objectPopulation.nbrAdminsInSessions,
+            nbrPublicMsgs  : this.nbrPublicMsgs,
         }
 
         pSocketIo.emit('displayNbrConnectedMembers', population); // Affichage sur tous les clients de la MAJ du nombre de membres connectés
@@ -210,7 +211,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
         this.objectPopulation.nbrMembersInSession++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
         
         if (this.objectPopulation.members[pIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
-        this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+            this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
         }   
         this.UpdateDisplayPopulation(pSocketIo);
     }
@@ -228,6 +229,23 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
         sgMail.send(messageToSend);
     }
     // ---------------------------------------------------------------------------------------------------------------------------
+    // Création de l'enregistrement technique avec le Nbre de message initialisé à 0
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.createTechnicalRecord = function(){
+        let techniqualRecord = {
+            nbrPublicMsgs : 0,                                       
+        }
+
+        this.DBMgr.collectionTechnical.insertOne(techniqualRecord, (error, result) => {
+            if (error){
+                console.log('Erreur d\'insertion dans la collection \'Technical\' : ',techniqualRecord);   // Si erreur technique... Message et Plantage
+                throw error;
+            } 
+
+            console.log("add Technical Record In Database - 1 membre inséré : ",techniqualRecord);  
+        });       
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
     // Ajout des données du visiteur (futur membre) (Email, Pseudo, MDP, timestamp (au format brut), et statut dans la BDD)
     // ATTENTION !!!!
     // S'il n'y aucun membre dans la BDD, le Premier membre qui est créé est le Super-Administrateur
@@ -240,13 +258,18 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     MemberServer.prototype.addMemberInDatabase = function(pMember, pWebSocketConnection, pSocketIo){
         var myRole;
 
-        this.DBMgr.memberCollection.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
+        this.DBMgr.collectionMembers.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
             if (error){
                 console.log('Erreur de comptage dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
                 throw error;
             } 
             
-            count === 0 ? myRole = cstSuperAdmin : myRole = cstMembre;      // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin
+            if (count === 0 ){
+                this.createTechnicalRecord();   // Si c'est le 1er membre qui s'enregistre, création de l'enregistrement technique avec le Nbre de messages initialisé à 0
+                myRole = cstSuperAdmin;         // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin ==> Creation du membre avec ce statut
+            } else {    
+                myRole = cstMembre;           
+            }
 
             let memberLocal = {
                 email           : pMember.email,                                       
@@ -257,7 +280,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                 dateCreation    : new Date(),         // Timestamp de la création du record
             }
 
-            this.DBMgr.memberCollection.insertOne(memberLocal, (error, result) => {
+            this.DBMgr.collectionMembers.insertOne(memberLocal, (error, result) => {
                 if (error){
                     console.log('Erreur d\'insertion dans la collection \'membres\' : ',memberLocal);   // Si erreur technique... Message et Plantage
                     throw error;
@@ -265,9 +288,9 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
 
                 // L'ajout d'enregistrement a reussi
                 this.member = memberLocal;
-                console.log("addMemberInDatabase - 1 membre inséré : ",this.member);  
+                console.log("add Member In Database - 1 membre inséré : ",this.member);  
                 
-                let myIndex = this.searchMmeberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
+                let myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
                 this.addMemberToActiveMembers(myIndex, pSocketIo)
                 
                 this.sendEMail(
@@ -291,7 +314,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // - Sinon, on le rejette 
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.checkVisitorSignInISValid = function(pVisiteurSignInData, pWebSocketConnection, pSocketIo){
-        this.DBMgr.memberCollection.find(                                                   // Vérification de non-pré-existence du mail
+        this.DBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
         { 
             "email": pVisiteurSignInData.email, 
         })
@@ -308,7 +331,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             }
 
             // Le mail n a pas été trouvé, on vérifie maintenant la non-existence du Pseudo
-            this.DBMgr.memberCollection.find(                  
+            this.DBMgr.collectionMembers.find(                  
             { 
                 "pseudo": pVisiteurSignInData.pseudo, 
             })
@@ -332,7 +355,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // Deconnexion d'un visiteur et eventuellement d'un membre  :
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){
-        let myIndex = this.searchMmeberInTableOfMembers('idMember' ,pWebSocketConnection.id);
+        let myIndex = this.searchMemberInTableOfMembers('idMember' ,pWebSocketConnection.id);
 
         if (this.objectPopulation.members[myIndex].isMember){                    // Le visiteur qui se deconnecte était un membre
             this.objectPopulation.nbrMembersInSession--;                         // Nombre de visiteurs incluant les [membres + Admins]
@@ -340,7 +363,6 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             if (this.objectPopulation.members[myIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
             this.objectPopulation.nbrAdminsInSessions--;  // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
             }
-    
         }
 
         this.objectPopulation.members.splice(myIndex, 1);
@@ -378,6 +400,30 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                     '--- Nbre d\'Admin : ',this.objectPopulation.nbrAdminsInSessions,
                     '--- pWebSocketConnection.id : ',pWebSocketConnection.id);
         console.log('--------------------------------------------------------------------------------------------------------------------')
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Au lancement du serveur, on tente de lire le Nbre de messages publics stockés dans la BDD, si KO, on initialise a 0
+    // On en porofite poour initialiser toutes les variables de population à 0
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.initNbrPublicMsgs = function(pSocketIo){
+        this.DBMgr.collectionTechnical.find()
+        .limit(1)
+        .toArray((error, documents) => {
+            if (error) {
+                console.log('Erreur de lecture dans la collection \'technical\' : ',error);   // Si erreur technique... Message et Plantage
+                throw error;
+            }
+
+            if (documents.length) {
+                this.nbrPublicMsgs = documents[0].nbrPublicMsgs;                    
+            } else {
+                this.nbrPublicMsgs = 0;
+            }
+
+            // this.objectPopulation.nbrConnections = 0;
+            // this.objectPopulation.nbrMembersInSession = 0;
+            // this.objectPopulation.nbrAdminsInSessions = 0;
+        });
     }
     // ------------------------------------------- Fin du module -------------------------------------------------------------------------
 }

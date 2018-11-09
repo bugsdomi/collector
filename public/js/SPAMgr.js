@@ -317,6 +317,27 @@ window.addEventListener('DOMContentLoaded', function(){
 
     vSignInPassword.onchange = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};           // Vérification que les MDP sont identiques
     vSignInConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};     //
+
+    // -------------------------------------------------------------------------
+    // Eléments de champs de saisie de la Form de renseignements (Compte)
+    // -------------------------------------------------------------------------
+    // var vCompteForm = document.getElementById('idCompteForm');
+    var vCompte = document.getElementById('idCompte');
+    var vModalCompteHeader = document.getElementById('idModalCompteHeader');
+    var vCompteAlertMsg = document.getElementById('idCompteAlertMsg');
+    // var vComptePassword = document.getElementById('idComptePassword');
+    // var vCompteConfirmPassword = document.getElementById('idCompteConfirmPassword');
+    
+    // vMemberClient.giveFocusToModalFirstField('idModalCompte', 'idCompteEmail');                                               
+
+    vCompte.addEventListener('click', function(){
+        // initModalCompte(vCompteForm, vCompteAlertMsg, vModalCompteHeader);
+        initModalCompte(vCompteAlertMsg, vModalCompteHeader);
+    });
+
+    // vComptePassword.onchange = function(){vMemberClient.validatePassword(vComptePassword, vCompteConfirmPassword)};           // Vérification que les MDP sont identiques
+    // vCompteConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vComptePassword, vSignInConfirmPassword)};     //
+
     // -------------------------------------------------------------------------
     // Gestion du raccourci de la création de compte
     // -------------------------------------------------------------------------
@@ -478,32 +499,40 @@ window.addEventListener('DOMContentLoaded', function(){
     // coonnecté avec une autre session
     // --------------------------------------------------------------
     webSocketConnection.on('displayNbrConnectedMembers', function(pPopulation){ 
-console.log('displayNbrConnectedMembers - pPopulation : ',pPopulation)        
-        let vNbrAdmin = pPopulation.nbreAdmins;
-        let vNbrMembers = pPopulation.nbreMembers - vNbrAdmin;
-        let vNbrVisitors   = pPopulation.nbreVisitors - (vNbrMembers + pPopulation.nbreAdmins);
+        // let vNbrAdmin = pPopulation.nbreAdmins;
+        // let vNbrMembers = pPopulation.nbreMembers - vNbrAdmin;
+        // let vNbrVisitors   = pPopulation.nbreVisitors - (vNbrMembers + pPopulation.nbreAdmins);
 
+        // // Affichage du nombre de visiteurs connectés sur la barre de menu
+        // vNbrPopulation.innerHTML    = vNbrVisitors < 2 
+        //                             ? vNbrVisitors + ' visiteur'        
+        //                             : vNbrVisitors + ' visiteurs'      
+
+        // vNbrPopulation.innerHTML += ', ';
+
+        // vNbrPopulation.innerHTML    += vNbrMembers < 2 
+        //                             ? vNbrMembers + ' membre'        // Affichage du nombre de membres connectés sur la barre de menu
+        //                             : vNbrMembers + ' membres'      // Affichage du nombre de membres connectés sur la barre de menu
+
+        // vNbrPopulation.innerHTML += ', ';
+
+        // vNbrPopulation.innerHTML    += vNbrAdmin < 2 
+        //                             ? vNbrAdmin + ' Admin'        // Affichage du nombre de membres connectés sur la barre de menu
+        //                             : vNbrAdmin + ' Admins'      // Affichage du nombre de membres connectés sur la barre de menu
+
+        // vNbrPopulation.innerHTML += ' sont connectés';
+   
         // Affichage du nombre de visiteurs connectés sur la barre de menu
-        vNbrPopulation.innerHTML    = vNbrVisitors < 2 
-                                    ? vNbrVisitors + ' visiteur'        
-                                    : vNbrVisitors + ' visiteurs'      
+        vNbrPopulation.innerHTML    = pPopulation.nbrMembers < 2 
+                                    ? pPopulation.nbrMembers + ' membre connecté - '        // Affichage du nombre de membres connectés sur la barre de menu
+                                    : pPopulation.nbrMembers + ' membres connectés - ';      // Affichage du nombre de membres connectés sur la barre de menu
 
-        vNbrPopulation.innerHTML += ', ';
-
-        vNbrPopulation.innerHTML    += vNbrMembers < 2 
-                                    ? vNbrMembers + ' membre'        // Affichage du nombre de membres connectés sur la barre de menu
-                                    : vNbrMembers + ' membres'      // Affichage du nombre de membres connectés sur la barre de menu
-
-        vNbrPopulation.innerHTML += ', ';
-
-        vNbrPopulation.innerHTML    += vNbrAdmin < 2 
-                                    ? vNbrAdmin + ' Admin'        // Affichage du nombre de membres connectés sur la barre de menu
-                                    : vNbrAdmin + ' Admins'      // Affichage du nombre de membres connectés sur la barre de menu
-
-        vNbrPopulation.innerHTML += ' sont connectés';
+        vNbrPopulation.innerHTML    += pPopulation.nbrPublicMsgs < 2 
+                                    ? pPopulation.nbrPublicMsgs + ' message'        // Affichage du nombre de membres connectés sur la barre de menu
+                                    : pPopulation.nbrPublicMsgs + ' messages';      // Affichage du nombre de membres connectés sur la barre de menu
     });    
     // -----------------------------------------------------------------------------
-    // Cette fonction initalise la modale de création, quel quez soit sont mode 
+    // Cette fonction initalise la modale de création, quel que soit son mode 
     // d'appel (par l'option de menu ou par le raccourci de la fenetre de Login
     // -----------------------------------------------------------------------------
     function initModalSignIn(pSignInForm, pSignInAlertMsg, pModalSignInHeader){
@@ -514,5 +543,16 @@ console.log('displayNbrConnectedMembers - pPopulation : ',pPopulation)
         pSignInAlertMsg.style.visibility = 'hidden';                          
         vMemberClient.InitHeaderColor('bg-warning', pModalSignInHeader);
     }
-    
+    // -----------------------------------------------------------------------------
+    // Cette fonction initalise la modale de saisie de rrenseignements (Compte) 
+    // -----------------------------------------------------------------------------
+    function initModalCompte(pCompteAlertMsg, pModalCompteHeader){
+        // pCompteForm.idCompteEmail.value = '';                                
+        // pCompteForm.idComptePseudo.value = '';                              
+        // pCompteForm.idComptePassword.value = '';
+        // pCompteForm.idCompteConfirmPassword.value = '';
+        pCompteAlertMsg.style.visibility = 'hidden';                          
+        vMemberClient.InitHeaderColor('bg-warning', pModalCompteHeader);
+    }
+    // -----------------------------------------------------------------------------
 }); // Fin de la Boucle "DOMContentLoaded"

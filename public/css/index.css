@@ -124,12 +124,14 @@ body {
     visibility: hidden;
 }
 
+/* Gestion du bouton "Déconnexion" */
 .disabled {
     color: darkgray ;
     pointer-events: none;
     cursor: not-allowed;
 }
 
+/* Gestion des champs "Création de compte" et "Mot de passe perdu" dans la fenêtre de Login */
 .speedKey:hover{
     color: red;
     cursor: pointer;
@@ -176,3 +178,25 @@ body {
 .box-shadow { 
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); 
 } 
+
+
+
+
+
+
+
+
+
+
+
+.container {
+    max-width: 960px;
+  }
+  
+  .border-top { border-top: 1px solid #e5e5e5; }
+  .border-bottom { border-bottom: 1px solid #e5e5e5; }
+  .border-top-gray { border-top-color: #adb5bd; }
+  
+  .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+  
+  .lh-condensed { line-height: 1.25; }

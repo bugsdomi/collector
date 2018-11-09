@@ -4,19 +4,23 @@ const SocketIo = require('socket.io');
 const MemberServer = require('./MemberServerSide');
 
 // -------------------------------------------------------------------------
+// Initilisations des variables, structures, constantes...
+// -------------------------------------------------------------------------
+let vMemberServer;       // Insta,ciation de l'objet "Members" qui gère toutes lesz fonctions liées aux membres
+// -------------------------------------------------------------------------
 // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
 // mais en tout état de cause, normalement, professionnellement, je devrais 
 // m'assurer qu'elle est toujours accessible en cours de partie, mais dans le 
 // contexte ultra-limité de cet atelier, ce n'est pas nécessaire
 // Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
 // -------------------------------------------------------------------------
-let vDBMgr = new DBMgr();       // Instanciation de l'objet décrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
-vDBMgr.checkDBConnect();
+let vDBMgr = new DBMgr();       // Instanciation de la base de données
+vDBMgr.checkDBConnect()
+    .then(result => {
+        vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
+        vMemberServer.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
+    // });
 
-// -------------------------------------------------------------------------
-// Initilisations des variables, structures, constantes...
-// -------------------------------------------------------------------------
-let vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
 // Création des routes ExppressJS, car je vais utiliser cet outil pour transferer
@@ -38,12 +42,11 @@ const server = app.listen(process.env.PORT || 3000, function() {
     const portEcoute = server.address().port
     console.log('Écoute du serveur http://%s:%s',addressHote,portEcoute);
 });
-
-
-
 // ------------------------------------------------------------
 // Fin de la partie HTTP - Début de la partie WebSocket avec "Socket.io"
 // ------------------------------------------------------------
+
+
 
 // -------------------------------------------------------------------------
 // Création de la liaison socket.io sur la base du serveur HTTP déja déclaré précédement
@@ -57,27 +60,6 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
     webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
         vMemberServer.visitorTryToLogin(pVisiteurLoginData, webSocketConnection, socketIo)
         .then((result) => {
-console.log('=======================================================================---------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[0] : ',vMemberServer.objectPopulation.members[0]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[1] : ',vMemberServer.objectPopulation.members[1]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[2] : ',vMemberServer.objectPopulation.members[2]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[3] : ',vMemberServer.objectPopulation.members[3]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[4] : ',vMemberServer.objectPopulation.members[4]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[5] : ',vMemberServer.objectPopulation.members[5]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[6] : ',vMemberServer.objectPopulation.members[6]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[7] : ',vMemberServer.objectPopulation.members[7]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[8] : ',vMemberServer.objectPopulation.members[8]);
-console.log('--------------------------------------------------------------------------------------------------------------------')
-console.log('Apres then() - vMemberServer.objectPopulation.members[9] : ',vMemberServer.objectPopulation.members[9]);
-console.log('====================================================================================================================')
         });
     });
 
@@ -96,4 +78,6 @@ console.log('===================================================================
 console.log('disconnect')        
         vMemberServer.disconnectMember(webSocketConnection, socketIo);
     });
+});
+
 });

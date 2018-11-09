@@ -21,7 +21,8 @@ const mongoDB = require('mongodb');
 
 module.exports = function DBMgr(){
     this.myDB;                           // Instance de la base de données
-    this.memberCollection;               // Sélectionne la collection que l'on veut utiliser
+    this.collectionMembers;               // Sélectionne la collection des données des membres
+    this.collectionTechnical;                // Sélectionne la collection des données techniques
     
     // -------------------------------------------------------------------------
     // On se connecte à mongoDB, on vérifie qu elle est lancée et que la BDD 
@@ -31,84 +32,38 @@ module.exports = function DBMgr(){
     // Solution 1 Opérationnelle - Fonction CallBack traitée avec "Fonction 
     // Flèche" pour le "this" de la CallBack
     // -------------------------------------------------------------------------
+    // DBMgr.prototype.checkDBConnect = function(){
+    //     mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (error,db) => {
+    //         if (error) {
+    //             console.log('Base de données inaccessible, l\'application "Collector" ne peut pas se lancer');
+    //             console.log('Description de l\'erreur : ',error);
+    //             throw 'Base de données inaccessible, l\'application "Collector" ne peut pas se lancer, contacter l\'Administrateur système';
+    //         } 
+            
+    //         this.myDB = db;                                                                         // Conservation de l'instance de BDD
+    //         this.collectionMembers = this.myDB.db('collect-or').collection('members');              // On sélectionne la collection des joueurs
+    //         this.collectionTechnical = this.myDB.db('collect-or').collection('technical');          // On sélectionne la collection des données techniques
+    //         console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');    // Message de notification BDD OK à destination de l'Admin 
+    //     });
+    // }
     DBMgr.prototype.checkDBConnect = function(){
-        mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (err,db) => {
-            if (err) {
-                console.log('Base de données inaccessible, l\'application "Collector" ne peut pas se lancer');
-                console.log('Description de l\'erreur : ',err);
-                throw 'Base de données inaccessible, l\'application "Collector" ne peut pas se lancer, contacter l\'Administrateur système';
-            } else {  
+        return new Promise((resolve, reject) => {
+            mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (error,db) => {
+                if (error) {
+                    reject(false);
+                    console.log('Base de données inaccessible, l\'application "Collector" ne peut pas se lancer');
+                    console.log('Description de l\'erreur : ',error);
+                    throw 'Base de données inaccessible, l\'application "Collector" ne peut pas se lancer, contacter l\'Administrateur système';
+                } 
+                
+                resolve(true);
                 this.myDB = db;                                                                         // Conservation de l'instance de BDD
-                this.memberCollection = this.myDB.db('collect-or').collection('membres');             // On sélectionne la collection des joueurs
-                console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');  // Message de notification BDD OK à destination de l'Admin 
-            }
+                this.collectionMembers = this.myDB.db('collect-or').collection('members');              // On sélectionne la collection des joueurs
+                this.collectionTechnical = this.myDB.db('collect-or').collection('technical');          // On sélectionne la collection des données techniques
+                console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');    // Message de notification BDD OK à destination de l'Admin 
+            });
         });
     }
-    // -------------------------------------------------------------------------
-    // Solution 2 Opérationnelle - Fonction classique traitée avec "bind" pour le "this" de la CallBack
-    // -------------------------------------------------------------------------
-    // DBMgr.prototype.xxx = function(err,db){
-    //     if (err) {
-    //         console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
-    //         throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
-    //     } else {  
-    //         this.myDB = db;                                                                   // Conservation de l'instance de BDD
-    //         this.memberCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
-    //         console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');
-    //     }
-    // }
-    // -------------------------------------------------------------------------
-    // DBMgr.prototype.checkDBConnect = function(){
-    //     mongoDB.MongoClient.connect("mongodb://localhost:27017/TourDeFrance", this.xxx.bind(this));
-    // }
-    
-    // -------------------------------------------------------------------------
-    // Solution 0 NON-OPERATIONNELLE dans le cadre d'un objet car Probleme de MAJ 
-    // du "This" de l'objet car conflit avec le "this" de la CallBack
-    // -------------------------------------------------------------------------
-    //     DBMgr.prototype.checkDBConnect = function(){
-    //         mongoDB.MongoClient.connect("mongodb://localhost:27017/TourDeFrance", function(err,db){
-    //             if (err) {
-    //                 console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
-    //                 throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
-    //             } else {  
-    //                 this.myDB = db;                                                                   // Conservation de l'instance de BDD
-    //                 this.memberCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
-    //                 console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');
-    //             }
-    //         });
-    //     }
-    // }
 }
-
-    // -------------------------------------------------------------------------
-    // Solution 3 en chantier avec les "Promesses" -A finaliser...
-    // -------------------------------------------------------------------------
-    // DBMgr.prototype.myConnect = function(url){
-    //     return new Promise(function (ok, ko){
-    //         mongoDB.MongoClient.connect(url,function(err,db){
-    //             if (err){
-    //                 ko(err)
-    //             } else {
-    //                 ok({
-    //                     this.myDB : db,
-    //                     this.memberCollection : this.myDB.db('TourDeFrance').collection('joueurs'),       // On sélectionne la collection des joueurs
-
-    //                 })
-    //             }
-    //         })
-    //     })
-    // }
-    // -------------------------------------------------------------------------
-    // DBMgr.prototype.myConnect("mongodb://localhost:27017/TourDeFrance")
-    // .then (function (
-    //     // this.myDB = db;                                                                   // Conservation de l'instance de BDD
-    //     // this.memberCollection = this.myDB.db('TourDeFrance').collection('joueurs');       // On sélectionne la collection des joueurs
-    //     console.log('La BDD "TourDeFrance" - Collection "Joueurs" est bien lancée et tourne');
-    // ))
-    // .catch(){
-    //     console.log('Base de données inaccessible, le jeu ne peut pas se lancer');
-    //     throw "Base de données inaccessible, le jeu ne peut pas se lancer, contacter l\'Administrateur système";
-    // }
 
 

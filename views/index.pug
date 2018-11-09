@@ -72,7 +72,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
           span#idMemberName.fa.fa-user
         .dropdown-menu(aria-labelledby='templates-dropdown')
-          a.dropdown-item(href='template-1.html') Renseignements
+          a#idCompte.dropdown-item(href='#idModalCompte' data-toggle='modal' data-target='#idModalCompte') Renseignements
           a.dropdown-item(href='template-2.html') Pr&eacute;f&eacute;rences
           hr
           a.dropdown-item(href='template-4.html') Administration
@@ -151,7 +151,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
 // "idModalBodyText" sont alimentés par javascript
 // ***********************************************************************************
-#idGenericModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
+#idGenericModal.modal(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idGenericModalHeader.modal-header
@@ -165,7 +165,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 // Fenêtre Modale Login
 // *************************************************************************
-#idModalLogin.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
+#idModalLogin.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLoginHeader.modal-header
@@ -191,7 +191,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 // Fenêtre Modale Inscription
 // *************************************************************************
-#idModalSignIn.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
+#idModalSignIn.modal(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalSignInHeader.modal-header
@@ -223,7 +223,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 // Fenêtre Modale de Mot de passe perdu
 // *************************************************************************
-#idModalLostPWD.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
+#idModalLostPWD.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLostPWDHeader.modal-header
@@ -245,15 +245,224 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           .modal-footer
             button#idLostPWDBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
 // *************************************************************************
-// Vérification Javascript activé + chargement des librairies
+// Fenêtre Modale de renseignements
 // *************************************************************************
-noscript
-  p Veuillez activer JavaScript
-script(src='static/js/jquery-3.3.1.slim.min.js')
-script(src='static/js/popper.min.js')
-script(src='static/js/bootstrap.min.js')
-script(src='/socket.io/socket.io.js')
-script(src='/static/js/toolBox.js')
-script(src='/static/js/variables.js')
-script(src='/static/js/SPAMgr.js')
-script(src='/static/js/MemberClientSide.js')
+#idModalCompte.modal(tabindex='-1' role='dialog' aria-labelledby='idModalCompteTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered(role='document' style='max-width: 900px!important;')
+    .modal-content
+      #idModalCompteHeader.modal-header
+        h5.modal-title Renseignements personnels
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      .modal-body
+        .py-5.text-center
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+          h2 Saisie des renseignements personnels
+          p.lead
+            | Ces informations, optionnelles, vont permettre aux autres internautes de conna&icirc;tre votre r&eacute;gion, ou vos centre d\&apos;int&eacute;r&ecirc;ts, vos types de collections pr&eacute;f&eacute;r&eacute;es par exemple...
+          .row.justify-content-around
+            // <div class="col-md-4 order-md-2 mb-4">
+            //
+              <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted">Your cart</span>
+              <span class="badge badge-secondary badge-pill">3</span>
+              </h4>
+              <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+              <h6 class="my-0">Product name</h6>
+              <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$12</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+              <h6 class="my-0">Second product</h6>
+              <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$8</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+              <h6 class="my-0">Third item</h6>
+              <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$5</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+              <h6 class="my-0">Promo code</h6>
+              <small>EXAMPLECODE</small>
+              </div>
+              <span class="text-success">-$5</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>$20</strong>
+              </li>
+              </ul>
+            //
+              <form class="card p-2">
+              <div class="input-group">
+              <input type="text" class="form-control" placeholder="Promo code">
+              <div class="input-group-append">
+              <button type="submit" class="btn btn-secondary">Redeem</button>
+              </div>
+              </div>
+              </form>
+            // </div>
+            .col-md-12.order-md-1
+              // <h4 class="mb-3">Billing address</h4>
+              form.needs-validation(novalidate='')
+                .row
+                  .col-md-6.mb-3
+                    label(for='firstName') First name
+                    input#firstName.form-control(type='text' placeholder='' value='' required='')
+                    .invalid-feedback
+                      | Valid first name is required.
+                  .col-md-6.mb-3
+                    label(for='lastName') Last name
+                    input#lastName.form-control(type='text' placeholder='' value='' required='')
+                    .invalid-feedback
+                      | Valid last name is required.
+                .mb-3
+                  label(for='username') Username
+                  .input-group
+                    .input-group-prepend
+                      span.input-group-text @
+                    input#username.form-control(type='text' placeholder='Username' required='')
+                    .invalid-feedback(style='width: 100%;')
+                      | Your username is required.
+                .mb-3
+                  label(for='email')
+                    | Email 
+                    span.text-muted (Optional)
+                  input#email.form-control(type='email' placeholder='you@example.com')
+                  .invalid-feedback
+                    | Please enter a valid email address for shipping updates.
+                .mb-3
+                  label(for='address') Address
+                  input#address.form-control(type='text' placeholder='1234 Main St' required='')
+                  .invalid-feedback
+                    | Please enter your shipping address.
+                .mb-3
+                  label(for='address2')
+                    | Address 2 
+                    span.text-muted (Optional)
+                  input#address2.form-control(type='text' placeholder='Apartment or suite')
+                .row
+                  .col-md-5.mb-3
+                    label(for='country') Country
+                    select#country.custom-select.d-block.w-100(required='')
+                      option(value='') Choose...
+                      option United States
+                    .invalid-feedback
+                      | Please select a valid country.
+                  .col-md-4.mb-3
+                    label(for='state') State
+                    select#state.custom-select.d-block.w-100(required='')
+                      option(value='') Choose...
+                      option California
+                    .invalid-feedback
+                      | Please provide a valid state.
+                  .col-md-3.mb-3
+                    label(for='zip') Zip
+                    input#zip.form-control(type='text' placeholder='' required='')
+                    .invalid-feedback
+                      | Zip code required.
+                hr.mb-4
+                .custom-control.custom-checkbox
+                  input#same-address.custom-control-input(type='checkbox')
+                  label.custom-control-label(for='same-address') Shipping address is the same as my billing address
+                .custom-control.custom-checkbox
+                  input#save-info.custom-control-input(type='checkbox')
+                  label.custom-control-label(for='save-info') Save this information for next time
+                hr.mb-4
+                h4.mb-3 Payment
+                .d-block.my-3
+                  .custom-control.custom-radio
+                    input#credit.custom-control-input(name='paymentMethod' type='radio' checked='' required='')
+                    label.custom-control-label(for='credit') Credit card
+                  .custom-control.custom-radio
+                    input#debit.custom-control-input(name='paymentMethod' type='radio' required='')
+                    label.custom-control-label(for='debit') Debit card
+                  .custom-control.custom-radio
+                    input#paypal.custom-control-input(name='paymentMethod' type='radio' required='')
+                    label.custom-control-label(for='paypal') Paypal
+                .row
+                  .col-md-6.mb-3
+                    label(for='cc-name') Name on card
+                    input#cc-name.form-control(type='text' placeholder='' required='')
+                    small.text-muted Full name as displayed on card
+                    .invalid-feedback
+                      | Name on card is required
+                  .col-md-6.mb-3
+                    label(for='cc-number') Credit card number
+                    input#cc-number.form-control(type='text' placeholder='' required='')
+                    .invalid-feedback
+                      | Credit card number is required
+                .row
+                  .col-md-3.mb-3
+                    label(for='cc-expiration') Expiration
+                    input#cc-expiration.form-control(type='text' placeholder='' required='')
+                    .invalid-feedback
+                      | Expiration date required
+                  .col-md-3.mb-3
+                    label(for='cc-expiration') CVV
+                    input#cc-cvv.form-control(type='text' placeholder='' required='')
+                    .invalid-feedback
+                      | Security code required
+                p#idCompteAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
+                hr.mb-4
+                button.btn.btn-primary.btn-lg.btn-block(type='submit') Continue to checkout
+          footer.my-5.pt-5.text-muted.text-center.text-small
+            p.mb-1 &copy; 2017-2018 Company Name
+            ul.list-inline
+              li.list-inline-item
+                a(href='#') Privacy
+              li.list-inline-item
+                a(href='#') Terms
+              li.list-inline-item
+                a(href='#') Support
+  |  --&gt;
+  // </div>
+  // </div>
+  // *************************************************************************
+  // Footer
+  // *************************************************************************
+  footer.footer
+    .container
+      span.bg-dabger Place sticky footer content here.
+  // *************************************************************************
+  // Vérification Javascript activé + chargement des librairies
+  // *************************************************************************
+  noscript
+    p Veuillez activer JavaScript
+  script(src='static/js/jquery-3.3.1.slim.min.js')
+  script(src='static/js/popper.min.js')
+  script(src='static/js/bootstrap.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/static/js/toolBox.js')
+  script(src='/static/js/variables.js')
+  script(src='/static/js/SPAMgr.js')
+  script(src='/static/js/MemberClientSide.js')
+  //
+    <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+    form.addEventListener('submit', function(event) {
+    if (form.checkValidity() === false) {
+    event.preventDefault();
+    event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+    }, false);
+    });
+    }, false);
+    })();
+    </script>
