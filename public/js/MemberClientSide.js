@@ -139,6 +139,7 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
         pHeader.classList.remove('bg-warning');    // Jaune Or               
         pHeader.classList.add('bg-success');
         pHeader.classList.add('txt-yellow-stroke');
+        return
     }
 }
 

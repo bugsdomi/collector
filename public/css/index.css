@@ -179,24 +179,31 @@ body {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); 
 } 
 
+/* ******************************* */
+/* Gestion des radio-Button        */
+/* ******************************* */
 
+.vertical-radio-buttons div {
+    display: block;
+    padding: 0 0 5px 5px;
+    clear: both;
+}
 
+.vertical-radio-buttons span {
+    display: block;
+    padding-left: 20px;
+    cursor: inherit;
+}
 
+.vertical-radio-buttons label {
+    font-size: rem-calc(16);
+}
 
-
-
-
-
-
-
-.container {
-    max-width: 960px;
-  }
-  
-  .border-top { border-top: 1px solid #e5e5e5; }
-  .border-bottom { border-bottom: 1px solid #e5e5e5; }
-  .border-top-gray { border-top-color: #adb5bd; }
-  
-  .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
-  
-  .lh-condensed { line-height: 1.25; }
+.vertical-radio-buttons input {
+    float: left;
+    width: 20px;
+    margin-left: -20px;
+    margin-top: 6px;            /* vertically align radio button with text */
+    padding: 0;
+    -webkit-appearance: radio;
+}

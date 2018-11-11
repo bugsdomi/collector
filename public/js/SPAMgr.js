@@ -279,7 +279,6 @@ window.addEventListener('DOMContentLoaded', function(){
         vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
         vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                     
     });
-
     // -------------------------------------------------------------------------
     // Eléments de champs de saisie de la Form de Login
     // -------------------------------------------------------------------------
@@ -292,14 +291,12 @@ window.addEventListener('DOMContentLoaded', function(){
     vMemberClient.giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
     vMemberClient.giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
 
-    idConnexion.addEventListener('click', function(){
+    vConnexion.addEventListener('click', function(){
         vLoginForm.idLoginPseudo.value = '';                                 
         vLoginForm.idLoginPassword.value = '';
         vLoginAlertMsg.style.visibility = 'hidden';  
         vMemberClient.InitHeaderColor('bg-warning', vModalLoginHeader);
     });
-
-
     // -------------------------------------------------------------------------
     // Eléments de champs de saisie de la Form de Création de compte (SignIn)
     // -------------------------------------------------------------------------
@@ -319,24 +316,24 @@ window.addEventListener('DOMContentLoaded', function(){
     vSignInConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};     //
 
     // -------------------------------------------------------------------------
-    // Eléments de champs de saisie de la Form de renseignements (Compte)
+    // Eléments de champs de saisie de la Form de renseignements (Account)
     // -------------------------------------------------------------------------
-    // var vCompteForm = document.getElementById('idCompteForm');
-    var vCompte = document.getElementById('idCompte');
-    var vModalCompteHeader = document.getElementById('idModalCompteHeader');
-    var vCompteAlertMsg = document.getElementById('idCompteAlertMsg');
-    // var vComptePassword = document.getElementById('idComptePassword');
-    // var vCompteConfirmPassword = document.getElementById('idCompteConfirmPassword');
+    // var vAccountForm = document.getElementById('idAccountForm');
+    var vAccount = document.getElementById('idAccount');
+    var vModalAccountHeader = document.getElementById('idModalAccountHeader');
+    var vAccountAlertMsg = document.getElementById('idAccountAlertMsg');
+    // var vAccountPassword = document.getElementById('idAccountPassword');
+    // var vAccountConfirmPassword = document.getElementById('idAccountConfirmPassword');
     
-    // vMemberClient.giveFocusToModalFirstField('idModalCompte', 'idCompteEmail');                                               
+    // vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountEmail');                                               
 
-    vCompte.addEventListener('click', function(){
-        // initModalCompte(vCompteForm, vCompteAlertMsg, vModalCompteHeader);
-        initModalCompte(vCompteAlertMsg, vModalCompteHeader);
+    vAccount.addEventListener('click', function(){
+        // initModalAccount(vAccountForm, vAccountAlertMsg, vModalAccountHeader);
+        initModalAccount(vModalAccountHeader);
     });
 
-    // vComptePassword.onchange = function(){vMemberClient.validatePassword(vComptePassword, vCompteConfirmPassword)};           // Vérification que les MDP sont identiques
-    // vCompteConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vComptePassword, vSignInConfirmPassword)};     //
+    // vAccountPassword.onchange = function(){vMemberClient.validatePassword(vAccountPassword, vAccountConfirmPassword)};           // Vérification que les MDP sont identiques
+    // vAccountConfirmPassword.onkeyup = function(){vMemberClient.validatePassword(vAccountPassword, vSignInConfirmPassword)};     //
 
     // -------------------------------------------------------------------------
     // Gestion du raccourci de la création de compte
@@ -544,15 +541,15 @@ window.addEventListener('DOMContentLoaded', function(){
         vMemberClient.InitHeaderColor('bg-warning', pModalSignInHeader);
     }
     // -----------------------------------------------------------------------------
-    // Cette fonction initalise la modale de saisie de rrenseignements (Compte) 
+    // Cette fonction initalise la modale de saisie de renseignements (Compte) 
     // -----------------------------------------------------------------------------
-    function initModalCompte(pCompteAlertMsg, pModalCompteHeader){
-        // pCompteForm.idCompteEmail.value = '';                                
-        // pCompteForm.idComptePseudo.value = '';                              
-        // pCompteForm.idComptePassword.value = '';
-        // pCompteForm.idCompteConfirmPassword.value = '';
-        pCompteAlertMsg.style.visibility = 'hidden';                          
-        vMemberClient.InitHeaderColor('bg-warning', pModalCompteHeader);
+    function initModalAccount(pModalAccountHeader){
+        // pAccountForm.idAccountEmail.value = '';                                
+        // pAccountForm.idAccountPseudo.value = '';                              
+        // pAccountForm.idAccountPassword.value = '';
+        // pAccountForm.idAccountConfirmPassword.value = '';
+// pAccountAlertMsg.style.visibility = 'hidden';                          
+        vMemberClient.InitHeaderColor('bg-warning', pModalAccountHeader);
     }
     // -----------------------------------------------------------------------------
 }); // Fin de la Boucle "DOMContentLoaded"

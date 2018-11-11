@@ -1,4 +1,3 @@
-const DBMgr = require('./dbMgr');
 const express = require('express');
 const SocketIo = require('socket.io');
 const MemberServer = require('./MemberServerSide');
@@ -6,7 +5,7 @@ const MemberServer = require('./MemberServerSide');
 // -------------------------------------------------------------------------
 // Initilisations des variables, structures, constantes...
 // -------------------------------------------------------------------------
-let vMemberServer;       // Insta,ciation de l'objet "Members" qui gère toutes lesz fonctions liées aux membres
+let vMemberServer = new MemberServer();     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
 // -------------------------------------------------------------------------
 // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
 // mais en tout état de cause, normalement, professionnellement, je devrais 
@@ -14,13 +13,8 @@ let vMemberServer;       // Insta,ciation de l'objet "Members" qui gère toutes 
 // contexte ultra-limité de cet atelier, ce n'est pas nécessaire
 // Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
 // -------------------------------------------------------------------------
-let vDBMgr = new DBMgr();       // Instanciation de la base de données
-vDBMgr.checkDBConnect()
-    .then(result => {
-        vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
-        vMemberServer.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
-    // });
-
+vMemberServer.checkDBConnect();
+    
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
 // Création des routes ExppressJS, car je vais utiliser cet outil pour transferer
@@ -80,4 +74,3 @@ console.log('disconnect')
     });
 });
 
-});

@@ -29,24 +29,7 @@ module.exports = function DBMgr(){
     // "TourDeFrance" est accessible (avec stockage de sa référence), sinon, 
     // message d'avertissement pour l'Admin  système et fin directe du programme
     // -------------------------------------------------------------------------
-    // Solution 1 Opérationnelle - Fonction CallBack traitée avec "Fonction 
-    // Flèche" pour le "this" de la CallBack
-    // -------------------------------------------------------------------------
-    // DBMgr.prototype.checkDBConnect = function(){
-    //     mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (error,db) => {
-    //         if (error) {
-    //             console.log('Base de données inaccessible, l\'application "Collector" ne peut pas se lancer');
-    //             console.log('Description de l\'erreur : ',error);
-    //             throw 'Base de données inaccessible, l\'application "Collector" ne peut pas se lancer, contacter l\'Administrateur système';
-    //         } 
-            
-    //         this.myDB = db;                                                                         // Conservation de l'instance de BDD
-    //         this.collectionMembers = this.myDB.db('collect-or').collection('members');              // On sélectionne la collection des joueurs
-    //         this.collectionTechnical = this.myDB.db('collect-or').collection('technical');          // On sélectionne la collection des données techniques
-    //         console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');    // Message de notification BDD OK à destination de l'Admin 
-    //     });
-    // }
-    DBMgr.prototype.checkDBConnect = function(){
+    DBMgr.prototype.checkDBConnectPromise = function(){
         return new Promise((resolve, reject) => {
             mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (error,db) => {
                 if (error) {
@@ -60,10 +43,18 @@ module.exports = function DBMgr(){
                 this.myDB = db;                                                                         // Conservation de l'instance de BDD
                 this.collectionMembers = this.myDB.db('collect-or').collection('members');              // On sélectionne la collection des joueurs
                 this.collectionTechnical = this.myDB.db('collect-or').collection('technical');          // On sélectionne la collection des données techniques
-                console.log('La BDD "collect-or" - Collection "membres" est bien lancée et tourne');    // Message de notification BDD OK à destination de l'Admin 
+                console.log('La BDD "collect-or" est bien lancée et tourne');    // Message de notification BDD OK à destination de l'Admin 
             });
         });
     }
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // Point d'appel pour la fonction d'ouvertureb de la BDD en mode 'async / await'
+    // ---------------------------------------------------------------------------------------------------------------------------
+    DBMgr.prototype.checkDBConnect = async () => {
+        var result = await (this.checkDBConnectPromise());
+        return result;
+    };
+    // ------------------------------------------- Fin du module -------------------------------------------------------------------------
 }
 
 

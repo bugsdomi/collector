@@ -14,6 +14,9 @@
 // *************************************************************************
 // -------------------------------------------------------------------------
 
+const DBMgr = require('./dbMgr');
+let vDBMgr = new DBMgr();       // Instanciation de l'objet descrivant l'ensemble des joueurs et les méthodes de gestion de ces joueurs
+
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -25,8 +28,7 @@ const constFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN
 const constNextCharString = constFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
 
 
-module.exports = function MemberServer(pDBMgr){   // Fonction constructeur exportée
-    this.DBMgr = pDBMgr;
+module.exports = function MemberServer(){   // Fonction constructeur exportée
     this.objectFound;                               // Objet d'accueil utilisé lors de la recherche d'un objet dans la table des membres
     this.newPassword;                               // Variable de stockage provisoire du nouveau mot de passe créé
     this.nbrPublicMsgs;                             // Nbre de messages publics
@@ -75,7 +77,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
         return new Promise((resolve, reject) => {
-            this.DBMgr.collectionMembers.find(
+            vDBMgr.collectionMembers.find(
                 { 
                     "pseudo": pVisiteurLoginData.pseudo, 
                     "password": pVisiteurLoginData.password, 
@@ -146,7 +148,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.updatePasswordInBDD = function(){
-        this.DBMgr.collectionMembers.updateOne(
+        vDBMgr.collectionMembers.updateOne(
         { 
             "email": this.member.email, 
         },
@@ -167,7 +169,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
-        this.DBMgr.collectionMembers.find(
+        vDBMgr.collectionMembers.find(
         { 
             "email": pLostPWDEmail, 
         }).toArray((error, documents) => {
@@ -236,7 +238,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             nbrPublicMsgs : 0,                                       
         }
 
-        this.DBMgr.collectionTechnical.insertOne(techniqualRecord, (error, result) => {
+        vDBMgr.collectionTechnical.insertOne(techniqualRecord, (error, result) => {
             if (error){
                 console.log('Erreur d\'insertion dans la collection \'Technical\' : ',techniqualRecord);   // Si erreur technique... Message et Plantage
                 throw error;
@@ -258,7 +260,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     MemberServer.prototype.addMemberInDatabase = function(pMember, pWebSocketConnection, pSocketIo){
         var myRole;
 
-        this.DBMgr.collectionMembers.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
+        vDBMgr.collectionMembers.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
             if (error){
                 console.log('Erreur de comptage dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
                 throw error;
@@ -280,7 +282,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                 dateCreation    : new Date(),         // Timestamp de la création du record
             }
 
-            this.DBMgr.collectionMembers.insertOne(memberLocal, (error, result) => {
+            vDBMgr.collectionMembers.insertOne(memberLocal, (error, result) => {
                 if (error){
                     console.log('Erreur d\'insertion dans la collection \'membres\' : ',memberLocal);   // Si erreur technique... Message et Plantage
                     throw error;
@@ -314,7 +316,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     // - Sinon, on le rejette 
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.checkVisitorSignInISValid = function(pVisiteurSignInData, pWebSocketConnection, pSocketIo){
-        this.DBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
+        vDBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
         { 
             "email": pVisiteurSignInData.email, 
         })
@@ -331,7 +333,7 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
             }
 
             // Le mail n a pas été trouvé, on vérifie maintenant la non-existence du Pseudo
-            this.DBMgr.collectionMembers.find(                  
+            vDBMgr.collectionMembers.find(                  
             { 
                 "pseudo": pVisiteurSignInData.pseudo, 
             })
@@ -403,10 +405,10 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Au lancement du serveur, on tente de lire le Nbre de messages publics stockés dans la BDD, si KO, on initialise a 0
-    // On en porofite poour initialiser toutes les variables de population à 0
+    // On en profite poour initialiser toutes les variables de population à 0
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.initNbrPublicMsgs = function(pSocketIo){
-        this.DBMgr.collectionTechnical.find()
+    MemberServer.prototype.initNbrPublicMsgs = function(){
+        vDBMgr.collectionTechnical.find()
         .limit(1)
         .toArray((error, documents) => {
             if (error) {
@@ -420,10 +422,23 @@ module.exports = function MemberServer(pDBMgr){   // Fonction constructeur expor
                 this.nbrPublicMsgs = 0;
             }
 
-            // this.objectPopulation.nbrConnections = 0;
-            // this.objectPopulation.nbrMembersInSession = 0;
-            // this.objectPopulation.nbrAdminsInSessions = 0;
+            this.objectPopulation.nbrConnections = 0;
+            this.objectPopulation.nbrMembersInSession = 0;
+            this.objectPopulation.nbrAdminsInSessions = 0;
         });
     }
+    // -------------------------------------------------------------------------
+    // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
+    // mais en tout état de cause, normalement, professionnellement, je devrais 
+    // m'assurer qu'elle est toujours accessible en cours de partie, mais dans le 
+    // contexte ultra-limité de cet atelier, ce n'est pas nécessaire
+    // Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
+    // -------------------------------------------------------------------------
+    MemberServer.prototype.checkDBConnect = function(){
+        vDBMgr.checkDBConnect()
+        .then(() => {
+            this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
+        })
+    };
     // ------------------------------------------- Fin du module -------------------------------------------------------------------------
 }
