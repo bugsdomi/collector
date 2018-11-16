@@ -158,9 +158,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     this.objectPopulation.members[myIndex].email        = this.member.email;
                     this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
                     this.objectPopulation.members[myIndex].password     = this.member.password;
-// this.objectPopulation.members[myIndex].oldPassword  = this.member.oldPassword;
                     this.objectPopulation.members[myIndex].role         = this.member.role;                            // Membre, Admin ou SuperAdmin
-// this.objectPopulation.members[myIndex].dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
 
                     this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
                     pWebSocketConnection.emit('welcomeMember',this.member);                    // On transmet au client les données du membre 
@@ -200,7 +198,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     MemberServer.prototype.updateDataInBDD = function(pDataSet){
         vDBMgr.collectionMembers.updateOne(
         { 
-            "email": this.member.email, 
+            "email": pDataSet.email, 
         },
         {$set:  pDataSet
         }, (error) => {
@@ -237,7 +235,9 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
             this.buildAndSendNewPWD();
 
             let myDataSet = 
-            {   oldPassword : this.member.password,
+            {   
+                email       : this.member.email,
+                oldPassword : this.member.password,
                 password    : this.newPassword,
             }
             this.updateDataInBDD(myDataSet);
@@ -290,7 +290,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
             nbrPublicMsgs : 0,                                       
         }
 
-        vDBMgr.collectionTechnical.insertOne(techniqualRecord, (error, result) => {
+        vDBMgr.collectionTechnical.insertOne(techniqualRecord, (error) => {
             if (error){
                 console.log('Erreur d\'insertion dans la collection \'Technical\' : ',techniqualRecord);   // Si erreur technique... Message et Plantage
                 throw error;
@@ -465,6 +465,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
 
         let myDataSet = 
         {
+            email              : pDataProfilMembre.email, 
             presentation       : pDataProfilMembre.presentation,                    // Texte de présentation du membre
             etatCivil : 
             {
@@ -504,6 +505,15 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
         this.objectPopulation.members.splice(myIndex, 1);   // Efface l'occurence du membre du tableau des membres connectés
         this.objectPopulation.nbrConnections--;
         this.UpdateDisplayPopulation(pSocketIo);
+
+        console.log('--------------------------------------------------------------------------------------------------------------------')
+        console.log('disconnectMember - 000 - : this.objectPopulation.members.length : ',this.objectPopulation.members.length,
+                    '--- Nbre de visiteurs : ', this.objectPopulation.nbrConnections,
+                    '--- Nbre de membres : ',this.objectPopulation.nbrMembersInSession,
+                    '--- Nbre d\'Admin : ',this.objectPopulation.nbrAdminsInSessions,
+                    '--- pWebSocketConnection.id : ',pWebSocketConnection.id);
+        console.log('--------------------------------------------------------------------------------------------------------------------')
+
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Initialisation d'un visiteur :

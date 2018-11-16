@@ -131,20 +131,24 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     vToolBox = new ToolBox();
     var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
-    var siofu = new SocketIOFileUpload(webSocketConnection);
     
-    // Do something on upload progress:
-    siofu.addEventListener("progress", function(event){
-        var percent = event.bytesLoaded / event.file.size * 100;
-        console.log("File is", percent.toFixed(2), "percent loaded");
-    });
 
-    // Do something when a file is uploaded:
+    // -------------------------------------------------------------------------
+    // Eléments du UpLoader
+    // -------------------------------------------------------------------------
+    var siofu = new SocketIOFileUpload(webSocketConnection);
+
     siofu.addEventListener("complete", function(event){
         console.log(event.success);
         console.log(event.file);
     });
 
+    // Do something on upload progress:
+    siofu.addEventListener("progress", function(event){
+        var percent = event.bytesLoaded / event.file.size * 100;
+        console.log("File is", percent.toFixed(2), "percent loaded");
+    });
+    
     // -------------------------------------------------------------------------
     // Eléments de menu
     // -------------------------------------------------------------------------
@@ -275,6 +279,22 @@ window.addEventListener('DOMContentLoaded', function(){
     vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');    
 
     // -------------------------------------------------------------------------
+    // Eléments du UpLoader
+    // -------------------------------------------------------------------------
+    var siofu = new SocketIOFileUpload(webSocketConnection);
+
+    siofu.addEventListener("progress", function(event){
+        var percent = event.bytesLoaded / event.file.size * 100;
+        console.log("File is", percent.toFixed(2), "percent loaded");
+    });
+
+    siofu.addEventListener("complete", function(event){
+        console.log(event.success);
+        console.log(event.file);
+    });
+
+    
+    // -------------------------------------------------------------------------
     // MAJ en temps réel du champ age dès qu'il y a une modification de la date de naissance
     // -------------------------------------------------------------------------
     vAccountBirthDate.addEventListener('click', function(){
@@ -302,36 +322,8 @@ window.addEventListener('DOMContentLoaded', function(){
     // Initialise l'Uploader d'images vers le serveur
     // -------------------------------------------------------------------------
     vAccountPhotoFile.addEventListener("change", function(){
-
-// siofu.listenOnSubmit(vAccountBtn, vAccountPhotoFile);
-
-
-console.log('vAccountPhotoFile.addEventListener("change") - 002 - vAccountPhotoFile.value : ',vAccountPhotoFile.value)
         vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
-console.log('vAccountPhotoFile.addEventListener("change") - 003 - vAccountPhotoImg.getAttribute("src") : ',vAccountPhotoImg.getAttribute('src'));        
-console.log('vAccountPhotoFile.addEventListener("change") - 004 - vAccountPhotoFile.files[0] : ',vAccountPhotoFile.files[0]);        
-
-
-        // siofu.prompt();
     }, false);
-
-//     vAccountPhotoFile.addEventListener("click", function(event){
-
-// // siofu.listenOnSubmit(vAccountBtn, vAccountPhotoFile);
-// event.preventDefault(); 
-
-//         siofu.prompt();
-
-// console.log('vAccountPhotoFile.addEventListener("change") - 002 - vAccountPhotoFile.value : ',vAccountPhotoFile.value)
-// console.log('vAccountPhotoFile.addEventListener("change") - 002 - vAccountPhotoFile.value.files : ',vAccountPhotoFile.value.files)
-        
-// // vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
-
-
-// console.log('vAccountPhotoFile.addEventListener("change") - 003 - vAccountPhotoImg.getAttribute("src") : ',vAccountPhotoImg.getAttribute('src'));        
-// console.log('vAccountPhotoFile.addEventListener("change") - 004 - vAccountPhotoFile.files[0] : ',vAccountPhotoFile.files[0]);        
-
-//     }, false);
 
     // -------------------------------------------------------------------------
     // Initialise les champs de la Modale de saisie des renseignements avec 
@@ -445,9 +437,12 @@ console.log('vAccountPhotoFile.addEventListener("change") - 004 - vAccountPhotoF
     vAccountForm.addEventListener('submit', function (event){ 
         event.preventDefault();        
 
-        if (vAccountPhotoFile.value.length){        // Si une image a été choisie
-            vMemberClient.member.etatCivil.photo = vAccountPhotoFile.value.split('C:\\fakepath\\')[1];
-            siofu.submitFiles(vAccountPhotoFile.files);  // Alors on la transfère vers le serveur
+console.log('submit 001 - vMemberClient.member : ',vMemberClient.member);
+
+
+        if (vAccountPhotoFile.value.length){                                                                        // Si une image a été choisie 
+            vMemberClient.member.etatCivil.photo = vAccountPhotoFile.value.split('C:\\fakepath\\')[1];              // On ne garde que le nom de l'image pour la BDD
+            siofu.submitFiles(vAccountPhotoFile.files);                                                             // Alors on la transfère vers le serveur
         } else {
             vMemberClient.member.etatCivil.photo = vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 
         }
@@ -468,7 +463,7 @@ console.log('vAccountPhotoFile.addEventListener("change") - 004 - vAccountPhotoF
 // vMemberClient.member.role            : 0,        // 4 --> Membre, 2 --> Admin ou 1 --> SuperAdmin
 
         // vMemberClient.presentation           = vAccountForm.vPresentation.value;
-console.log('submit 001 - vMemberClient.member : ',vMemberClient.member);
+console.log('submit 002 - vMemberClient.member : ',vMemberClient.member);
 
 
 //         vMemberClient.member.etatCivil.name         = vAccountName;
@@ -651,7 +646,7 @@ console.log('welcomeMember - 001 - this.member : ',vMemberClient.member);
     // -----------------------------------------------------------------------------
     function initModalAccount(pAccountForm, pAccountAlertMsg, pModalAccountHeader){
 //  XXXXXXXXXXXXXX Alimenter tous les champs
-console.log('initModalAccount - 000 - vMemberClient.member.pseudo : ',vMemberClient.member.pseudo)
+console.log('initModalAccount - 000 - vMemberClient.member : ',vMemberClient.member)
 
         pAccountForm.idAccountEmail.value  = vMemberClient.member.email;                                
         pAccountForm.idAccountPseudo.value = vMemberClient.member.pseudo;     

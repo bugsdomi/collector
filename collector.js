@@ -42,6 +42,8 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // Fin de la partie HTTP - Début de la partie WebSocket avec "Socket.io"
 // ------------------------------------------------------------
 
+const uploader = new SocketIOFileUpload();
+uploader.dir = path.join(__dirname, '/public/images/members');
 
 
 // -------------------------------------------------------------------------
@@ -50,23 +52,17 @@ const server = app.listen(process.env.PORT || 3000, function() {
 let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
-    // Make an instance of SocketIOFileUpload and listen on this socket:
+    console.log('Connection')        
 
-    const uploader = new SocketIOFileUpload();
-    uploader.dir = path.join(__dirname, '/public/images/members');
     uploader.listen(webSocketConnection);
 
-    // Do something when a file is saved:
-    uploader.on("saved", function(event){
-        console.log(event.file);
-    });
+    // uploader.on("saved", function(event){
+    //     console.log(event.file);
+    // });
 
-    // Error handler:
-    uploader.on("error", function(event){
-        console.log("Error from uploader", event);
-    });
-
-
+    // uploader.on("error", function(event){
+    //     console.log("Error from uploader", event);
+    // });
 
     vMemberServer.initVisiteur(webSocketConnection, socketIo);    
     
@@ -92,11 +88,9 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
         vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection)
     });
 
-    
-
     // Un membre se déconnecte
     webSocketConnection.on('disconnect', function() {
-console.log('disconnect')        
+        console.log('disconnect')        
         vMemberServer.disconnectMember(webSocketConnection, socketIo);
     });
 });
