@@ -1,7 +1,8 @@
 const express = require('express');
+const path = require('path');
 const SocketIo = require('socket.io');
 const MemberServer = require('./MemberServerSide');
-
+const SocketIOFileUpload = require('socketio-file-upload');
 // -------------------------------------------------------------------------
 // Initilisations des variables, structures, constantes...
 // -------------------------------------------------------------------------
@@ -14,7 +15,7 @@ let vMemberServer = new MemberServer();     // Instanciation de l'objet decrivan
 // Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
 // -------------------------------------------------------------------------
 vMemberServer.checkDBConnect();
-    
+
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
 // Création des routes ExppressJS, car je vais utiliser cet outil pour transferer
@@ -22,6 +23,7 @@ vMemberServer.checkDBConnect();
 // l'affichage
 // -------------------------------------------------------------------------
 const app = express();
+app.use(SocketIOFileUpload.router);
 app.set('view engine', 'pug');
 app.use('/static', express.static(__dirname + '/public'));
 app.use('/staticNodeModules', express.static(__dirname + '/node_modules'));
@@ -48,11 +50,29 @@ const server = app.listen(process.env.PORT || 3000, function() {
 let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
+    // Make an instance of SocketIOFileUpload and listen on this socket:
+
+    const uploader = new SocketIOFileUpload();
+    uploader.dir = path.join(__dirname, '/public/images/members');
+    uploader.listen(webSocketConnection);
+
+    // Do something when a file is saved:
+    uploader.on("saved", function(event){
+        console.log(event.file);
+    });
+
+    // Error handler:
+    uploader.on("error", function(event){
+        console.log("Error from uploader", event);
+    });
+
+
+
     vMemberServer.initVisiteur(webSocketConnection, socketIo);    
     
     // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
     webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-        vMemberServer.visitorTryToLogin(pVisiteurLoginData, webSocketConnection, socketIo)
+        vMemberServer.visitorBecomeMember(pVisiteurLoginData, webSocketConnection, socketIo)
         .then((result) => {
         });
     });
@@ -62,10 +82,17 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
         vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo)
     });    
 
+    // On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
+    webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
+        vMemberServer.addDataProfilMembre(pDataProfilMembre,)
+    });    
+
     // On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
     webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
         vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection)
     });
+
+    
 
     // Un membre se déconnecte
     webSocketConnection.on('disconnect', function() {

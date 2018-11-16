@@ -82,3 +82,35 @@ ToolBox.prototype.simpleRefreshScreen = function(){
     self.location.reload();                                 // Régénération de l'écran from scratch;
     // window.location.assign(window.location.href)
 }
+// -----------------------------------------------------------------------------
+// Cette fonction calcule l'age en fonction de la date de naissance et du jour actuel
+// Si pAgeSeulement = true --> permet de ne retourner que l'age seulement
+// Sinon, c'est l'age concaténé avec 'ans'
+// -----------------------------------------------------------------------------
+ToolBox.prototype.calculeAge = function(pBirthDate, pAgeSeulement){
+    var today   = new Date();
+    var annee   = pBirthDate.substr(0,4); 
+    var mois    = pBirthDate.substr(5,2);
+    var day     = pBirthDate.substr(8,2); 
+    var age     = today.getFullYear() - annee; 
+
+    var nbreMois = today.getMonth() - mois; // On calcul  le mois de la date - le mois de la date de naissance
+
+    if (nbreMois < 0){
+        age--;
+    } else {
+        if(nbreMois === 0){
+            var nbreJours = today.getDay() - day;
+            if(nbreJours < 0){
+                age--;
+            }
+        }
+    }
+
+    if (!pAgeSeulement){
+        return age = age < 2 ? age += ' an' : age += ' ans';
+    } else {
+        return age;
+    }
+}
+

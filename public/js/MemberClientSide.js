@@ -4,14 +4,64 @@
 // 4 joueurs maximum - 50 pilules pour chacun 
 // -------------------------------------------------------------------------
 
-function MemberClient(pDBMgr){   // Fonction constructeur exportée
-    this.member =                          // Structure du membre
+function MemberClient(){   // Fonction constructeur exportée
+    this.member =                  // Structure du membre
     {   
         email           : '',
         pseudo          : '',
         password        : '',
-        role            : 0,                     // Membre, Admin ou SuperAdmin
-        dateCreation    : -1,                    // Timestamp de la création du record
+        oldPassword     : '',
+        role            : 0,        // 4 --> Membre, 2 --> Admin ou 1 --> SuperAdmin
+        presentation    : '',       // Texte de présentation du membre
+
+        etatCivil : 
+        {
+            photo          : '',    // Emplacement de la photo de profil
+            firstName      : '',    // Prénom
+            name           : '',    // Nom
+            birthDate      : '',    // Date de naissance
+            sex            : 0,     // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
+            address : 
+            {
+                street     : '',    // N° et voie
+                city       : '',    // Ville
+                zipCode    : '',    // Code Postal
+                department : '',    // Département
+            },
+        },
+        preferences : [
+            prefGravures        = false,
+            prefLivres          = false,
+            prefFilms           = false,
+            prefJeux            = false,
+            prefMaquettes       = false,
+            prefFigurines       = false,
+            prefBlindes         = false,
+            prefAvions          = false,
+            prefBateaux         = false,
+            prefDioramas        = false,
+            prefPrehistoire     = false,
+            prefAntiquite       = false,
+            prefMoyenAge        = false,
+            prefRenaissance     = false,
+            prefDentelles       = false,
+            prefAncienRegime    = false,
+            prefRevolution      = false,
+            pref1erEmpire       = false,
+            pref2ndEmpire       = false,
+            prefSecession       = false,
+            prefFarWest         = false,
+            prefWW1             = false,
+            prefWW2             = false,
+            prefContemporain    = false,    
+            prefFuturiste       = false,
+            prefFantastique     = false,
+            prefHFrancaise      = false,
+            prefHAméricaine     = false,
+            prefHInternationale = false,
+            prefAutre           = false,
+        ],
+        dateCreation    : -1,       // Timestamp de la création du record
     }
 }
 
@@ -112,7 +162,6 @@ MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation
 MemberClient.prototype.restartLandingPage = function(){
     vToolBox.simpleRefreshScreen();
 }
-// -------------------------- Fin du module ----------------------------------------
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
@@ -141,6 +190,6 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
         pHeader.classList.add('txt-yellow-stroke');
         return
     }
+    // -------------------------- Fin du module ----------------------------------------------------------------------------
+
 }
-
-

@@ -29,25 +29,75 @@ const constNextCharString = constFirstCharString+'&#$*_-'                       
 
 
 module.exports = function MemberServer(){   // Fonction constructeur exportée
-    this.objectFound;                               // Objet d'accueil utilisé lors de la recherche d'un objet dans la table des membres
-    this.newPassword;                               // Variable de stockage provisoire du nouveau mot de passe créé
-    this.nbrPublicMsgs;                             // Nbre de messages publics
+    this.objectFound;                       // Objet d'accueil utilisé lors de la recherche d'un objet dans la table des membres
+    this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
+    this.nbrPublicMsgs;                     // Nbre de messages publics
 
     this.objectPopulation = 
     {
-        members             : [],                   // Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
-        nbrConnections      : 0,                    // Nbre de connexions actives sans préjuger de leur rôle
-        nbrMembersInSession : 0,                    // ?bre de membres connectés (Membres + Admin)
-        nbrAdminsInSessions : 0,                    // Nombre d'Admins connectés
+        members             : [],   // Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
+        nbrConnections      : 0,    // Nbre de connexions actives sans préjuger de leur rôle
+        nbrMembersInSession : 0,    // ?bre de membres connectés (Membres + Admin)
+        nbrAdminsInSessions : 0,    // Nombre d'Admins connectés
     }
 
-    this.member =                                   // Structure de stockage proviisoire du membre
+    this.member =                   // Structure de stockage provisoire du membre
     {   
-            email           : '',
-            pseudo          : '',
-            password        : '',
-            role            : 0,                     // Membre, Admin ou SuperAdmin
-            dateCreation    : -1,                    // Timestamp de la création du record
+        email           : '',
+        pseudo          : '',
+        password        : '',
+        oldPassword     : '',
+        role            : 0,        // 4 --> Membre, 2 --> Admin ou 1 --> SuperAdmin
+        presentation    : '',       // Texte de présentation du membre
+
+        etatCivil : 
+        {
+            photo          : '',    // Emplacement de la photo de profil
+            firstName      : '',    // Prénom
+            name           : '',    // Nom
+            birthDate      : '',    // Date de naissance
+            sex            : 0,     // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
+            address : 
+            {
+                street     : '',    // N° et voie
+                city       : '',    // Ville
+                zipCode    : '',    // Code Postal
+                department : '',    // Département
+            },
+        },
+        preferences : [
+            prefGravures        = false,
+            prefLivres          = false,
+            prefFilms           = false,
+            prefJeux            = false,
+            prefMaquettes       = false,
+            prefFigurines       = false,
+            prefBlindes         = false,
+            prefAvions          = false,
+            prefBateaux         = false,
+            prefDioramas        = false,
+            prefPrehistoire     = false,
+            prefAntiquite       = false,
+            prefMoyenAge        = false,
+            prefRenaissance     = false,
+            prefDentelles       = false,
+            prefAncienRegime    = false,
+            prefRevolution      = false,
+            pref1erEmpire       = false,
+            pref2ndEmpire       = false,
+            prefSecession       = false,
+            prefFarWest         = false,
+            prefWW1             = false,
+            prefWW2             = false,
+            prefContemporain    = false,    
+            prefFuturiste       = false,
+            prefFantastique     = false,
+            prefHFrancaise      = false,
+            prefHAméricaine     = false,
+            prefHInternationale = false,
+            prefAutre           = false,
+        ],
+        dateCreation    : -1,       // Timestamp de la création du record
     }
 
     // --------------------------------------------------------------
@@ -75,7 +125,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     // - Par contre, si elle existe, il s'agit d'un membre et on demande au client de désactiver l'icône de Login et d'activer 
     // l'icône de déconnexion ('welcomeMember')
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.visitorTryToLoginPromise = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
+    MemberServer.prototype.visitorBecomeMemberPromise = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
         return new Promise((resolve, reject) => {
             vDBMgr.collectionMembers.find(
                 { 
@@ -108,12 +158,12 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     this.objectPopulation.members[myIndex].email        = this.member.email;
                     this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
                     this.objectPopulation.members[myIndex].password     = this.member.password;
-                    this.objectPopulation.members[myIndex].oldPassword  = this.member.oldPassword;
+// this.objectPopulation.members[myIndex].oldPassword  = this.member.oldPassword;
                     this.objectPopulation.members[myIndex].role         = this.member.role;                            // Membre, Admin ou SuperAdmin
-                    this.objectPopulation.members[myIndex].dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
+// this.objectPopulation.members[myIndex].dateCreation = this.member.dateCreation;                    // Timestamp de la création du record
 
                     this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
-                    pWebSocketConnection.emit('welcomeMember',this.member);     
+                    pWebSocketConnection.emit('welcomeMember',this.member);                    // On transmet au client les données du membre 
                     resolve('Membre loggé');
                 });
         });
@@ -121,8 +171,8 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     // ---------------------------------------------------------------------------------------------------------------------------
     // Point d'appel pour la fonction de Login en mode 'async / await'
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.visitorTryToLogin = async (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
-        var result = await (this.visitorTryToLoginPromise(pVisiteurLoginData, pWebSocketConnection, pSocketIo));
+    MemberServer.prototype.visitorBecomeMember = async (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
+        var result = await (this.visitorBecomeMemberPromise(pVisiteurLoginData, pWebSocketConnection, pSocketIo));
         return result;
     };
     // ---------------------------------------------------------------------------------------------------------------------------
@@ -145,17 +195,14 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
         );
     }
     // ---------------------------------------------------------------------------------------------------------------------------
-    // Sauvegarde du nouveau PWD après avoir au préalable sauvegarrdé l'ancien dans "olddPassword"
+    // Sauvegarde du nouveau PWD après avoir au préalable sauvegardé l'ancien dans "olddPassword"
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.updatePasswordInBDD = function(){
+    MemberServer.prototype.updateDataInBDD = function(pDataSet){
         vDBMgr.collectionMembers.updateOne(
         { 
             "email": this.member.email, 
         },
-        {$set:  
-            {   oldPassword : this.member.password,
-                password    : this.newPassword,
-            }
+        {$set:  pDataSet
         }, (error) => {
             if (error) {
                 console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
@@ -188,7 +235,12 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
             this.member.password = documents[0].password;                                        
 
             this.buildAndSendNewPWD();
-            this.updatePasswordInBDD();
+
+            let myDataSet = 
+            {   oldPassword : this.member.password,
+                password    : this.newPassword,
+            }
+            this.updateDataInBDD(myDataSet);
             pWebSocketConnection.emit('notifyNewPWDSent'); 
         });
     }
@@ -234,7 +286,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     // Création de l'enregistrement technique avec le Nbre de message initialisé à 0
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.createTechnicalRecord = function(){
-        let techniqualRecord = {
+        let technicalRecord = {
             nbrPublicMsgs : 0,                                       
         }
 
@@ -244,7 +296,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 throw error;
             } 
 
-            console.log("add Technical Record In Database - 1 membre inséré : ",techniqualRecord);  
+            console.log("add Technical Record In Database - 1 membre inséré : ",technicalRecord);  
         });       
     }
     // ---------------------------------------------------------------------------------------------------------------------------
@@ -273,16 +325,68 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 myRole = cstMembre;           
             }
 
-            let memberLocal = {
+            let myLocalDate = new Date();
+            myLocalDate += myLocalDate.getTimezoneOffset(); // Timestamp de la création du record en tenant compet du décalage horaire
+
+            let memberLocal = 
+            {
                 email           : pMember.email,                                       
                 pseudo          : pMember.pseudo,
                 password        : pMember.password,
                 oldPassword     : '',
-                role            : myRole,                        
-                dateCreation    : new Date(),         // Timestamp de la création du record
+                role            : myRole,         
+                presentation    : '',       // Texte de présentation du membre
+                etatCivil : 
+                {
+                    photo          : 'default-avatar-inconnu.png',    // Photo
+                    firstName      : '',    // Prénom
+                    name           : '',    // Nom
+                    birthDate      : '',    // Date de naissance
+                    sex            : 0,     // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
+                    address : 
+                    {
+                        street     : '',    // N° et voie
+                        city       : '',    // Ville
+                        zipCode    : '',    // Code Postal
+                        department : '',    // Département
+                    },
+                },
+                preferences : [
+                    prefGravures       = false,
+                    prefLivres         = false,
+                    prefFilms          = false,
+                    prefJeux           = false,
+                    prefMaquettes      = false,
+                    prefFigurines      = false,
+                    prefBlindes        = false,
+                    prefAvions         = false,
+                    prefBateaux        = false,
+                    prefDioramas       = false,
+                    prefPrehistoire    = false,
+                    prefAntiquite      = false,
+                    prefMoyenAge       = false,
+                    prefRenaissance    = false,
+                    prefDentelles      = false,
+                    prefAncienRegime   = false,
+                    prefRevolution     = false,
+                    pref1erEmpire      = false,
+                    pref2ndEmpire      = false,
+                    prefSecession      = false,
+                    prefFarWest        = false,
+                    prefWW1            = false,
+                    prefWW2            = false,
+                    prefContemporain   = false,    
+                    prefFuturiste      = false,
+                    prefFantastique    = false,
+                    prefHFrancaise     = false,
+                    prefHAméricaine    = false,
+                    prefHInternationale= false,
+                    prefAutre          = false,
+                ],
+                dateCreation    : myLocalDate,         // Timestamp de la création du record en tenant compet du décalage horaire
             }
 
-            vDBMgr.collectionMembers.insertOne(memberLocal, (error, result) => {
+            vDBMgr.collectionMembers.insertOne(memberLocal, (error) => {
                 if (error){
                     console.log('Erreur d\'insertion dans la collection \'membres\' : ',memberLocal);   // Si erreur technique... Message et Plantage
                     throw error;
@@ -353,21 +457,51 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
             });
         });
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // On MAJ la Bdd avec les données de profil du membre saisies dans la fiche "renseignements"
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.addDataProfilMembre = function(pDataProfilMembre){
+
+        let myDataSet = 
+        {
+            presentation       : pDataProfilMembre.presentation,                    // Texte de présentation du membre
+            etatCivil : 
+            {
+                photo          : pDataProfilMembre.etatCivil.photo,                 // Photo
+                firstName      : pDataProfilMembre.etatCivil.firstName,             // Prénom
+                name           : pDataProfilMembre.etatCivil.name,                  // Nom
+                birthDate      : pDataProfilMembre.etatCivil.birthDate,             // Date de naissance
+                sex            : pDataProfilMembre.etatCivil.sex,                   // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
+                address : 
+                {
+                    street     : pDataProfilMembre.etatCivil.address.street,        // N° et voie
+                    city       : pDataProfilMembre.etatCivil.address.city,          // Ville
+                    zipCode    : pDataProfilMembre.etatCivil.address.zipCode,       // Code Postal
+                    department : pDataProfilMembre.etatCivil.address.department,    // Département
+                },
+            },
+            preferences         : pDataProfilMembre.preferences,
+        }
+
+        this.updateDataInBDD(myDataSet);
+    }
+
     // ---------------------------------------------------------------------------------------------------------------------------
     // Deconnexion d'un visiteur et eventuellement d'un membre  :
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){
         let myIndex = this.searchMemberInTableOfMembers('idMember' ,pWebSocketConnection.id);
 
-        if (this.objectPopulation.members[myIndex].isMember){                    // Le visiteur qui se deconnecte était un membre
-            this.objectPopulation.nbrMembersInSession--;                         // Nombre de visiteurs incluant les [membres + Admins]
+        if (this.objectPopulation.members[myIndex].isMember){                   // Le visiteur qui se deconnecte était un membre
+            this.objectPopulation.nbrMembersInSession--;                        // Nombre de visiteurs incluant les [membres + Admins]
             
-            if (this.objectPopulation.members[myIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
-            this.objectPopulation.nbrAdminsInSessions--;  // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
+            if (this.objectPopulation.members[myIndex].role < cstMembre){       // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
+            this.objectPopulation.nbrAdminsInSessions--;                        // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
             }
         }
 
-        this.objectPopulation.members.splice(myIndex, 1);
+        this.objectPopulation.members.splice(myIndex, 1);   // Efface l'occurence du membre du tableau des membres connectés
         this.objectPopulation.nbrConnections--;
         this.UpdateDisplayPopulation(pSocketIo);
     }

@@ -31,6 +31,7 @@ module.exports = function DBMgr(){
     // -------------------------------------------------------------------------
     DBMgr.prototype.checkDBConnectPromise = function(){
         return new Promise((resolve, reject) => {
+            // mongoDB.MongoClient.connect("mongodb://localhost:27017/collect-or", { useNewUrlParser: true }, (error,db) => {
             mongoDB.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, (error,db) => {
                 if (error) {
                     reject(false);

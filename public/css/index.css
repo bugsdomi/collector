@@ -137,13 +137,17 @@ body {
     cursor: pointer;
 }
 
+
+
+
 /* ******************************* */
 /*         Gestion des Form        */
 /* ******************************* */
+
 /* ******************************* */
 /* Form Login + SignIn             */
 /* ******************************* */
-.form-signin {
+.form-Signin {
     width: 100%;
     /* max-width: 330px; */
     max-width: 600px;
@@ -151,7 +155,7 @@ body {
     margin: 0 auto;
 }
 
-.form-signin .form-control {
+.form-Signin .form-control {
     position: relative;
     box-sizing: border-box;
     height: auto;
@@ -159,25 +163,87 @@ body {
     font-size: 16px;
 }
 
-.form-signin .form-control:focus {
+.form-Signin .form-control:focus {
     z-index: 2;
 }
 
-.form-signin input[type="email"] {
+.form-Signin input[type="email"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.form-signin input[type="password"] {
+.form-Signin input[type="password"] {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+/* ******************************* */
+/*          Form Account           */
+/* ******************************* */
+.aaform-Account {
+    width: 100%;
+    max-width: 900px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+/* .form-Account .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-Account .form-control:focus {
+    z-index: 2;
+}
+
+.form-Account input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-Account input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+} */
+
+
+
+
+
+
 
 .box-shadow { 
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); 
 } 
+
+.btn-file {
+    position: relative;
+    overflow: hidden
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: #fff;
+    cursor: inherit;
+    display: block
+}
+
+
 
 /* ******************************* */
 /* Gestion des radio-Button        */
