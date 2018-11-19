@@ -5,6 +5,8 @@
 // -------------------------------------------------------------------------
 
 function MemberClient(){   // Fonction constructeur exportée
+
+    this.newPasswordKO = false;    // Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
     this.member =                  // Structure du membre
     {   
         email           : '',
@@ -29,38 +31,38 @@ function MemberClient(){   // Fonction constructeur exportée
                 department : '',    // Département
             },
         },
-        preferences : [
-            prefGravures        = false,
-            prefLivres          = false,
-            prefFilms           = false,
-            prefJeux            = false,
-            prefMaquettes       = false,
-            prefFigurines       = false,
-            prefBlindes         = false,
-            prefAvions          = false,
-            prefBateaux         = false,
-            prefDioramas        = false,
-            prefPrehistoire     = false,
-            prefAntiquite       = false,
-            prefMoyenAge        = false,
-            prefRenaissance     = false,
-            prefDentelles       = false,
-            prefAncienRegime    = false,
-            prefRevolution      = false,
-            pref1erEmpire       = false,
-            pref2ndEmpire       = false,
-            prefSecession       = false,
-            prefFarWest         = false,
-            prefWW1             = false,
-            prefWW2             = false,
-            prefContemporain    = false,    
-            prefFuturiste       = false,
-            prefFantastique     = false,
-            prefHFrancaise      = false,
-            prefHAméricaine     = false,
-            prefHInternationale = false,
-            prefAutre           = false,
-        ],
+        preferences : {
+            prefGravures        : false,
+            prefLivres          : false,
+            prefFilms           : false,
+            prefJeux            : false,
+            prefMaquettes       : false,
+            prefFigurines       : false,
+            prefBlindes         : false,
+            prefAvions          : false,
+            prefBateaux         : false,
+            prefDioramas        : false,
+            prefPrehistoire     : false,
+            prefAntiquite       : false,
+            prefMoyenAge        : false,
+            prefRenaissance     : false,
+            prefDentelles       : false,
+            prefAncienRegime    : false,
+            prefRevolution      : false,
+            pref1erEmpire       : false,
+            pref2ndEmpire       : false,
+            prefSecession       : false,
+            prefFarWest         : false,
+            prefWW1             : false,
+            prefWW2             : false,
+            prefContemporain    : false,    
+            prefFuturiste       : false,
+            prefFantastique     : false,
+            prefHFrancaise      : false,
+            prefHAmericaine     : false,
+            prefHInternationale : false,
+            prefAutre           : false,
+        },
         dateCreation    : -1,       // Timestamp de la création du record
     }
 }
@@ -75,6 +77,7 @@ MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField)
         $('#'+pIdField).focus();
     })
 
+    // Cette variante de la fonction fait une recherche dans les elements HTML, des champs en 'Autofocus' et leur affecte le focus
     // $('#'+pIdModal).on('shown.bs.modal', function({
     //     $(this).find('[autofocus]').focus();
     //   });
@@ -83,11 +86,13 @@ MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField)
 // -----------------------------------------------------------------------------
 // Cette fonction vérifie que le MDP et sa confirmation sont bien identiques
 // -----------------------------------------------------------------------------
-MemberClient.prototype.validatePassword = function(pSignInPassword, pSignInConfirmPassword){
-    if (pSignInPassword.value != pSignInConfirmPassword.value){
-        pSignInConfirmPassword.setCustomValidity("Les mots de passe ne correspondent pas");
+MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
+    if (pPassword.value != pConfirmPassword.value){
+        pConfirmPassword.setCustomValidity("Les mots de passe ne correspondent pas");
+        this.newPasswordKO = true;
     } else {
-        pSignInConfirmPassword.setCustomValidity('');
+        pConfirmPassword.setCustomValidity('');
+        this.newPasswordKO = false;
     }
 }
 // -----------------------------------------------------------------------------
@@ -115,12 +120,22 @@ MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyTe
 // Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
 // après la création réussie du nouveau membre
 // -----------------------------------------------------------------------------
-MemberClient.prototype.initModalNewPWDText = function(pModalTitle, pModalBodyText){
+MemberClient.prototype.initModalLostPWDText = function(pModalTitle, pModalBodyText){
     pModalTitle.innerText = 'Mot de passe perdu'
     pModalBodyText.innerHTML = '<h5>Votre nouveau mot de passe ...</h5>';
     pModalBodyText.innerHTML += '<br /><p>Suite à votre demande, un nouveau mot de passe a été généré.</p>';
     pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
     pModalBodyText.innerHTML += '<br /><p>Vous pouvez le modifier dans la fiche de votre profil.</p>';
+}
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
+// après la création réussie du nouveau membre
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalChangedPWDText = function(pModalTitle, pModalBodyText){
+    pModalTitle.innerText = 'Mot de passe changé'
+    pModalBodyText.innerHTML = '<h5>Votre nouveau mot de passe ...</h5>';
+    pModalBodyText.innerHTML += '<br /><p>Vous avez changé votre mot de passe.</p>';
+    pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
 }
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
@@ -160,7 +175,7 @@ MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.restartLandingPage = function(){
-    vToolBox.simpleRefreshScreen();
+    window.location.reload(true); // Apres un redimensionnement de l'écran, je le régénère from scratch;
 }
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
@@ -190,6 +205,5 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
         pHeader.classList.add('txt-yellow-stroke');
         return
     }
-    // -------------------------- Fin du module ----------------------------------------------------------------------------
-
 }
+// -------------------------- Fin du module ----------------------------------------------------------------------------

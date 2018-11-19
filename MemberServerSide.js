@@ -26,6 +26,8 @@ const cstMembre = 4;      // Membre standard qui ne peut qu'utiliser la partie p
 const cstMailFrom = 'collector@vcp.com';    // Adresse "From" du mail
 const constFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'    // Caractères autorisés pour le 1er caractère du PWD
 const constNextCharString = constFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
+const cstLostPWD = 0;     // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par une déclaration de MDP perdu
+const cstChangedPWD = 1;  // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par le mebre dans sa fiche de renseignement
 
 
 module.exports = function MemberServer(){   // Fonction constructeur exportée
@@ -33,7 +35,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
     this.nbrPublicMsgs;                     // Nbre de messages publics
 
-    this.objectPopulation = 
+    this.objectPopulation =  
     {
         members             : [],   // Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
         nbrConnections      : 0,    // Nbre de connexions actives sans préjuger de leur rôle
@@ -65,38 +67,38 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 department : '',    // Département
             },
         },
-        preferences : [
-            prefGravures        = false,
-            prefLivres          = false,
-            prefFilms           = false,
-            prefJeux            = false,
-            prefMaquettes       = false,
-            prefFigurines       = false,
-            prefBlindes         = false,
-            prefAvions          = false,
-            prefBateaux         = false,
-            prefDioramas        = false,
-            prefPrehistoire     = false,
-            prefAntiquite       = false,
-            prefMoyenAge        = false,
-            prefRenaissance     = false,
-            prefDentelles       = false,
-            prefAncienRegime    = false,
-            prefRevolution      = false,
-            pref1erEmpire       = false,
-            pref2ndEmpire       = false,
-            prefSecession       = false,
-            prefFarWest         = false,
-            prefWW1             = false,
-            prefWW2             = false,
-            prefContemporain    = false,    
-            prefFuturiste       = false,
-            prefFantastique     = false,
-            prefHFrancaise      = false,
-            prefHAméricaine     = false,
-            prefHInternationale = false,
-            prefAutre           = false,
-        ],
+        preferences : {
+            prefGravures        : false,
+            prefLivres          : false,
+            prefFilms           : false,
+            prefJeux            : false,
+            prefMaquettes       : false,
+            prefFigurines       : false,
+            prefBlindes         : false,
+            prefAvions          : false,
+            prefBateaux         : false,
+            prefDioramas        : false,
+            prefPrehistoire     : false,
+            prefAntiquite       : false,
+            prefMoyenAge        : false,
+            prefRenaissance     : false,
+            prefDentelles       : false,
+            prefAncienRegime    : false,
+            prefRevolution      : false,
+            pref1erEmpire       : false,
+            pref2ndEmpire       : false,
+            prefSecession       : false,
+            prefFarWest         : false,
+            prefWW1             : false,
+            prefWW2             : false,
+            prefContemporain    : false,    
+            prefFuturiste       : false,
+            prefFantastique     : false,
+            prefHFrancaise      : false,
+            prefHAmericaine     : false,
+            prefHInternationale : false,
+            prefAutre           : false,
+        },
         dateCreation    : -1,       // Timestamp de la création du record
     }
 
@@ -146,6 +148,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     } 
 
                     this.member = documents[0];                                     // Récupération des infos du membre dans l'objet de stockage provisoire
+                    this.member.oldPassword = '';                                   // RAZ de l'ancien MDP avant envoi au client
 
                     // Recherche du pseudo du membre dans le tableau des membres car je ne veux pas qu'un membre se connecte plusieurs fois sur des sessions différentes
                     let myIndex = this.searchMemberInTableOfMembers('pseudo', this.member.pseudo)
@@ -155,10 +158,9 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     }
 
                     myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // Recherche du visiteur dans le tableau des membres
+                    
                     this.objectPopulation.members[myIndex].email        = this.member.email;
                     this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
-                    this.objectPopulation.members[myIndex].password     = this.member.password;
-                    this.objectPopulation.members[myIndex].role         = this.member.role;                            // Membre, Admin ou SuperAdmin
 
                     this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
                     pWebSocketConnection.emit('welcomeMember',this.member);                    // On transmet au client les données du membre 
@@ -240,9 +242,16 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 oldPassword : this.member.password,
                 password    : this.newPassword,
             }
-            this.updateDataInBDD(myDataSet);
-            pWebSocketConnection.emit('notifyNewPWDSent'); 
+            this.updatePasswordChange(myDataSet, cstLostPWD, pWebSocketConnection);
         });
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    // En cas de chagt de MDP, MAJ la BDD avec les nouveaux et anciens MDP, et envoie un mail dde notification
+    // ---------------------------------------------------------------------------------------------------------------------------
+    MemberServer.prototype.updatePasswordChange = function(pDataSet, pTypeChgtPWD, pWebSocketConnection){
+        this.updateDataInBDD(pDataSet);
+        pWebSocketConnection.emit('notifyNewPWDSent', pTypeChgtPWD); 
     }
     // ---------------------------------------------------------------------------------------------------------------------------
     // Prépare les données de population et les envoie à tous clients connectés
@@ -326,7 +335,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
             }
 
             let myLocalDate = new Date();
-            myLocalDate += myLocalDate.getTimezoneOffset(); // Timestamp de la création du record en tenant compet du décalage horaire
+            myLocalDate += myLocalDate.getTimezoneOffset(); // Timestamp de la création du record en tenant compte du décalage horaire
 
             let memberLocal = 
             {
@@ -351,39 +360,40 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                         department : '',    // Département
                     },
                 },
-                preferences : [
-                    prefGravures       = false,
-                    prefLivres         = false,
-                    prefFilms          = false,
-                    prefJeux           = false,
-                    prefMaquettes      = false,
-                    prefFigurines      = false,
-                    prefBlindes        = false,
-                    prefAvions         = false,
-                    prefBateaux        = false,
-                    prefDioramas       = false,
-                    prefPrehistoire    = false,
-                    prefAntiquite      = false,
-                    prefMoyenAge       = false,
-                    prefRenaissance    = false,
-                    prefDentelles      = false,
-                    prefAncienRegime   = false,
-                    prefRevolution     = false,
-                    pref1erEmpire      = false,
-                    pref2ndEmpire      = false,
-                    prefSecession      = false,
-                    prefFarWest        = false,
-                    prefWW1            = false,
-                    prefWW2            = false,
-                    prefContemporain   = false,    
-                    prefFuturiste      = false,
-                    prefFantastique    = false,
-                    prefHFrancaise     = false,
-                    prefHAméricaine    = false,
-                    prefHInternationale= false,
-                    prefAutre          = false,
-                ],
-                dateCreation    : myLocalDate,         // Timestamp de la création du record en tenant compet du décalage horaire
+                preferences :
+                {
+                    prefGravures        : false,
+                    prefLivres          : false,
+                    prefFilms           : false,
+                    prefJeux            : false,
+                    prefMaquettes       : false,
+                    prefFigurines       : false,
+                    prefBlindes         : false,
+                    prefAvions          : false,
+                    prefBateaux         : false,
+                    prefDioramas        : false,
+                    prefPrehistoire     : false,
+                    prefAntiquite       : false,
+                    prefMoyenAge        : false,
+                    prefRenaissance     : false,
+                    prefDentelles       : false,
+                    prefAncienRegime    : false,
+                    prefRevolution      : false,
+                    pref1erEmpire       : false,
+                    pref2ndEmpire       : false,
+                    prefSecession       : false,
+                    prefFarWest         : false,
+                    prefWW1             : false,
+                    prefWW2             : false,
+                    prefContemporain    : false,
+                    prefFuturiste       : false,
+                    prefFantastique     : false,
+                    prefHFrancaise      : false,
+                    prefHAmericaine     : false,
+                    prefHInternationale : false,
+                    prefAutre           : false,
+                },
+                dateCreation    : myLocalDate,         // Timestamp de la création du record en tenant compte du décalage horaire
             }
 
             vDBMgr.collectionMembers.insertOne(memberLocal, (error) => {
@@ -461,8 +471,9 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     // ---------------------------------------------------------------------------------------------------------------------------
     // On MAJ la Bdd avec les données de profil du membre saisies dans la fiche "renseignements"
     // ---------------------------------------------------------------------------------------------------------------------------
-    MemberServer.prototype.addDataProfilMembre = function(pDataProfilMembre){
+    MemberServer.prototype.updateDataProfilMembre = function(pDataProfilMembre, pWebSocketConnection){
 
+        // On MAJ l'ensemble des données générales de la fiche de renseignement SAUF l'éventuel Chgt de PWD
         let myDataSet = 
         {
             email              : pDataProfilMembre.email, 
@@ -482,10 +493,29 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     department : pDataProfilMembre.etatCivil.address.department,    // Département
                 },
             },
-            preferences         : pDataProfilMembre.preferences,
-        }
+            preferences : pDataProfilMembre.preferences,
+        } 
 
         this.updateDataInBDD(myDataSet);
+
+
+        // Si le MDP a été changé, on le MAJ dans un 2eme temps
+        if (pDataProfilMembre.oldPassword !==''){      
+            let myDataSet = 
+            {   
+                email       : pDataProfilMembre.email,
+                oldPassword : '',
+                password    : pDataProfilMembre.password,
+            }
+            this.updatePasswordChange(myDataSet, cstChangedPWD, pWebSocketConnection);
+            this.sendEMail(
+                pDataProfilMembre.email, 
+                'Vous avez changé votre de mot de passe', 
+                '<h1 style="color: black;">Votre nouveau mot de passe ...</h1><p><h2>Voici vos nouveaux identifiants :</h2><br />' +
+                'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+pDataProfilMembre.pseudo+'<p><strong>Mot de passe : </strong>'+pDataProfilMembre.password +
+                '</p><br /><br /><br /><i>Vil-Coyote Products</i>'
+            );
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------------------------
@@ -526,13 +556,8 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
         let memberLocal = {
             idMember        : pWebSocketConnection.id,
             isMember        : false,
-        
             email           : '',
             pseudo          : '',
-            password        : '',
-            oldPassword     : '',
-            role            : 0,                        // Membre, Admin ou SuperAdmin
-            dateCreation    : -1,                       // Timestamp de la création du record
         }
 
         this.objectPopulation.members.push(memberLocal);

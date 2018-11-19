@@ -75,17 +75,17 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
     // On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
     webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
-        vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo)
+        vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo);
     });    
 
     // On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
     webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
-        vMemberServer.addDataProfilMembre(pDataProfilMembre,)
+        vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
     });    
 
     // On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
     webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
-        vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection)
+        vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection);
     });
 
     // Un membre se déconnecte

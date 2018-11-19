@@ -21,8 +21,8 @@ const mongoDB = require('mongodb');
 
 module.exports = function DBMgr(){
     this.myDB;                           // Instance de la base de données
-    this.collectionMembers;               // Sélectionne la collection des données des membres
-    this.collectionTechnical;                // Sélectionne la collection des données techniques
+    this.collectionMembers;              // Sélectionne la collection des données des membres
+    this.collectionTechnical;            // Sélectionne la collection des données techniques
     
     // -------------------------------------------------------------------------
     // On se connecte à mongoDB, on vérifie qu elle est lancée et que la BDD 
