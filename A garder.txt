@@ -1,189 +1,103 @@
-let vDBMgr = new DBMgr();       // Instanciation de la base de données
-vDBMgr.checkDBConnect().
-then(
-    (result => {
-        let vMemberServer = new MemberServer(vDBMgr);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
-        vMemberServer.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
 
 
-#idModalCompte.modal.fade(tabindex='-1' role='dialog' aria-labelledby='idModalCompteTitle' aria-hidden='true')
-  .container.bg-light
-    #idModalCompteHeader.modal-header
- 
+    <!-- ************************************************************************* -->
+    <!--                         Carroussel de fond d'écran                        -->
+    <!-- ************************************************************************* -->
 
+    <div id="mainScreenCaroussel" class="carousel slide carousel-fade carousel-fullscreen" data-ride="carousel" data-interval="4000" data-pause="false">
+        <!-- Indicators de bas de slides-->
+        <ol class="carousel-indicators">
+            <li data-target="#mainScreenCaroussel" data-slide-to="0" class="active txt-yellow-stroke"></li>
+            <li data-target="#mainScreenCaroussel" data-slide-to="1" class="txt-yellow-stroke"></li>
+            <li data-target="#mainScreenCaroussel" data-slide-to="2" class="txt-yellow-stroke"></li>
+            <li data-target="#mainScreenCaroussel" data-slide-to="3" class="txt-yellow-stroke"></li>
+            <li data-target="#mainScreenCaroussel" data-slide-to="4" class="txt-yellow-stroke"></li>
+            <li data-target="#mainScreenCaroussel" data-slide-to="5" class="txt-yellow-stroke"></li>
+        </ol>
 
-
-
-
-
-
-
-
-
-
-
-     <div class="modal fade" tabindex="-1" role="dialog" id="idModalCompte" aria-labelledby="idModalCompteTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="idModalCompteHeader">
-                    <h5 class="modal-title">Renseignements personnels</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-Compte" id="idCompteForm">
-
-<!-- <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72"> -->
-
-                        <h1 class="h3 mb-3 font-weight-normal">Veuillez saisir vos informations</h1>
-                        <div class="mb-3">
-                            <fieldset>
-                                <label for="ComptePseudo" class="sr-only">Pseudonyme</label>
-                                <input type="text" id="idComptePseudo" name="ComptePseudo" class="form-control" diisabled><br />
-
-                                <label for="CompteEmail" class="sr-only">Email <span class="text-muted"></span></label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">@</span>
-                                    </div>
-
-<!-- <input type="email" name="CompteEmail" class="form-control" id="idCompteEmail" placeholder="exemple@provider.com" required autofocus > -->
-
-                                    <input type="email" name="CompteEmail" class="form-control" id="idCompteEmail" disabled >
-                                </div>
-
-                            </fieldset>
+        <!-- sliders -->
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active" style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
+                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
                         </div>
-
-                        <fieldset>
-                            
-                            <label for="ComptePassword" class="sr-only">Mot de passe</label>
-                            <input type="password" id="idComptePassword" class="form-control" name="ComptePassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
-
-                            <input type="password" id="idCompteConfirmPassword" class="form-control" name="CompteConfirmPassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
-                            <label for="CompteConfirmPassword" class="sr-only">Confirmez le mot de passe</label>
-                        </fieldset>
-                        <p id="idCompteAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail et/ou le pseudo sont déjà attribués</p>
-                        <div class="modal-footer">
-                            <button id='idCompteBtn' class="btn btn-lg btn-success btn-block" type="submit">Création</button>
-                        </div> 
-                    </form> 
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 35%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
+                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 100%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
+                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 100%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
+                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
+                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;">
+                <div class="overlay"></div>
+                <div class="carousel-caption">
+                    <div class="row my-auto">
+                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
+                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>    
 
-
-
-
-
-
-
-    style='max-width: 1350px!important;'   
-
-
-
-<select name="dep">
-<option value="00">(00) Hors France</option>
-<option value="01">(01) Ain </option>
-<option value="02">(02) Aisne </option>
-<option value="03">(03) Allier </option>
-<option value="04">(04) Alpes de Haute Provence </option>
-<option value="05">(05) Hautes Alpes </option>
-<option value="06">(06) Alpes Maritimes </option>
-<option value="07">(07) Ardèche </option>
-<option value="08">(08) Ardennes </option>
-<option value="09">(09) Ariège </option>
-<option value="10">(10) Aube </option>
-<option value="11">(11) Aude </option>
-<option value="12">(12) Aveyron </option>
-<option value="13">(13) Bouches du Rhône </option>
-<option value="14">(14) Calvados </option>
-<option value="15">(15) Cantal </option>
-<option value="16">(16) Charente </option>
-<option value="17">(17) Charente Maritime </option>
-<option value="18">(18) Cher </option>
-<option value="19">(19) Corrèze </option>
-<option value="2A">(2A) Corse du Sud </option>
-<option value="2B">(2B) Haute-Corse </option>
-<option value="21">(21) Côte d'Or </option>
-<option value="22">(22) Côtes d'Armor </option>
-<option value="23">(23) Creuse </option>
-<option value="24">(24) Dordogne </option>
-<option value="25">(25) Doubs </option>
-<option value="26">(26) Drôme </option>
-<option value="27">(27) Eure </option>
-<option value="28">(28) Eure et Loir </option>
-<option value="29">(29) Finistère </option>
-<option value="30">(30) Gard </option>
-<option value="31">(31) Haute Garonne </option>
-<option value="32">(32) Gers </option>
-<option value="33">(33) Gironde </option>
-<option value="34">(34) Hérault </option>
-<option value="35">(35) Ille et Vilaine </option>
-<option value="36">(36) Indre </option>
-<option value="37">(37) Indre et Loire </option>
-<option value="38">(38) Isère </option>
-<option value="39">(39) Jura </option>
-<option value="40">(40) Landes </option>
-<option value="41">(41) Loir et Cher </option>
-<option value="42">(42) Loire </option>
-<option value="43">(43) Haute Loire </option>
-<option value="44">(44) Loire Atlantique </option>
-<option value="45">(45) Loiret </option>
-<option value="46">(46) Lot </option>
-<option value="47">(47) Lot et Garonne </option>
-<option value="48">(48) Lozère </option>
-<option value="49">(49) Maine et Loire </option>
-<option value="50">(50) Manche </option>
-<option value="51">(51) Marne </option>
-<option value="52">(52) Haute Marne </option>
-<option value="53">(53) Mayenne </option>
-<option value="54">(54) Meurthe et Moselle </option>
-<option value="55">(55) Meuse </option>
-<option value="56">(56) Morbihan </option>
-<option value="57">(57) Moselle </option>
-<option value="58">(58) Nièvre </option>
-<option value="59">(59) Nord </option>
-<option value="60">(60) Oise </option>
-<option value="61">(61) Orne </option>
-<option value="62">(62) Pas de Calais </option>
-<option value="63">(63) Puy de Dôme </option>
-<option value="64">(64) Pyrénées Atlantiques </option>
-<option value="65">(65) Hautes Pyrénées </option>
-<option value="66">(66) Pyrénées Orientales </option>
-<option value="67">(67) Bas Rhin </option>
-<option value="68">(68) Haut Rhin </option>
-<option value="69">(69) Rhône </option>
-<option value="70">(70) Haute Saône </option>
-<option value="71">(71) Saône et Loire </option>
-<option value="72">(72) Sarthe </option>
-<option value="73">(73) Savoie </option>
-<option value="74">(74) Haute Savoie </option>
-<option value="75">(75) Paris </option>
-<option value="76">(76) Seine Maritime </option>
-<option value="77">(77) Seine et Marne </option>
-<option value="78">(78) Yvelines </option>
-<option value="79">(79) Deux Sèvres </option>
-<option value="80">(80) Somme </option>
-<option value="81">(81) Tarn </option>
-<option value="82">(82) Tarn et Garonne </option>
-<option value="83">(83) Var </option>
-<option value="84">(84) Vaucluse </option>
-<option value="85">(85) Vendée </option>
-<option value="86">(86) Vienne </option>
-<option value="87">(87) Haute Vienne </option>
-<option value="88">(88) Vosges </option>
-<option value="89">(89) Yonne </option>
-<option value="90">(90) Territoire de Belfort </option>
-<option value="91">(91) Essonne </option>
-<option value="92">(92) Hauts de Seine </option>
-<option value="93">(93) Seine Saint Denis </option>
-<option value="94">(94) Val de Marne </option>
-<option value="95">(95) Val d'Oise </option>
-<option value="971">(971) Guadeloupe </option>
-<option value="972">(972) Martinique </option>
-<option value="973">(973) Guyane </option>
-<option value="974">(974) Réunion </option>
-<option value="975">(975) Saint Pierre et Miquelon </option>
-<option value="976">(976) Mayotte </option>
-</select>
+        <!-- Controls G et D -->
+        <a class="carousel-control-prev" href="#mainScreenCaroussel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#mainScreenCaroussel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
