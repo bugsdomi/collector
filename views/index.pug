@@ -78,6 +78,75 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a.nav-link(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
           span.fa.fa-bell
           |  A propos
+// *************************************************************************
+// Carroussel de fond d'écran
+// *************************************************************************
+#mainScreenCaroussel.carousel.slide.carousel-fade.carousel-fullscreen(data-ride='carousel' data-interval='4000' data-pause='false')
+  // Indicators de bas de slides
+  ol.carousel-indicators
+    li.active.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='0')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='1')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='2')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='3')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='4')
+    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='5')
+  // sliders
+  .carousel-inner(role='listbox')
+    .carousel-item.active(style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 35%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 100%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 100%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+    .carousel-item(style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;")
+      .overlay
+      .carousel-caption
+        .row.my-auto
+          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+  // Controls G et D
+  a.carousel-control-prev(href='#mainScreenCaroussel' role='button' data-slide='prev')
+    span.carousel-control-prev-icon(aria-hidden='true')
+    span.sr-only Previous
+  a.carousel-control-next(href='#mainScreenCaroussel' role='button' data-slide='next')
+    span.carousel-control-next-icon(aria-hidden='true')
+    span.sr-only Next
 // ***********************************************************************************
 // Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
 // "idModalBodyText" sont alimentés par javascript

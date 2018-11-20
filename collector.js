@@ -54,7 +54,7 @@ let socketIo = new SocketIo(server);
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
     console.log('Connection')        
 
-    // uploader.listen(webSocketConnection);
+    uploader.listen(webSocketConnection);
 
     // uploader.on("saved", function(event){
     //     console.log(event.file);
