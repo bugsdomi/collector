@@ -175,7 +175,9 @@ MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.restartLandingPage = function(){
-    window.location.reload(true); // Apres un redimensionnement de l'écran, je le régénère from scratch;
+    // window.location.reload(true); // Apres un redimensionnement de l'écran, je le régénère from scratch;
+
+    
 }
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
