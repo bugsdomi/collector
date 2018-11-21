@@ -48,518 +48,571 @@ head
 // *************************************************************************
 // NavBar
 // *************************************************************************
-nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
-  a.navbar-brand(href='#')
-    img.d-inline-block.align-top.mr-2(alt="Logo du site 'Collect\'Or" src='static/images/brand.png' height='40')
-  span#idNbrPopulation.infosOnNavBar
-  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#mainScreenMenu' aria-expanded='false' aria-controls='mainScreenMenu' aria-label='Toggle mainScreenMenu')
-    span.navbar-toggler-icon
-  #mainScreenMenu.collapse.navbar-collapse
-    ul.navbar-nav.ml-auto
-      li.nav-item.mx-1
-        a#idConnexion.nav-link(href='#idModalLogin' data-toggle='modal' data-target='#idModalLogin')
-          span.fa.fa-sign-in
-          |  Connexion
-      li.nav-item
-        a#idCreation.nav-link(href='#idModalSignIn' data-toggle='modal' data-target='#idModalSignIn')
-          span.fa.fa-plus
-          |   Cr&eacute;er un compte
-      li.nav-item.mx-1.dropdown
-        a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-          span#idMemberName.fa.fa-user
-        .dropdown-menu(aria-labelledby='templates-dropdown')
-          a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount') Renseignements
-          a.dropdown-item(href='template-4.html') Administration
-          hr
-          a#idDeconnexion.dropdown-item.disabled(href='#' target='_top')
-            span.fa.fa-sign-out
-            |  D&eacute;connexion
-      li.nav-item
-        a.nav-link(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
-          span.fa.fa-bell
-          |  A propos
-// *************************************************************************
-// Carroussel de fond d'écran
-// *************************************************************************
-#mainScreenCaroussel.carousel.slide.carousel-fade.carousel-fullscreen(data-ride='carousel' data-interval='4000' data-pause='false')
-  // Indicators de bas de slides
-  ol.carousel-indicators
-    li.active.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='0')
-    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='1')
-    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='2')
-    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='3')
-    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='4')
-    li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='5')
-  // sliders
-  .carousel-inner(role='listbox')
-    .carousel-item.active(style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;")
-      .overlay
-      .carousel-caption
-        .row.my-auto
-          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
-            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
-            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-    .carousel-item(style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 35%; background-size: cover;")
-      .overlay
-      .carousel-caption
-        .row.my-auto
-          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
-            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
-            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-    .carousel-item(style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 100%; background-size: cover;")
-      .overlay
-      .carousel-caption
-        .row.my-auto
-          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
-            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
-            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-    .carousel-item(style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 100%; background-size: cover;")
-      .overlay
-      .carousel-caption
-        .row.my-auto
-          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
-            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
-            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-    .carousel-item(style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;")
-      .overlay
-      .carousel-caption
-        .row.my-auto
-          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
-            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
-            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-    .carousel-item(style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;")
-      .overlay
-      .carousel-caption
-        .row.my-auto
-          .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
-            h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
-            // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-            p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
-  // Controls G et D
-  a.carousel-control-prev(href='#mainScreenCaroussel' role='button' data-slide='prev')
-    span.carousel-control-prev-icon(aria-hidden='true')
-    span.sr-only Previous
-  a.carousel-control-next(href='#mainScreenCaroussel' role='button' data-slide='next')
-    span.carousel-control-next-icon(aria-hidden='true')
-    span.sr-only Next
-// ***********************************************************************************
-// Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
-// "idModalBodyText" sont alimentés par javascript
-// ***********************************************************************************
-#idGenericModal.modal(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document')
-    .modal-content
-      #idGenericModalHeader.modal-header
-        h5#idGenericModalTitle.modal-title
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
-        img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-        #idGenericModalBodyText
-      .modal-footer
-        button#idGenericModalBtn.btn.btn-success(type='button' data-dismiss='modal') Fermer
-// *************************************************************************
-// Fenêtre Modale Login
-// *************************************************************************
-#idModalLogin.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document')
-    .modal-content
-      #idModalLoginHeader.modal-header
-        h5.modal-title Connexion
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
-        form#idLoginForm.form-Signin
-          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-          h1.h3.mb-3.font-weight-normal Veuillez vous identifier
-          label.sr-only(for='idLoginPseudo') Pseudonyme
-          input#idLoginPseudo.form-control(type='text' name='loginPseudo' placeholder='Pseudonyme' required='' autofocus='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
-          br
-          label.sr-only(for='idLoginPassword') Mot de passe
-          input#idLoginPassword.form-control(type='password' name='loginPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-          .row.justify-content-between
-            #idSignIn.mt-1.mb-2.col-6.xs-col-6.text-left.speedKey
-              | Cr&eacute;er un compte
-            #idLostPWD.mt-1.mb-2.col-6.xs-col-6.text-right.speedKey
-              | Mot de passe oubli&eacute; ?
-          p#idLoginAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Pseudo et/ou mot de passe inconnus
-          .modal-footer
-            button#idConnectionBtn.btn.btn-lg.btn-success.btn-block(type='submit') Connexion
-// *************************************************************************
-// Fenêtre Modale Inscription
-// *************************************************************************
-#idModalSignIn.modal(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document')
-    .modal-content
-      #idModalSignInHeader.modal-header
-        h5.modal-title Cr&eacute;ation de compte
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
-        form#idSignInForm.form-Signin
-          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-          h1.h3.mb-3.font-weight-normal Veuillez saisir vos informations
-          .mb-3
-            label.sr-only(for='idSignInEmail')
-              | Email 
-              span.text-muted
-            .input-group
-              .input-group-prepend
-                span.input-group-text @
-              input#idSignInEmail.form-control(type='email' name='signInEmail' placeholder='exemple@provider.com' required='' autofocus='')
-          fieldset.border.rounded.p-3
-            label.sr-only(for='idSignInPseudo') Pseudonyme
-            input#idSignInPseudo.form-control(type='text' name='signInPseudo' placeholder='Pseudonyme' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
-            br
-            label.sr-only(for='iSignInPassword') Mot de passe
-            input#idSignInPassword.form-control(type='password' name='signInPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-            input#idSignInConfirmPassword.form-control(type='password' name='signInConfirmPassword' placeholder='Confirmez le mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-            label.sr-only(for='idSignInConfirmPassword') Confirmez le mot de passe
-          p#idSignInAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
-          .modal-footer
-            button#idSignInBtn.btn.btn-lg.btn-success.btn-block(type='submit') Cr&eacute;ation
-// *************************************************************************
-// Fenêtre Modale de Mot de passe perdu
-// *************************************************************************
-#idModalLostPWD.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document')
-    .modal-content
-      #idModalLostPWDHeader.modal-header
-        h5.modal-title Mot de passe perdu
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
-        form#idLostPWDForm.form-LostPWD
-          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-          h1.h3.mb-3.font-weight-normal Veuillez saisir votre e-mail
-          .mb-3
-            label.sr-only(for='idLostPWDEmail')
-              | Email 
-              span.text-muted
-            .input-group
-              .input-group-prepend
-                span.input-group-text @
-              input#idLostPWDEmail.form-control(type='email' name='lostPWDEmail' placeholder='exemple@provider.com' required='' autofocus='')
-          p#idLostPWDAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail fourni n&apos;a pas &eacute;t&eacute; trouv&eacute;, veuillez le resaisir
-          .modal-footer
-            button#idLostPWDBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
-// *************************************************************************
-// Fenêtre Modale de renseignements
-// *************************************************************************
-#idModalAccount.modal(tabindex='-1' role='dialog' aria-labelledby='idModalAccountTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document' style='max-width: 800px;')
-    .modal-content
-      #idModalAccountHeader.modal-header
-        h5.modal-title Renseignements personnels
-        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
-        .py-5.text-center
-          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-          h2 Saisie des renseignements personnels
-          p.lead
-            | Ces informations, optionnelles, vont permettre aux autres internautes de mieux vous conna&icirc;tre &agrave; travers vos centres d&apos;int&eacute;r&ecirc;t, ou vos types de collections pr&eacute;f&eacute;r&eacute;es par exemple...
-        .text-center
-          form#idAccountForm.form-Account
-            fieldset.border.rounded.p-3
-              .row.justify-content-around
-                .col-md-5.mb-3
-                  label(for='idAccountPseudo') Pseudonyme
-                  input#idAccountPseudo.form-control(type='text' name='accountPseudo' disabled='' tabindex='-1')
-                .col-md-5.mb-3
-                  label(for='idAccountEmail') Email
-                  input#idAccountEmail.form-control(type='email' name='accountEmail' disabled='' tabindex='-1')
-            // ******************************************************************************
-            // Avatar + Nom + Prénom
-            // ******************************************************************************
-            fieldset.border.rounded.p-3
-              .row.justify-content-around
-                .col-md-3
-                  img#idAccountPhotoImg.img-thumbnail.mb-3.img-responsive(src='' alt='Image du profile')
-                  span.btn.btn-success.btn-file.mb-3
-                    | Changer d&apos;avatar 
-                    input#idAccountPhotoFile(type='file' name='AccountPhotoFile' accept='image/png, image/jpeg')
-                .col-md-8.mb-3
-                  label(for='idAccountFirstName') Pr&eacute;nom
-                  input#idAccountFirstName.form-control.mb-3(type='text' name='accountFirstName' placeholder='Prénom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
-                  label(for='idAccountName') Nom de famille
-                  input#idAccountName.form-control.mb-3(type='text' name='accountName' placeholder='Nom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
-                  .invalid-feedback
-                    | Un nom valide est requis.
-            // ******************************************************************************
-            // Date naissance + Age + Sexe
-            // ******************************************************************************
-            fieldset.border.rounded.p-3
-              .row.justify-content-around
-                .col-md-4.mb-3
-                  label(for='idAccountBirthDate') Date de naissance
-                  input#idAccountBirthDate.form-control(type='date' name='accountBirthdate')
-                  .invalid-feedback
-                    | Une date valide est requise
-                .col-md-2.mb-3
-                  label(for='idAccountAge') Age
-                  input#idAccountAge.form-control(type='text' name='accountAge' disabled='')
-                .col-md-3.mb-3
-                  label.text-left(for='accountSexe') Sexe
-                  fieldset.border.rounded.p-3
-                    .form-check.text-left
-                      input#idAccountSexNone.form-check-input(type='radio' name='accountSexe' value='Non divulgué' checked='' aria-checked='')
-                      label.form-check-label(for='idAccountSexNone') Non divulgu&eacute;
-                    .form-check.text-left
-                      input#idAccountSexMale.form-check-input(type='radio' name='accountSexe' value='masculin')
-                      label.form-check-label(for='idAccountSexMale') Masculin
-                    .form-check.text-left
-                      input#idAccountSexFemale.form-check-input(type='radio' name='accountSexe' value='feminin')
-                      label.form-check-label(for='idAccountSexFemale') F&eacute;minin
-            // ******************************************************************************
-            // Adresse + Ville + Code Postal + Département
-            // ******************************************************************************
-            fieldset.border.rounded.p-3
-              .row.justify-content-around
-                .col-md-6.mb-3
-                  label(for='idAccountStreet') Adresse
-                  input#idAccountStreet.form-control(type='text' name='accountStreet' placeholder='N° et voie')
-                  .invalid-feedback
-                    | Veuillez saisir votre adresse
-                .col-md-6.mb-3
-                  label(for='idAccountCity') Ville
-                  input#idAccountCity.form-control(type='text' name='accountCity' placeholder='Ville')
-              .row.justify-content-around
-                .col-md-3.mb-3
-                  label(for='idAccountZipCode') Code postal
-                  input#idAccountZipCode.form-control(type='text' placeholder='Code postal')
-                  .invalid-feedback
-                    | Code postal requis.
-                .col-md-5.mb-3
-                  label(for='idAccountDepartment') D&eacute;partement
-                  select#idAccountDepartment.custom-select(name='accountDepartment')
-                    option(selected='') D&eacute;partement...
-                    option(value='00') (00) Hors France
-                    option(value='01') (01) Ain 
-                    option(value='02') (02) Aisne 
-                    option(value='03') (03) Allier 
-                    option(value='04') (04) Alpes de Haute Provence 
-                    option(value='05') (05) Hautes Alpes 
-                    option(value='06') (06) Alpes Maritimes 
-                    option(value='07') (07) Ard&egrave;che 
-                    option(value='08') (08) Ardennes 
-                    option(value='09') (09) Ari&egrave;ge 
-                    option(value='10') (10) Aube 
-                    option(value='11') (11) Aude 
-                    option(value='12') (12) Aveyron 
-                    option(value='13') (13) Bouches du Rh&ocirc;ne 
-                    option(value='14') (14) Calvados 
-                    option(value='15') (15) Cantal 
-                    option(value='16') (16) Charente 
-                    option(value='17') (17) Charente Maritime 
-                    option(value='18') (18) Cher 
-                    option(value='19') (19) Corr&egrave;ze 
-                    option(value='2A') (2A) Corse du Sud 
-                    option(value='2B') (2B) Haute-Corse 
-                    option(value='21') (21) C&ocirc;te d&apos;Or 
-                    option(value='22') (22) C&ocirc;tes d&apos;Armor 
-                    option(value='23') (23) Creuse 
-                    option(value='24') (24) Dordogne 
-                    option(value='25') (25) Doubs 
-                    option(value='26') (26) Dr&ocirc;me 
-                    option(value='27') (27) Eure 
-                    option(value='28') (28) Eure et Loir 
-                    option(value='29') (29) Finist&egrave;re 
-                    option(value='30') (30) Gard 
-                    option(value='31') (31) Haute Garonne 
-                    option(value='32') (32) Gers 
-                    option(value='33') (33) Gironde 
-                    option(value='34') (34) H&eacute;rault 
-                    option(value='35') (35) Ille et Vilaine 
-                    option(value='36') (36) Indre 
-                    option(value='37') (37) Indre et Loire 
-                    option(value='38') (38) Is&egrave;re 
-                    option(value='39') (39) Jura 
-                    option(value='40') (40) Landes 
-                    option(value='41') (41) Loir et Cher 
-                    option(value='42') (42) Loire 
-                    option(value='43') (43) Haute Loire 
-                    option(value='44') (44) Loire Atlantique 
-                    option(value='45') (45) Loiret 
-                    option(value='46') (46) Lot 
-                    option(value='47') (47) Lot et Garonne 
-                    option(value='48') (48) Loz&egrave;re 
-                    option(value='49') (49) Maine et Loire 
-                    option(value='50') (50) Manche 
-                    option(value='51') (51) Marne 
-                    option(value='52') (52) Haute Marne 
-                    option(value='53') (53) Mayenne 
-                    option(value='54') (54) Meurthe et Moselle 
-                    option(value='55') (55) Meuse 
-                    option(value='56') (56) Morbihan 
-                    option(value='57') (57) Moselle 
-                    option(value='58') (58) Ni&egrave;vre 
-                    option(value='59') (59) Nord 
-                    option(value='60') (60) Oise 
-                    option(value='61') (61) Orne 
-                    option(value='62') (62) Pas de Calais 
-                    option(value='63') (63) Puy de D&ocirc;me 
-                    option(value='64') (64) Pyr&eacute;n&eacute;es Atlantiques 
-                    option(value='65') (65) Hautes Pyr&eacute;n&eacute;es 
-                    option(value='66') (66) Pyr&eacute;n&eacute;es Orientales 
-                    option(value='67') (67) Bas Rhin 
-                    option(value='68') (68) Haut Rhin 
-                    option(value='69') (69) Rh&ocirc;ne 
-                    option(value='70') (70) Haute Sa&ocirc;ne 
-                    option(value='71') (71) Sa&ocirc;ne et Loire 
-                    option(value='72') (72) Sarthe 
-                    option(value='73') (73) Savoie 
-                    option(value='74') (74) Haute Savoie 
-                    option(value='75') (75) Paris 
-                    option(value='76') (76) Seine Maritime 
-                    option(value='77') (77) Seine et Marne 
-                    option(value='78') (78) Yvelines 
-                    option(value='79') (79) Deux S&egrave;vres 
-                    option(value='80') (80) Somme 
-                    option(value='81') (81) Tarn 
-                    option(value='82') (82) Tarn et Garonne 
-                    option(value='83') (83) Var 
-                    option(value='84') (84) Vaucluse 
-                    option(value='85') (85) Vend&eacute;e 
-                    option(value='86') (86) Vienne 
-                    option(value='87') (87) Haute Vienne 
-                    option(value='88') (88) Vosges 
-                    option(value='89') (89) Yonne 
-                    option(value='90') (90) Territoire de Belfort 
-                    option(value='91') (91) Essonne 
-                    option(value='92') (92) Hauts de Seine 
-                    option(value='93') (93) Seine Saint Denis 
-                    option(value='94') (94) Val de Marne 
-                    option(value='95') (95) Val d&apos;Oise 
-                    option(value='971') (971) Guadeloupe 
-                    option(value='972') (972) Martinique 
-                    option(value='973') (973) Guyane 
-                    option(value='974') (974) R&eacute;union 
-                    option(value='975') (975) Saint Pierre et Miquelon 
-                    option(value='976') (976) Mayotte 
-            fieldset.border.rounded.px-3.pt-3.mb-3
-              .row.justify-content-around
-                .col-md-6.mb-3
-                  label(for='accountPreferences') Pr&eacute;f&eacute;rences
-                  .btn-group-toggle(data-toggle='buttons')
-                    label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill
-                      input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
-                      | Gravures
-                    label#idAccountPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill
-                      input#idAccountPrefLivres(type='checkbox' name='accountPref' autocomplete='off')
-                      | Livres
-                    label#idAccountPrefFilmsLabel.btn.btn-outline-warning.badge.badge-pill
-                      input#idAccountPrefFilms(type='checkbox' name='accountPref' autocomplete='off')
-                      | Films
-                    label#idAccountPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill
-                      input#idAccountPrefJeux(type='checkbox' name='accountPref' autocomplete='off')
-                      | Jeux
-                    label#idAccountPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill
-                      input#idAccountPrefMaquettes(type='checkbox' name='accountPref' autocomplete='off')
-                      | Maquettes
-                    label#idAccountPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill
-                      input#idAccountPrefFigurines(type='checkbox' name='accountPref' autocomplete='off')
-                      | Figurines
-                    label#idAccountPrefBlindesLabel.btn.btn-outline-info.badge.badge-pill
-                      input#idAccountPrefBlindes(type='checkbox' name='accountPref' autocomplete='off')
-                      | Blind&eacute;s
-                    label#idAccountPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill
-                      input#idAccountPrefAvions(type='checkbox' name='accountPref' autocomplete='off')
-                      | Avions
-                    label#idAccountPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill
-                      input#idAccountPrefBateaux(type='checkbox' name='accountPref' autocomplete='off')
-                      | Bateaux
-                    label#idAccountPrefDioramasLabel.btn.btn-outline-warning.badge.badge-pill
-                      input#idAccountPrefDioramas(type='checkbox' name='accountPref' autocomplete='off')
-                      | Dioramas
-                    label#idAccountPrefPrehistoireLabel.btn.btn-outline-primary.badge.badge-pill
-                      input#idAccountPrefPrehistoire(type='checkbox' name='accountPref' autocomplete='off')
-                      | Pr&eacute;histoire
-                    label#idAccountPrefAntiquiteLabel.btn.btn-outline-secondary.badge.badge-pill
-                      input#idAccountPrefAntiquite(type='checkbox' name='accountPref' autocomplete='off')
-                      | Antiquit&eacute;
-                    label#idAccountPrefMoyenAgeLabel.btn.btn-outline-info.badge.badge-pill
-                      input#idAccountPrefMoyenAge(type='checkbox' name='accountPref' autocomplete='off')
-                      | Moyen-&acirc;ge
-                    label#idAccountPrefRenaissanceLabel.btn.btn-outline-success.badge.badge-pill
-                      input#idAccountPrefRenaissance(type='checkbox' name='accountPref' autocomplete='off')
-                      | Renaissance
-                    label#idAccountPrefDentellesLabel.btn.btn-outline-danger.badge.badge-pill
-                      input#idAccountPrefDentelles(type='checkbox' name='accountPref' autocomplete='off')
-                      | Guerre en dentelles
-                    label#idAccountPrefAncienRegimeLabel.btn.btn-outline-warning.badge.badge-pill
-                      input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
-                      | Ancien-regime
-                    label#idAccountPrefRevolutionLabel.btn.btn-outline-success.badge.badge-pill
-                      input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
-                      | R&eacute;volution Fran&ccedil;aise
-                    label#idAccountPref1erEmpireLabel.btn.btn-outline-primary.badge.badge-pill
-                      input#idAccountPref1erEmpire(type='checkbox' name='accountPref' autocomplete='off')
-                      | 1er Empire
-                    label#idAccountPref2ndEmpireLabel.btn.btn-outline-secondary.badge.badge-pill
-                      input#idAccountPref2ndEmpire(type='checkbox' name='accountPref' autocomplete='off')
-                      | 2nd Empire
-                    label#idAccountPrefSecessionLabel.btn.btn-outline-warning.badge.badge-pill
-                      input#idAccountPrefSecession(type='checkbox' name='accountPref' autocomplete='off')
-                      | Guerre de s&eacute;cession
-                    label#idAccountPrefFarWestLabel.btn.btn-outline-primary.badge.badge-pill
-                      input#idAccountPrefFarWest(type='checkbox' name='accountPref' autocomplete='off')
-                      | Far West
-                    label#idAccountPrefWW1Label.btn.btn-outline-info.badge.badge-pill
-                      input#idAccountPrefWW1(type='checkbox' name='accountPref' autocomplete='off')
-                      | 1Ere Guerre Mondiale
-                    label#idAccountPrefWW2Label.btn.btn-outline-secondary.badge.badge-pill
-                      input#idAccountPrefWW2(type='checkbox' name='accountPref' autocomplete='off')
-                      | 2&egrave;me Guerre mondiale
-                    label#idAccountPrefContemporainLabel.btn.btn-outline-danger.badge.badge-pill
-                      input#idAccountPrefContemporain(type='checkbox' name='accountPref' autocomplete='off')
-                      | Contemporain
-                    label#idAccountPrefFuturisteLabel.btn.btn-outline-warning.badge.badge-pill
-                      input#idAccountPrefFuturiste(type='checkbox' name='accountPref' autocomplete='off')
-                      | Futuriste
-                    label#idAccountPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill
-                      input#idAccountPrefFantastique(type='checkbox' name='accountPref' autocomplete='off')
-                      | Fantastique
-                    label#idAccountPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill
-                      input#idAccountPrefHFrancaise(type='checkbox' name='accountPref' autocomplete='off')
-                      | Histoire Fran&ccedil;aise
-                    label#idAccountPrefHAmericaineLabel.btn.btn-outline-info.badge.badge-pill
-                      input#idAccountPrefHAmericaine(type='checkbox' name='accountPref' autocomplete='off')
-                      | Histoire Am&eacute;ricaine
-                    label#idAccountPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill
-                      input#idAccountPrefHInternationale(type='checkbox' name='accountPref' autocomplete='off')
-                      | Histoire internationale
-                    label#idAccountPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill
-                      input#idAccountPrefAutre(type='checkbox' name='accountPref' autocomplete='off')
-                      | Autre
-                .col-md-6.mb-3
-                  .form-group
-                    label(for='idAccountPresentation') Pr&eacute;sentation
-                    textarea#idAccountPresentation.form-control(rows='8' name='accountPresentation')
-            // ******************************************************************************
-            // Changement de Mot de Passe + zone d'alerte
-            // ******************************************************************************
-            .row.justify-content-around
-              .col-md-6.mb-3
-                label(for='idAccountCurrentPassword') Changement de mot de passe
-                fieldset.border.rounded.p-3
-                  input#idAccountCurrentPassword.form-control.mb-3(type='password' name='accountCurrentPassword' placeholder='Mot de passe actuel' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-                  label.sr-only(for='idAccountPassword') Mot de passe
-                  input#idAccountPassword.form-control(type='password' name='accountPassword' placeholder='Nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
-                  input#idAccountConfirmPassword.form-control(type='password' name='accountConfirmPassword' placeholder='Confirmez le nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
-                  label.sr-only(for='idAccountConfirmPassword') Confirmez le mot de passe
-            p#idAccountAlertMsg.lead.mt-2.display-4.text-danger.text-center.alertMsg
-            // ******************************************************************************
-            // Footer et bouton de validation de la Form
-            // ******************************************************************************
-            .modal-footer
-              button#idAccountBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
-// *************************************************************************
-// Footer
-// *************************************************************************
-footer.footer
+div
   .container
-    span.bg-dark Place sticky footer content here.
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+      a.navbar-brand(href='#')
+        img.d-inline-block.align-top.mr-2(alt="Logo du site 'Collect\'Or" src='static/images/brand.png' height='40')
+      span#idNbrPopulation.infosOnNavBar
+      button.navbar-toggler(type='button' data-toggle='collapse' data-target='#mainScreenMenu' aria-expanded='false' aria-controls='mainScreenMenu' aria-label='Toggle mainScreenMenu')
+        span.navbar-toggler-icon
+      #mainScreenMenu.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          li.nav-item.mx-1
+            a#idConnexion.nav-link(href='#idModalLogin' data-toggle='modal' data-target='#idModalLogin')
+              span.fa.fa-sign-in
+              |  Connexion
+          li.nav-item
+            a#idCreation.nav-link(href='#idModalSignIn' data-toggle='modal' data-target='#idModalSignIn')
+              span.fa.fa-plus
+              |   Cr&eacute;er un compte
+          li.nav-item.mx-1.dropdown
+            a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+              span#idMemberName.fa.fa-user
+            .dropdown-menu(aria-labelledby='templates-dropdown')
+              a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount') Renseignements
+              a.dropdown-item(href='template-4.html') Administration
+              hr
+              a#idDeconnexion.dropdown-item.disabled(href='#' target='_top')
+                span.fa.fa-sign-out
+                |  D&eacute;connexion
+          li.nav-item
+            a.nav-link(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
+              span.fa.fa-bell
+              |  A propos
+  // *************************************************************************
+  // Carroussel de fond d'écran
+  // *************************************************************************
+  .container-fluid
+    #mainScreenCaroussel.carousel.slide.carousel-fade.carousel-fullscreen(data-ride='carousel' data-interval='4000' data-pause='false')
+      // Indicators de bas de slides
+      ol.carousel-indicators
+        li.active.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='0')
+        li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='1')
+        li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='2')
+        li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='3')
+        li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='4')
+        li.txt-yellow-stroke(data-target='#mainScreenCaroussel' data-slide-to='5')
+      // sliders
+      .carousel-inner(role='listbox')
+        .carousel-item.active(style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;")
+          .overlay
+          .carousel-caption
+            .row.my-auto
+              .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+                h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+                // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+        .carousel-item(style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 35%; background-size: cover;")
+          .overlay
+          .carousel-caption
+            .row.my-auto
+              .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+                h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+                // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+        .carousel-item(style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 100%; background-size: cover;")
+          .overlay
+          .carousel-caption
+            .row.my-auto
+              .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+                h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+                // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+        .carousel-item(style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 100%; background-size: cover;")
+          .overlay
+          .carousel-caption
+            .row.my-auto
+              .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+                h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+                // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+        .carousel-item(style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;")
+          .overlay
+          .carousel-caption
+            .row.my-auto
+              .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+                h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+                // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+        .carousel-item(style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;")
+          .overlay
+          .carousel-caption
+            .row.my-auto
+              .col-lg-10.col-md-8.col-sm-12.text-center.mx-auto.py-5.my-5
+                h1.mb-4.display-1.mx-5.txt-yellow-stroke Collect&apos;Or
+                // <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                p.lead.mt-5.display-4.txt-yellow-stroke R&eacute;seau Social des collectionneurs de sujets d&apos;Histoire Militaire
+      // Controls G et D
+      a.carousel-control-prev(href='#mainScreenCaroussel' role='button' data-slide='prev')
+        span.carousel-control-prev-icon(aria-hidden='true')
+        span.sr-only Previous
+      a.carousel-control-next(href='#mainScreenCaroussel' role='button' data-slide='next')
+        span.carousel-control-next-icon(aria-hidden='true')
+        span.sr-only Next
+  // ***********************************************************************************
+  // Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
+  // "idModalBodyText" sont alimentés par javascript
+  // ***********************************************************************************
+  #idGenericModal.modal(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document')
+      .modal-content
+        #idGenericModalHeader.modal-header
+          h5#idGenericModalTitle.modal-title
+          button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+        .modal-body
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+          #idGenericModalBodyText
+        .modal-footer
+          button#idGenericModalBtn.btn.btn-success(type='button' data-dismiss='modal') Fermer
+  // *************************************************************************
+  // Fenêtre Modale Login
+  // *************************************************************************
+  #idModalLogin.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document')
+      .modal-content
+        #idModalLoginHeader.modal-header
+          h5.modal-title Connexion
+          button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+        .modal-body
+          form#idLoginForm.form-Signin
+            img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+            h1.h3.mb-3.font-weight-normal Veuillez vous identifier
+            label.sr-only(for='idLoginPseudo') Pseudonyme
+            input#idLoginPseudo.form-control(type='text' name='loginPseudo' placeholder='Pseudonyme' required='' autofocus='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
+            br
+            label.sr-only(for='idLoginPassword') Mot de passe
+            input#idLoginPassword.form-control(type='password' name='loginPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+            .row.justify-content-between
+              #idSignIn.mt-1.mb-2.col-6.xs-col-6.text-left.speedKey
+                | Cr&eacute;er un compte
+              #idLostPWD.mt-1.mb-2.col-6.xs-col-6.text-right.speedKey
+                | Mot de passe oubli&eacute; ?
+            p#idLoginAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg Pseudo et/ou mot de passe inconnus
+            .modal-footer
+              button#idConnectionBtn.btn.btn-lg.btn-success.btn-block(type='submit') Connexion
+  // *************************************************************************
+  // Fenêtre Modale Inscription
+  // *************************************************************************
+  #idModalSignIn.modal(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document')
+      .modal-content
+        #idModalSignInHeader.modal-header
+          h5.modal-title Cr&eacute;ation de compte
+          button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+        .modal-body
+          form#idSignInForm.form-Signin
+            img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+            h1.h3.mb-3.font-weight-normal Veuillez saisir vos informations
+            .mb-3
+              label.sr-only(for='idSignInEmail')
+                | Email 
+                span.text-muted
+              .input-group
+                .input-group-prepend
+                  span.input-group-text @
+                input#idSignInEmail.form-control(type='email' name='signInEmail' placeholder='exemple@provider.com' required='' autofocus='')
+            fieldset.border.rounded.p-3
+              label.sr-only(for='idSignInPseudo') Pseudonyme
+              input#idSignInPseudo.form-control(type='text' name='signInPseudo' placeholder='Pseudonyme' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$' title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères")
+              br
+              label.sr-only(for='iSignInPassword') Mot de passe
+              input#idSignInPassword.form-control(type='password' name='signInPassword' placeholder='Mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+              input#idSignInConfirmPassword.form-control(type='password' name='signInConfirmPassword' placeholder='Confirmez le mot de passe' required='' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+              label.sr-only(for='idSignInConfirmPassword') Confirmez le mot de passe
+            p#idSignInAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail et/ou le pseudo sont d&eacute;j&agrave; attribu&eacute;s
+            .modal-footer
+              button#idSignInBtn.btn.btn-lg.btn-success.btn-block(type='submit') Cr&eacute;ation
+  // *************************************************************************
+  // Fenêtre Modale de Mot de passe perdu
+  // *************************************************************************
+  #idModalLostPWD.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document')
+      .modal-content
+        #idModalLostPWDHeader.modal-header
+          h5.modal-title Mot de passe perdu
+          button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+        .modal-body
+          form#idLostPWDForm.form-LostPWD
+            img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+            h1.h3.mb-3.font-weight-normal Veuillez saisir votre e-mail
+            .mb-3
+              label.sr-only(for='idLostPWDEmail')
+                | Email 
+                span.text-muted
+              .input-group
+                .input-group-prepend
+                  span.input-group-text @
+                input#idLostPWDEmail.form-control(type='email' name='lostPWDEmail' placeholder='exemple@provider.com' required='' autofocus='')
+            p#idLostPWDAlertMsg.lead.mt-5.display-4.text-danger.text-center.alertMsg L&apos;e-mail fourni n&apos;a pas &eacute;t&eacute; trouv&eacute;, veuillez le resaisir
+            .modal-footer
+              button#idLostPWDBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
+  // *************************************************************************
+  // Fenêtre Modale de renseignements
+  // *************************************************************************
+  #idModalAccount.modal(tabindex='-1' role='dialog' aria-labelledby='idModalAccountTitle' aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document' style='max-width: 800px;')
+      .modal-content
+        #idModalAccountHeader.modal-header
+          h5.modal-title Renseignements personnels
+          button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+        .modal-body
+          .py-5.text-center
+            img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+            h2 Saisie des renseignements personnels
+            p.lead
+              | Ces informations, optionnelles, vont permettre aux autres internautes de mieux vous conna&icirc;tre &agrave; travers vos centres d&apos;int&eacute;r&ecirc;t, ou vos types de collections pr&eacute;f&eacute;r&eacute;es par exemple...
+          .text-center
+            form#idAccountForm.form-Account
+              fieldset.border.rounded.p-3
+                .row.justify-content-around
+                  .col-md-5.mb-3
+                    label(for='idAccountPseudo') Pseudonyme
+                    input#idAccountPseudo.form-control(type='text' name='accountPseudo' disabled='' tabindex='-1')
+                  .col-md-5.mb-3
+                    label(for='idAccountEmail') Email
+                    input#idAccountEmail.form-control(type='email' name='accountEmail' disabled='' tabindex='-1')
+              // ******************************************************************************
+              // Avatar + Nom + Prénom
+              // ******************************************************************************
+              fieldset.border.rounded.p-3
+                .row.justify-content-around
+                  .col-md-3
+                    img#idAccountPhotoImg.img-thumbnail.mb-3.img-responsive(src='' alt='Image du profile')
+                    span.btn.btn-success.btn-file.mb-3
+                      | Changer d&apos;avatar 
+                      input#idAccountPhotoFile(type='file' name='AccountPhotoFile' accept='image/png, image/jpeg')
+                  .col-md-8.mb-3
+                    label(for='idAccountFirstName') Pr&eacute;nom
+                    input#idAccountFirstName.form-control.mb-3(type='text' name='accountFirstName' placeholder='Prénom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
+                    label(for='idAccountName') Nom de famille
+                    input#idAccountName.form-control.mb-3(type='text' name='accountName' placeholder='Nom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
+                    .invalid-feedback
+                      | Un nom valide est requis.
+              // ******************************************************************************
+              // Date naissance + Age + Sexe
+              // ******************************************************************************
+              fieldset.border.rounded.p-3
+                .row.justify-content-around
+                  .col-md-4.mb-3
+                    label(for='idAccountBirthDate') Date de naissance
+                    input#idAccountBirthDate.form-control(type='date' name='accountBirthdate')
+                    .invalid-feedback
+                      | Une date valide est requise
+                  .col-md-2.mb-3
+                    label(for='idAccountAge') Age
+                    input#idAccountAge.form-control(type='text' name='accountAge' disabled='')
+                  .col-md-3.mb-3
+                    label.text-left(for='accountSexe') Sexe
+                    fieldset.border.rounded.p-3
+                      .form-check.text-left
+                        input#idAccountSexNone.form-check-input(type='radio' name='accountSexe' value='Non divulgué' checked='' aria-checked='')
+                        label.form-check-label(for='idAccountSexNone') Non divulgu&eacute;
+                      .form-check.text-left
+                        input#idAccountSexMale.form-check-input(type='radio' name='accountSexe' value='masculin')
+                        label.form-check-label(for='idAccountSexMale') Masculin
+                      .form-check.text-left
+                        input#idAccountSexFemale.form-check-input(type='radio' name='accountSexe' value='feminin')
+                        label.form-check-label(for='idAccountSexFemale') F&eacute;minin
+              // ******************************************************************************
+              // Adresse + Ville + Code Postal + Département
+              // ******************************************************************************
+              fieldset.border.rounded.p-3
+                .row.justify-content-around
+                  .col-md-6.mb-3
+                    label(for='idAccountStreet') Adresse
+                    input#idAccountStreet.form-control(type='text' name='accountStreet' placeholder='N° et voie')
+                    .invalid-feedback
+                      | Veuillez saisir votre adresse
+                  .col-md-6.mb-3
+                    label(for='idAccountCity') Ville
+                    input#idAccountCity.form-control(type='text' name='accountCity' placeholder='Ville')
+                .row.justify-content-around
+                  .col-md-3.mb-3
+                    label(for='idAccountZipCode') Code postal
+                    input#idAccountZipCode.form-control(type='text' placeholder='Code postal')
+                    .invalid-feedback
+                      | Code postal requis.
+                  .col-md-5.mb-3
+                    label(for='idAccountDepartment') D&eacute;partement
+                    select#idAccountDepartment.custom-select(name='accountDepartment')
+                      option(selected='') D&eacute;partement...
+                      option(value='00') (00) Hors France
+                      option(value='01') (01) Ain 
+                      option(value='02') (02) Aisne 
+                      option(value='03') (03) Allier 
+                      option(value='04') (04) Alpes de Haute Provence 
+                      option(value='05') (05) Hautes Alpes 
+                      option(value='06') (06) Alpes Maritimes 
+                      option(value='07') (07) Ard&egrave;che 
+                      option(value='08') (08) Ardennes 
+                      option(value='09') (09) Ari&egrave;ge 
+                      option(value='10') (10) Aube 
+                      option(value='11') (11) Aude 
+                      option(value='12') (12) Aveyron 
+                      option(value='13') (13) Bouches du Rh&ocirc;ne 
+                      option(value='14') (14) Calvados 
+                      option(value='15') (15) Cantal 
+                      option(value='16') (16) Charente 
+                      option(value='17') (17) Charente Maritime 
+                      option(value='18') (18) Cher 
+                      option(value='19') (19) Corr&egrave;ze 
+                      option(value='2A') (2A) Corse du Sud 
+                      option(value='2B') (2B) Haute-Corse 
+                      option(value='21') (21) C&ocirc;te d&apos;Or 
+                      option(value='22') (22) C&ocirc;tes d&apos;Armor 
+                      option(value='23') (23) Creuse 
+                      option(value='24') (24) Dordogne 
+                      option(value='25') (25) Doubs 
+                      option(value='26') (26) Dr&ocirc;me 
+                      option(value='27') (27) Eure 
+                      option(value='28') (28) Eure et Loir 
+                      option(value='29') (29) Finist&egrave;re 
+                      option(value='30') (30) Gard 
+                      option(value='31') (31) Haute Garonne 
+                      option(value='32') (32) Gers 
+                      option(value='33') (33) Gironde 
+                      option(value='34') (34) H&eacute;rault 
+                      option(value='35') (35) Ille et Vilaine 
+                      option(value='36') (36) Indre 
+                      option(value='37') (37) Indre et Loire 
+                      option(value='38') (38) Is&egrave;re 
+                      option(value='39') (39) Jura 
+                      option(value='40') (40) Landes 
+                      option(value='41') (41) Loir et Cher 
+                      option(value='42') (42) Loire 
+                      option(value='43') (43) Haute Loire 
+                      option(value='44') (44) Loire Atlantique 
+                      option(value='45') (45) Loiret 
+                      option(value='46') (46) Lot 
+                      option(value='47') (47) Lot et Garonne 
+                      option(value='48') (48) Loz&egrave;re 
+                      option(value='49') (49) Maine et Loire 
+                      option(value='50') (50) Manche 
+                      option(value='51') (51) Marne 
+                      option(value='52') (52) Haute Marne 
+                      option(value='53') (53) Mayenne 
+                      option(value='54') (54) Meurthe et Moselle 
+                      option(value='55') (55) Meuse 
+                      option(value='56') (56) Morbihan 
+                      option(value='57') (57) Moselle 
+                      option(value='58') (58) Ni&egrave;vre 
+                      option(value='59') (59) Nord 
+                      option(value='60') (60) Oise 
+                      option(value='61') (61) Orne 
+                      option(value='62') (62) Pas de Calais 
+                      option(value='63') (63) Puy de D&ocirc;me 
+                      option(value='64') (64) Pyr&eacute;n&eacute;es Atlantiques 
+                      option(value='65') (65) Hautes Pyr&eacute;n&eacute;es 
+                      option(value='66') (66) Pyr&eacute;n&eacute;es Orientales 
+                      option(value='67') (67) Bas Rhin 
+                      option(value='68') (68) Haut Rhin 
+                      option(value='69') (69) Rh&ocirc;ne 
+                      option(value='70') (70) Haute Sa&ocirc;ne 
+                      option(value='71') (71) Sa&ocirc;ne et Loire 
+                      option(value='72') (72) Sarthe 
+                      option(value='73') (73) Savoie 
+                      option(value='74') (74) Haute Savoie 
+                      option(value='75') (75) Paris 
+                      option(value='76') (76) Seine Maritime 
+                      option(value='77') (77) Seine et Marne 
+                      option(value='78') (78) Yvelines 
+                      option(value='79') (79) Deux S&egrave;vres 
+                      option(value='80') (80) Somme 
+                      option(value='81') (81) Tarn 
+                      option(value='82') (82) Tarn et Garonne 
+                      option(value='83') (83) Var 
+                      option(value='84') (84) Vaucluse 
+                      option(value='85') (85) Vend&eacute;e 
+                      option(value='86') (86) Vienne 
+                      option(value='87') (87) Haute Vienne 
+                      option(value='88') (88) Vosges 
+                      option(value='89') (89) Yonne 
+                      option(value='90') (90) Territoire de Belfort 
+                      option(value='91') (91) Essonne 
+                      option(value='92') (92) Hauts de Seine 
+                      option(value='93') (93) Seine Saint Denis 
+                      option(value='94') (94) Val de Marne 
+                      option(value='95') (95) Val d&apos;Oise 
+                      option(value='971') (971) Guadeloupe 
+                      option(value='972') (972) Martinique 
+                      option(value='973') (973) Guyane 
+                      option(value='974') (974) R&eacute;union 
+                      option(value='975') (975) Saint Pierre et Miquelon 
+                      option(value='976') (976) Mayotte 
+              fieldset.border.rounded.px-3.pt-3.mb-3
+                .row.justify-content-around
+                  .col-md-6.mb-3
+                    label(for='accountPreferences') Pr&eacute;f&eacute;rences
+                    .btn-group-toggle(data-toggle='buttons')
+                      label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill
+                        input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
+                        | Gravures
+                      label#idAccountPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill
+                        input#idAccountPrefLivres(type='checkbox' name='accountPref' autocomplete='off')
+                        | Livres
+                      label#idAccountPrefFilmsLabel.btn.btn-outline-warning.badge.badge-pill
+                        input#idAccountPrefFilms(type='checkbox' name='accountPref' autocomplete='off')
+                        | Films
+                      label#idAccountPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill
+                        input#idAccountPrefJeux(type='checkbox' name='accountPref' autocomplete='off')
+                        | Jeux
+                      label#idAccountPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill
+                        input#idAccountPrefMaquettes(type='checkbox' name='accountPref' autocomplete='off')
+                        | Maquettes
+                      label#idAccountPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill
+                        input#idAccountPrefFigurines(type='checkbox' name='accountPref' autocomplete='off')
+                        | Figurines
+                      label#idAccountPrefBlindesLabel.btn.btn-outline-info.badge.badge-pill
+                        input#idAccountPrefBlindes(type='checkbox' name='accountPref' autocomplete='off')
+                        | Blind&eacute;s
+                      label#idAccountPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill
+                        input#idAccountPrefAvions(type='checkbox' name='accountPref' autocomplete='off')
+                        | Avions
+                      label#idAccountPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill
+                        input#idAccountPrefBateaux(type='checkbox' name='accountPref' autocomplete='off')
+                        | Bateaux
+                      label#idAccountPrefDioramasLabel.btn.btn-outline-warning.badge.badge-pill
+                        input#idAccountPrefDioramas(type='checkbox' name='accountPref' autocomplete='off')
+                        | Dioramas
+                      label#idAccountPrefPrehistoireLabel.btn.btn-outline-primary.badge.badge-pill
+                        input#idAccountPrefPrehistoire(type='checkbox' name='accountPref' autocomplete='off')
+                        | Pr&eacute;histoire
+                      label#idAccountPrefAntiquiteLabel.btn.btn-outline-secondary.badge.badge-pill
+                        input#idAccountPrefAntiquite(type='checkbox' name='accountPref' autocomplete='off')
+                        | Antiquit&eacute;
+                      label#idAccountPrefMoyenAgeLabel.btn.btn-outline-info.badge.badge-pill
+                        input#idAccountPrefMoyenAge(type='checkbox' name='accountPref' autocomplete='off')
+                        | Moyen-&acirc;ge
+                      label#idAccountPrefRenaissanceLabel.btn.btn-outline-success.badge.badge-pill
+                        input#idAccountPrefRenaissance(type='checkbox' name='accountPref' autocomplete='off')
+                        | Renaissance
+                      label#idAccountPrefDentellesLabel.btn.btn-outline-danger.badge.badge-pill
+                        input#idAccountPrefDentelles(type='checkbox' name='accountPref' autocomplete='off')
+                        | Guerre en dentelles
+                      label#idAccountPrefAncienRegimeLabel.btn.btn-outline-warning.badge.badge-pill
+                        input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
+                        | Ancien-regime
+                      label#idAccountPrefRevolutionLabel.btn.btn-outline-success.badge.badge-pill
+                        input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
+                        | R&eacute;volution Fran&ccedil;aise
+                      label#idAccountPref1erEmpireLabel.btn.btn-outline-primary.badge.badge-pill
+                        input#idAccountPref1erEmpire(type='checkbox' name='accountPref' autocomplete='off')
+                        | 1er Empire
+                      label#idAccountPref2ndEmpireLabel.btn.btn-outline-secondary.badge.badge-pill
+                        input#idAccountPref2ndEmpire(type='checkbox' name='accountPref' autocomplete='off')
+                        | 2nd Empire
+                      label#idAccountPrefSecessionLabel.btn.btn-outline-warning.badge.badge-pill
+                        input#idAccountPrefSecession(type='checkbox' name='accountPref' autocomplete='off')
+                        | Guerre de s&eacute;cession
+                      label#idAccountPrefFarWestLabel.btn.btn-outline-primary.badge.badge-pill
+                        input#idAccountPrefFarWest(type='checkbox' name='accountPref' autocomplete='off')
+                        | Far West
+                      label#idAccountPrefWW1Label.btn.btn-outline-info.badge.badge-pill
+                        input#idAccountPrefWW1(type='checkbox' name='accountPref' autocomplete='off')
+                        | 1Ere Guerre Mondiale
+                      label#idAccountPrefWW2Label.btn.btn-outline-secondary.badge.badge-pill
+                        input#idAccountPrefWW2(type='checkbox' name='accountPref' autocomplete='off')
+                        | 2&egrave;me Guerre mondiale
+                      label#idAccountPrefContemporainLabel.btn.btn-outline-danger.badge.badge-pill
+                        input#idAccountPrefContemporain(type='checkbox' name='accountPref' autocomplete='off')
+                        | Contemporain
+                      label#idAccountPrefFuturisteLabel.btn.btn-outline-warning.badge.badge-pill
+                        input#idAccountPrefFuturiste(type='checkbox' name='accountPref' autocomplete='off')
+                        | Futuriste
+                      label#idAccountPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill
+                        input#idAccountPrefFantastique(type='checkbox' name='accountPref' autocomplete='off')
+                        | Fantastique
+                      label#idAccountPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill
+                        input#idAccountPrefHFrancaise(type='checkbox' name='accountPref' autocomplete='off')
+                        | Histoire Fran&ccedil;aise
+                      label#idAccountPrefHAmericaineLabel.btn.btn-outline-info.badge.badge-pill
+                        input#idAccountPrefHAmericaine(type='checkbox' name='accountPref' autocomplete='off')
+                        | Histoire Am&eacute;ricaine
+                      label#idAccountPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill
+                        input#idAccountPrefHInternationale(type='checkbox' name='accountPref' autocomplete='off')
+                        | Histoire internationale
+                      label#idAccountPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill
+                        input#idAccountPrefAutre(type='checkbox' name='accountPref' autocomplete='off')
+                        | Autre
+                  .col-md-6.mb-3
+                    .form-group
+                      label(for='idAccountPresentation') Pr&eacute;sentation
+                      textarea#idAccountPresentation.form-control(rows='8' name='accountPresentation')
+              // ******************************************************************************
+              // Changement de Mot de Passe + zone d'alerte
+              // ******************************************************************************
+              .row.justify-content-around
+                .col-md-6.mb-3
+                  label(for='idAccountCurrentPassword') Changement de mot de passe
+                  fieldset.border.rounded.p-3
+                    input#idAccountCurrentPassword.form-control.mb-3(type='password' name='accountCurrentPassword' placeholder='Mot de passe actuel' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+                    label.sr-only(for='idAccountPassword') Mot de passe
+                    input#idAccountPassword.form-control(type='password' name='accountPassword' placeholder='Nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
+                    input#idAccountConfirmPassword.form-control(type='password' name='accountConfirmPassword' placeholder='Confirmez le nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
+                    label.sr-only(for='idAccountConfirmPassword') Confirmez le mot de passe
+              p#idAccountAlertMsg.lead.mt-2.display-4.text-danger.text-center.alertMsg
+              // ******************************************************************************
+              // Footer et bouton de validation de la Form
+              // ******************************************************************************
+              .modal-footer
+                button#idAccountBtn.btn.btn-lg.btn-success.btn-block.mb-5(type='submit') Envoi
+  // *************************************************************************
+  // Footer
+  // *************************************************************************
+  //
+    <footer class="footer">
+    <div class="container">
+    <span class="bg-dark">Place sticky footer content here.</span>
+    </div>
+    </footer>
+  footer.sticky-footer.font-small.bg-green-class.txt-yellow-stroke(style='z-index: 10000000;')
+    .container-fluid.text-center.text-md-left
+      //
+        <div class="row">
+        <div class="col-md-6 mt-md-0 mt-3">
+        <h5 class="text-uppercase">Footer Content</h5>
+        <p>Here you can use rows and columns here to organize your footer content.</p>
+        </div>
+        <hr class="clearfix w-100 d-md-none pb-3">
+        <div class="col-md-3 mb-md-0 mb-3">
+        <h5 class="text-uppercase">Links</h5>
+        <ul class="list-unstyled">
+        <li>
+        <a href="#!">Link 1</a>
+        </li>
+        <li>
+        <a href="#!">Link 2</a>
+        </li>
+        <li>
+        <a href="#!">Link 3</a>
+        </li>
+        <li>
+        <a href="#!">Link 4</a>
+        </li>
+        </ul>
+        </div>
+        <div class="col-md-3 mb-md-0 mb-3">
+        <h5 class="text-uppercase">Links</h5>
+        <ul class="list-unstyled">
+        <li>
+        <a href="#!">Link 1</a>
+        </li>
+        <li>
+        <a href="#!">Link 2</a>
+        </li>
+        <li>
+        <a href="#!">Link 3</a>
+        </li>
+        <li>
+        <a href="#!">Link 4</a>
+        </li>
+        </ul>
+        </div>
+        </div>
+      div
+        img.d-inline-block.mr-2(alt='Copyright Vil-Coyote Product' src='static/images/running-vil-coyote.png' height='40')
+        span.footer-copyright &copy; Vil-Coyotte Product
 // *************************************************************************
 // Vérification Javascript activé + chargement des librairies
 // *************************************************************************

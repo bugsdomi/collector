@@ -311,18 +311,31 @@ window.addEventListener('DOMContentLoaded', function(){
     vAccountCurrentPassword.onchange = function(){
         vMemberClient.newPasswordKO = true;
 
-        if (vAccountForm.idAccountCurrentPassword.value === vMemberClient.member.password){
+        if (vAccountForm.idAccountCurrentPassword.value !== ''){
+            if (vAccountForm.idAccountCurrentPassword.value === vMemberClient.member.password){
+                vAccountAlertMsg.innerHTML='';
+                vAccountAlertMsg.style.visibility = 'hidden';  
+                vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
+                vAccountPassword.removeAttribute('disabled');
+                vAccountConfirmPassword.removeAttribute('disabled');
+                vAccountPassword.focus();
+            } else {
+                vAccountAlertMsg.innerHTML='Mot de passe actuel erroné';                // Affichage du message d'alerte de MDP actuel erroné
+                vAccountAlertMsg.style.visibility = 'visible';                                 
+                vMemberClient.InitHeaderColor('bg-danger', vModalAccountHeader);
+                vAccountPassword.setAttribute('disabled','true');
+                vAccountConfirmPassword.setAttribute('disabled','true');
+                vAccountPassword.focus();
+            };
+        } else {
+            vMemberClient.newPasswordKO = false;
             vAccountAlertMsg.innerHTML='';
             vAccountAlertMsg.style.visibility = 'hidden';  
             vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
-            vAccountPassword.removeAttribute('disabled');
-            vAccountConfirmPassword.removeAttribute('disabled');
+            vAccountPassword.setAttribute('disabled','true');
+            vAccountConfirmPassword.setAttribute('disabled','true');
             vAccountPassword.focus();
-        } else {
-            vAccountAlertMsg.innerHTML='Mot de passe actuel erroné';                // Affichage du message d'alerte de MDP actuel erroné
-            vAccountAlertMsg.style.visibility = 'visible';                                 
-            vMemberClient.InitHeaderColor('bg-danger', vModalAccountHeader);
-        };
+        }
     };
     // -------------------------------------------------------------------------
     // Vérification que les MDP sont identiques
@@ -385,6 +398,7 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     vDeconnexion.addEventListener('click', function(){
         vMemberClient.restartLandingPage();
+        webSocketConnection.close();
     });
 
 
