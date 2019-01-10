@@ -407,7 +407,6 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 console.log("add Member In Database - 1 membre inséré : ",this.member);  
                 
                 let myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
-                this.addMemberToActiveMembers(myIndex, pSocketIo)
                 
                 this.sendEMail(
                     pMember.email, 
@@ -415,8 +414,9 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     '<h1 style="color: black;">Félicitations '+pMember.pseudo+'</h1><p><h2>Vous êtes dorénavant membre de la Communauté \'Collect\'Or\'.</h2><br />' +
                     'Vos identifiants sont : <p><Strong>Pseudonyme : </strong>'+pMember.pseudo+'<p><strong>Mot de passe : </strong>'+pMember.password +
                     '</p><br /><br /><br /><i>Vil-Coyote Products</i>'
-                    );
-            
+                );
+                    
+                this.addMemberToActiveMembers(myIndex, pSocketIo)
                 pWebSocketConnection.emit('congratNewMember',this.member); 
             });
         });

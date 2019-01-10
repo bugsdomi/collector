@@ -21,6 +21,20 @@
     <!-- Styles -->
     <link href="static/css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="static/css/index.css" rel="stylesheet" >
+
+    <link href="static/css/timeline.css" rel="stylesheet">
+    <link href="static/css/cover.css" rel="stylesheet">
+
+    <!-- <link href="static/css/animate.min.css" rel="stylesheet">
+    <link href="static/css/forms.css" rel="stylesheet">
+    <link href="static/css/buttons.css" rel="stylesheet">
+    <link href="static/css/user_detail.css" rel="stylesheet">
+    <link href="static/css/profile4.css" rel="stylesheet">
+    <link href="static/css/friends.css" rel="stylesheet">
+    <link href="static/css/photos3.css" rel="stylesheet">  -->
+
+
+
     <script>
         WebFont.load({
             google: {
@@ -52,13 +66,11 @@
     // ********************************************************************* //
     </script>
 </head>
-<body>     
+<body class="animated fadeIn">     
     
     <!-- ************************************************************************* -->
     <!--                                NavBar                                     -->
     <!-- ************************************************************************* -->
-<div>
-<div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">
             <img class="d-inline-block align-top mr-2" alt="Logo du site 'Collect\'Or" src="static/images/brand.png" height="40">
@@ -99,120 +111,127 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><span class="fa fa-bell"></span> A propos</a>
+                    <a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><span class="fa fa-bell"></span> A propos</a>
                 </li>
             </ul>
         </div>
     </nav>
-</div>
+
+
+
     <!-- ************************************************************************* -->
     <!--                         Carroussel de fond d'écran                        -->
     <!-- ************************************************************************* -->
-<div class="container-fluid">
-    <div id="mainScreenCaroussel" class="carousel slide carousel-fade carousel-fullscreen" data-ride="carousel" data-interval="4000" data-pause="false">
-        <!-- Indicators de bas de slides-->
-        <ol class="carousel-indicators">
-            <li data-target="#mainScreenCaroussel" data-slide-to="0" class="active txt-yellow-stroke"></li>
-            <li data-target="#mainScreenCaroussel" data-slide-to="1" class="txt-yellow-stroke"></li>
-            <li data-target="#mainScreenCaroussel" data-slide-to="2" class="txt-yellow-stroke"></li>
-            <li data-target="#mainScreenCaroussel" data-slide-to="3" class="txt-yellow-stroke"></li>
-            <li data-target="#mainScreenCaroussel" data-slide-to="4" class="txt-yellow-stroke"></li>
-            <li data-target="#mainScreenCaroussel" data-slide-to="5" class="txt-yellow-stroke"></li>
-        </ol>
+<!-- <div class="container-fluid mt-5 pt-5"> -->
+    <div class="jumbotron mt-5 pt-5">
+        <div id="mainScreenCaroussel" class="carousel slide carousel-fade carousel-halfScreen" data-ride="carousel" data-interval="4000" data-pause="false">
+            <!-- Indicators de bas de slides-->
+            <ol class="carousel-indicators">
+                <li data-target="#mainScreenCaroussel" data-slide-to="0" class="active txt-yellow-stroke"></li>
+                <li data-target="#mainScreenCaroussel" data-slide-to="1" class="txt-yellow-stroke"></li>
+                <li data-target="#mainScreenCaroussel" data-slide-to="2" class="txt-yellow-stroke"></li>
+                <li data-target="#mainScreenCaroussel" data-slide-to="3" class="txt-yellow-stroke"></li>
+                <li data-target="#mainScreenCaroussel" data-slide-to="4" class="txt-yellow-stroke"></li>
+                <li data-target="#mainScreenCaroussel" data-slide-to="5" class="txt-yellow-stroke"></li>
+            </ol>
 
-        <!-- sliders -->
-        <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active" style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 35%; background-size: cover;">
-                <div class="overlay"></div>
-                <div class="carousel-caption">
-                    <div class="row my-auto">
-                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
-                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
-                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
-                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+            <!-- sliders -->
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active" style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 22%; background-size: cover;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption">
+                        <div class="row my-auto">
+                            <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                                <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                                <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="carousel-item" style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 25%; background-size: cover;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption">
+                        <div class="row my-auto">
+                            <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                                <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                                <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="carousel-item" style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 35%; background-size: cover;">
-                <div class="overlay"></div>
-                <div class="carousel-caption">
-                    <div class="row my-auto">
-                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
-                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
-                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
-                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+
+                <div class="carousel-item" style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 65%; background-size: cover;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption">
+                        <div class="row my-auto">
+                            <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                                <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                                <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="carousel-item" style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 100%; background-size: cover;">
-                <div class="overlay"></div>
-                <div class="carousel-caption">
-                    <div class="row my-auto">
-                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
-                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
-                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
-                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                </div> 
+
+                <div class="carousel-item" style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 62%; background-size: cover;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption">
+                        <div class="row my-auto">
+                            <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                                <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                                <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="carousel-item" style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 100%; background-size: cover;">
-                <div class="overlay"></div>
-                <div class="carousel-caption">
-                    <div class="row my-auto">
-                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
-                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
-                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
-                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                </div> 
+
+                <div class="carousel-item" style="background: url('static/images/ChargeDeChevaliers.jpg') center 37%; background-size: cover;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption">
+                        <div class="row my-auto">
+                            <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                                <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                                <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="carousel-item" style="background: url('static/images/ChargeDeChevaliers.jpg') center 50%; background-size: cover;">
-                <div class="overlay"></div>
-                <div class="carousel-caption">
-                    <div class="row my-auto">
-                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
-                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
-                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
-                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                </div> 
+
+                <div class="carousel-item" style="background: url('static/images/AfrikaCorpsjpg.jpg') center 10%; background-size: cover;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption">
+                        <div class="row my-auto">
+                            <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+                                <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+                                <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div> 
+            </div> 
+
+            <div class="avatar col-md-3 mb-2">
+                <img id="idAvatarImg1" class="d-inline-block mr-4 img-thumbnail img-responsive" alt="" src="" style="width:100px; border:10px; border-color: white;">
+                <span class="text-white h3" id="idAvatarMemberNameImg1"></span>
             </div>
-            <div class="carousel-item" style="background: url('static/images/AfrikaCorpsjpg.jpg') center 50%; background-size: cover;">
-                <div class="overlay"></div>
-                <div class="carousel-caption">
-                    <div class="row my-auto">
-                        <div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
-                            <h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
-                            <!-- <p class="lead mt-5 display-4 txt-yellow-stroke" style="opacity: .95;">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p> -->
-                            <p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <!-- Controls G et D -->
+            <a class="carousel-control-prev" href="#mainScreenCaroussel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#mainScreenCaroussel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
+    </div>        
 
-        <!-- Controls G et D -->
-        <a class="carousel-control-prev" href="#mainScreenCaroussel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#mainScreenCaroussel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-</div>        
-        
     <!-- *********************************************************************************** -->
     <!--  Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu            -->
     <!-- "idModalBodyText" sont alimentés par javascript                                     -->
     <!-- *********************************************************************************** -->
-        
+
     <div class="modal" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idGenericModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -272,6 +291,8 @@
             </div>
         </div>
     </div>       
+
+
     <!-- ************************************************************************* -->
     <!--                         Fenêtre Modale Inscription                        -->
     <!-- ************************************************************************* -->
@@ -324,7 +345,7 @@
     <!-- ************************************************************************* -->
 
     <div class="modal" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idModalLostPWDTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered mt-5" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="idModalLostPWDHeader">
                     <h5 class="modal-title">Mot de passe perdu</h5>
@@ -737,68 +758,583 @@
         </div> 
     </div>
 
+
+    <!-- ****************************************************************************** -->
+    <!--                                Page de profil du membre                        --> 
+    <!-- ****************************************************************************** -->
+
+    <!-- Begin page content -->
+    <div class="container" id="idProfilePage">
+        <div class="row page-content">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="cover profile">
+                            <div class="cover-info">
+<!-- <div class="avatar">
+    <img src="static/images/Friends/guy-3.jpg" alt="people">
+</div> -->
+                                <div class="name"><a href="#">John Breakgrow jr.</a></div>
+                                <ul class="cover-nav">
+                                    <li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Timeline</a></li>
+                                    <li><a href="about.html"><i class="fa fa-fw fa-user"></i> About</a></li>
+                                    <li><a href="friends.html"><i class="fa fa-fw fa-users"></i> Friends</a></li>
+                                    <li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Photos</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <h3 class="widget-caption">About</h3>
+                            </div>
+                            <div class="widget-body bordered-top bordered-sky">
+                                <ul class="list-unstyled profile-about margin-none">
+                                    <li class="padding-v-5">
+                                        <div class="row">
+                                            <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
+                                            <div class="col-sm-8">12 January 1990</div>
+                                        </div>
+                                    </li>
+                                    <li class="padding-v-5">
+                                        <div class="row">
+                                            <div class="col-sm-4"><span class="text-muted">Job</span></div>
+                                            <div class="col-sm-8">Ninja developer</div>
+                                        </div>
+                                    </li>
+                                    <li class="padding-v-5">
+                                        <div class="row">
+                                            <div class="col-sm-4"><span class="text-muted">Gender</span></div>
+                                            <div class="col-sm-8">Male</div>
+                                        </div>
+                                    </li>
+                                    <li class="padding-v-5">
+                                        <div class="row">
+                                            <div class="col-sm-4"><span class="text-muted">Lives in</span></div>
+                                            <div class="col-sm-8">Miami, FL, USA</div>
+                                        </div>
+                                    </li>
+                                    <li class="padding-v-5">
+                                        <div class="row">
+                                            <div class="col-sm-4"><span class="text-muted">Credits</span></div>
+                                            <div class="col-sm-8">249</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                
+                        <div class="widget widget-friends">
+                            <div class="widget-header">
+                                <h3 class="widget-caption">Friends</h3>
+                            </div>
+                            <div class="widget-body bordered-top  bordered-sky">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="img-grid" style="margin: 0 auto;">
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/guy-6.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/woman-3.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/guy-2.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/guy-9.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/woman-9.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li class="clearfix">
+                                                <a href="#">
+                                                    <img src="static/images/Friends/guy-4.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/guy-1.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/woman-4.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <img src="static/images/Friends/guy-6.jpg" alt="image">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget">
+                            <div class="widget-header">
+                                <h3 class="widget-caption">Groups</h3>
+                            </div>
+                            <div class="widget-body bordered-top bordered-sky">
+                                <div class="card">
+                                    <div class="content">
+                                        <ul class="list-unstyled team-members">
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="static/images/Likes/likes-1.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        Github
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="static/images/Likes/likes-3.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                <div class="col-xs-6">
+                                                    Css snippets
+                                                </div>
+
+                                                <div class="col-xs-3 text-right">
+                                                    <btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <div class="avatar">
+                                                        <img src="static/images/Likes/likes-2.png " alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    Html Action
+                                                </div>
+                                
+                                                <div class="col-xs-3 text-right">
+                                                    <btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
+                                                </div>
+                                            </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                
+                
+                    <!--============= timeline posts-->
+                    <div class="col-md-7">
+                        <div class="row">
+
+                            <!-- left posts-->
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                
+                                        <!-- post state form -->
+                                        <div class="box profile-info n-border-top">
+                                            <form>
+                                                <textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?"></textarea>
+                                            </form>
+
+                                            <div class="box-footer box-form">
+                                                <button type="button" class="btn btn-azure pull-right">Post</button>
+                                                <ul class="nav nav-pills">
+                                                    <li><a href="#"><i class="fa fa-map-marker"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-camera"></i></a></li>
+                                                    <li><a href="#"><i class=" fa fa-film"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-microphone"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div><!-- end post state form -->
+                    
+                                        <!--   posts -->
+                                        <div class="box box-widget">
+                                            <div class="box-header with-border">
+                                                <div class="user-block">
+                                                    <img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <span class="username"><a href="#">John Breakgrow jr.</a></span>
+                                                    <span class="description">Shared publicly - 7:30 PM Today</span>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="box-body" style="display: block;">
+                                                <img class="img-responsive show-in-modal" src="static/images/Post/young-couple-in-love.jpg" alt="Photo">
+                                                <p>I took this photo this morning. What do you guys think?</p>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                                                <span class="pull-right text-muted">127 likes - 3 comments</span>
+                                            </div>
+                                            <div class="box-footer box-comments" style="display: block;">
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Maria Gonzales
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+                        
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Luna Stark
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="box-footer" style="display: block;">
+                                                <form action="#" method="post">
+                                                    <img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+                                                    <div class="img-push">
+                                                        <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!--  end posts-->
+
+                                        <!-- post -->
+                                        <div class="box box-widget">
+                                            <div class="box-header with-border">
+                                                <div class="user-block">
+                                                    <img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
+                                                    <span class="description">Shared publicly - 7:30 PM Today</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="box-body">
+                                                <p>Far far away, behind the word mountains, far from the
+                                                countries Vokalia and Consonantia, there live the blind
+                                                texts. Separated they live in Bookmarksgrove right at</p>
+                        
+                                                <p>the coast of the Semantics, a large language ocean.
+                                                A small river named Duden flows by their place and supplies
+                                                it with the necessary regelialia. It is a paradisematic
+                                                country, in which roasted parts of sentences fly into
+                                                your mouth.</p>
+                        
+                                                <div class="attachment-block clearfix">
+                                                    <img class="attachment-img show-in-modal" src="static/images/Photos/2.jpg" alt="Attachment Image">
+                                                    <div class="attachment-pushed">
+                                                        <h4 class="attachment-heading"><a href="http://www.bootdey.com/">Lorem ipsum text generator</a></h4>
+                                                        <div class="attachment-text">
+                                                            Description about the attachment can be placed here.
+                                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry... <a href="#">more</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                                                <span class="pull-right text-muted">45 likes - 2 comments</span>
+                                            </div>
+
+                                            <div class="box-footer box-comments">
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-5.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Maria Gonzales
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-6.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Nora Havisham
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        The point of using Lorem Ipsum is that it has a more-or-less
+                                                        normal distribution of letters, as opposed to using
+                                                        'Content here, content here', making it look like readable English.
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="box-footer">
+                                                <form action="#" method="post">
+                                                    <img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+                                                    <div class="img-push">
+                                                        <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!-- end post -->
+                            
+                                        <!--  posts -->
+                                        <div class="box box-widget">
+                                            <div class="box-header with-border">
+                                                <div class="user-block">
+                                                    <img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <span class="username"><a href="#">John Breakgrow jr.</a></span>
+                                                    <span class="description">Shared publicly - 7:30 PM Today</span>
+                                                </div>
+                                            </div>
+                            
+                                            <div class="box-body" style="display: block;">
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac iaculis ligula, eget efficitur nisi. In vel rutrum orci. Etiam ut orci volutpat, maximus quam vel, euismod orci. Nunc in urna non lectus malesuada aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam dignissim mi ac metus consequat, a pharetra neque molestie. Maecenas condimentum lorem quis vulputate volutpat. Etiam sapien diam
+                                                </p>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                                                <span class="pull-right text-muted">127 likes - 3 comments</span>
+                                            </div>
+
+                                            <div class="box-footer box-comments" style="display: block;">
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Maria Gonzales
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Luna Stark
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="box-footer" style="display: block;">
+                                                <form action="#" method="post">
+                                                    <img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+                                                    <div class="img-push">
+                                                        <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!--  end posts -->
+
+                                        <!--   posts -->
+                                        <div class="box box-widget">
+                                            <div class="box-header with-border">
+                                                <div class="user-block">
+                                                    <img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <span class="username"><a href="#">John Breakgrow jr.</a></span>
+                                                    <span class="description">Shared publicly - 7:30 PM Today</span>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="box-body" style="display: block;">
+                                                <img class="img-responsive pad show-in-modal" src="static/images/Photos/3.jpg" alt="Photo">
+                                                <p>I took this photo this morning. What do you guys think?</p>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                                                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                                                <span class="pull-right text-muted">127 likes - 3 comments</span>
+                                            </div>
+                        
+                                            <div class="box-footer box-comments" style="display: block;">
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Maria Gonzales
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+                        
+                                                <div class="box-comment">
+                                                    <img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
+                                                    <div class="comment-text">
+                                                        <span class="username">
+                                                            Luna Stark
+                                                            <span class="text-muted pull-right">8:03 PM Today</span>
+                                                        </span>
+                                                        It is a long established fact that a reader will be distracted
+                                                        by the readable content of a page when looking at its layout.
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="box-footer" style="display: block;">
+                                                <form action="#" method="post">
+                                                    <img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+                                                    <div class="img-push">
+                                                        <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div><!--  end posts -->
+                                    </div>
+                                </div>
+                            </div><!-- end left posts-->
+                        </div>
+                    </div><!-- end timeline posts-->
+                </div>
+            </div>
+        </div>
+            
+        <!-- Online users sidebar content-->
+        <div class="chat-sidebar focus">
+            <div class="list-group text-left">
+                <p class="text-center visible-xs"><a href="#" class="hide-chat btn btn-success">Hide</a></p> 
+                <p class="text-center chat-title">Online users</p>  
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/guy-2.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Jeferh Smith</span>
+                </a>
+            
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-times-circle absent-status"></i>
+                    <img src="static/images/Friends/woman-1.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Dapibus acatar</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/guy-3.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Antony andrew lobghi</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/woman-2.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Maria fernanda coronel</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/guy-4.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Markton contz</span>
+                </a>
+            
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-times-circle absent-status"></i>
+                    <img src="static/images/Friends/woman-3.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Martha creaw</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-times-circle absent-status"></i>
+                    <img src="static/images/Friends/woman-8.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Yira Cartmen</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/woman-4.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Jhoanath matew</span>
+                </a>
+            
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/woman-5.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Ryanah Haywofd</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/woman-9.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Linda palma</span>
+                </a>
+
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/woman-10.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Andrea ramos</span>
+                </a>
+            
+                <a href="messages1.html" class="list-group-item">
+                    <i class="fa fa-check-circle connected-status"></i>
+                    <img src="static/images/Friends/child-1.jpg" class="img-chat img-thumbnail">
+                    <span class="chat-user-name">Dora ty bluekl</span>
+                </a>        
+            </div>
+        </div><!-- Online users sidebar content-->
+    </div>
+
+    <!-- Modal -->
+    <!-- <div class="modal fade" id="modalShow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body text-centers">
+                ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+
     <!-- ************************************************************************* -->
     <!--                                 Footer                                    -->
     <!-- ************************************************************************* -->
-<!-- <footer class="footer">
-    <div class="container">
-        <span class="bg-dark">Place sticky footer content here.</span>
-    </div>
-</footer> -->
 
-
-    <footer class="sticky-footer font-small bg-green-class txt-yellow-stroke" style="z-index: 10000000;">
+    <footer class="footer font-small bg-green-class txt-yellow-stroke">
         <div class="container-fluid text-center text-md-left">
-            <!-- <div class="row">
-                <div class="col-md-6 mt-md-0 mt-3">
-                    <h5 class="text-uppercase">Footer Content</h5>
-                    <p>Here you can use rows and columns here to organize your footer content.</p>
+            <div>
+                <img class="d-inline-block mr-2" alt="Copyright Vil-Coyote Product" src="static/images/running-vil-coyote.png" height="40">
+                <span class="footer-copyright">©Vil-Coyotte Product - 2018</span>
             </div>
-            <hr class="clearfix w-100 d-md-none pb-3">
-            <div class="col-md-3 mb-md-0 mb-3">
-                <h5 class="text-uppercase">Links</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-md-3 mb-md-0 mb-3">
-                <h5 class="text-uppercase">Links</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
-
-        <div>
-            <img class="d-inline-block mr-2" alt="Copyright Vil-Coyote Product" src="static/images/running-vil-coyote.png" height="40">
-            <span class="footer-copyright">© Vil-Coyotte Product</span>
         </div>
     </footer>
-</div>
-</div>
+
     <!-- ************************************************************************* -->
     <!--        Vérification Javascript activé + chargement des librairies         -->
     <!-- ************************************************************************* -->
@@ -814,6 +1350,6 @@
     <script src="static/js/SPAMgr.js"></script>
     <script src="static/js/MemberClientSide.js"></script>
     <script src="siofu/client.js"></script>
-
+    <script src="static/js/custom.js"></script>
 </body>
 </html>

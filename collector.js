@@ -56,9 +56,6 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
     uploader.listen(webSocketConnection);
 
-    // uploader.on("saved", function(event){
-    //     console.log(event.file);
-    // });
 
     // uploader.on("error", function(event){
     //     console.log("Error from uploader", event);
@@ -81,6 +78,9 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
     // On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
     webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
         vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
+        uploader.on("saved", function(event){
+            webSocketConnection.emit('displayAvatarOnProfile');      // On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
+        });
     });    
 
     // On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien

@@ -127,11 +127,27 @@ window.addEventListener('DOMContentLoaded', function(){
     var vCreation = document.getElementById('idCreation');
     var vDeconnexion = document.getElementById('idDeconnexion');
     var vAccount = document.getElementById('idAccount');
+    var vAbout = document.getElementById('idAbout');
+    // var vMembersConnected = document.getElementById('idMembersConnected');
     
     var vGenericModal = document.getElementById('idGenericModal');
     var vDropDownProfilMenu = document.getElementById('idDropDownProfilMenu');
     var vMemberName = document.getElementById('idMemberName');
     var vNbrPopulation = document.getElementById('idNbrPopulation');
+
+//     vMembersConnected.onclick =  function(event) {
+// console.log('vMembersConnected - click')
+
+//         $('.chat-sidebar').toggleClass('focus');
+//     }
+
+    // -------------------------------------------------------------------------
+    // Eléments du carroussel
+    // -------------------------------------------------------------------------
+    var vAvatarImg1 = document.getElementById('idAvatarImg1');
+    var vAvatarMemberNameImg1 = document.getElementById('idAvatarMemberNameImg1');
+    vAvatarImg1.setAttribute('src', 'static/images/visiteur.jpg');  // Avatar par défaut lorsque le visiteur ne s'est pas loggé
+    vAvatarMemberNameImg1.innerHTML = 'Visiteur';
 
     // -------------------------------------------------------------------------
     // Eléments de la fenêtre modale générique
@@ -146,7 +162,7 @@ window.addEventListener('DOMContentLoaded', function(){
     vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
     vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                       
 
-    vGenericModalBtn.addEventListener('click', function(){
+    vAbout.addEventListener('click', function(){
         vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
         vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                     
     });
@@ -179,7 +195,12 @@ window.addEventListener('DOMContentLoaded', function(){
     vMemberClient.giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               
 
     vCreation.addEventListener('click', function(){
-        initModalSignIn();
+        var lSignInParameters = {
+            vSignInForm,
+            vSignInAlertMsg,
+            vModalSignInHeader,
+        }
+        vMemberClient.initModalSignIn(lSignInParameters);
     });
 
     vSignInPassword.onchange = function(){vMemberClient.validatePassword(vSignInPassword, vSignInConfirmPassword)};           // Vérification que les MDP sont identiques
@@ -247,11 +268,55 @@ window.addEventListener('DOMContentLoaded', function(){
     vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');    
 
     // -------------------------------------------------------------------------
+    // Eléments de la page de profil
+    // -------------------------------------------------------------------------
+    var vProfilePage = document.getElementById('idProfilePage');
+
+    // -------------------------------------------------------------------------
     // Initialise les champs de la Modale de saisie des renseignements avec 
     // les datas provenant de la BDD
     // -------------------------------------------------------------------------
     vAccount.addEventListener('click', function(){
-        initModalAccount();
+
+        var lAccountParameters = {
+            vAccountForm,
+            vAccountAlertMsg,
+            vModalAccountHeader,
+            vAccountPhotoImg,
+            vAccountPrefGravures,
+            vAccountPrefLivres,
+            vAccountPrefFilms,
+            vAccountPrefJeux,
+            vAccountPrefMaquettes,
+            vAccountPrefFigurines,
+            vAccountPrefBlindes,
+            vAccountPrefAvions,
+            vAccountPrefBateaux,
+            vAccountPrefDioramas,
+            vAccountPrefPrehistoire,
+            vAccountPrefAntiquite,
+            vAccountPrefMoyenAge,
+            vAccountPrefRenaissance,
+            vAccountPrefDentelles,
+            vAccountPrefAncienRegime,
+            vAccountPrefRevolution,
+            vAccountPref1erEmpire,
+            vAccountPref2ndEmpire,
+            vAccountPrefSecession,
+            vAccountPrefFarWest,
+            vAccountPrefWW1,
+            vAccountPrefWW2,
+            vAccountPrefContemporain,
+            vAccountPrefFuturiste,
+            vAccountPrefFantastique,
+            vAccountPrefHFrancaise,
+            vAccountPrefHAmericaine,
+            vAccountPrefHInternationale,
+            vAccountPrefAutre,
+            vAccountPassword,
+            vAccountConfirmPassword,
+        }
+        vMemberClient.initModalAccount(lAccountParameters);
     });
 
     // -------------------------------------------------------------------------
@@ -259,25 +324,25 @@ window.addEventListener('DOMContentLoaded', function(){
     // -------------------------------------------------------------------------
     var siofu = new SocketIOFileUpload(webSocketConnection);
 
-    siofu.addEventListener("progress", function(event){
-        var percent = event.bytesLoaded / event.file.size * 100;
-        console.log("File is", percent.toFixed(2), "percent loaded");
-    });
+    // siofu.addEventListener("progress", function(event){
+    //     var percent = event.bytesLoaded / event.file.size * 100;
+    //     console.log("File is", percent.toFixed(2), "percent loaded");
+    // });
 
-    siofu.addEventListener("complete", function(event){
-        console.log('Image upLoadée avec succès');
-        // console.log('event.success');
-        // console.log(event.file);
-    });
+    // siofu.addEventListener("complete", function(event){
+    //     console.log('Image upLoadée avec succès');
+    //     // console.log('event.success');
+    //     // console.log(event.file);
+    // });
 
     // -------------------------------------------------------------------------
     // MAJ en temps réel du champ age dès qu'il y a une modification de la date de naissance
     // -------------------------------------------------------------------------
     vAccountBirthDate.addEventListener('click', function(){
-        updateFieldAge(vAccountForm.idAccountBirthDate.value);
+        vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
     });          
     vAccountBirthDate.addEventListener('input', function(){
-        updateFieldAge(vAccountForm.idAccountBirthDate.value);
+        vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
     });          
     
     // -------------------------------------------------------------------------
@@ -285,20 +350,22 @@ window.addEventListener('DOMContentLoaded', function(){
     // en fonction de la sélection du sexe
     // -------------------------------------------------------------------------
     vAccountSexNone.addEventListener('click', function(){
-        updateAvatar(0);
+        vMemberClient.updateAvatar(0, vAccountPhotoImg);
     });          
     vAccountSexMale.addEventListener('click', function(){
-        updateAvatar(1);
+        vMemberClient.updateAvatar(1, vAccountPhotoImg);
     });          
     vAccountSexFemale.addEventListener('click', function(){
-        updateAvatar(2);
+        vMemberClient.updateAvatar(2, vAccountPhotoImg);
     });              
 
     // -------------------------------------------------------------------------
     // Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
     // -------------------------------------------------------------------------
     vAccountPhotoFile.addEventListener("change", function(){
-        vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
+        if (vAccountPhotoFile.files[0]!==''){
+            vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
+        }
     }, false);
 
     // -------------------------------------------------------------------------
@@ -354,12 +421,16 @@ window.addEventListener('DOMContentLoaded', function(){
     // Gestion du raccourci de la création de compte (sur la fenêtre de Login)
     // -------------------------------------------------------------------------
     vSignIn.addEventListener('click', function(){
-        initModalSignIn();
+
+        var lSignInParameters = {
+            vSignInForm,
+            vSignInAlertMsg,
+            vModalSignInHeader,
+        }
+        vMemberClient.initModalSignIn(lSignInParameters);
         $('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
         $('#idModalSignIn').modal('toggle');                                // Ouverture de la fenêtre modale de gestion de PWD perdu
     });
-
-
 
     // -------------------------------------------------------------------------
     // Gestion du raccourci de Mot de Passe oublié (sur la fenêtre de login)
@@ -471,7 +542,7 @@ window.addEventListener('DOMContentLoaded', function(){
             vMemberClient.member.etatCivil.firstName = vAccountForm.idAccountFirstName.value;
             vMemberClient.member.etatCivil.name      = vAccountForm.idAccountName.value;
             vMemberClient.member.etatCivil.birthDate = vAccountForm.idAccountBirthDate.value;                ;
-            vMemberClient.member.etatCivil.sex       = outputBtnRadioSex();
+            vMemberClient.member.etatCivil.sex       = vMemberClient.outputBtnRadioSex();
 
             vMemberClient.member.etatCivil.address.street       = vAccountForm.idAccountStreet.value;
             vMemberClient.member.etatCivil.address.city         = vAccountForm.idAccountCity.value;
@@ -533,7 +604,7 @@ window.addEventListener('DOMContentLoaded', function(){
     });
     // --------------------------------------------------------------
     // Le serveur a rejeté la demande Login, et redemande au visiteur 
-    // de réessayer de se loger
+    // de réessayer de se logger
     // --------------------------------------------------------------
     webSocketConnection.on('retryLoginForm', function(){   
         vLoginAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de connexion erronée
@@ -554,15 +625,24 @@ window.addEventListener('DOMContentLoaded', function(){
     // ==> Désactivation du bouton "Connexion"
     // ==> Désactivation du bouton "Créer un compte"
     // ==> Activation du bouton "Deconnexion"
+    // ==> Ouverture de la page de profile
     // --------------------------------------------------------------
     webSocketConnection.on('welcomeMember', function(pMember){   
         vMemberClient.member =  pMember;                                                // Affecte les données du membre à l'objet "Membre"
-console.log('welcomeMember - 001 - vMemberClient.member : ',vMemberClient.member);
-
         vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText, pMember.pseudo);  // Affiche la fenêtre de bienvenue
         vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
         $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
-        vMemberClient.disableLoginAndCreateBtn(vConnexion, vCreation, vDropDownProfilMenu, vMemberName, vMemberClient.member.pseudo, vDeconnexion);   // Desactive Bouton Login et Création
+        
+        // Desactive Bouton Login et Création et affiche le nom du membre ddans le menu
+        vMemberClient.disableLoginAndCreateBtn(vConnexion, vCreation, vDropDownProfilMenu, vMemberClient.member.pseudo, vDeconnexion);   
+
+        var avatarsOnCarousel = {
+            vAvatarImg1,
+            vAvatarMemberNameImg1,
+        }
+        vMemberClient.displayAvatarOnCarrousel(vMemberClient.member.etatCivil.photo, vMemberClient.member.pseudo, avatarsOnCarousel);
+
+        vProfilePage.style.display = 'Block';
     });
     // --------------------------------------------------------------
     // Le visiteur a créé son compte avec succès et est donc reconnu comme membre
@@ -570,13 +650,23 @@ console.log('welcomeMember - 001 - vMemberClient.member : ',vMemberClient.member
     // ==> Désactivation du bouton "Connexion"
     // ==> Désactivation du bouton "Créer un compte"
     // ==> Activation du bouton "Deconnexion"
+    // --> Affichage de son avatar et de son pseudo
     // --------------------------------------------------------------
     webSocketConnection.on('congratNewMember', function(pMember){ 
         vMemberClient.member =  pMember;                                                // Affecte les données du membre à l'objet "Membre"
         vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText, pMember.pseudo);                // Affiche la fenêtre de bienvenue
         vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
         $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
-        vMemberClient.disableLoginAndCreateBtn(vConnexion, vCreation, vDropDownProfilMenu, vMemberName, vMemberClient.member.pseudo, vDeconnexion);   // Desactive Bouton Login et Création
+
+        // Desactive Bouton Login et Création
+        vMemberClient.disableLoginAndCreateBtn(vConnexion, vCreation, vDropDownProfilMenu, vMemberClient.member.pseudo, vDeconnexion);   
+
+        var avatarsOnCarousel = {
+            vAvatarImg1,
+            vAvatarMemberNameImg1,
+        }
+
+        vMemberClient.displayAvatarOnCarrousel(vMemberClient.member.etatCivil.photo, vMemberClient.member.pseudo, avatarsOnCarousel);
     });    
     // --------------------------------------------------------------
     // Le visiteur a demandé un nouveau mot de passe
@@ -606,8 +696,7 @@ console.log('welcomeMember - 001 - vMemberClient.member : ',vMemberClient.member
         $('#idGenericModal').modal('toggle');                                                       // ouverture de la fenêtre modale de Félicitations
     });    
     // --------------------------------------------------------------
-    // Le serveur a rejeté la demande Login, car le visiteur est dejà 
-    // coonnecté avec une autre session
+    // Affiche le nombre de membres connectés
     // --------------------------------------------------------------
     webSocketConnection.on('displayNbrConnectedMembers', function(pPopulation){ 
         // var vNbrAdmin = pPopulation.nbreAdmins;
@@ -642,230 +731,15 @@ console.log('welcomeMember - 001 - vMemberClient.member : ',vMemberClient.member
                                     ? pPopulation.nbrPublicMsgs + ' message'        // Affichage du nombre de membres connectés sur la barre de menu
                                     : pPopulation.nbrPublicMsgs + ' messages';      // Affichage du nombre de membres connectés sur la barre de menu
     });    
-
-
-
-    // -----------------------------------------------------------------------------
-    // Cette fonction initialise la modale de création, quel que soit son mode 
-    // d'appel (par l'option de menu ou par le raccourci de la fenetre de Login
-    // -----------------------------------------------------------------------------
-    function initModalSignIn(){
-        vSignInForm.idSignInEmail.value = '';                                
-        vSignInForm.idSignInPseudo.value = '';                              
-        vSignInForm.idSignInPassword.value = '';
-        vSignInForm.idSignInConfirmPassword.value = '';
-        vSignInAlertMsg.style.visibility = 'hidden';                          
-        vMemberClient.InitHeaderColor('bg-warning', vModalSignInHeader);
-    }
-
-    // -----------------------------------------------------------------------------
-    // Cette fonction initialise la modale de saisie de renseignements (Compte) 
-    // avec les valeurs récupérées dans la BDD, (et pouvant être vieges)
-    // -----------------------------------------------------------------------------
-    function initModalAccount(){
-        vAccountForm.idAccountEmail.value  = vMemberClient.member.email;                                
-        vAccountForm.idAccountPseudo.value = vMemberClient.member.pseudo;     
-
-        vAccountPhotoImg.setAttribute('src', 'static/images/members/'+vMemberClient.member.etatCivil.photo);
-        vAccountForm.idAccountFirstName.value = vMemberClient.member.etatCivil.firstName;     
-        vAccountForm.idAccountName.value = vMemberClient.member.etatCivil.name;     
-        vAccountForm.idAccountBirthDate.value = vMemberClient.member.etatCivil.birthDate;     
-
-        if (vMemberClient.member.etatCivil.birthDate){
-            updateFieldAge(vMemberClient.member.etatCivil.birthDate);
-            } else {
-            vAccountForm.idAccountAge.value = '';
+    // --------------------------------------------------------------
+    // Affichage de l'avatar sur la page de profil 
+    // --------------------------------------------------------------
+    webSocketConnection.on('displayAvatarOnProfile', function(){ 
+        var avatarsOnCarousel = {
+            vAvatarImg1,
+            vAvatarMemberNameImg1,
         }
-
-        var selectedSex = inputBtnRadioSex();
-        updateAvatar(selectedSex);
-
-        vAccountForm.idAccountStreet.value      = vMemberClient.member.etatCivil.address.street;    
-        vAccountForm.idAccountCity.value        = vMemberClient.member.etatCivil.address.city;      
-        vAccountForm.idAccountZipCode.value     = vMemberClient.member.etatCivil.address.zipCode;   
-        vAccountForm.idAccountDepartment.value  = vMemberClient.member.etatCivil.address.department;
-
-        vAccountPrefGravures.checked        = vMemberClient.member.preferences['prefGravures'];      
-        activeButtonOfSelectedCheckBox(vAccountPrefGravures, 'idAccountPrefGravuresLabel');
-
-        vAccountPrefLivres.checked          = vMemberClient.member.preferences['prefLivres'];    
-        activeButtonOfSelectedCheckBox(vAccountPrefLivres, 'idAccountPrefLivresLabel');
-
-        vAccountPrefFilms.checked           = vMemberClient.member.preferences['prefFilms']; 
-        activeButtonOfSelectedCheckBox(vAccountPrefFilms, 'idAccountPrefFilmsLabel');
-        
-        vAccountPrefJeux.checked            = vMemberClient.member.preferences['prefJeux'];            
-        activeButtonOfSelectedCheckBox(vAccountPrefJeux, 'idAccountPrefJeuxLabel');
-
-        vAccountPrefMaquettes.checked       = vMemberClient.member.preferences['prefMaquettes'];       
-        activeButtonOfSelectedCheckBox(vAccountPrefMaquettes, 'idAccountPrefMaquettesLabel');
-        
-        vAccountPrefFigurines.checked       = vMemberClient.member.preferences['prefFigurines'];       
-        activeButtonOfSelectedCheckBox(vAccountPrefFigurines, 'idAccountPrefFigurinesLabel');
-
-        vAccountPrefBlindes.checked         = vMemberClient.member.preferences['prefBlindes'];      
-        activeButtonOfSelectedCheckBox(vAccountPrefBlindes, 'idAccountPrefBlindesLabel');
-        
-        vAccountPrefAvions.checked          = vMemberClient.member.preferences['prefAvions'];          
-        activeButtonOfSelectedCheckBox(vAccountPrefAvions, 'idAccountPrefAvionsLabel');
-
-        vAccountPrefBateaux.checked         = vMemberClient.member.preferences['prefBateaux'];         
-        activeButtonOfSelectedCheckBox(vAccountPrefBateaux, 'idAccountPrefBateauxLabel');
-
-        vAccountPrefDioramas.checked        = vMemberClient.member.preferences['prefDioramas'];        
-        activeButtonOfSelectedCheckBox(vAccountPrefDioramas, 'idAccountPrefDioramasLabel');
-
-        vAccountPrefPrehistoire.checked     = vMemberClient.member.preferences['prefPrehistoire'];     
-        activeButtonOfSelectedCheckBox(vAccountPrefPrehistoire, 'idAccountPrefPrehistoireLabel');
-
-        vAccountPrefAntiquite.checked       = vMemberClient.member.preferences['prefAntiquite'];       
-        activeButtonOfSelectedCheckBox(vAccountPrefAntiquite, 'idAccountPrefAntiquiteLabel');
-
-        vAccountPrefMoyenAge.checked        = vMemberClient.member.preferences['prefMoyenAge'];        
-        activeButtonOfSelectedCheckBox(vAccountPrefMoyenAge, 'idAccountPrefMoyenAgeLabel');
-
-        vAccountPrefRenaissance.checked     = vMemberClient.member.preferences['prefRenaissance'];     
-        activeButtonOfSelectedCheckBox(vAccountPrefRenaissance, 'idAccountPrefRenaissanceLabel');
-
-        vAccountPrefDentelles.checked       = vMemberClient.member.preferences['prefDentelles'];       
-        activeButtonOfSelectedCheckBox(vAccountPrefDentelles, 'idAccountPrefDentellesLabel');
-        
-        vAccountPrefAncienRegime.checked    = vMemberClient.member.preferences['prefAncienRegime'];    
-        activeButtonOfSelectedCheckBox(vAccountPrefAncienRegime, 'idAccountPrefAncienRegimeLabel');
-
-        vAccountPrefRevolution.checked      = vMemberClient.member.preferences['prefRevolution'];      
-        activeButtonOfSelectedCheckBox(vAccountPrefRevolution, 'idAccountPrefRevolutionLabel');
-
-        vAccountPref1erEmpire.checked       = vMemberClient.member.preferences['pref1erEmpire'];       
-        activeButtonOfSelectedCheckBox(vAccountPref1erEmpire, 'idAccountPref1erEmpireLabel');
-
-        vAccountPref2ndEmpire.checked       = vMemberClient.member.preferences['pref2ndEmpire'];       
-        activeButtonOfSelectedCheckBox(vAccountPref2ndEmpire, 'idAccountPref2ndEmpireLabel');
-
-        vAccountPrefSecession.checked       = vMemberClient.member.preferences['prefSecession'];       
-        activeButtonOfSelectedCheckBox(vAccountPrefSecession, 'idAccountPrefSecessionLabel');
-
-        vAccountPrefFarWest.checked         = vMemberClient.member.preferences['prefFarWest'];         
-        activeButtonOfSelectedCheckBox(vAccountPrefFarWest, 'idAccountPrefFarWestLabel');
-
-        vAccountPrefWW1.checked             = vMemberClient.member.preferences['prefWW1'];             
-        activeButtonOfSelectedCheckBox(vAccountPrefWW1, 'idAccountPrefWW1Label');
-
-        vAccountPrefWW2.checked             = vMemberClient.member.preferences['prefWW2'];             
-        activeButtonOfSelectedCheckBox(vAccountPrefWW2, 'idAccountPrefWW2Label');
-
-        vAccountPrefContemporain.checked    = vMemberClient.member.preferences['prefContemporain'];    
-        activeButtonOfSelectedCheckBox(vAccountPrefContemporain, 'idAccountPrefContemporainLabel');
-
-        vAccountPrefFuturiste.checked       = vMemberClient.member.preferences['prefFuturiste'];       
-        activeButtonOfSelectedCheckBox(vAccountPrefFuturiste, 'idAccountPrefFuturisteLabel');
-
-        vAccountPrefFantastique.checked     = vMemberClient.member.preferences['prefFantastique'];     
-        activeButtonOfSelectedCheckBox(vAccountPrefFantastique, 'idAccountPrefFantastiqueLabel');
-
-        vAccountPrefHFrancaise.checked      = vMemberClient.member.preferences['prefHFrancaise'];      
-        activeButtonOfSelectedCheckBox(vAccountPrefHFrancaise, 'idAccountPrefHFrancaiseLabel');
-
-        vAccountPrefHAmericaine.checked     = vMemberClient.member.preferences['prefHAmericaine'];     
-        activeButtonOfSelectedCheckBox(vAccountPrefHAmericaine, 'idAccountPrefHAmericaineLabel');
-
-        vAccountPrefHInternationale.checked = vMemberClient.member.preferences['prefHInternationale']; 
-        activeButtonOfSelectedCheckBox(vAccountPrefHInternationale, 'idAccountPrefHInternationaleLabel');
-
-        vAccountPrefAutre.checked           = vMemberClient.member.preferences['prefAutre'];           
-        activeButtonOfSelectedCheckBox(vAccountPrefAutre, 'idAccountPrefAutreLabel');
-
-        vAccountForm.idAccountPresentation.value = vMemberClient.member.presentation;
-
-        vMemberClient.newPasswordKO = false;
-        vAccountForm.idAccountCurrentPassword.value = '';
-        vAccountForm.idAccountPassword.value = '';
-        vAccountForm.idAccountConfirmPassword.value = '';
-
-        vAccountPassword.setAttribute('disabled', 'true');
-        vAccountConfirmPassword.setAttribute('disabled', 'true');
-
-        vAccountAlertMsg.style.visibility = 'hidden';                          
-        vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
-    }
-    // -----------------------------------------------------------------------------
-    // Cette fonction calcule et MAJ le champ "Age" de la fenêtre de saisie des renseignements
-    // -----------------------------------------------------------------------------
-    function updateFieldAge(pBirthDate){ 
-        if (pBirthDate){
-            vAccountForm.idAccountAge.value = vToolBox.calculeAge(pBirthDate, false);
-        } else {
-            vAccountForm.idAccountAge.value ='';
-        }
-    }
-    // -----------------------------------------------------------------------------
-    // Cette fonction récupère la sélection du Sexe à travers les boutons-radio
-    // -----------------------------------------------------------------------------
-    function outputBtnRadioSex(){ 
-        var i=0;
-        var found=false
-
-        while (i < document.forms.idAccountForm.accountSexe.length && !found){
-            if (document.forms.idAccountForm.accountSexe[i].checked===true){ 
-            found = true;
-            } else {
-                i++
-            }
-        } 
-        return i;
-    }
-    // -----------------------------------------------------------------------------
-    // Cette fonction initialise le bouton-radio du Sexe approprié
-    // -----------------------------------------------------------------------------
-    function inputBtnRadioSex(){ 
-        var selectedSex;
-
-        for (var i=0; i < document.forms.idAccountForm.accountSexe.length; i++) {
-            if (vMemberClient.member.etatCivil.sex === i){
-                
-                document.forms.idAccountForm.accountSexe[i].checked = true;
-                selectedSex = i;
-            } else { 
-                document.forms.idAccountForm.accountSexe[i].checked = false;
-            }
-        } 
-        return selectedSex;
-    }    
-    // -----------------------------------------------------------------------------
-    // Cette fonction met à jour l'avatar (si aucune photo n a été chargée), avec une 
-    // silhouette Profil par défaut, en concordance avec la sélection du sexe
-    // 
-    // Si pas de photo, initialiser avec l avatar correspondant au sexe
-    // et le faire vivre a chaque changement de sexe
-    // Sinon, ignorer les changements de sexe
-    // -----------------------------------------------------------------------------
-    function updateAvatar(pIndex){ 
-        var myPhoto = vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1];
-
-        if (myPhoto){
-            if (myPhoto.startsWith('default-avatar-')){
-                switch (pIndex){
-                    case 0 :
-                    vAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-inconnu.png');
-                    break;
-                    case 1 :
-                    vAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-male.png');
-                    break;
-                    case 2 :
-                    vAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-female.png');
-                    break;
-                }
-            } 
-        }
-    }
-    // -----------------------------------------------------------------------------
-    // Cette fonction simule le click des boutons de préférences a true pour refleter
-    // le statut et la couleur correspondante des badges colorés
-    // -----------------------------------------------------------------------------
-    function activeButtonOfSelectedCheckBox(pAccountPref, pIdAccountPrefLabel){
-
-        var myIdLabel = document.getElementById(pIdAccountPrefLabel)
-        pAccountPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
-    }
+        vMemberClient.displayAvatarOnCarrousel(vMemberClient.member.etatCivil.photo, vAccountForm.idAccountPseudo.value, avatarsOnCarousel)
+    });
 // --------------------------------------------------------------------------------------------------------------
 }); // Fin de la Boucle "DOMContentLoaded"

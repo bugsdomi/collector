@@ -161,7 +161,7 @@ MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText
 // connecté ou après la création réussie de son compte, car il se trouve de fait, 
 // déjà connecté
 // -----------------------------------------------------------------------------
-MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation, pDropDownProfilMenu, pMemberName, pPseudo, pDeconnexion){
+MemberClient.prototype.disableLoginAndCreateBtn = function(pConnexion, pCreation, pDropDownProfilMenu, pPseudo, pDeconnexion){
     pConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
     pCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
 
@@ -206,4 +206,258 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
         return
     }
 }
+// -----------------------------------------------------------------------------
+// Cette fonction affiche l'avatar et le pseudo sur le carroussel de la page de profil
+// -----------------------------------------------------------------------------
+MemberClient.prototype.displayAvatarOnCarrousel = function(pPhoto, pPseudo, pAvatarsOnCarousel){
+    pAvatarsOnCarousel.vAvatarImg1.setAttribute('src', 'static/images/members/'+pPhoto);
+    pAvatarsOnCarousel.vAvatarMemberNameImg1.innerHTML = pPseudo;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// Cette fonction initialise la modale de création, quel que soit son mode 
+// d'appel (par l'option de menu ou par le raccourci de la fenetre de Login
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalSignIn = function(pSignInParameters){
+    pSignInParameters.vSignInForm.idSignInEmail.value = '';                                
+    pSignInParameters.vSignInForm.idSignInPseudo.value = '';                              
+    pSignInParameters.vSignInForm.idSignInPassword.value = '';
+    pSignInParameters.vSignInForm.idSignInConfirmPassword.value = '';
+    pSignInParameters.vSignInAlertMsg.style.visibility = 'hidden';                          
+    this.InitHeaderColor('bg-warning', pSignInParameters.vModalSignInHeader);
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction initialise la modale de saisie de renseignements (Compte) 
+// avec les valeurs récupérées dans la BDD, (et pouvant être vieges)
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalAccount = function(pAccountParameters){
+    pAccountParameters.vAccountForm.idAccountEmail.value  = this.member.email;                                
+    pAccountParameters.vAccountForm.idAccountPseudo.value = this.member.pseudo;     
+
+    pAccountParameters.vAccountPhotoImg.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
+    pAccountParameters.vAccountForm.idAccountFirstName.value = this.member.etatCivil.firstName;     
+    pAccountParameters.vAccountForm.idAccountName.value = this.member.etatCivil.name;     
+    pAccountParameters.vAccountForm.idAccountBirthDate.value = this.member.etatCivil.birthDate;     
+
+    if (this.member.etatCivil.birthDate){
+        this.updateFieldAge(this.member.etatCivil.birthDate, pAccountParameters.vAccountForm);
+        } else {
+        pAccountParameters.vAccountForm.idAccountAge.value = '';
+    }
+
+    var selectedSex = this.inputBtnRadioSex();
+    this.updateAvatar(selectedSex, pAccountParameters.vAccountPhotoImg);
+
+    pAccountParameters.vAccountForm.idAccountStreet.value      = this.member.etatCivil.address.street;    
+    pAccountParameters.vAccountForm.idAccountCity.value        = this.member.etatCivil.address.city;      
+    pAccountParameters.vAccountForm.idAccountZipCode.value     = this.member.etatCivil.address.zipCode;   
+    pAccountParameters.vAccountForm.idAccountDepartment.value  = this.member.etatCivil.address.department;
+
+    pAccountParameters.vAccountPrefGravures.checked        = this.member.preferences['prefGravures'];      
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefGravures, 'idAccountPrefGravuresLabel');
+
+    pAccountParameters.vAccountPrefLivres.checked          = this.member.preferences['prefLivres'];    
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefLivres, 'idAccountPrefLivresLabel');
+
+    pAccountParameters.vAccountPrefFilms.checked           = this.member.preferences['prefFilms']; 
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFilms, 'idAccountPrefFilmsLabel');
+    
+    pAccountParameters.vAccountPrefJeux.checked            = this.member.preferences['prefJeux'];            
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefJeux, 'idAccountPrefJeuxLabel');
+
+    pAccountParameters.vAccountPrefMaquettes.checked       = this.member.preferences['prefMaquettes'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefMaquettes, 'idAccountPrefMaquettesLabel');
+    
+    pAccountParameters.vAccountPrefFigurines.checked       = this.member.preferences['prefFigurines'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFigurines, 'idAccountPrefFigurinesLabel');
+
+    pAccountParameters.vAccountPrefBlindes.checked         = this.member.preferences['prefBlindes'];      
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefBlindes, 'idAccountPrefBlindesLabel');
+    
+    pAccountParameters.vAccountPrefAvions.checked          = this.member.preferences['prefAvions'];          
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAvions, 'idAccountPrefAvionsLabel');
+
+    pAccountParameters.vAccountPrefBateaux.checked         = this.member.preferences['prefBateaux'];         
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefBateaux, 'idAccountPrefBateauxLabel');
+
+    pAccountParameters.vAccountPrefDioramas.checked        = this.member.preferences['prefDioramas'];        
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefDioramas, 'idAccountPrefDioramasLabel');
+
+    pAccountParameters.vAccountPrefPrehistoire.checked     = this.member.preferences['prefPrehistoire'];     
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefPrehistoire, 'idAccountPrefPrehistoireLabel');
+
+    pAccountParameters.vAccountPrefAntiquite.checked       = this.member.preferences['prefAntiquite'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAntiquite, 'idAccountPrefAntiquiteLabel');
+
+    pAccountParameters.vAccountPrefMoyenAge.checked        = this.member.preferences['prefMoyenAge'];        
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefMoyenAge, 'idAccountPrefMoyenAgeLabel');
+
+    pAccountParameters.vAccountPrefRenaissance.checked     = this.member.preferences['prefRenaissance'];     
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefRenaissance, 'idAccountPrefRenaissanceLabel');
+
+    pAccountParameters.vAccountPrefDentelles.checked       = this.member.preferences['prefDentelles'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefDentelles, 'idAccountPrefDentellesLabel');
+    
+    pAccountParameters.vAccountPrefAncienRegime.checked    = this.member.preferences['prefAncienRegime'];    
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAncienRegime, 'idAccountPrefAncienRegimeLabel');
+
+    pAccountParameters.vAccountPrefRevolution.checked      = this.member.preferences['prefRevolution'];      
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefRevolution, 'idAccountPrefRevolutionLabel');
+
+    pAccountParameters.vAccountPref1erEmpire.checked       = this.member.preferences['pref1erEmpire'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPref1erEmpire, 'idAccountPref1erEmpireLabel');
+
+    pAccountParameters.vAccountPref2ndEmpire.checked       = this.member.preferences['pref2ndEmpire'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPref2ndEmpire, 'idAccountPref2ndEmpireLabel');
+
+    pAccountParameters.vAccountPrefSecession.checked       = this.member.preferences['prefSecession'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefSecession, 'idAccountPrefSecessionLabel');
+
+    pAccountParameters.vAccountPrefFarWest.checked         = this.member.preferences['prefFarWest'];         
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFarWest, 'idAccountPrefFarWestLabel');
+
+    pAccountParameters.vAccountPrefWW1.checked             = this.member.preferences['prefWW1'];             
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefWW1, 'idAccountPrefWW1Label');
+
+    pAccountParameters.vAccountPrefWW2.checked             = this.member.preferences['prefWW2'];             
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefWW2, 'idAccountPrefWW2Label');
+
+    pAccountParameters.vAccountPrefContemporain.checked    = this.member.preferences['prefContemporain'];    
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefContemporain, 'idAccountPrefContemporainLabel');
+
+    pAccountParameters.vAccountPrefFuturiste.checked       = this.member.preferences['prefFuturiste'];       
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFuturiste, 'idAccountPrefFuturisteLabel');
+
+    pAccountParameters.vAccountPrefFantastique.checked     = this.member.preferences['prefFantastique'];     
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFantastique, 'idAccountPrefFantastiqueLabel');
+
+    pAccountParameters.vAccountPrefHFrancaise.checked      = this.member.preferences['prefHFrancaise'];      
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefHFrancaise, 'idAccountPrefHFrancaiseLabel');
+
+    pAccountParameters.vAccountPrefHAmericaine.checked     = this.member.preferences['prefHAmericaine'];     
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefHAmericaine, 'idAccountPrefHAmericaineLabel');
+
+    pAccountParameters.vAccountPrefHInternationale.checked = this.member.preferences['prefHInternationale']; 
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefHInternationale, 'idAccountPrefHInternationaleLabel');
+
+    pAccountParameters.vAccountPrefAutre.checked           = this.member.preferences['prefAutre'];           
+    this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAutre, 'idAccountPrefAutreLabel');
+
+    pAccountParameters.vAccountForm.idAccountPresentation.value = this.member.presentation;
+
+    this.newPasswordKO = false;
+    pAccountParameters.vAccountForm.idAccountCurrentPassword.value = '';
+    pAccountParameters.vAccountForm.idAccountPassword.value = '';
+    pAccountParameters.vAccountForm.idAccountConfirmPassword.value = '';
+
+    pAccountParameters.vAccountPassword.setAttribute('disabled', 'true');
+    pAccountParameters.vAccountConfirmPassword.setAttribute('disabled', 'true');
+
+    pAccountParameters.vAccountAlertMsg.style.visibility = 'hidden';                          
+    this.InitHeaderColor('bg-warning', pAccountParameters.vModalAccountHeader);
+}
+// -----------------------------------------------------------------------------
+// Cette fonction calcule et MAJ le champ "Age" de la fenêtre de saisie des renseignements
+// -----------------------------------------------------------------------------
+MemberClient.prototype.updateFieldAge = function(pBirthDate, pAccountForm){ 
+    if (pBirthDate){
+        pAccountForm.idAccountAge.value = vToolBox.calculeAge(pBirthDate, false);
+    } else {
+        pAccountForm.idAccountAge.value ='';
+    }
+}
+// -----------------------------------------------------------------------------
+// Cette fonction récupère la sélection du Sexe à travers les boutons-radio
+// -----------------------------------------------------------------------------
+MemberClient.prototype.outputBtnRadioSex = function(){ 
+    var i=0;
+    var found=false
+
+    while (i < document.forms.idAccountForm.accountSexe.length && !found){
+        if (document.forms.idAccountForm.accountSexe[i].checked===true){ 
+        found = true;
+        } else {
+            i++
+        }
+    } 
+    return i;
+}
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le bouton-radio du Sexe approprié
+// -----------------------------------------------------------------------------
+MemberClient.prototype.inputBtnRadioSex = function(){ 
+    var selectedSex;
+
+    for (var i=0; i < document.forms.idAccountForm.accountSexe.length; i++) {
+        if (this.member.etatCivil.sex === i){
+            
+            document.forms.idAccountForm.accountSexe[i].checked = true;
+            selectedSex = i;
+        } else { 
+            document.forms.idAccountForm.accountSexe[i].checked = false;
+        }
+    } 
+    return selectedSex;
+}    
+// -----------------------------------------------------------------------------
+// Cette fonction met à jour l'avatar (si aucune photo n a été chargée), avec une 
+// silhouette Profil par défaut, en concordance avec la sélection du sexe
+// 
+// Si pas de photo, initialiser avec l avatar correspondant au sexe
+// et le faire vivre a chaque changement de sexe
+// Sinon, ignorer les changements de sexe
+// -----------------------------------------------------------------------------
+MemberClient.prototype.updateAvatar = function(pIndex, pAccountPhotoImg){ 
+
+    var myPhoto = pAccountPhotoImg.getAttribute('src').split('static/images/members/')[1];
+
+    if (myPhoto){
+        if (myPhoto.startsWith('default-avatar-')){
+            switch (pIndex){
+                case 0 :
+                pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-inconnu.png');
+                break;
+                case 1 :
+                pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-male.png');
+                break;
+                case 2 :
+                pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-female.png');
+                break;
+            }
+        } 
+    }
+}
+// -----------------------------------------------------------------------------
+// Cette fonction simule le click des boutons de préférences a true pour refleter
+// le statut et la couleur correspondante des badges colorés
+// -----------------------------------------------------------------------------
+MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pAccountPref, pIdAccountPrefLabel){
+
+    var myIdLabel = document.getElementById(pIdAccountPrefLabel)
+    pAccountPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
+}
+
+
+
+
+
+
+
+
+
+
+
 // -------------------------- Fin du module ----------------------------------------------------------------------------
