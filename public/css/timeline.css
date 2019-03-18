@@ -7,11 +7,12 @@ html {
 
 body{
   /* font-family: Lato,"Helvetica Neue",Arial,Verdana,Tahoma,"Lucida Sans",FreeSans,"Lucida Sans Unicode","Luxi Sans",sans-serif; */
-  background: #e9eaed;
+  /* background: #e9eaed; */
+  background:#012C01;
   overflow-x:hidden; 
 }
 
-footer.footer {
+footer.footer {         /* Tous les "footer(1)" ayant la classe "Footer(2)" */
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -19,16 +20,16 @@ footer.footer {
   line-height: 60px; 
 }
 
-footer .container .text-muted {
+footer .container .text-muted {     /* Tous les "text-muted" fils des "containers" fils des "footer" */
   margin: 20px 0;
 }
 
-.footer > .container {
+.footer > .container {              /* Tous les enfants "container" directs de "footer" */
   padding-right: 15px;
   padding-left: 15px;
 }
 
-.navbar-white a{
+.navbar-white a{                    /* Tous les enfants "a" de la classe "navbar-white" */
     color: #858585;
 }
 .navbar-white {
@@ -36,13 +37,14 @@ footer .container .text-muted {
     border-color: #e7e7e7;
 }
 
-.btn.visible-xs {
+.btn.visible-xs {                   /* */
     display: inline-block !important;
 }
 
 .page-content{
-  /* margin-top: 90px; */
-  margin-bottom: 70px;
+  /* margin-top: 90px; */           /* DH- */
+    /* margin-bottom: 70px; */      /* DH- */
+    margin-bottom: 30px;            /* DH+ */
 }
 
 /*============= top navbar =================*/
@@ -65,7 +67,7 @@ footer .container .text-muted {
 
 .navbar .navbar-brand {
     font-weight: 600;
-    margin: 5px 0px;
+    /* margin: 5px 0px; */          /* DH- */
     padding: 20px 15px;
     font-size: 20px;
 }

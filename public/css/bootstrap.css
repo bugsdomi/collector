@@ -3971,7 +3971,7 @@ input[type="button"].btn-block {
   align-items: center;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  /* padding: 0.5rem 1rem; */           /* DH- */
 }
 
 .navbar > .container,
@@ -6162,7 +6162,8 @@ button.bg-dark:focus {
   background-color: transparent !important;
 }
 
-.border {
+/* DH- Pour tout le paquet de lignes */
+/* .border {
   border: 1px solid #dee2e6 !important;
 }
 
@@ -6171,8 +6172,7 @@ button.bg-dark:focus {
 }
 
 .border-right {
-  border-right: 1px solid #dee2e6 !important;
-}
+  border-right: 1px solid #dee2e6 !important;                         
 
 .border-bottom {
   border-bottom: 1px solid #dee2e6 !important;
@@ -6180,6 +6180,26 @@ button.bg-dark:focus {
 
 .border-left {
   border-left: 1px solid #dee2e6 !important;
+} */
+
+.border {
+  border: 1px solid #FFC107 !important;
+}
+
+.border-top {
+  border-top: 1px solid #FFC107 !important;
+}
+
+.border-right {
+  border-right: 1px solid #FFC107 !important;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #FFC107 !important;
+}
+
+.border-left {
+  border-left: 1px solid #FFC107 !important;
 }
 
 .border-0 {

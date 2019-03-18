@@ -142,17 +142,17 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                         throw error;
                     }
 
-                    if (!documents.length){                                 // Le login n'a pas été trouvé dans la BDD et est donc erroné --> la tentative de connexion est refusée
+                    if (!documents.length){  // Le login n'a pas été trouvé dans la BDD et est donc erroné --> la tentative de connexion est refusée
                         pWebSocketConnection.emit('retryLoginForm');   
                         return resolve('Login Erroné');
                     } 
 
-                    this.member = documents[0];                                     // Récupération des infos du membre dans l'objet de stockage provisoire
-                    this.member.oldPassword = '';                                   // RAZ de l'ancien MDP avant envoi au client
+                    this.member = documents[0];                              // Récupération des infos du membre dans l'objet de stockage provisoire
+                    this.member.oldPassword = '';                            // RAZ de l'ancien MDP avant envoi au client
 
                     // Recherche du pseudo du membre dans le tableau des membres car je ne veux pas qu'un membre se connecte plusieurs fois sur des sessions différentes
                     let myIndex = this.searchMemberInTableOfMembers('pseudo', this.member.pseudo)
-                    if (myIndex !== -1){                                            // Si membre trouvé dans la table ddes membres connectés, on le rejette, sinon, on le connecte
+                    if (myIndex !== -1){                                   // Si membre trouvé dans la table ddes membres connectés, on le rejette, sinon, on le connecte
                         resolve('Membre dejà loggé');
                         return pWebSocketConnection.emit('memberAlreadyConnected',this.member);     
                     }
@@ -195,7 +195,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
         );
     }
     // ---------------------------------------------------------------------------------------------------------------------------
-    // Sauvegarde du nouveau PWD après avoir au préalable sauvegardé l'ancien dans "olddPassword"
+    // Sauvegarde du nouveau PWD après avoir au préalable sauvegardé l'ancien dans "oldPassword"
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.updateDataInBDD = function(pDataSet){
         vDBMgr.collectionMembers.updateOne(
@@ -247,7 +247,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
     }
 
     // ---------------------------------------------------------------------------------------------------------------------------
-    // En cas de chagt de MDP, MAJ la BDD avec les nouveaux et anciens MDP, et envoie un mail dde notification
+    // En cas de chgt de MDP, MAJ la BDD avec les nouveaux et anciens MDP, et envoie un mail de notification
     // ---------------------------------------------------------------------------------------------------------------------------
     MemberServer.prototype.updatePasswordChange = function(pDataSet, pTypeChgtPWD, pWebSocketConnection){
         this.updateDataInBDD(pDataSet);
