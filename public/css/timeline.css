@@ -9,15 +9,15 @@ body{
   /* font-family: Lato,"Helvetica Neue",Arial,Verdana,Tahoma,"Lucida Sans",FreeSans,"Lucida Sans Unicode","Luxi Sans",sans-serif; */
   /* background: #e9eaed; */
   background:#012C01;
-  overflow-x:hidden; 
+  overflow-x:hidden;
 }
 
 footer.footer {         /* Tous les "footer(1)" ayant la classe "Footer(2)" */
-  position: absolute;
-  bottom: 0;
+  /* position: absolute;   */      /* DH- */
+    bottom: 0;
   width: 100%;
   height: 60px;
-  line-height: 60px; 
+  line-height: 60px;
 }
 
 footer .container .text-muted {     /* Tous les "text-muted" fils des "containers" fils des "footer" */
@@ -80,9 +80,9 @@ footer .container .text-muted {     /* Tous les "text-muted" fils des "container
     line-height: 20px;
 } */
 
-.navbar-transparent .navbar-nav > li > a:not(.btn), 
-.navbar-transparent .navbar-nav > li > a.btn-default, 
-[class*="navbar-ct"] .navbar-nav > li > a:not(.btn), 
+.navbar-transparent .navbar-nav > li > a:not(.btn),
+.navbar-transparent .navbar-nav > li > a.btn-default,
+[class*="navbar-ct"] .navbar-nav > li > a:not(.btn),
 [class*="navbar-ct"] .navbar-nav > li > a.btn-default {
     color: #FFFFFF;
     border-color: #FFFFFF;
@@ -692,8 +692,8 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
     color: #999;
     font-size: 13px;
 }
-.user-block .username, 
-.user-block .description, 
+.user-block .username,
+.user-block .description,
 .user-block .comment {
     display: block;
     margin-left: 50px;
@@ -743,14 +743,14 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
     padding: 8px 0;
     border-bottom: 1px solid #eee;
 }
-.img-sm, 
-.box-comments .box-comment img, 
+.img-sm,
+.box-comments .box-comment img,
 .user-block.user-block-sm img {
     width: 30px !important;
     height: 30px !important;
 }
-.img-sm, .img-md, 
-.img-lg, .box-comments .box-comment img, 
+.img-sm, .img-md,
+.img-lg, .box-comments .box-comment img,
 .user-block.user-block-sm img {
     float: left;
 }
@@ -859,7 +859,7 @@ ul.img-grid li a {
 }
 
 .widget-friends ul.img-grid li img{
-      border:1px solid #fff;  
+      border:1px solid #fff;
 }
 
 ul.img-grid li img {
@@ -900,7 +900,7 @@ ul.img-grid li img:hover, .cover.profile .wrapper .friends li a img:hover {
 
 /*======================== profile groups ==============*/
 
-.card {
+/* .card {
     border-radius: 6px;
     background-color: #FFFFFF;
     color: #252422;
@@ -963,7 +963,7 @@ h4, .h4 {
 .card .btn-success {
     border-color: #7AC29A;
     color: #7AC29A;
-}
+} */
 
 /***============ modals ======================*/
 .modal-content {
@@ -1303,7 +1303,7 @@ height: 53%;
     text-align: right;
     background-color: rgb(255, 255, 255);
     box-shadow: -3px 0px 3px 0px rgba(160, 160, 160, 0.30);
-    z-index: 999;    
+    z-index: 999;
     overflow-y: auto;
 }
 
@@ -1333,10 +1333,10 @@ height: 53%;
     list-style: none;
 }
 .chat-sidebar > ul > li {
-    margin: 5px 0px;   
+    margin: 5px 0px;
 }
 .chat-sidebar > ul > li > a {
-    color: rgb(190, 190, 190);   
+    color: rgb(190, 190, 190);
 }
 
 .chat-sidebar .img-chat {

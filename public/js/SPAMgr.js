@@ -141,11 +141,11 @@ window.addEventListener('DOMContentLoaded', function(){
 // }
 
 // -------------------------------------------------------------------------
-// Eléments du menu du profile
+// Eléments du menu du profil
 // -------------------------------------------------------------------------
 	var vProfileNavBar = document.getElementById('idProfileNavBar');
 
-	// Neutralise la NavBar du profile par defaut car aucun membre n'est connecté au lancement de la session
+	// Neutralise la NavBar du profil par defaut car aucun membre n'est connecté au lancement de la session
 	vMemberClient.maskOn('idProfileNavBar', {zIndex:1}); 
 	// -------------------------------------------------------------------------
 	// Eléments de l'Avatar
@@ -471,7 +471,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Déconnexion du membre:
 	// - Réinitialisation de la landing-page
 	// - Fermeture du socket
-	// - Blocage de la NavBar du Profile
+	// - Blocage de la NavBar du profil
 	// -------------------------------------------------------------------------
 	vDeconnexion.addEventListener('click', function(){
 		vMemberClient.unsetMemberContext(webSocketConnection);
@@ -531,12 +531,15 @@ window.addEventListener('DOMContentLoaded', function(){
 	// et on demande au serveur d'envoyer un mail de notification de MDP
 	// -------------------------------------------------------------------------
 	vAccountForm.addEventListener('submit', function (event){ 
-		event.preventDefault();        
+		event.preventDefault();
+		
+		var cstWaitForUpladToDisplayAvatar = false;
 
-		if (!vMemberClient.newPasswordKO){     
-			if (vAccountPhotoFile.value.length){                                                                        // Si une image a été choisie 
+		if (!vMemberClient.newPasswordKO){
+			if (vAccountPhotoFile.value.length){                                                                      // Si un fichier image a été choisie dans l explorateur windows
 				vMemberClient.member.etatCivil.photo = vAccountPhotoFile.value.split('C:\\fakepath\\')[1];              // On ne garde que le nom de l'image pour la BDD
-				siofu.submitFiles(vAccountPhotoFile.files);                                                             // Alors on la transfère vers le serveur
+				siofu.submitFiles(vAccountPhotoFile.files);                                                             // Alors on la transfère vers le serveur 
+				cstWaitForUpladToDisplayAvatar = true;
 			} else {
 				vMemberClient.member.etatCivil.photo = vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 
 			}
@@ -588,9 +591,20 @@ window.addEventListener('DOMContentLoaded', function(){
 				vMemberClient.member.oldPassword = vAccountForm.idAccountCurrentPassword.value;
 				vMemberClient.member.password = vAccountForm.idAccountPassword.value;
 			}
+
 			webSocketConnection.emit('dataProfilMembre', vMemberClient.member);   // Transmission au serveur des infos saisies
+
 			$('#idModalAccount').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
 			vAccountAlertMsg.style.visibility = 'hidden';  
+
+			if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existant, soit avatar par défaut)
+				var avatarOnCarousel = {
+					vAvatarImg1,
+					vAvatarMemberNameImg1
+				}
+				vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel);
+			};
+
 		}
 	});
 
@@ -627,52 +641,40 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ==> Désactivation du bouton "Connexion"
 	// ==> Désactivation du bouton "Créer un compte"
 	// ==> Activation du bouton "Deconnexion"
-	// ==> Ouverture de la page de profile
+	// ==> Active le sous-menu de la NavBar d'entête
+	// ==> Affiche le nom du membre dans le menu
+	// ==> Affiche la photo de l'avatar et son nom sur le carousel
+	// ==> Active la NavBar du profil
+	// ==> Ouverture de la page de profil
 	// --------------------------------------------------------------
-	webSocketConnection.on('welcomeMember', function(pMember){   
-		vMemberClient.member = pMember;                                                // Affecte les données du membre à l'objet "Membre"
-		vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText, pMember.pseudo);  // Affiche la fenêtre de bienvenue
+	webSocketConnection.on('welcomeMember', function(pDataTransmitted){   
+		vMemberClient.member = pDataTransmitted.member;    
+
+		if (pDataTransmitted.welcomeMessage === 'Hello') {
+			vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+		} else {
+			vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText); // Affiche la fenêtre de bienvenue pour un nouveau membre
+		}
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
 		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
+
+		// - Affiche la photo de l'avatar et son nom sur le carroussel
+		var avatarOnCarousel = {
+			vAvatarImg1,
+			vAvatarMemberNameImg1,
+		}
+		vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel);
+
+		// Affichage du profil complet (Fiche d'identité, conversations, liste d'amis...)
+		vProfilePage.style.display = 'Block';
 		
 		// - Desactive Bouton Login et Création 
 		// - Active le sous-menu de la NavBar d'entête
 		// - Affiche le nom du membre dans le menu
-		// - Active la NavBar du profile
+		// - Active la NavBar du profil
 		vMemberClient.setMemberContext(vConnexion, vCreation, vDropDownProfilMenu, vMemberClient.member.pseudo, vDeconnexion, 'idProfileNavBar');   
 
-		var avatarsOnCarousel = {
-			vAvatarImg1,
-			vAvatarMemberNameImg1,
-		}
-		vMemberClient.displayAvatarOnCarrousel(vMemberClient.member.etatCivil.photo, vMemberClient.member.pseudo, avatarsOnCarousel);
-
-		vProfilePage.style.display = 'Block';
 	});
-	// --------------------------------------------------------------
-	// Le visiteur a créé son compte avec succès et est donc reconnu comme membre
-	// Message d'accueil et de Bienvenue
-	// ==> Désactivation du bouton "Connexion"
-	// ==> Désactivation du bouton "Créer un compte"
-	// ==> Activation du bouton "Deconnexion"
-	// --> Affichage de son avatar et de son pseudo
-	// --------------------------------------------------------------
-	webSocketConnection.on('congratNewMember', function(pMember){ 
-		vMemberClient.member =  pMember;                                                // Affecte les données du membre à l'objet "Membre"
-		vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText, pMember.pseudo);                // Affiche la fenêtre de bienvenue
-		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
-
-		// Desactive Bouton Login et Création
-		vMemberClient.setMemberContext(vConnexion, vCreation, vDropDownProfilMenu, vMemberClient.member.pseudo, vDeconnexion, 'idProfileNavBar');   
-
-		var avatarsOnCarousel = {
-			vAvatarImg1,
-			vAvatarMemberNameImg1,
-		}
-
-		vMemberClient.displayAvatarOnCarrousel(vMemberClient.member.etatCivil.photo, vMemberClient.member.pseudo, avatarsOnCarousel);
-	});    
 	// --------------------------------------------------------------
 	// Le visiteur a demandé un nouveau mot de passe
 	// Message de notification de renouvellement du PWD
@@ -737,14 +739,17 @@ window.addEventListener('DOMContentLoaded', function(){
 																: pPopulation.nbrPublicMsgs + ' messages';      // Affichage du nombre de membres connectés sur la barre de menu
 	});    
 	// --------------------------------------------------------------
-	// Affichage de l'avatar sur la page de profil 
+	// Affichage de l'avatar sur la page de profil lorsque le serveur 
+	// a fini de télécharger l'avatar
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayAvatarOnProfile', function(){ 
-		var avatarsOnCarousel = {
+
+
+		var avatarOnCarousel = {
 			vAvatarImg1,
 			vAvatarMemberNameImg1,
 		}
-		vMemberClient.displayAvatarOnCarrousel(vMemberClient.member.etatCivil.photo, vAccountForm.idAccountPseudo.value, avatarsOnCarousel)
+		vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel)
 	});
 // --------------------------------------------------------------------------------------------------------------
 }); // Fin de la Boucle "DOMContentLoaded"

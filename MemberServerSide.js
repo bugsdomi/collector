@@ -163,7 +163,13 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
 
                     this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
-                    pWebSocketConnection.emit('welcomeMember',this.member);                    // On transmet au client les données du membre 
+
+                    let dataToTransmit = {
+                        member : this.member,
+                        welcomeMessage : 'Hello'
+                    }
+
+                    pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    // On transmet au client les données du membre 
                     resolve('Membre loggé');
                 });
         });
@@ -417,7 +423,13 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 );
                     
                 this.addMemberToActiveMembers(myIndex, pSocketIo)
-                pWebSocketConnection.emit('congratNewMember',this.member); 
+
+                let dataToTransmit ={
+                    member : this.member,
+                    welcomeMessage : 'Congrat'
+                }
+
+                pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    // On transmet au client les données du membre 
             });
         });
     }

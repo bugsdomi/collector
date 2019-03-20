@@ -281,3 +281,10 @@ body {
 #idProfilePage{
     display : none;
 }
+
+/* ******************************* */
+/* Avatar Tokenisé                 */
+/* ******************************* */
+.avatar-token{
+    max-width: 50px;
+}

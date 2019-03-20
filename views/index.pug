@@ -94,7 +94,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 .container
   .jumbotron
-    .row.page-content
+    .row.mb-4
       .col-md-12.col-md-offset-2
         .row
           .col-md-12
@@ -157,40 +157,108 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // Page de profil du membre
 // ******************************************************************************
 #idProfilePage.container
-  .row.page-content
+  .row.mb-4
     .col-md-12.col-md-offset-2
       .row
         .col-md-5
-          .widget
-            .widget-header
-              h3.widget-caption About
-            .widget-body.bordered-top.bordered-sky
-              ul.list-unstyled.profile-about.margin-none
-                li.padding-v-5
+          //
+            <div class="widget">
+            <div class="widget-header">
+            <h3 class="widget-caption">About</h3>
+            </div>
+            <div class="widget-body bordered-top bordered-sky">
+            <ul class="list-unstyled profile-about margin-none">
+            <li class="padding-v-5">
+            <div class="row">
+            <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
+            <div class="col-sm-8">12 January 1990</div>
+            </div>
+            </li>
+            <li class="padding-v-5">
+            <div class="row">
+            <div class="col-sm-4"><span class="text-muted">Job</span></div>
+            <div class="col-sm-8">Ninja developer</div>
+            </div>
+            </li>
+            <li class="padding-v-5">
+            <div class="row">
+            <div class="col-sm-4"><span class="text-muted">Gender</span></div>
+            <div class="col-sm-8">Male</div>
+            </div>
+            </li>
+            <li class="padding-v-5">
+            <div class="row">
+            <div class="col-sm-4"><span class="text-muted">Lives in</span></div>
+            <div class="col-sm-8">Miami, FL, USA</div>
+            </div>
+            </li>
+            <li class="padding-v-5">
+            <div class="row">
+            <div class="col-sm-4"><span class="text-muted">Credits</span></div>
+            <div class="col-sm-8">249</div>
+            </div>
+            </li>
+            </ul>
+            </div>
+            </div>
+          .card.border-warning.mb-4
+            // <div class="card-header bg-warning border-bottom">
+            //
+              <div class="modal-header bg-warning border-bottom">
+              <h5 class="modal-title">Présentation</h5>
+              </div>
+            .card-header.bg-warning.border-bottom.border-warning
+              h5.card-title Pr&eacute;sentation
+            .card-body
+              // <ul class="list-unstyled profile-about margin-none">
+              ul.list-group.list-unstyled
+                li
                   .row
                     .col-sm-4
                       span.text-muted Date of Birth
                     .col-sm-8 12 January 1990
-                li.padding-v-5
+                li
                   .row
                     .col-sm-4
                       span.text-muted Job
                     .col-sm-8 Ninja developer
-                li.padding-v-5
+                li
                   .row
                     .col-sm-4
                       span.text-muted Gender
                     .col-sm-8 Male
-                li.padding-v-5
+                li
                   .row
                     .col-sm-4
                       span.text-muted Lives in
                     .col-sm-8 Miami, FL, USA
-                li.padding-v-5
+                li
                   .row
                     .col-sm-4
                       span.text-muted Credits
                     .col-sm-8 249
+                li
+                  .row
+                    .col-sm-4
+                      span.text-muted PaddingY-5
+                    .col-sm-8 249
+          h4.sub-title.space-top.space-bottom Cards with Header and Footer
+          .row
+            .col-sm-12.col-md-4
+              .card.text-left
+                .card-header
+                  | Text Aligned-left
+                // / card-header
+                .card-body
+                  h4.card-title Card Title
+                  p.card-text With supporting text below as a natural lead-in to additional content.
+                  a.btn.btn-primary(href='#') Button
+                // / card-body
+                .card-footer.text-muted
+                  | card-footer
+                // / card-footer
+              // / card
+            // / column
           .widget.widget-friends
             .widget-header
               h3.widget-caption Friends
@@ -531,13 +599,21 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // *************************************************************************
 // Footer
 // *************************************************************************
-footer.footer.font-small.bg-dark.txt-yellow-shadow
+footer.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
   .container-fluid
     div
       img.d-inline-block.mr-2(alt='Copyright Vil-Coyote Product' src='static/images/running-vil-coyote.png' height='40')
       span.footer-copyright &copy;Vil-Coyotte Product - 2018
 // ******************************************************************************************************************************
+// ******************************************************************************************************************************
+// ******************************************************************************************************************************
+// ******************************************************************************************************************************
+// 
 // Fenêtres Modales
+// 
+// ******************************************************************************************************************************
+// ******************************************************************************************************************************
+// ******************************************************************************************************************************
 // ******************************************************************************************************************************
 // ***********************************************************************************
 // Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu

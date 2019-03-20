@@ -103,16 +103,26 @@ MemberClient.prototype.initModalTextAboutMode = function(pModalTitle, pModalBody
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
 // après la création réussie du nouveau membre
 // -----------------------------------------------------------------------------
-MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyText, pMemberPseudo){
+MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerText = 'Bienvenue dans Collect\'Or'
-	pModalBodyText.innerHTML = '<h5>Félicitations '+ pMemberPseudo +' !</h5>';
+	pModalBodyText.innerHTML = '<h5>Félicitations '+ this.member.pseudo +' !</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Votre compte a été créé avec succès.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Bonne navigation...</p>';
 }
 // -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
+// après la connexion réussie du membre
+// -----------------------------------------------------------------------------
+// MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText, pMemberPseudo){
+MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText){
+	pModalTitle.innerText = 'Connexion à Collect\'Or';
+	pModalBodyText.innerHTML = '<h5>Bonjour '+this.member.pseudo+'</h5>';
+	pModalBodyText.innerHTML += '<br /><p>Vous êtes bien connecté à \'Collect\'Or\', bonne navigation...</p>';
+}
+// -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
-// après la création réussie du nouveau membre
+// après la déclaration du mot de passe perdu
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalLostPWDText = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerText = 'Mot de passe perdu'
@@ -123,7 +133,7 @@ MemberClient.prototype.initModalLostPWDText = function(pModalTitle, pModalBodyTe
 }
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
-// après la création réussie du nouveau membre
+// après la demande de changement du mot de passe
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalChangedPWDText = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerText = 'Mot de passe changé'
@@ -132,23 +142,13 @@ MemberClient.prototype.initModalChangedPWDText = function(pModalTitle, pModalBod
 	pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
 }
 // -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
-// après la création réussie du nouveau membre
+// Cette fonction initialise le contenu de la fenetre modale de rejet d'un membre déjà connecté
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerText = 'Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Connexion impossible</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous ne pouvez pas vous connecter à \'Collect\'Or\', car vous vous êtes déjà connecté dans une autre session.</p>';
 	// pModalBodyText.innerHTML += '<br /><p></p>';
-}
-// -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
-// après la création réussie du nouveau membre
-// -----------------------------------------------------------------------------
-MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText, pMemberPseudo){
-	pModalTitle.innerText = 'Connexion à Collect\'Or';
-	pModalBodyText.innerHTML = '<h5>Bonjour '+pMemberPseudo+'</h5>';
-	pModalBodyText.innerHTML += '<br /><p>Vous êtes bien connecté à \'Collect\'Or\', bonne navigation...</p>';
 }
 // -----------------------------------------------------------------------------
 // Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
@@ -163,14 +163,14 @@ MemberClient.prototype.setMemberContext = function(pConnexion, pCreation, pDropD
 	pDropDownProfilMenu.innerHTML += ' '+pPseudo;
 
 	pDeconnexion.classList.remove('disabled');
-	this.maskOff(pProfileNavBar); 						// Active la NavBar du profile
+	this.maskOff(pProfileNavBar); 						// Active la NavBar du profil
 }
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.unsetMemberContext = function(pWebSocketConnection){
-	// Désactive la NavBar du profile
+	// Désactive la NavBar du profil
 	this.maskOn('idProfileNavBar', {zIndex:1}); 
 
 	// Régénèration de l'écran from scratch;
@@ -212,9 +212,9 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 // -----------------------------------------------------------------------------
 // Cette fonction affiche l'avatar et le pseudo sur le carroussel de la page de profil
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayAvatarOnCarrousel = function(pPhoto, pPseudo, pAvatarsOnCarousel){
-	pAvatarsOnCarousel.vAvatarImg1.setAttribute('src', 'static/images/members/'+pPhoto);
-	pAvatarsOnCarousel.vAvatarMemberNameImg1.innerHTML = pPseudo;
+MemberClient.prototype.displayAvatarOnCarrousel = function(pAvatarOnCarousel){
+	pAvatarOnCarousel.vAvatarImg1.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
+	pAvatarOnCarousel.vAvatarMemberNameImg1.innerHTML = this.member.pseudo;
 }
 // -----------------------------------------------------------------------------
 // Cette fonction initialise la modale de création, quel que soit son mode 
@@ -409,13 +409,13 @@ MemberClient.prototype.inputBtnRadioSex = function(){
 // et le faire vivre a chaque changement de sexe
 // Sinon, ignorer les changements de sexe
 // -----------------------------------------------------------------------------
-MemberClient.prototype.updateAvatar = function(pIndex, pAccountPhotoImg){ 
+MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){ 
 
 	var myPhoto = pAccountPhotoImg.getAttribute('src').split('static/images/members/')[1];
 
 	if (myPhoto){
 		if (myPhoto.startsWith('default-avatar-')){
-			switch (pIndex){
+			switch (pSelectedSex){
 				case 0 :
 					pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-inconnu.png');
 					break;
@@ -490,7 +490,7 @@ MemberClient.prototype.maskOn = function(elemOrId, settings) {
 	return maskDiv;
 }
 // --------------------------------------------------------------------------------------------------------------
-// elemOrId - jquery element or element id, defaults to $('<body>')'
+// Décache et déprotège les éléments masqués par "maskOn"
 // --------------------------------------------------------------------------------------------------------------
 MemberClient.prototype.maskOff = function(elemOrId) {
 	var elem = this.elemFromParam(elemOrId);
