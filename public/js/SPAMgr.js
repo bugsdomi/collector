@@ -146,7 +146,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vProfileNavBar = document.getElementById('idProfileNavBar');
 
 	// Neutralise la NavBar du profil par defaut car aucun membre n'est connecté au lancement de la session
-	vMemberClient.maskOn('idProfileNavBar', {zIndex:1}); 
+	vMemberClient.maskOn('idProfileNavBar', {zIndex:1, color:'white'}); 
 	// -------------------------------------------------------------------------
 	// Eléments de l'Avatar
 	// -------------------------------------------------------------------------
@@ -234,6 +234,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAccountCity = document.getElementById('idAccountCity');
 	var vAccountZipCode = document.getElementById('idAccountZipCode');
 	var vAccountDepartment = document.getElementById('idAccountDepartment');
+
 	var vAccountPrefGravures = document.getElementById('idAccountPrefGravures');
 	var vAccountPrefLivres = document.getElementById('idAccountPrefLivres');
 	var vAccountPrefFilms = document.getElementById('idAccountPrefFilms');
@@ -259,11 +260,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAccountPrefWW2 = document.getElementById('idAccountPrefWW2');
 	var vAccountPrefContemporain = document.getElementById('idAccountPrefContemporain');
 	var vAccountPrefFuturiste = document.getElementById('idAccountPrefFuturiste');
+	var vAccountPrefFuturisteLabel = document.getElementById('idAccountPrefFuturisteLabel');
 	var vAccountPrefFantastique = document.getElementById('idAccountPrefFantastique');
 	var vAccountPrefHFrancaise = document.getElementById('idAccountPrefHFrancaise');
 	var vAccountPrefHAmericaine = document.getElementById('idAccountPrefHAmericaine');
 	var vAccountPrefHInternationale = document.getElementById('idAccountPrefHInternationale');
 	var vAccountPrefAutre = document.getElementById('idAccountPrefAutre');
+
 	var vAccountPresentation = document.getElementById('idAccountPresentation');
 	var vAccountCurrentPassword = document.getElementById('idAccountCurrentPassword');
 	var vAccountPassword = document.getElementById('idAccountPassword');
@@ -273,10 +276,78 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');    
 
+
+// vAccountPrefFuturisteLabel.addEventListener('click', function(){
+// 	if (vAccountPrefFuturiste.checked) {
+// 		vAccountPrefFuturisteLabel.classList.remove('bg-transparent');    // Jaune Or     
+// 		vAccountPrefFuturisteLabel.classList.add('bg-warning');    // Jaune Or     
+// 	} else {
+// 		vAccountPrefFuturisteLabel.classList.remove('bg-warning');    // Jaune Or     
+// 		vAccountPrefFuturisteLabel.classList.add('bg-transparent');    // Jaune Or     
+// 	}
+// })
+
+
+// 	var myPreferences = document.querySelectorAll('.preferences');
+// // myPreferences.forEach(addListener(pPrefrenceLabel, pPreferencePill, pColorChecked, pColorNotChecked));
+
+// myPreferences.forEach(function(value, index, ar){
+// 	var xLabel = document.getElementById(value.id);
+// 	var xBtn = document.getElementById(value.firstChild.id);
+// 	var xColor = xLabel.classList[2];
+
+// console.log('xLabel : ',xLabel)	
+// console.log('xColor : ',xColor)	
+// console.log('xBtn : ',xBtn)	
+
+// // var matchingColors = [
+// // 	{'btn-outline-success' : ['bg-success','text-white','text-success']},
+// // 	{'btn-outline-danger' : ['bg-danger','text-white','text-success']},
+// // 	{'btn-outline-warning' : ['bg-warning','text-white','text-success']},
+// // 	{'btn-outline-info' : ['bg-info','text-white','text-success']},
+// // 	{'btn-outline-primary' : ['bg-primary','text-white','text-success']},
+// // 	{'btn-outline-secondary' : ['bg-secondary','text-white','text-success']},
+// // 	{'btn-outline-dark' : ['bg-dark','text-white','text-success']}];
+// var matchingColors = new Array();
+// matchingColors['btn-outline-success'] = new Array('bg-success','text-white','text-success');
+// matchingColors['btn-outline-danger'] = new Array('bg-danger','text-white','text-danger');
+// matchingColors['btn-outline-warning'] = new Array('bg-warning','text-dark','text-dark');
+// matchingColors['btn-outline-info'] = new Array('bg-info','text-white','text-info');
+// matchingColors['btn-outline-primary'] = new Array('bg-primary','text-white','text-primary');
+// matchingColors['btn-outline-secondary'] = new Array('bg-secondary','text-white','text-secondary');
+// matchingColors['btn-outline-dark'] = new Array('bg-dark','text-white','text-dark');
+	
+// console.log('matchingColors[xColor][0] : ',matchingColors[xColor][0])	
+// console.log('matchingColors[xColor][1] : ',matchingColors[xColor][1])	
+// console.log('matchingColors[xColor][2] : ',matchingColors[xColor][2])	
+
+// 	xLabel.addEventListener('click', function(){
+// 		if (xBtn.checked) {
+// 			xLabel.classList.remove('bg-transparent');    // Jaune Or     
+// 			xLabel.classList.remove(matchingColors[xColor][2]);    // Jaune Or     
+// 			xLabel.classList.add(matchingColors[xColor][0]);    // Jaune Or     
+// 			xLabel.classList.add(matchingColors[xColor][1]);    // Jaune Or     
+// 		} else {
+// 			xLabel.classList.remove(matchingColors[xColor][1]);    // Jaune Or     
+// 			xLabel.classList.remove(matchingColors[xColor][0]);    // Jaune Or     
+// 			xLabel.classList.add(matchingColors[xColor][2]);    // Jaune Or     
+// 			xLabel.classList.add('bg-transparent');    // Jaune Or     
+// 		}
+
+// 		// // this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAutre, 'idAccountPrefAutreLabel');
+
+// 		vMemberClient.activeButtonOfSelectedCheckBox(xBtn, value.id);
+// 	})
+// });
+
+
 	// -------------------------------------------------------------------------
 	// Eléments de la page de profil
 	// -------------------------------------------------------------------------
 	var vProfilePage = document.getElementById('idProfilePage');
+	var vMask = document.getElementById('idMask');
+	vMask.style.height = document.getElementById('idFooter').offsetTop - vMask.offsetTop + 'px';
+
 
 	// -------------------------------------------------------------------------
 	// Initialise les champs de la Modale de saisie des renseignements avec 
@@ -475,6 +546,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	vDeconnexion.addEventListener('click', function(){
 		vMemberClient.unsetMemberContext(webSocketConnection);
+		vProfilePage.style.display = 'none';
+		vMask.style.display = 'block';
 	});
 	// -------------------------------------------------------------------------
 	// Validation Login
@@ -604,7 +677,6 @@ window.addEventListener('DOMContentLoaded', function(){
 				}
 				vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel);
 			};
-
 		}
 	});
 
@@ -666,7 +738,8 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel);
 
 		// Affichage du profil complet (Fiche d'identité, conversations, liste d'amis...)
-		vProfilePage.style.display = 'Block';
+		vProfilePage.style.display = 'block';
+		vMask.style.display = 'none';
 		
 		// - Desactive Bouton Login et Création 
 		// - Active le sous-menu de la NavBar d'entête
@@ -744,12 +817,26 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayAvatarOnProfile', function(){ 
 
-
 		var avatarOnCarousel = {
 			vAvatarImg1,
 			vAvatarMemberNameImg1,
 		}
 		vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel)
 	});
+// --------------------------------------------------------------------------------------------------------------
+function addListener(pPreferenceLabel, pPreferencePill, pColorChecked, pColorNotChecked){
+	pPreferenceLabel.addEventListener('click', function(){
+
+console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
+
+	if (pPreferencePill.checked) {
+		pPreferenceLabel.classList.remove(pColorNotChecked);    // Jaune Or     
+		pPreferenceLabel.classList.add(pColorChecked);    // Jaune Or     
+	} else {
+		pPreferenceLabel.classList.remove(pColorChecked);    // Jaune Or     
+		pPreferenceLabel.classList.add(pColorNotChecked);    // Jaune Or     
+	}
+	})
+};
 // --------------------------------------------------------------------------------------------------------------
 }); // Fin de la Boucle "DOMContentLoaded"

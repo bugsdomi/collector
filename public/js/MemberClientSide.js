@@ -434,7 +434,6 @@ MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){
 // le statut et la couleur correspondante des badges colorés
 // -----------------------------------------------------------------------------
 MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pAccountPref, pIdAccountPrefLabel){
-
 	var myIdLabel = document.getElementById(pIdAccountPrefLabel)
 	pAccountPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
 }
@@ -460,27 +459,34 @@ MemberClient.prototype.maskOn = function(elemOrId, settings) {
 	
 	var maskDiv=elem.data('maskDiv');
 	if (!maskDiv) {
-		maskDiv=$('<div style="position:fixed;display:inline"></div>');
+		// maskDiv=$('<div style="position:fixed;display:inline"></div>');		// DH-
+		maskDiv=$('<div style="position:absolute;display:inline"></div>');
 		$('body').append(maskDiv);
 		elem.data('maskDiv', maskDiv);
 	}
 
-	// Vérrification de la présence de styles CSS dans les paramètres, sinon ==> Valeurs par défaut
+	// Vérification de la présence de styles CSS dans les paramètres, sinon ==> Valeurs par défaut
 	if (typeof settings==='undefined' || settings===null) settings={};
 	if (typeof settings.color==='undefined' || settings.color===null) settings.color='transparent';
 	if (typeof settings.opacity==='undefined' || settings.opacity===null) settings.opacity=1;
 	if (typeof settings.zIndex==='undefined' || settings.zIndex===null) settings.zIndex=2147483647;
 	if (typeof settings.hourglass==='undefined' || settings.hourglass===null) settings.hourglass=false;
 	
-	// Etirement du maskdiv au-dessus de l'élément
-	var offsetParent = elem.offsetParent();
-	var widthPercents=elem.outerWidth()*100/offsetParent.outerWidth()+'%';
-	var heightPercents=elem.outerHeight()*100/offsetParent.outerHeight()+'%';
+	// DH-*
+	// Etirement du maskdiv au-dessus de l'élément parent
+	// var offsetParent = elem.offsetParent();
+	// var widthPercents=elem.outerWidth()*100/offsetParent.outerWidth()+'%';
+	// var heightPercents=elem.outerHeight()*100/offsetParent.outerHeight()+'%';
+	// maskDiv.width(elem.offsetParent()[0].clientWidth);
+	// maskDiv.height(elem.offsetParent()[0].clientHeight);
+	// maskDiv.offset($(elem).offset());
 
-	maskDiv.width(widthPercents);
-	maskDiv.height(heightPercents);
+	// DH+*
+	// Etirement du maskdiv au-dessus de l'élément choisi lors l'appel de la fonction maskOn
+	maskDiv.width(elem[0].clientWidth);
+	maskDiv.height(elem[0].clientHeight);
 	maskDiv.offset($(elem).offset());
-	
+
 	// set styles passés en paramètres ou par défaut
 	maskDiv[0].style.backgroundColor = settings.color;
 	maskDiv[0].style.opacity = settings.opacity;
@@ -548,16 +554,5 @@ MemberClient.prototype.elemFromParam = function(elemOrId) {
 	return elem;
 }
 // --------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-// -------------------------- Fin du module ----------------------------------------------------------------------------
+// -------------------------- Fin du module ---------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------

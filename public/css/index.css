@@ -17,6 +17,9 @@ body {
     user-select: none;
 }
 
+.cOpacity{
+    background-color: rgba(1, 44, 1, 0.9);
+}
 .txt-yellow-stroke{
     font-family: 'Montserrat', sans-serif; 
     color: #FFD700; 
@@ -60,12 +63,13 @@ body {
     background-size: cover;
 }
 
-/* carousel fullscreen - Titre centré vericalement */
+/* carousel fullscreen - Titre centré verticalement */
 /* .carousel-caption {
     top: 50%;
     bottom: auto;
     transform: translateY(-50%);
 } */
+
 /* Positionnement du titre des images auto-centrées */
 .carousel-caption {
     left: 0;
@@ -266,7 +270,6 @@ body {
 /* ******************************* */
 /* Personnalisation du jumbotron   */
 /* ******************************* */
-
 .jumbotron {
     padding: 0;
     margin-bottom: 0;
@@ -275,9 +278,10 @@ body {
 }
 
 /* ******************************* */
-/* Gestion de la page de profil    */
+/* Masquage de la page de profil   */
+/* par defaut (lorsqu'on n est pas */ 
+/* connecté)                       */
 /* ******************************* */
-
 #idProfilePage{
     display : none;
 }

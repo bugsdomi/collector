@@ -7,8 +7,8 @@ html {
 
 body{
   /* font-family: Lato,"Helvetica Neue",Arial,Verdana,Tahoma,"Lucida Sans",FreeSans,"Lucida Sans Unicode","Luxi Sans",sans-serif; */
-  /* background: #e9eaed; */
-  background:#012C01;
+  /* background: #e9eaed; */      /* DH- */
+  background-image: url("../images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png");          /* DH+ */
   overflow-x:hidden;
 }
 
