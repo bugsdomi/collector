@@ -289,6 +289,21 @@ body {
 /* ******************************* */
 /* Avatar Tokenisé                 */
 /* ******************************* */
+.containerAvatarToken{
+    overflow: hidden;
+    /* width: 50px;
+    height: 50px; */
+    display: inline;
+}
+
 .avatar-token{
-    max-width: 50px;
+    position : relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* transform-origin: center; */
+    width: 50px;
+    border-radius: 50%;
+    border: 1px black solid;
 }

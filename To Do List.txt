@@ -1,0 +1,19 @@
+Regex a affiner pour tous les champs
+Virer less contraintes (Majuscules initiales...) sur le pseudo
+Passer tous les champs a XS-4
+Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher
+Propager les champs entre le coté serveur et le coté client :
+- Initalisation
+- Submit
+Virer tous les id et les variables associées inutilisées
+Gerer le nombre de messages
+Pourquoi les bordures des champs de saisie sont en rouge sur Firefox
+Gerer le pseudo qui est illisble en mode réduit
+Gerer la photo de profil sur la fiche de renseignement qui est trop grande
+Corriger Bug du calcul de l age
+Empêcher de mettre une date future dans la date de naissance
+Voir pour améliorer l ergonomie des Pills de preferences
+Dans la fiche renseignements, si erreur sur MDP, mettre le message d erreur en gros et rouge
+Rajouter une fonction pour cadrer l image dans l"AvatarToken"
+Voir s'il est possible d'eliminer la duplication des images téléchargées
+

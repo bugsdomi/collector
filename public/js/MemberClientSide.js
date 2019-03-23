@@ -159,11 +159,11 @@ MemberClient.prototype.setMemberContext = function(pConnexion, pCreation, pDropD
 	pConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
 	pCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
 
-	pDropDownProfilMenu.style.display = 'block';
-	pDropDownProfilMenu.innerHTML += ' '+pPseudo;
+	pDropDownProfilMenu.style.display = 'block';		// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
+	pDropDownProfilMenu.innerHTML += ' '+pPseudo;		// Affiche le nom du membre dans la NavBarr d'entête
 
-	pDeconnexion.classList.remove('disabled');
-	this.maskOff(pProfileNavBar); 						// Active la NavBar du profil
+	pDeconnexion.classList.remove('disabled');			// Active l'option "Deconnexion"
+	this.maskOff(pProfileNavBar); 									// Active la NavBar du profil
 }
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
@@ -215,6 +215,11 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 MemberClient.prototype.displayAvatarOnCarrousel = function(pAvatarOnCarousel){
 	pAvatarOnCarousel.vAvatarImg1.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 	pAvatarOnCarousel.vAvatarMemberNameImg1.innerHTML = this.member.pseudo;
+	pAvatarOnCarousel.vAvatarToken.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
+
+
+//  XXXXXXX A Virer
+	// pAvatarOnCarousel.vAvatarToken.setStyle='background: url("static/images/members/"'+this.member.etatCivil.photo+') no-repeat 0px 0px;';
 }
 // -----------------------------------------------------------------------------
 // Cette fonction initialise la modale de création, quel que soit son mode 
@@ -430,12 +435,98 @@ MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){
 	}
 }
 // -----------------------------------------------------------------------------
-// Cette fonction simule le click des boutons de préférences a true pour refleter
+// Cette fonction simule le click des boutons de préférences a true pour refléter
 // le statut et la couleur correspondante des badges colorés
 // -----------------------------------------------------------------------------
 MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pAccountPref, pIdAccountPrefLabel){
 	var myIdLabel = document.getElementById(pIdAccountPrefLabel)
 	pAccountPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
+}
+
+	// -------------------------------------------------------------------------
+	// Validation Fiche "Renseignements"
+	// Envoi des infos de la fiche renseignement du visiteur au serveur pour 
+	// stockage en BDD
+	// Si une demande de chgt de MDP a été demandée et qu'elle s'est mal déroulée, 
+	// on ne valide pas la fiche
+	// Sinon on MAJ la fiche de renseignements en BDD
+	// De plus, s'il y a eu une demande changement dde MDP, on MAJ la BDD en conséquence
+	// et on demande au serveur d'envoyer un mail de notification de MDP
+	// -------------------------------------------------------------------------
+MemberClient.prototype.updateProfile = function(pAccountParams){
+	var cstWaitForUpladToDisplayAvatar = false;
+
+	if (!this.newPasswordKO){
+		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisie dans l explorateur windows
+			this.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
+			pAccountParams.siofu.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
+			cstWaitForUpladToDisplayAvatar = true;
+		} else {
+			this.member.etatCivil.photo = pAccountParams.vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 
+		}
+
+		this.member.etatCivil.firstName = pAccountParams.vAccountForm.idAccountFirstName.value;
+		this.member.etatCivil.name      = pAccountParams.vAccountForm.idAccountName.value;
+		this.member.etatCivil.birthDate = pAccountParams.vAccountForm.idAccountBirthDate.value;                ;
+		this.member.etatCivil.sex       = this.outputBtnRadioSex();
+
+		this.member.etatCivil.address.street       = pAccountParams.vAccountForm.idAccountStreet.value;
+		this.member.etatCivil.address.city         = pAccountParams.vAccountForm.idAccountCity.value;
+		this.member.etatCivil.address.zipCode      = pAccountParams.vAccountForm.idAccountZipCode.value;
+		this.member.etatCivil.address.department   = pAccountParams.vAccountForm.idAccountDepartment.value;
+
+		this.member.preferences['prefGravures']        = pAccountParams.vAccountPrefGravures.checked;
+		this.member.preferences['prefLivres']          = pAccountParams.vAccountPrefLivres.checked;
+		this.member.preferences['prefFilms']           = pAccountParams.vAccountPrefFilms.checked;
+		this.member.preferences['prefJeux']            = pAccountParams.vAccountPrefJeux.checked;
+		this.member.preferences['prefMaquettes']       = pAccountParams.vAccountPrefMaquettes.checked;
+		this.member.preferences['prefFigurines']       = pAccountParams.vAccountPrefFigurines.checked;
+		this.member.preferences['prefBlindes']         = pAccountParams.vAccountPrefBlindes.checked;
+		this.member.preferences['prefAvions']          = pAccountParams.vAccountPrefAvions.checked;
+		this.member.preferences['prefBateaux']         = pAccountParams.vAccountPrefBateaux.checked;
+		this.member.preferences['prefDioramas']        = pAccountParams.vAccountPrefDioramas.checked;
+		this.member.preferences['prefPrehistoire']     = pAccountParams.vAccountPrefPrehistoire.checked;
+		this.member.preferences['prefAntiquite']       = pAccountParams.vAccountPrefAntiquite.checked;
+		this.member.preferences['prefMoyenAge']        = pAccountParams.vAccountPrefMoyenAge.checked;
+		this.member.preferences['prefRenaissance']     = pAccountParams.vAccountPrefRenaissance.checked;
+		this.member.preferences['prefDentelles']       = pAccountParams.vAccountPrefDentelles.checked;
+		this.member.preferences['prefAncienRegime']    = pAccountParams.vAccountPrefAncienRegime.checked;
+		this.member.preferences['prefRevolution']      = pAccountParams.vAccountPrefRevolution.checked;
+		this.member.preferences['pref1erEmpire']       = pAccountParams.vAccountPref1erEmpire.checked;
+		this.member.preferences['pref2ndEmpire']       = pAccountParams.vAccountPref2ndEmpire.checked;
+		this.member.preferences['prefSecession']       = pAccountParams.vAccountPrefSecession.checked;
+		this.member.preferences['prefFarWest']         = pAccountParams.vAccountPrefFarWest.checked;
+		this.member.preferences['prefWW1']             = pAccountParams.vAccountPrefWW1.checked;
+		this.member.preferences['prefWW2']             = pAccountParams.vAccountPrefWW2.checked;
+		this.member.preferences['prefContemporain']    = pAccountParams.vAccountPrefContemporain.checked;
+		this.member.preferences['prefFuturiste']       = pAccountParams.vAccountPrefFuturiste.checked;
+		this.member.preferences['prefFantastique']     = pAccountParams.vAccountPrefFantastique.checked;
+		this.member.preferences['prefHFrancaise']      = pAccountParams.vAccountPrefHFrancaise.checked;
+		this.member.preferences['prefHAmericaine']     = pAccountParams.vAccountPrefHAmericaine.checked;
+		this.member.preferences['prefHInternationale'] = pAccountParams.vAccountPrefHInternationale.checked;
+		this.member.preferences['prefAutre']           = pAccountParams.vAccountPrefAutre.checked;
+
+		this.member.presentation  = pAccountParams.vAccountForm.idAccountPresentation.value;
+
+		if (pAccountParams.vAccountForm.idAccountCurrentPassword.value !==''){                                 
+			this.member.oldPassword = pAccountParams.vAccountForm.idAccountCurrentPassword.value;
+			this.member.password = pAccountParams.vAccountForm.idAccountPassword.value;
+		}
+
+		webSocketConnection.emit('dataProfilMembre', this.member);   // Transmission au serveur des infos saisies
+
+		$('#idModalAccount').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
+
+		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
+			var avatarOnCarousel = {
+				vAvatarImg1 : pAccountParams.vAvatarImg1,
+				vAvatarToken : pAccountParams.vAvatarToken,
+				vAvatarMemberNameImg1 : pAccountParams.vAvatarMemberNameImg1
+			}
+			this.displayAvatarOnCarrousel(avatarOnCarousel);
+		};
+	}
 }
 
 // --------------------------------------------------------------------------------------------------------------
