@@ -23,7 +23,7 @@ vMemberServer.checkDBConnect();
 // l'affichage
 // -------------------------------------------------------------------------
 const app = express();
-app.use(SocketIOFileUpload.router);
+app.use(SocketIOFileUpload.router);     // Gestionnaire de télécargement des photos du client vers le serveur
 app.set('view engine', 'pug');
 app.use('/static', express.static(__dirname + '/public'));
 app.use('/staticNodeModules', express.static(__dirname + '/node_modules'));

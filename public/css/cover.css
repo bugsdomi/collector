@@ -169,7 +169,7 @@
   width: 110px;       
   /* height: 110px; */      /* DH- */
   height: auto;             /* DH+ */
-  border: 5px solid white ;
+  /* border: 5px solid white ;  */  /* DH- */
 }
 @media (max-width: 992px) {
   .cover.profile .wrapper .image {

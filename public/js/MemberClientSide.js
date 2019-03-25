@@ -148,32 +148,46 @@ MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pMo
 	pModalTitle.innerText = 'Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Connexion impossible</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous ne pouvez pas vous connecter à \'Collect\'Or\', car vous vous êtes déjà connecté dans une autre session.</p>';
-	// pModalBodyText.innerHTML += '<br /><p></p>';
 }
 // -----------------------------------------------------------------------------
 // Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
 // connecté ou après la création réussie de son compte, car il se trouve de fait, 
-// déjà connecté
+// déjà connecté :
+// - Desactive Bouton Login et Création 
+// - Active le sous-menu de la NavBar d'entête
+// - Affiche le nom du membre dans le menu
+// - Active la NavBar du profil
 // -----------------------------------------------------------------------------
-MemberClient.prototype.setMemberContext = function(pConnexion, pCreation, pDropDownProfilMenu, pPseudo, pDeconnexion,pProfileNavBar){
-	pConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
-	pCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
+MemberClient.prototype.setMemberContext = function(pContextInfo){
+	pContextInfo.vConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
+	pContextInfo.vCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
 
-	pDropDownProfilMenu.style.display = 'block';		// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
-	pDropDownProfilMenu.innerHTML += ' '+pPseudo;		// Affiche le nom du membre dans la NavBarr d'entête
+	pContextInfo.vDropDownProfilMenu.style.display = 'block';		// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
+	pContextInfo.vDropDownProfilMenu.innerHTML += ' '+this.member.pseudo;		// Affiche le nom du membre dans la NavBarr d'entête
 
-	pDeconnexion.classList.remove('disabled');			// Active l'option "Deconnexion"
-	this.maskOff(pProfileNavBar); 									// Active la NavBar du profil
+	pContextInfo.vDeconnexion.classList.remove('disabled');			// Active l'option "Deconnexion" du menu d'entête
+	this.maskOff(pContextInfo.vProfileNavBar); 									// Active la NavBar du profil
+
+	// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
+	// Masquage de la "div" de masquage du menu du profil
+	pContextInfo.vProfilePage.style.display = 'block';
+	pContextInfo.vPad.style.display = 'none';
+
 }
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
 // -----------------------------------------------------------------------------
-MemberClient.prototype.unsetMemberContext = function(pWebSocketConnection){
-	// Désactive la NavBar du profil
-	this.maskOn('idProfileNavBar', {zIndex:1}); 
+MemberClient.prototype.unsetMemberContext = function(pWebSocketConnection, pContextInfo){
+// XXXXX A virer plus tard, lorsque ce sera confirme que ca fonctionne nickel
 
-	// Régénèration de l'écran from scratch;
+	// pContextInfo.vProfilePage.style.display = 'none';
+	// pContextInfo.vPad.style.display = 'block';
+
+	// // Désactive la NavBar du profil
+	// this.maskOn('idProfileNavBar', {zIndex:1}); 
+
+	// // Régénération de l'écran from scratch;
 	window.location.reload(true);
 	
 	// Fermeture du socket
@@ -195,7 +209,7 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 		pHeader.classList.remove('bg-success');
 		pHeader.classList.remove('bg-warning');    // Jaune Or               
 		pHeader.classList.add('bg-danger');
-		// pHeader.classList.add('txt-yellow-stroke');
+// pHeader.classList.add('txt-yellow-stroke');
 		pHeader.classList.add('text-warning');
 		return
 	}
@@ -204,23 +218,48 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 		pHeader.classList.remove('bg-danger');
 		pHeader.classList.remove('bg-warning');    // Jaune Or               
 		pHeader.classList.add('bg-success');
-		// pHeader.classList.add('txt-yellow-stroke');
+// pHeader.classList.add('txt-yellow-stroke');
 		pHeader.classList.add('text-warning');
 		return
 	}
 }
-// -----------------------------------------------------------------------------
-// Cette fonction affiche l'avatar et le pseudo sur le carroussel de la page de profil
-// -----------------------------------------------------------------------------
-MemberClient.prototype.displayAvatarOnCarrousel = function(pAvatarOnCarousel){
-	pAvatarOnCarousel.vAvatarImg1.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
-	pAvatarOnCarousel.vAvatarMemberNameImg1.innerHTML = this.member.pseudo;
-	pAvatarOnCarousel.vAvatarToken.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 
-
-//  XXXXXXX A Virer
-	// pAvatarOnCarousel.vAvatarToken.setStyle='background: url("static/images/members/"'+this.member.etatCivil.photo+') no-repeat 0px 0px;';
+// -----------------------------------------------------------------------------
+// Cette fonction affiche la page de profil complète :
+// - Le contexte du membre
+// - L'avatar
+// - La page de profil :
+// 		- La carte de "Présentation"
+// -----------------------------------------------------------------------------
+MemberClient.prototype.displayProfilePage = function(vContextInfo, vAvatarInfo, vProfileInfo){
+	this.setMemberContext(vContextInfo);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
+	this.displayAvatar(vAvatarInfo);						// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
+	this.displayPresentationCard(vProfileInfo);	// - Affiche les informations du profil dans la carte "Présentation"
 }
+// -----------------------------------------------------------------------------
+// Cette fonction affiche l'avatar et son pseudo sur la page de profil
+// -----------------------------------------------------------------------------
+MemberClient.prototype.displayAvatar = function(pAvatarInfo){
+	pAvatarInfo.vAvatarImg1.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
+	pAvatarInfo.vAvatarMemberNameImg1.innerHTML = this.member.pseudo;
+	pAvatarInfo.vAvatarToken.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
+	
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction affiche le contenu de la carte "Présentation" sur la page de profil
+// -----------------------------------------------------------------------------
+MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
+	pProfileInfo.vPresentationPrenom.innerHTML = this.member.etatCivil.firstName;
+
+	pProfileInfo.vPresentationAge.innerHTML = this.member.etatCivil.birthDate 
+																					? vToolBox.calculeAge(this.member.etatCivil.birthDate, false)
+																					: '';
+
+	pProfileInfo.vPresentationVille.innerHTML = this.member.etatCivil.address.city;
+	pProfileInfo.vPresentationDepartement.innerHTML = this.member.etatCivil.address.department;
+}
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise la modale de création, quel que soit son mode 
 // d'appel (par l'option de menu ou par le raccourci de la fenetre de Login
@@ -453,13 +492,13 @@ MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pAccountPref, p
 	// De plus, s'il y a eu une demande changement dde MDP, on MAJ la BDD en conséquence
 	// et on demande au serveur d'envoyer un mail de notification de MDP
 	// -------------------------------------------------------------------------
-MemberClient.prototype.updateProfile = function(pAccountParams){
+MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pProfileInfo){
 	var cstWaitForUpladToDisplayAvatar = false;
 
 	if (!this.newPasswordKO){
 		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisie dans l explorateur windows
 			this.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
-			pAccountParams.siofu.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
+			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
 			cstWaitForUpladToDisplayAvatar = true;
 		} else {
 			this.member.etatCivil.photo = pAccountParams.vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 
@@ -519,13 +558,10 @@ MemberClient.prototype.updateProfile = function(pAccountParams){
 		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
 
 		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
-			var avatarOnCarousel = {
-				vAvatarImg1 : pAccountParams.vAvatarImg1,
-				vAvatarToken : pAccountParams.vAvatarToken,
-				vAvatarMemberNameImg1 : pAccountParams.vAvatarMemberNameImg1
-			}
-			this.displayAvatarOnCarrousel(avatarOnCarousel);
+			this.displayAvatar(pAvatarInfo);
 		};
+
+		this.displayPresentationCard(pProfileInfo);
 	}
 }
 

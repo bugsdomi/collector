@@ -1,2 +1,48 @@
 
 Todo:
+
+  Todo:
+    ☐ Regex a affiner pour tous les champs
+    ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
+    ☐ Passer tous les champs a XS-4
+    ☐ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher
+    ☐ Propager les champs entre le coté serveur et le coté client :
+      - Initalisation
+      - Submit
+      
+    Gerer le nombre de messages :
+    ☐ Virer tous les id et les variables associées inutilisées
+    ☐ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire
+    ☐ A la fermeture, écrire le Nbre de Msg en BDD
+    
+    ☐ Pourquoi les bordures des champs de saisie sont en rouge sur Firefox ?
+    ☐ Gerer le pseudo qui est illisible en mode réduit
+    ☐ Gerer la photo de profil sur la fiche de renseignement qui est trop grande en mode reduit
+    ☐ Corriger Bug du calcul de l âge dans la fiche de renseignement
+    ☐ Empêcher de mettre une date future dans la date de naissance
+    ☐ Voir pour améliorer l ergonomie des Pills de preferences
+    ☐ Dans la fiche renseignements, si erreur sur MDP, mettre le message d erreur en gros et rouge
+    ☐ Rajouter une fonction pour cadrer l image dans l"AvatarToken"
+    ☐ Voir s'il est possible d'eliminer la duplication des images téléchargées
+    ☐ Mettre en place un cryptage des pseudo / MDP
+    ☐ Verifier que le nom de l appli est bien dans l onglet avec le FavIcon
+    ☐ Voir pour supprimer photo de profil dans la fiche de renseignements et remettre un avatar par défaut.
+    ☐ Ajouter les elements d installation (npm init, npm install etc dans le readme.md, et dans le DAT
+    ☐ Gérer un journal de tous les évenements (connexion/deconnexion, creation de cpte, chgt de PWd, messages envoyé de qui vers qui, etc...)
+    ☐ Mettre dans le DAT la Charte des couleurs
+    ☐ Gérer les option  de menu de la NavBar du Profil
+
+    Fiche Renseignements :
+    ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
+    ✔ sinon, afficher la fiche vierge @done(19-03-25 10:06)
+    ✔ A l envoi, stocker en BDD @done(19-03-25 10:06)
+      Cas particuliers :
+    ✔ Gestion de l'avatar par défaut par rapport au genre @done(19-03-25 10:07)
+    ✔ Gestion du chargement des photos @done(19-03-25 10:07)
+    ✔ Gesrion de l'âge @done(19-03-25 10:07)
+    ✔ Gestion des MDP @done(19-03-25 10:07)
+    ✔ Gestion de l'alerte sur MDP en erreur et/ou incohérents @done(19-03-25 10:07)
+    ✔ Gestion du focus sur le 1er champs @done(19-03-25 10:07)
+    ✔ @done(19-03-25 10:07)
+
+

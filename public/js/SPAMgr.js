@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// var webSocketConnection = io('http://192.168.0.20:3000');        // Endormi car je ne veux pas utiliser une adresse IP en dur
 	// var webSocketConnection = io('http://localhost:3000');           // Endormi car je veux pouvoir travailler sur plusieurs ordi
 
-
+// XXXXX
 	// -------------------------------------------------------------------------
 	// Affiche le fond d'écran bigaré, et le panneau de contrôle
 	// -------------------------------------------------------------------------
@@ -120,9 +120,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	vToolBox = new ToolBox();
 	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 	
-
-
-
 	// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal
@@ -140,13 +137,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vMemberName = document.getElementById('idMemberName');
 	var vNbrPopulation = document.getElementById('idNbrPopulation');
 	
-// MembersConnected.onclick =  function(event) {
+// XXXXX MembersConnected.onclick =  function(event) {
 //	console.log('vMembersConnected - click')
 //  $('.chat-sidebar').toggleClass('focus');
 // }
-
-
-
 
 // -------------------------------------------------------------------------
 //
@@ -160,7 +154,8 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	// Neutralise la NavBar du profil par defaut en appliquant un masque par-dessus 
 	// car aucun membre n'est connecté au lancement de la session
-	vMemberClient.maskOn('idProfileNavBar', {zIndex:1, color:'white'}); 
+	// vMemberClient.maskOn('idProfileNavBar', {zIndex:1, color:'white'}); 
+	vMemberClient.maskOn(vProfileNavBar, {zIndex:1, color:'white'}); 
 
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
 	// et le haut du Footer, pour que le fond d'écran ne soit pas interrompu lorsque 
@@ -172,18 +167,26 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Eléments de l'Avatar (Photo (normale et tokenisée) et Pseudo)
 	// -------------------------------------------------------------------------
 	var vAvatarImg1 = document.getElementById('idAvatarImg1');
-	var vAvatarToken = document.getElementById('idAvatarToken');
 	
 	var vAvatarMemberNameImg1 = document.getElementById('idAvatarMemberNameImg1');
 	vAvatarImg1.setAttribute('src', 'static/images/visiteur.jpg');  // Avatar par défaut lorsque le visiteur ne s'est pas loggé
 	vAvatarMemberNameImg1.innerHTML = 'Visiteur';
-
+	
 	// -------------------------------------------------------------------------
 	// Eléments de la page de profil (Page qui affiche la présentation, les posts, 
 	// les amis, la discussion de groupe...)
 	// -------------------------------------------------------------------------
 	var vProfilePage = document.getElementById('idProfilePage');
-
+	
+// -------------------------------------------------------------------------
+	// Eléments de la carte de Présentation du membre sur son profil
+	// -------------------------------------------------------------------------
+		var vAvatarToken = document.getElementById('idAvatarToken');
+		var vPresentationPrenom = document.getElementById('idPresentationPrenom');
+		var vPresentationAge = document.getElementById('idPresentationAge');
+		var vPresentationVille = document.getElementById('idPresentationVille');
+		var vPresentationDepartement = document.getElementById('idPresentationDepartement');
+	
 	// -------------------------------------------------------------------------
 	// Déconnexion du membre:
 	// - Réinitialisation de la landing-page
@@ -191,9 +194,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// - Blocage de la NavBar du profil
 	// -------------------------------------------------------------------------
 	vDeconnexion.addEventListener('click', function(){
-		vMemberClient.unsetMemberContext(webSocketConnection);
-		vProfilePage.style.display = 'none';
-		vPad.style.display = 'block';
+		vMemberClient.unsetMemberContext(webSocketConnection, vContextInfo);
 	});
 
 	// ================================= Reception des messages en provenance du serveur =================================================
@@ -249,23 +250,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
 		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
 
-		// - Affiche la photo de l'avatar et son nom sur le carroussel
-		var avatarOnCarousel = {
-			vAvatarImg1,
-			vAvatarToken,
-			vAvatarMemberNameImg1,
-		}
-		vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel);
-
-		// Affichage du profil complet (Fiche d'identité, conversations, liste d'amis...)
-		vProfilePage.style.display = 'block';
-		vPad.style.display = 'none';
-		
-		// - Desactive Bouton Login et Création 
-		// - Active le sous-menu de la NavBar d'entête
-		// - Affiche le nom du membre dans le menu
-		// - Active la NavBar du profil
-		vMemberClient.setMemberContext(vConnexion, vCreation, vDropDownProfilMenu, vMemberClient.member.pseudo, vDeconnexion, 'idProfileNavBar');   
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -336,33 +321,35 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	// --------------------------------------------------------------
 	// Affichage de l'avatar sur la page de profil lorsque le serveur 
-	// a fini de télécharger l'avatar
+	// a fini de l'UpLoader
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayAvatarOnProfile', function(){ 
+// XXXXX
+		// var vAvatarInfo = {
+		// 		vAvatarImg1,
+		// 		vAvatarToken,
+		// 		vAvatarMemberNameImg1
+		// 		}
 
-		var avatarOnCarousel = {
-			vAvatarImg1,
-			vAvatarToken,
-			vAvatarMemberNameImg1,
-		}
-		vMemberClient.displayAvatarOnCarrousel(avatarOnCarousel)
+		vMemberClient.displayAvatar(vAvatarInfo)
 	});
 
+//  XXXXX En Chantier  (Amélioration du comportement des pills de Préférences)
 // --------------------------------------------------------------------------------------------------------------
-function addListener(pPreferenceLabel, pPreferencePill, pColorChecked, pColorNotChecked){
-	pPreferenceLabel.addEventListener('click', function(){
+// function addListener(pPreferenceLabel, pPreferencePill, pColorChecked, pColorNotChecked){
+// 	pPreferenceLabel.addEventListener('click', function(){
 
-console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
+// console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 
-	if (pPreferencePill.checked) {
-		pPreferenceLabel.classList.remove(pColorNotChecked);    // Jaune Or     
-		pPreferenceLabel.classList.add(pColorChecked);    // Jaune Or     
-	} else {
-		pPreferenceLabel.classList.remove(pColorChecked);    // Jaune Or     
-		pPreferenceLabel.classList.add(pColorNotChecked);    // Jaune Or     
-	}
-	})
-};
+// 	if (pPreferencePill.checked) {
+// 		pPreferenceLabel.classList.remove(pColorNotChecked);    // Jaune Or     
+// 		pPreferenceLabel.classList.add(pColorChecked);    // Jaune Or     
+// 	} else {
+// 		pPreferenceLabel.classList.remove(pColorChecked);    // Jaune Or     
+// 		pPreferenceLabel.classList.add(pColorNotChecked);    // Jaune Or     
+// 	}
+// 	})
+// };
 
 
 
@@ -487,7 +474,6 @@ console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 		$('#idModalLostPWD').modal('toggle');                                        // Fermeture de la fenêtre modale de Login
 	});
 
-
 	// *************************************************************************
 	// *************************************************************************
 	// 	
@@ -603,7 +589,7 @@ console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 
 	vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');    
 
-//  En Chantier  (Amélioration du comportement des pills de Préférences)
+//  XXXXX En Chantier  (Amélioration du comportement des pills de Préférences)
 // 
 // vAccountPrefFuturisteLabel.addEventListener('click', function(){
 // 	if (vAccountPrefFuturiste.checked) {
@@ -671,7 +657,7 @@ console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 	// *************************************************************************
 	// Eléments du UpLoader d'images du profil
 	// *************************************************************************
-	var siofu = new SocketIOFileUpload(webSocketConnection);
+	var vSIOFU = new SocketIOFileUpload(webSocketConnection);
 
 	// siofu.addEventListener("progress", function(event){
 	//     var percent = event.bytesLoaded / event.file.size * 100;
@@ -685,13 +671,46 @@ console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 	// });
 
 	// *************************************************************************
+	// Structure de transfert des infos de de contexte (NavBar, Options de menus, etc...)
+	// *************************************************************************
+	var vContextInfo = {
+		vConnexion,
+		vCreation,
+		vDropDownProfilMenu,
+		vDeconnexion,
+		vProfileNavBar,
+		vProfilePage,
+		vPad
+	}
+
+	// *************************************************************************
+	// Structure de transfert des infos de l'avatar
+	// *************************************************************************
+	var vAvatarInfo = {
+		vAvatarImg1,
+		vAvatarToken,
+		vAvatarMemberNameImg1
+	}
+	
+	// *************************************************************************
+	// Structure de transfert des infos du profil
+	// *************************************************************************
+	var vProfileInfo = {
+		vPresentationPrenom,
+		vPresentationAge,
+		vPresentationVille,
+		vPresentationDepartement,
+	}
+
+	// *************************************************************************
 	// Structure de transfert des infos de la page de renseignements vers la 
 	// page de renseignements
 	// *************************************************************************
 	var vAccountParams = {
+		vSIOFU,
+		vModalAccountHeader,
 		vAccountForm,
 		vAccountAlertMsg,
-		vModalAccountHeader,
 		vAccountPhotoImg,
 		vAccountPhotoFile,
 		vAccountPrefGravures,
@@ -726,10 +745,6 @@ console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 		vAccountPrefAutre,
 		vAccountPassword,
 		vAccountConfirmPassword,
-		vAvatarImg1,
-		vAvatarToken,
-		vAvatarMemberNameImg1,
-		siofu,
 	}
 
 	// *************************************************************************
@@ -824,9 +839,9 @@ console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
 		// *************************************************************************
 		vAccountForm.addEventListener('submit', function (event){ 
 			event.preventDefault();
-			vMemberClient.updateProfile(vAccountParams);
+			vMemberClient.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
 		});
-	
+
 // **************************************************************************************************************
 // **************************************************************************************************************
 // **************************************************************************************************************

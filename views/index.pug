@@ -156,444 +156,479 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // ******************************************************************************
 // Page de profil du membre
 // ******************************************************************************
-// <div id="idPad" style="height: 1000px"></div>
 #idPad
 #idProfilePage.container
   .row.mb-4
     .col-md-12.col-md-offset-2
       .row
         .col-md-5
-          //
-            <div class="widget">
-            <div class="widget-header">
-            <h3 class="widget-caption">About</h3>
-            </div>
-            <div class="widget-body bordered-top bordered-sky">
-            <ul class="list-unstyled profile-about margin-none">
-            <li class="padding-v-5">
-            <div class="row">
-            <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
-            <div class="col-sm-8">12 January 1990</div>
-            </div>
-            </li>
-            <li class="padding-v-5">
-            <div class="row">
-            <div class="col-sm-4"><span class="text-muted">Job</span></div>
-            <div class="col-sm-8">Ninja developer</div>
-            </div>
-            </li>
-            <li class="padding-v-5">
-            <div class="row">
-            <div class="col-sm-4"><span class="text-muted">Gender</span></div>
-            <div class="col-sm-8">Male</div>
-            </div>
-            </li>
-            <li class="padding-v-5">
-            <div class="row">
-            <div class="col-sm-4"><span class="text-muted">Lives in</span></div>
-            <div class="col-sm-8">Miami, FL, USA</div>
-            </div>
-            </li>
-            <li class="padding-v-5">
-            <div class="row">
-            <div class="col-sm-4"><span class="text-muted">Credits</span></div>
-            <div class="col-sm-8">249</div>
-            </div>
-            </li>
-            </ul>
-            </div>
-            </div>
+          // ******************************************************************************
+          // Carte "Présentation"
+          // ******************************************************************************
           .card.border-warning.mb-4
+            // ******************************************************************************
+            // Entête de la carte "Présentation"
+            // ******************************************************************************
             .card-header.bg-warning.border-bottom.border-warning
               .containerAvatarToken
                 img#idAvatarToken.avatar-token(alt='Avatar' src='')
               h5.card-title Pr&eacute;sentation
-            .card-body
+            // ******************************************************************************
+            // Corps de la carte "Présentation"
+            // ******************************************************************************
+            .card-body(style='border: 1px black solid;')
               ul.list-group.list-unstyled
                 li
                   .row
-                    .col-sm-4
-                      span.text-muted Date of Birth
-                    .col-sm-8 12 January 1990
+                    .col-sm-4.text-dark Pr&eacute;nom
+                    #idPresentationPrenom.col-sm-8.font-weight-bold
                 li
                   .row
-                    .col-sm-4
-                      span.text-muted Job
-                    .col-sm-8 Ninja developer
+                    .col-sm-4.text-dark &Acirc;ge
+                    #idPresentationAge.col-sm-8.font-weight-bold
                 li
                   .row
-                    .col-sm-4
-                      span.text-muted Gender
-                    .col-sm-8 Male
+                    .col-sm-4.text-dark Ville
+                    #idPresentationVille.col-sm-8.font-weight-bold
                 li
                   .row
-                    .col-sm-4
-                      span.text-muted Lives in
-                    .col-sm-8 Miami, FL, USA
+                    .col-sm-4.text-dark D&eacute;partement
+                    #idPresentationDepartement.col-sm-8.font-weight-bold
                 li
                   .row
-                    .col-sm-4
-                      span.text-muted Credits
-                    .col-sm-8 249
-                li
-                  .row
-                    .col-sm-4
-                      span.text-muted PaddingY-5
-                    .col-sm-8 249
-          h4.sub-title.space-top.space-bottom Cards with Header and Footer
-          .row
-            .col-sm-12.col-md-4
-              .card.text-left
-                .card-header
-                  | Text Aligned-left
-                // / card-header
-                .card-body
-                  h4.card-title Card Title
-                  p.card-text With supporting text below as a natural lead-in to additional content.
-                  a.btn.btn-primary(href='#') Button
-                // / card-body
-                .card-footer.text-muted
-                  | card-footer
-                // / card-footer
-              // / card
-            // / column
-          .widget.widget-friends
-            .widget-header
-              h3.widget-caption Friends
-            .widget-body.bordered-top.bordered-sky
-              .row
-                .col-md-12
-                  ul.img-grid(style='margin: 0 auto;')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-6.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/woman-3.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-2.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-9.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/woman-9.jpg' alt='image')
-                    li.clearfix
-                      a(href='#')
-                        img(src='static/images/Friends/guy-4.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-1.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/woman-4.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-6.jpg' alt='image')
-          .widget
-            .widget-header
-              h3.widget-caption Groups
-            .widget-body.bordered-top.bordered-sky
-              .card
-                .content
-                  ul.list-unstyled.team-members
-                    li
-                      .row
-                        .col-xs-3
-                          .avatar
-                            img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-1.png' alt='Circle Image')
-                        .col-xs-6
-                          | Github
-                        .col-xs-3.text-right
-                          btn.btn.btn-sm.btn-azure.btn-icon
-                            i.fa.fa-user
-                    li
-                      .row
-                        .col-xs-3
-                          .avatar
-                            img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-3.png' alt='Circle Image')
-                        .col-xs-6
-                          | Css snippets
-                        .col-xs-3.text-right
-                          btn.btn.btn-sm.btn-azure.btn-icon
-                            i.fa.fa-user
-                    li
-                      .row
-                        .col-xs-3
-                          .avatar
-                            img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-2.png ' alt='Circle Image')
-                        .col-xs-6
-                          | Html Action
-                        .col-xs-3.text-right
-                          btn.btn.btn-sm.btn-azure.btn-icon
-                            i.fa.fa-user
-        // ============= timeline posts
-        .col-md-7
-          .row
-            // left posts
-            .col-md-12
-              .row
-                .col-md-12
-                  // post state form
-                  .box.profile-info.n-border-top
-                    form
-                      textarea.form-control.input-lg.p-text-area(rows='2' placeholder='Whats in your mind today?')
-                    .box-footer.box-form
-                      button.btn.btn-azure.pull-right(type='button') Post
-                      ul.nav.nav-pills
-                        li
-                          a(href='#')
-                            i.fa.fa-map-marker
-                        li
-                          a(href='#')
-                            i.fa.fa-camera
-                        li
-                          a(href='#')
-                            i.fa.fa-film
-                        li
-                          a(href='#')
-                            i.fa.fa-microphone
-                  // end post state form
-                  // posts
-                  .box.box-widget
-                    .box-header.with-border
-                      .user-block
-                        img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                    .col-sm-4.text-dark Pr&eacute;f&eacute;rences
+                    .btn-group-toggle(data-toggle='buttons')
+                      label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                        input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
+                        | Gravures
+                label#idAccountPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                  input#idAccountPrefLivres(type='checkbox' name='accountPref' autocomplete='off')
+                  | Livres
+                label#idAccountPrefFilmsLabel.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
+                  input#idAccountPrefFilms(type='checkbox' name='accountPref' autocomplete='off')
+                  | Films
+                label#idAccountPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                  input#idAccountPrefJeux(type='checkbox' name='accountPref' autocomplete='off')
+                  | Jeux
+                label#idAccountPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                  input#idAccountPrefMaquettes(type='checkbox' name='accountPref' autocomplete='off')
+                  | Maquettes
+                label#idAccountPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                  input#idAccountPrefFigurines(type='checkbox' name='accountPref' autocomplete='off')
+                  | Figurines
+                label#idAccountPrefBlindesLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                  input#idAccountPrefBlindes(type='checkbox' name='accountPref' autocomplete='off')
+                  | Blind&eacute;s
+                label#idAccountPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                  input#idAccountPrefAvions(type='checkbox' name='accountPref' autocomplete='off')
+                  | Avions
+                label#idAccountPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                  input#idAccountPrefBateaux(type='checkbox' name='accountPref' autocomplete='off')
+                  | Bateaux
+                label#idAccountPrefDioramasLabel.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
+                  input#idAccountPrefDioramas(type='checkbox' name='accountPref' autocomplete='off')
+                  | Dioramas
+                label#idAccountPrefPrehistoireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                  input#idAccountPrefPrehistoire(type='checkbox' name='accountPref' autocomplete='off')
+                  | Pr&eacute;histoire
+                label#idAccountPrefAntiquiteLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                  input#idAccountPrefAntiquite(type='checkbox' name='accountPref' autocomplete='off')
+                  | Antiquit&eacute;
+                label#idAccountPrefMoyenAgeLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                  input#idAccountPrefMoyenAge(type='checkbox' name='accountPref' autocomplete='off')
+                  | Moyen-&acirc;ge
+                label#idAccountPrefRenaissanceLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                  input#idAccountPrefRenaissance(type='checkbox' name='accountPref' autocomplete='off')
+                  | Renaissance
+                label#idAccountPrefDentellesLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                  input#idAccountPrefDentelles(type='checkbox' name='accountPref' autocomplete='off')
+                  | Guerre en dentelles
+                label#idAccountPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                  input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
+                  | Ancien-regime
+                label#idAccountPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                  input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
+                  | R&eacute;volution Fran&ccedil;aise
+                label#idAccountPref1erEmpireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                  input#idAccountPref1erEmpire(type='checkbox' name='accountPref' autocomplete='off')
+                  | 1er Empire
+                label#idAccountPref2ndEmpireLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                  input#idAccountPref2ndEmpire(type='checkbox' name='accountPref' autocomplete='off')
+                  | 2nd Empire
+                label#idAccountPrefSecessionLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                  input#idAccountPrefSecession(type='checkbox' name='accountPref' autocomplete='off')
+                  | Guerre de s&eacute;cession
+                label#idAccountPrefFarWestLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                  input#idAccountPrefFarWest(type='checkbox' name='accountPref' autocomplete='off')
+                  | Far West
+                label#idAccountPrefWW1Label.btn.btn-outline-success.badge.badge-pill.mr-1
+                  input#idAccountPrefWW1(type='checkbox' name='accountPref' autocomplete='off')
+                  | 1&egrave;re Guerre Mondiale
+                label#idAccountPrefWW2Label.btn.btn-outline-danger.badge.badge-pill.mr-1
+                  input#idAccountPrefWW2(type='checkbox' name='accountPref' autocomplete='off')
+                  | 2&egrave;me Guerre mondiale
+                label#idAccountPrefContemporainLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                  input#idAccountPrefContemporain(type='checkbox' name='accountPref' autocomplete='off')
+                  | Contemporain
+                label#idAccountPrefFuturisteLabel.btn.btn-outline-info.text-body.badge.badge-pill.mr-1
+                  input#idAccountPrefFuturiste(type='checkbox' name='accountPref' autocomplete='off')
+                  | Futuriste
+                label#idAccountPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                  input#idAccountPrefFantastique(type='checkbox' name='accountPref' autocomplete='off')
+                  | Fantastique
+                label#idAccountPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                  input#idAccountPrefHFrancaise(type='checkbox' name='accountPref' autocomplete='off')
+                  | Histoire Fran&ccedil;aise
+                label#idAccountPrefHAmericaineLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                  input#idAccountPrefHAmericaine(type='checkbox' name='accountPref' autocomplete='off')
+                  | Histoire Am&eacute;ricaine
+                label#idAccountPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                  input#idAccountPrefHInternationale(type='checkbox' name='accountPref' autocomplete='off')
+                  | Histoire internationale
+                label#idAccountPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                  input#idAccountPrefAutre(type='checkbox' name='accountPref' autocomplete='off')
+                  | Autre
+            |  --&gt;
+            // </div>
+            // </li>
+          // Card-Body
+        .widget.widget-friends
+          .widget-header
+            h3.widget-caption Friends
+          .widget-body.bordered-top.bordered-sky
+            .row
+              .col-md-12
+                ul.img-grid(style='margin: 0 auto;')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/guy-6.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/woman-3.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/guy-2.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/guy-9.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/woman-9.jpg' alt='image')
+                  li.clearfix
+                    a(href='#')
+                      img(src='static/images/Friends/guy-4.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/guy-1.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/woman-4.jpg' alt='image')
+                  li
+                    a(href='#')
+                      img(src='static/images/Friends/guy-6.jpg' alt='image')
+        .widget
+          .widget-header
+            h3.widget-caption Groups
+          .widget-body.bordered-top.bordered-sky
+            .card
+              .content
+                ul.list-unstyled.team-members
+                  li
+                    .row
+                      .col-xs-3
+                        .avatar
+                          img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-1.png' alt='Circle Image')
+                      .col-xs-6
+                        | Github
+                      .col-xs-3.text-right
+                        btn.btn.btn-sm.btn-azure.btn-icon
+                          i.fa.fa-user
+                  li
+                    .row
+                      .col-xs-3
+                        .avatar
+                          img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-3.png' alt='Circle Image')
+                      .col-xs-6
+                        | Css snippets
+                      .col-xs-3.text-right
+                        btn.btn.btn-sm.btn-azure.btn-icon
+                          i.fa.fa-user
+                  li
+                    .row
+                      .col-xs-3
+                        .avatar
+                          img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-2.png ' alt='Circle Image')
+                      .col-xs-6
+                        | Html Action
+                      .col-xs-3.text-right
+                        btn.btn.btn-sm.btn-azure.btn-icon
+                          i.fa.fa-user
+      // ============= timeline posts
+      .col-md-7
+        .row
+          // left posts
+          .col-md-12
+            .row
+              .col-md-12
+                // post state form
+                .box.profile-info.n-border-top
+                  form
+                    textarea.form-control.input-lg.p-text-area(rows='2' placeholder='Whats in your mind today?')
+                  .box-footer.box-form
+                    button.btn.btn-azure.pull-right(type='button') Post
+                    ul.nav.nav-pills
+                      li
+                        a(href='#')
+                          i.fa.fa-map-marker
+                      li
+                        a(href='#')
+                          i.fa.fa-camera
+                      li
+                        a(href='#')
+                          i.fa.fa-film
+                      li
+                        a(href='#')
+                          i.fa.fa-microphone
+                // end post state form
+                // posts
+                .box.box-widget
+                  .box-header.with-border
+                    .user-block
+                      img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      span.username
+                        a(href='#') John Breakgrow jr.
+                      span.description Shared publicly - 7:30 PM Today
+                  .box-body(style='display: block;')
+                    img.img-responsive.show-in-modal(src='static/images/Post/young-couple-in-love.jpg' alt='Photo')
+                    p I took this photo this morning. What do you guys think?
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-share
+                      |  Share
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-thumbs-o-up
+                      |  Like
+                    span.pull-right.text-muted 127 likes - 3 comments
+                  .box-footer.box-comments(style='display: block;')
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-2.jpg' alt='User Image')
+                      .comment-text
                         span.username
-                          a(href='#') John Breakgrow jr.
-                        span.description Shared publicly - 7:30 PM Today
-                    .box-body(style='display: block;')
-                      img.img-responsive.show-in-modal(src='static/images/Post/young-couple-in-love.jpg' alt='Photo')
-                      p I took this photo this morning. What do you guys think?
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-share
-                        |  Share
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-thumbs-o-up
-                        |  Like
-                      span.pull-right.text-muted 127 likes - 3 comments
-                    .box-footer.box-comments(style='display: block;')
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-2.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Maria Gonzales
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Luna Stark
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                    .box-footer(style='display: block;')
-                      form(action='#' method='post')
-                        img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
-                        .img-push
-                          input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
-                  // end posts
-                  // post
-                  .box.box-widget
-                    .box-header.with-border
-                      .user-block
-                        img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                          | Maria Gonzales
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      .comment-text
                         span.username
-                          a(href='#') Jonathan Burke Jr.
-                        span.description Shared publicly - 7:30 PM Today
-                    .box-body
-                      p
-                        | Far far away, behind the word mountains, far from the
-                        | countries Vokalia and Consonantia, there live the blind
-                        | texts. Separated they live in Bookmarksgrove right at
-                      p
-                        | the coast of the Semantics, a large language ocean.
-                        | A small river named Duden flows by their place and supplies
-                        | it with the necessary regelialia. It is a paradisematic
-                        | country, in which roasted parts of sentences fly into
-                        | your mouth.
-                      .attachment-block.clearfix
-                        img.attachment-img.show-in-modal(src='static/images/Photos/2.jpg' alt='Attachment Image')
-                        .attachment-pushed
-                          h4.attachment-heading
-                            a(href='http://www.bootdey.com/') Lorem ipsum text generator
-                          .attachment-text
-                            | Description about the attachment can be placed here.
-                            | Lorem Ipsum is simply dummy text of the printing and typesetting industry... 
-                            a(href='#') more
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-share
-                        |  Share
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-thumbs-o-up
-                        |  Like
-                      span.pull-right.text-muted 45 likes - 2 comments
-                    .box-footer.box-comments
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-5.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Maria Gonzales
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-6.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Nora Havisham
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The point of using Lorem Ipsum is that it has a more-or-less
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;normal distribution of letters, as opposed to using
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&apos;Content here, content here&apos;, making it look like readable English.
-                    .box-footer
-                      form(action='#' method='post')
-                        img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
-                        .img-push
-                          input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
-                  // end post
-                  // posts
-                  .box.box-widget
-                    .box-header.with-border
-                      .user-block
-                        img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                          | Luna Stark
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                  .box-footer(style='display: block;')
+                    form(action='#' method='post')
+                      img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
+                      .img-push
+                        input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
+                // end posts
+                // post
+                .box.box-widget
+                  .box-header.with-border
+                    .user-block
+                      img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      span.username
+                        a(href='#') Jonathan Burke Jr.
+                      span.description Shared publicly - 7:30 PM Today
+                  .box-body
+                    p
+                      | Far far away, behind the word mountains, far from the
+                      | countries Vokalia and Consonantia, there live the blind
+                      | texts. Separated they live in Bookmarksgrove right at
+                    p
+                      | the coast of the Semantics, a large language ocean.
+                      | A small river named Duden flows by their place and supplies
+                      | it with the necessary regelialia. It is a paradisematic
+                      | country, in which roasted parts of sentences fly into
+                      | your mouth.
+                    .attachment-block.clearfix
+                      img.attachment-img.show-in-modal(src='static/images/Photos/2.jpg' alt='Attachment Image')
+                      .attachment-pushed
+                        h4.attachment-heading
+                          a(href='http://www.bootdey.com/') Lorem ipsum text generator
+                        .attachment-text
+                          | Description about the attachment can be placed here.
+                          | Lorem Ipsum is simply dummy text of the printing and typesetting industry... 
+                          a(href='#') more
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-share
+                      |  Share
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-thumbs-o-up
+                      |  Like
+                    span.pull-right.text-muted 45 likes - 2 comments
+                  .box-footer.box-comments
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-5.jpg' alt='User Image')
+                      .comment-text
                         span.username
-                          a(href='#') John Breakgrow jr.
-                        span.description Shared publicly - 7:30 PM Today
-                    .box-body(style='display: block;')
-                      p
-                        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac iaculis ligula, eget efficitur nisi. In vel rutrum orci. Etiam ut orci volutpat, maximus quam vel, euismod orci. Nunc in urna non lectus malesuada aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam dignissim mi ac metus consequat, a pharetra neque molestie. Maecenas condimentum lorem quis vulputate volutpat. Etiam sapien diam
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-share
-                        |  Share
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-thumbs-o-up
-                        |  Like
-                      span.pull-right.text-muted 127 likes - 3 comments
-                    .box-footer.box-comments(style='display: block;')
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-2.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Maria Gonzales
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Luna Stark
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                    .box-footer(style='display: block;')
-                      form(action='#' method='post')
-                        img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
-                        .img-push
-                          input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
-                  // end posts
-                  // posts
-                  .box.box-widget
-                    .box-header.with-border
-                      .user-block
-                        img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                          | Maria Gonzales
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-6.jpg' alt='User Image')
+                      .comment-text
                         span.username
-                          a(href='#') John Breakgrow jr.
-                        span.description Shared publicly - 7:30 PM Today
-                    .box-body(style='display: block;')
-                      img.img-responsive.pad.show-in-modal(src='static/images/Photos/3.jpg' alt='Photo')
-                      p I took this photo this morning. What do you guys think?
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-share
-                        |  Share
-                      button.btn.btn-default.btn-xs(type='button')
-                        i.fa.fa-thumbs-o-up
-                        |  Like
-                      span.pull-right.text-muted 127 likes - 3 comments
-                    .box-footer.box-comments(style='display: block;')
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-2.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Maria Gonzales
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                      .box-comment
-                        img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
-                        .comment-text
-                          span.username
-                            | Luna Stark
-                            span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
-                    .box-footer(style='display: block;')
-                      form(action='#' method='post')
-                        img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
-                        .img-push
-                          input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
-                  // end posts
-            // end left posts
-        // end timeline posts
-  // Online users sidebar content
-  .chat-sidebar.focus
-    .list-group.text-left
-      p.text-center.visible-xs
-        a.hide-chat.btn.btn-success(href='#') Hide
-      p.text-center.chat-title Online users
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/guy-2.jpg')
-        span.chat-user-name Jeferh Smith
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-times-circle.absent-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-1.jpg')
-        span.chat-user-name Dapibus acatar
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/guy-3.jpg')
-        span.chat-user-name Antony andrew lobghi
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-2.jpg')
-        span.chat-user-name Maria fernanda coronel
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/guy-4.jpg')
-        span.chat-user-name Markton contz
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-times-circle.absent-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-3.jpg')
-        span.chat-user-name Martha creaw
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-times-circle.absent-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-8.jpg')
-        span.chat-user-name Yira Cartmen
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-4.jpg')
-        span.chat-user-name Jhoanath matew
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-5.jpg')
-        span.chat-user-name Ryanah Haywofd
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-9.jpg')
-        span.chat-user-name Linda palma
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-10.jpg')
-        span.chat-user-name Andrea ramos
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/child-1.jpg')
-        span.chat-user-name Dora ty bluekl
-  // Online users sidebar content
+                          | Nora Havisham
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The point of using Lorem Ipsum is that it has a more-or-less
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;normal distribution of letters, as opposed to using
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&apos;Content here, content here&apos;, making it look like readable English.
+                  .box-footer
+                    form(action='#' method='post')
+                      img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
+                      .img-push
+                        input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
+                // end post
+                // posts
+                .box.box-widget
+                  .box-header.with-border
+                    .user-block
+                      img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      span.username
+                        a(href='#') John Breakgrow jr.
+                      span.description Shared publicly - 7:30 PM Today
+                  .box-body(style='display: block;')
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac iaculis ligula, eget efficitur nisi. In vel rutrum orci. Etiam ut orci volutpat, maximus quam vel, euismod orci. Nunc in urna non lectus malesuada aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam dignissim mi ac metus consequat, a pharetra neque molestie. Maecenas condimentum lorem quis vulputate volutpat. Etiam sapien diam
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-share
+                      |  Share
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-thumbs-o-up
+                      |  Like
+                    span.pull-right.text-muted 127 likes - 3 comments
+                  .box-footer.box-comments(style='display: block;')
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-2.jpg' alt='User Image')
+                      .comment-text
+                        span.username
+                          | Maria Gonzales
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      .comment-text
+                        span.username
+                          | Luna Stark
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                  .box-footer(style='display: block;')
+                    form(action='#' method='post')
+                      img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
+                      .img-push
+                        input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
+                // end posts
+                // posts
+                .box.box-widget
+                  .box-header.with-border
+                    .user-block
+                      img.img-circle(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      span.username
+                        a(href='#') John Breakgrow jr.
+                      span.description Shared publicly - 7:30 PM Today
+                  .box-body(style='display: block;')
+                    img.img-responsive.pad.show-in-modal(src='static/images/Photos/3.jpg' alt='Photo')
+                    p I took this photo this morning. What do you guys think?
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-share
+                      |  Share
+                    button.btn.btn-default.btn-xs(type='button')
+                      i.fa.fa-thumbs-o-up
+                      |  Like
+                    span.pull-right.text-muted 127 likes - 3 comments
+                  .box-footer.box-comments(style='display: block;')
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-2.jpg' alt='User Image')
+                      .comment-text
+                        span.username
+                          | Maria Gonzales
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                    .box-comment
+                      img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
+                      .comment-text
+                        span.username
+                          | Luna Stark
+                          span.text-muted.pull-right 8:03 PM Today
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                  .box-footer(style='display: block;')
+                    form(action='#' method='post')
+                      img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
+                      .img-push
+                        input.form-control.input-sm(type='text' placeholder='Press enter to post comment')
+                // end posts
+          // end left posts
+      // end timeline posts
+// Online users sidebar content
+.chat-sidebar.focus
+  .list-group.text-left
+    p.text-center.visible-xs
+      a.hide-chat.btn.btn-success(href='#') Hide
+    p.text-center.chat-title Online users
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/guy-2.jpg')
+      span.chat-user-name Jeferh Smith
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-times-circle.absent-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-1.jpg')
+      span.chat-user-name Dapibus acatar
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/guy-3.jpg')
+      span.chat-user-name Antony andrew lobghi
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-2.jpg')
+      span.chat-user-name Maria fernanda coronel
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/guy-4.jpg')
+      span.chat-user-name Markton contz
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-times-circle.absent-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-3.jpg')
+      span.chat-user-name Martha creaw
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-times-circle.absent-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-8.jpg')
+      span.chat-user-name Yira Cartmen
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-4.jpg')
+      span.chat-user-name Jhoanath matew
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-5.jpg')
+      span.chat-user-name Ryanah Haywofd
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-9.jpg')
+      span.chat-user-name Linda palma
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/woman-10.jpg')
+      span.chat-user-name Andrea ramos
+    a.list-group-item(href='messages1.html')
+      i.fa.fa-check-circle.connected-status
+      img.img-chat.img-thumbnail(src='static/images/Friends/child-1.jpg')
+      span.chat-user-name Dora ty bluekl
+// Online users sidebar content
 // *************************************************************************
 // Footer
 // *************************************************************************
@@ -917,94 +952,94 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
                 .col-md-6.mb-3
                   label(for='accountPreferences') Pr&eacute;f&eacute;rences
                   .btn-group-toggle(data-toggle='buttons')
-                    label#idAccountPrefGravuresLabel.preferences.btn.btn-outline-success.badge.badge-pill.mr-1
+                    label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
                       input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
                       | Gravures
-                    label#idAccountPrefLivresLabel.preferences.btn.btn-outline-danger.badge.badge-pill.mr-1
+                    label#idAccountPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
                       input#idAccountPrefLivres(type='checkbox' name='accountPref' autocomplete='off')
                       | Livres
-                    label#idAccountPrefFilmsLabel.preferences.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
+                    label#idAccountPrefFilmsLabel.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
                       input#idAccountPrefFilms(type='checkbox' name='accountPref' autocomplete='off')
                       | Films
-                    label#idAccountPrefJeuxLabel.preferences.btn.btn-outline-info.badge.badge-pill.mr-1
+                    label#idAccountPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill.mr-1
                       input#idAccountPrefJeux(type='checkbox' name='accountPref' autocomplete='off')
                       | Jeux
-                    label#idAccountPrefMaquettesLabel.preferences.btn.btn-outline-primary.badge.badge-pill.mr-1
+                    label#idAccountPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
                       input#idAccountPrefMaquettes(type='checkbox' name='accountPref' autocomplete='off')
                       | Maquettes
-                    label#idAccountPrefFigurinesLabel.preferences.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                    label#idAccountPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
                       input#idAccountPrefFigurines(type='checkbox' name='accountPref' autocomplete='off')
                       | Figurines
-                    label#idAccountPrefBlindesLabel.preferences.btn.btn-outline-dark.badge.badge-pill.mr-1
+                    label#idAccountPrefBlindesLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
                       input#idAccountPrefBlindes(type='checkbox' name='accountPref' autocomplete='off')
                       | Blind&eacute;s
-                    label#idAccountPrefAvionsLabel.preferences.btn.btn-outline-success.badge.badge-pill.mr-1
+                    label#idAccountPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill.mr-1
                       input#idAccountPrefAvions(type='checkbox' name='accountPref' autocomplete='off')
                       | Avions
-                    label#idAccountPrefBateauxLabel.preferences.btn.btn-outline-danger.badge.badge-pill.mr-1
+                    label#idAccountPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
                       input#idAccountPrefBateaux(type='checkbox' name='accountPref' autocomplete='off')
                       | Bateaux
-                    label#idAccountPrefDioramasLabel.preferences.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
+                    label#idAccountPrefDioramasLabel.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
                       input#idAccountPrefDioramas(type='checkbox' name='accountPref' autocomplete='off')
                       | Dioramas
-                    label#idAccountPrefPrehistoireLabel.preferences.btn.btn-outline-info.badge.badge-pill.mr-1
+                    label#idAccountPrefPrehistoireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
                       input#idAccountPrefPrehistoire(type='checkbox' name='accountPref' autocomplete='off')
                       | Pr&eacute;histoire
-                    label#idAccountPrefAntiquiteLabel.preferences.btn.btn-outline-primary.badge.badge-pill.mr-1
+                    label#idAccountPrefAntiquiteLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
                       input#idAccountPrefAntiquite(type='checkbox' name='accountPref' autocomplete='off')
                       | Antiquit&eacute;
-                    label#idAccountPrefMoyenAgeLabel.preferences.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                    label#idAccountPrefMoyenAgeLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
                       input#idAccountPrefMoyenAge(type='checkbox' name='accountPref' autocomplete='off')
                       | Moyen-&acirc;ge
-                    label#idAccountPrefRenaissanceLabel.preferences.btn.btn-outline-dark.badge.badge-pill.mr-1
+                    label#idAccountPrefRenaissanceLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
                       input#idAccountPrefRenaissance(type='checkbox' name='accountPref' autocomplete='off')
                       | Renaissance
-                    label#idAccountPrefDentellesLabel.preferences.btn.btn-outline-success.badge.badge-pill.mr-1
+                    label#idAccountPrefDentellesLabel.btn.btn-outline-success.badge.badge-pill.mr-1
                       input#idAccountPrefDentelles(type='checkbox' name='accountPref' autocomplete='off')
                       | Guerre en dentelles
-                    label#idAccountPrefAncienRegimeLabel.preferences.btn.btn-outline-danger.badge.badge-pill.mr-1
+                    label#idAccountPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
                       input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
                       | Ancien-regime
-                    label#idAccountPrefRevolutionLabel.preferences.btn.btn-outline-warning.badge.badge-pill.mr-1
+                    label#idAccountPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
                       input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
                       | R&eacute;volution Fran&ccedil;aise
-                    label#idAccountPref1erEmpireLabel.preferences.btn.btn-outline-info.badge.badge-pill.mr-1
+                    label#idAccountPref1erEmpireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
                       input#idAccountPref1erEmpire(type='checkbox' name='accountPref' autocomplete='off')
                       | 1er Empire
-                    label#idAccountPref2ndEmpireLabel.preferences.btn.btn-outline-primary.badge.badge-pill.mr-1
+                    label#idAccountPref2ndEmpireLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
                       input#idAccountPref2ndEmpire(type='checkbox' name='accountPref' autocomplete='off')
                       | 2nd Empire
-                    label#idAccountPrefSecessionLabel.preferences.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                    label#idAccountPrefSecessionLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
                       input#idAccountPrefSecession(type='checkbox' name='accountPref' autocomplete='off')
                       | Guerre de s&eacute;cession
-                    label#idAccountPrefFarWestLabel.preferences.btn.btn-outline-dark.badge.badge-pill.mr-1
+                    label#idAccountPrefFarWestLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
                       input#idAccountPrefFarWest(type='checkbox' name='accountPref' autocomplete='off')
                       | Far West
-                    label#idAccountPrefWW1Label.preferences.btn.btn-outline-success.badge.badge-pill.mr-1
+                    label#idAccountPrefWW1Label.btn.btn-outline-success.badge.badge-pill.mr-1
                       input#idAccountPrefWW1(type='checkbox' name='accountPref' autocomplete='off')
                       | 1&egrave;re Guerre Mondiale
-                    label#idAccountPrefWW2Label.preferences.btn.btn-outline-danger.badge.badge-pill.mr-1
+                    label#idAccountPrefWW2Label.btn.btn-outline-danger.badge.badge-pill.mr-1
                       input#idAccountPrefWW2(type='checkbox' name='accountPref' autocomplete='off')
                       | 2&egrave;me Guerre mondiale
-                    label#idAccountPrefContemporainLabel.preferences.btn.btn-outline-warning.badge.badge-pill.mr-1
+                    label#idAccountPrefContemporainLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
                       input#idAccountPrefContemporain(type='checkbox' name='accountPref' autocomplete='off')
                       | Contemporain
-                    label#idAccountPrefFuturisteLabel.preferences.btn.btn-outline-info.text-body.badge.badge-pill.mr-1
+                    label#idAccountPrefFuturisteLabel.btn.btn-outline-info.text-body.badge.badge-pill.mr-1
                       input#idAccountPrefFuturiste(type='checkbox' name='accountPref' autocomplete='off')
                       | Futuriste
-                    label#idAccountPrefFantastiqueLabel.preferences.btn.btn-outline-primary.badge.badge-pill.mr-1
+                    label#idAccountPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
                       input#idAccountPrefFantastique(type='checkbox' name='accountPref' autocomplete='off')
                       | Fantastique
-                    label#idAccountPrefHFrancaiseLabel.preferences.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                    label#idAccountPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
                       input#idAccountPrefHFrancaise(type='checkbox' name='accountPref' autocomplete='off')
                       | Histoire Fran&ccedil;aise
-                    label#idAccountPrefHAmericaineLabel.preferences.btn.btn-outline-dark.badge.badge-pill.mr-1
+                    label#idAccountPrefHAmericaineLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
                       input#idAccountPrefHAmericaine(type='checkbox' name='accountPref' autocomplete='off')
                       | Histoire Am&eacute;ricaine
-                    label#idAccountPrefHInternationaleLabel.preferences.btn.btn-outline-success.badge.badge-pill.mr-1
+                    label#idAccountPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill.mr-1
                       input#idAccountPrefHInternationale(type='checkbox' name='accountPref' autocomplete='off')
                       | Histoire internationale
-                    label#idAccountPrefAutreLabel.preferences.btn.btn-outline-danger.badge.badge-pill.mr-1
+                    label#idAccountPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
                       input#idAccountPrefAutre(type='checkbox' name='accountPref' autocomplete='off')
                       | Autre
                 // ******************************************************************************
@@ -1048,3 +1083,4 @@ script(src='static/js/MemberClientSide.js')
 script(src='siofu/client.js')
 script(src='static/js/custom.js')
 // </div>
+// Opacity

@@ -15,7 +15,6 @@
 // -------------------------------------------------------------------------
 // stockage des informations techniques des joueurs et des  coordonnées de leurs 
 // pilules qui vont être générées pour le player
-// 4 joueurs maximum - 50 pilules pour chacun 
 // -------------------------------------------------------------------------
 const mongoDB = require('mongodb');
 
@@ -26,8 +25,8 @@ module.exports = function DBMgr(){
     
     // -------------------------------------------------------------------------
     // On se connecte à mongoDB, on vérifie qu elle est lancée et que la BDD 
-    // "TourDeFrance" est accessible (avec stockage de sa référence), sinon, 
-    // message d'avertissement pour l'Admin  système et fin directe du programme
+    // "Collect-Or" est accessible (avec stockage de sa référence), sinon, 
+    // message d'avertissement pour l'Admin système et fin directe du programme
     // -------------------------------------------------------------------------
     DBMgr.prototype.checkDBConnectPromise = function(){
         return new Promise((resolve, reject) => {
@@ -49,7 +48,7 @@ module.exports = function DBMgr(){
         });
     }
     // ---------------------------------------------------------------------------------------------------------------------------
-    // Point d'appel pour la fonction d'ouvertureb de la BDD en mode 'async / await'
+    // Point d'appel pour la fonction d'ouverture de la BDD en mode 'async / await'
     // ---------------------------------------------------------------------------------------------------------------------------
     DBMgr.prototype.checkDBConnect = async () => {
         var result = await (this.checkDBConnectPromise());
