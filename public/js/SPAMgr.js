@@ -783,7 +783,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
 	// *************************************************************************
 	vAccountPhotoFile.addEventListener("change", function(){
-		if (vAccountPhotoFile.files[0]!=='undefined'){
+		// if (vAccountPhotoFile.files[0]!=='undefined'){
+		if (vAccountPhotoFile.files[0]!==''){
 			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
 		}
 	}, false);
