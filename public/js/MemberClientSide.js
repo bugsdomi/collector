@@ -113,6 +113,7 @@ MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyTe
 	pModalBodyText.innerHTML = '<h5>Félicitations '+ this.member.pseudo +' !</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Votre compte a été créé avec succès.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
+	pModalBodyText.innerHTML += '<br /><p>Nous vous invitons à remplir votre fiche de renseignements (sous le menu de votre pseudo), pour permettre a vos futurs amis de vous connaître un peu</p>';
 	pModalBodyText.innerHTML += '<br /><p>Bonne navigation...</p>';
 }
 
