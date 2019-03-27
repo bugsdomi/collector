@@ -181,117 +181,119 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 li
                   .row
                     .col-sm-4.text-dark Pr&eacute;nom
-                    #idPresentationPrenom.col-sm-8.font-weight-bold
+                    #idAboutPrenom.col-sm-8.font-weight-bold
                 li
                   .row
                     .col-sm-4.text-dark &Acirc;ge
-                    #idPresentationAge.col-sm-8.font-weight-bold
+                    #idAboutAge.col-sm-8.font-weight-bold
                 li
                   .row
                     .col-sm-4.text-dark Ville
-                    #idPresentationVille.col-sm-8.font-weight-bold
+                    #idAboutVille.col-sm-8.font-weight-bold
                 li
                   .row
                     .col-sm-4.text-dark D&eacute;partement
-                    #idPresentationDepartement.col-sm-8.font-weight-bold
+                    #idAboutDepartmentName.col-sm-8.font-weight-bold
                 li
                   .row
-                    .col-sm-4.text-dark Pr&eacute;f&eacute;rences
-                    .btn-group-toggle(data-toggle='buttons')
-                      label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
-                        input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
+                    // <div>
+                    .col-sm-12.text-dark.mb-2 Pr&eacute;sentation
+                    textarea#idAboutPresentation.form-control.presentationCard(rows='8' disabled='')
+                    // </div>
+                li
+                  .row
+                    .col-sm-12.text-dark.my-2 Int&eacute;ress&eacute; par ...
+                    .col-sm-12.presentationCard.btn-group-toggle.text-center
+                      label#idAboutPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                        input(type='checkbox')
                         | Gravures
-                //
-                  <label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefLivresLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefLivres" autocomplete="off">Livres
-                  </label>
-                  <label class="btn btn-outline-warning text-body badge badge-pill mr-1" id="idAccountPrefFilmsLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefFilms" autocomplete="off">Films
-                  </label>
-                  <label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefJeuxLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefJeux" autocomplete="off">Jeux
-                  </label>
-                  <label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefMaquettesLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefMaquettes" autocomplete="off">Maquettes
-                  </label>
-                  <label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefFigurinesLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefFigurines" autocomplete="off">Figurines
-                  </label>
-                  <label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefBlindesLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefBlindes" autocomplete="off">Blindés
-                  </label>
-                  <label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefAvionsLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefAvions" autocomplete="off">Avions
-                  </label>
-                  <label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefBateauxLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefBateaux" autocomplete="off">Bateaux
-                  </label>
-                  <label class="btn btn-outline-warning text-body badge badge-pill mr-1" id="idAccountPrefDioramasLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefDioramas" autocomplete="off">Dioramas
-                  </label>
-                  <label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefPrehistoireLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefPrehistoire" autocomplete="off">Préhistoire
-                  </label>
-                  <label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefAntiquiteLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefAntiquite" autocomplete="off">Antiquité
-                  </label>
-                  <label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefMoyenAgeLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefMoyenAge" autocomplete="off">Moyen-âge
-                  </label>
-                  <label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefRenaissanceLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefRenaissance" autocomplete="off">Renaissance
-                  </label>
-                  <label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefDentellesLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefDentelles" autocomplete="off">Guerre en dentelles
-                  </label>
-                  <label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAncienRegimeLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefAncienRegime" autocomplete="off">Ancien-regime
-                  </label>
-                  <label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefRevolutionLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefRevolution" autocomplete="off">Révolution Française
-                  </label>
-                  <label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPref1erEmpireLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPref1erEmpire" autocomplete="off">1er Empire
-                  </label>
-                  <label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPref2ndEmpireLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPref2ndEmpire" autocomplete="off">2nd Empire
-                  </label>
-                  <label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefSecessionLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefSecession" autocomplete="off">Guerre de sécession
-                  </label>
-                  <label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefFarWestLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefFarWest" autocomplete="off">Far West
-                  </label>
-                  <label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefWW1Label">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefWW1" autocomplete="off">1ère Guerre Mondiale
-                  </label>
-                  <label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefWW2Label">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefWW2" autocomplete="off">2ème Guerre mondiale
-                  </label>
-                  <label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefContemporainLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefContemporain" autocomplete="off">Contemporain
-                  </label>
-                  <label class="btn btn-outline-info text-body badge badge-pill mr-1" id="idAccountPrefFuturisteLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefFuturiste" autocomplete="off">Futuriste
-                  </label>
-                  <label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefFantastiqueLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefFantastique" autocomplete="off">Fantastique
-                  </label>
-                  <label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefHFrancaiseLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefHFrancaise" autocomplete="off">Histoire Française
-                  </label>
-                  <label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefHAmericaineLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefHAmericaine" autocomplete="off">Histoire Américaine
-                  </label>
-                  <label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefHInternationaleLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefHInternationale" autocomplete="off">Histoire internationale
-                  </label>
-                  <label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAutreLabel">
-                  <input type="checkbox" name="accountPref" id="idAccountPrefAutre" autocomplete="off">Autre
-                  </label>
-                  </div>
-                // </div>
-                // </li>
+                      label#idAboutPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Livres
+                      label#idAboutPrefFilmsLabel.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Films
+                      label#idAboutPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Jeux
+                      label#idAboutPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Maquettes
+                      label#idAboutPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Figurines
+                      label#idAboutPrefBlindesLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Blind&eacute;s
+                      label#idAboutPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Avions
+                      label#idAboutPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Bateaux
+                      label#idAboutPrefDioramasLabel.btn.btn-outline-warning.text-body.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Dioramas
+                      label#idAboutPrefPrehistoireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Pr&eacute;histoire
+                      label#idAboutPrefAntiquiteLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Antiquit&eacute;
+                      label#idAboutPrefMoyenAgeLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Moyen-&acirc;ge
+                      label#idAboutPrefRenaissanceLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Renaissance
+                      label#idAboutPrefDentellesLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Guerre en dentelles
+                      label#idAboutPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Ancien-regime
+                      label#idAboutPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | R&eacute;volution Fran&ccedil;aise
+                      label#idAboutPref1erEmpireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | 1er Empire
+                      label#idAboutPref2ndEmpireLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | 2nd Empire
+                      label#idAboutPrefSecessionLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Guerre de s&eacute;cession
+                      label#idAboutPrefFarWestLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Far West
+                      label#idAboutPrefWW1Label.btn.btn-outline-success.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | 1&egrave;re Guerre Mondiale
+                      label#idAboutPrefWW2Label.btn.btn-outline-danger.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | 2&egrave;me Guerre mondiale
+                      label#idAboutPrefContemporainLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Contemporain
+                      label#idAboutPrefFuturisteLabel.btn.btn-outline-info.text-body.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Futuriste
+                      label#idAboutPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Fantastique
+                      label#idAboutPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Histoire Fran&ccedil;aise
+                      label#idAboutPrefHAmericaineLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Histoire Am&eacute;ricaine
+                      label#idAboutPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Histoire internationale
+                      label#idAboutPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                        input(type='checkbox')
+                        | Autre
             // Card-Body
           .widget.widget-friends
             .widget-header
@@ -841,7 +843,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
                 .col-md-5.mb-3
                   label(for='idAccountDepartment') D&eacute;partement
                   select#idAccountDepartment.custom-select(name='accountDepartment')
-                    option(selected='') D&eacute;partement...
+                    option(selected='') Non divulgu&eacute;
                     option(value='00') (00) Hors France
                     option(value='01') (01) Ain 
                     option(value='02') (02) Aisne 
@@ -951,7 +953,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
             fieldset.border.rounded.px-3.pt-3.mb-3
               .row.justify-content-around
                 .col-md-6.mb-3
-                  label(for='accountPreferences') Pr&eacute;f&eacute;rences
+                  label(for='accountPref') Pr&eacute;f&eacute;rences
                   .btn-group-toggle(data-toggle='buttons')
                     label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
                       input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')

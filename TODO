@@ -25,24 +25,28 @@ Todo:
     ☐ Rajouter une fonction pour cadrer l image dans l"AvatarToken"
     ☐ Voir s'il est possible d'eliminer la duplication des images téléchargées
     ☐ Mettre en place un cryptage des pseudo / MDP
-    ☐ Verifier que le nom de l appli est bien dans l onglet avec le FavIcon
     ☐ Voir pour supprimer photo de profil dans la fiche de renseignements et remettre un avatar par défaut.
     ☐ Ajouter les elements d installation (npm init, npm install etc dans le readme.md, et dans le DAT
     ☐ Gérer un journal de tous les évenements (connexion/deconnexion, creation de cpte, chgt de PWd, messages envoyé de qui vers qui, etc...)
     ☐ Mettre dans le DAT la Charte des couleurs
     ☐ Gérer les option  de menu de la NavBar du Profil
-
+    ☐ Gestion de la latence entre Heroku et mLab pour la gestion de l image de l avatar
+    ☐ A la création reussie d un compte, dans la fenetre d accueil, inciter le membre a remplir sa fiche de renseignements
+    ☐ Dans index.html, harmoniser col-sm et col-md
+    
     Fiche Renseignements :
     ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
     ✔ sinon, afficher la fiche vierge @done(19-03-25 10:06)
     ✔ A l envoi, stocker en BDD @done(19-03-25 10:06)
-      Cas particuliers :
+    Cas particuliers :
     ✔ Gestion de l'avatar par défaut par rapport au genre @done(19-03-25 10:07)
     ✔ Gestion du chargement des photos @done(19-03-25 10:07)
     ✔ Gesrion de l'âge @done(19-03-25 10:07)
     ✔ Gestion des MDP @done(19-03-25 10:07)
     ✔ Gestion de l'alerte sur MDP en erreur et/ou incohérents @done(19-03-25 10:07)
     ✔ Gestion du focus sur le 1er champs @done(19-03-25 10:07)
-    ✔ @done(19-03-25 10:07)
-
-
+    ✔ Verifier que le nom de l appli est bien dans l onglet avec le FavIcon @done(19-03-26 10:16)
+    ✔ Dans la card "Présentation" rajouter le nom du département en clair a la suite du N° de departement @done(19-03-26 12:11)
+    
+    
+    

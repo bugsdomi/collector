@@ -64,7 +64,8 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                 street     : '',    // N° et voie
                 city       : '',    // Ville
                 zipCode    : '',    // Code Postal
-                department : '',    // Département
+                department : '',    // N° Département --> Sert a initialiser le champ "select" des départements
+                departmentName : '',    // Département : N° + nom
             },
         },
         preferences : {
@@ -364,6 +365,7 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                         city       : '',    // Ville
                         zipCode    : '',    // Code Postal
                         department : '',    // Département
+                        departmentName : '', // N° et nom du département
                     },
                 },
                 preferences :
@@ -502,7 +504,8 @@ module.exports = function MemberServer(){   // Fonction constructeur exportée
                     street     : pDataProfilMembre.etatCivil.address.street,        // N° et voie
                     city       : pDataProfilMembre.etatCivil.address.city,          // Ville
                     zipCode    : pDataProfilMembre.etatCivil.address.zipCode,       // Code Postal
-                    department : pDataProfilMembre.etatCivil.address.department,    // Département
+                    department : pDataProfilMembre.etatCivil.address.department,    // N° Département
+                    departmentName : pDataProfilMembre.etatCivil.address.departmentName,    // Département : N° + Libelle
                 },
             },
             preferences : pDataProfilMembre.preferences,

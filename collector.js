@@ -52,7 +52,7 @@ uploader.dir = path.join(__dirname, '/public/images/members');
 let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
-    console.log('Connection')        
+    console.log('Connexion')        
 
     uploader.listen(webSocketConnection);
 
@@ -90,7 +90,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
     // Un membre se déconnecte
     webSocketConnection.on('disconnect', function() {
-        console.log('disconnect')        
+        console.log('Disconnexion')        
         vMemberServer.disconnectMember(webSocketConnection, socketIo);
     });
 });

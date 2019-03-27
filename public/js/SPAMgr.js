@@ -167,7 +167,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Eléments de l'Avatar (Photo (normale et tokenisée) et Pseudo)
 	// -------------------------------------------------------------------------
 	var vAvatarImg1 = document.getElementById('idAvatarImg1');
-	
 	var vAvatarMemberNameImg1 = document.getElementById('idAvatarMemberNameImg1');
 	vAvatarImg1.setAttribute('src', 'static/images/visiteur.jpg');  // Avatar par défaut lorsque le visiteur ne s'est pas loggé
 	vAvatarMemberNameImg1.innerHTML = 'Visiteur';
@@ -178,15 +177,16 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vProfilePage = document.getElementById('idProfilePage');
 	
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// Eléments de la carte de Présentation du membre sur son profil
 	// -------------------------------------------------------------------------
-		var vAvatarToken = document.getElementById('idAvatarToken');
-		var vPresentationPrenom = document.getElementById('idPresentationPrenom');
-		var vPresentationAge = document.getElementById('idPresentationAge');
-		var vPresentationVille = document.getElementById('idPresentationVille');
-		var vPresentationDepartement = document.getElementById('idPresentationDepartement');
-	
+	var vAvatarToken = document.getElementById('idAvatarToken');
+	var vAboutPrenom = document.getElementById('idAboutPrenom');
+	var vAboutAge = document.getElementById('idAboutAge');
+	var vAboutVille = document.getElementById('idAboutVille');
+	var vAboutDepartmentName = document.getElementById('idAboutDepartmentName');
+	var vAboutPresentation = document.getElementById('idAboutPresentation');
+		
 	// -------------------------------------------------------------------------
 	// Déconnexion du membre:
 	// - Réinitialisation de la landing-page
@@ -324,13 +324,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// a fini de l'UpLoader
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayAvatarOnProfile', function(){ 
-// XXXXX
-		// var vAvatarInfo = {
-		// 		vAvatarImg1,
-		// 		vAvatarToken,
-		// 		vAvatarMemberNameImg1
-		// 		}
-
 		vMemberClient.displayAvatar(vAvatarInfo)
 	});
 
@@ -435,7 +428,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Gestion du raccourci de la création de compte (sur la Modale de Login)
 	// *************************************************************************
 	vSignIn.addEventListener('click', function(){
-
 		var lSignInParameters = {
 			vSignInForm,
 			vSignInAlertMsg,
@@ -696,12 +688,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Structure de transfert des infos du profil
 	// *************************************************************************
 	var vProfileInfo = {
-		vPresentationPrenom,
-		vPresentationAge,
-		vPresentationVille,
-		vPresentationDepartement,
+		vAboutPrenom,
+		vAboutAge,
+		vAboutVille,
+		vAboutDepartmentName,
+		vAboutPresentation,
 	}
-
+	
 	// *************************************************************************
 	// Structure de transfert des infos de la page de renseignements vers la 
 	// page de renseignements
@@ -713,6 +706,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vAccountAlertMsg,
 		vAccountPhotoImg,
 		vAccountPhotoFile,
+		vAccountDepartment,
 		vAccountPrefGravures,
 		vAccountPrefLivres,
 		vAccountPrefFilms,
@@ -783,8 +777,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
 	// *************************************************************************
 	vAccountPhotoFile.addEventListener("change", function(){
-		// if (vAccountPhotoFile.files[0]!=='undefined'){
-		if (vAccountPhotoFile.files[0]!==''){
+// if (vAccountPhotoFile.files[0]!==''){		/* DH- */
+		if (vAccountPhotoFile.files[0]!=='undefined'){
 			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
 		}
 	}, false);
@@ -825,6 +819,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			vAccountPassword.focus();
 		}
 	};
+
 	// *************************************************************************
 	// Vérification que les MDP sont identiques
 	// *************************************************************************

@@ -28,7 +28,9 @@ function MemberClient(){   // Fonction constructeur exportée
 					street     : '',    // N° et voie
 					city       : '',    // Ville
 					zipCode    : '',    // Code Postal
-					department : '',    // Département
+					department : '',    // N° Département --> Sert a initialiser le champ "select" des départements
+					departmentName : '',    // Département : N° + nom
+
 				},
 		},
 		preferences : {
@@ -77,6 +79,7 @@ MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField)
 		$('#'+pIdField).focus();
 	})
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction vérifie que le MDP et sa confirmation sont bien identiques
 // -----------------------------------------------------------------------------
@@ -89,6 +92,7 @@ MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
 		this.newPasswordKO = false;
 	}
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre générique modale en mode "A propos"
 // -----------------------------------------------------------------------------
@@ -99,6 +103,7 @@ MemberClient.prototype.initModalTextAboutMode = function(pModalTitle, pModalBody
 	pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
 	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions.</p>';
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
 // après la création réussie du nouveau membre
@@ -110,6 +115,7 @@ MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyTe
 	pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Bonne navigation...</p>';
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
 // après la connexion réussie du membre
@@ -120,6 +126,7 @@ MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText
 	pModalBodyText.innerHTML = '<h5>Bonjour '+this.member.pseudo+'</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous êtes bien connecté à \'Collect\'Or\', bonne navigation...</p>';
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
 // après la déclaration du mot de passe perdu
@@ -131,6 +138,7 @@ MemberClient.prototype.initModalLostPWDText = function(pModalTitle, pModalBodyTe
 	pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Vous pouvez le modifier dans la fiche de votre profil.</p>';
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale "Mot de passe oublié"
 // après la demande de changement du mot de passe
@@ -141,6 +149,7 @@ MemberClient.prototype.initModalChangedPWDText = function(pModalTitle, pModalBod
 	pModalBodyText.innerHTML += '<br /><p>Vous avez changé votre mot de passe.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre modale de rejet d'un membre déjà connecté
 // -----------------------------------------------------------------------------
@@ -149,6 +158,7 @@ MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pMo
 	pModalBodyText.innerHTML = '<h5>Connexion impossible</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous ne pouvez pas vous connecter à \'Collect\'Or\', car vous vous êtes déjà connecté dans une autre session.</p>';
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction désactive les options de menu inutiles lorsque le visiteur s'est 
 // connecté ou après la création réussie de son compte, car il se trouve de fait, 
@@ -172,8 +182,8 @@ MemberClient.prototype.setMemberContext = function(pContextInfo){
 	// Masquage de la "div" de masquage du menu du profil
 	pContextInfo.vProfilePage.style.display = 'block';
 	pContextInfo.vPad.style.display = 'none';
-
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction réactive les options de menu Login et Création de compte lorsque
 //  le Membre se déconnecte, et désactive le bouton "Déconnexion"
@@ -201,7 +211,7 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 		pHeader.classList.remove('bg-danger');
 		pHeader.classList.remove('bg-success');
 		pHeader.classList.remove('txt-yellow-stroke');                       
-		pHeader.classList.add('bg-warning');    // Jaune Or     
+		pHeader.classList.add('bg-warning');    	// Jaune Or     
 		return
 	}
 
@@ -236,6 +246,7 @@ MemberClient.prototype.displayProfilePage = function(vContextInfo, vAvatarInfo, 
 	this.displayAvatar(vAvatarInfo);						// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
 	this.displayPresentationCard(vProfileInfo);	// - Affiche les informations du profil dans la carte "Présentation"
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction affiche l'avatar et son pseudo sur la page de profil
 // -----------------------------------------------------------------------------
@@ -243,21 +254,53 @@ MemberClient.prototype.displayAvatar = function(pAvatarInfo){
 	pAvatarInfo.vAvatarImg1.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 	pAvatarInfo.vAvatarMemberNameImg1.innerHTML = this.member.pseudo;
 	pAvatarInfo.vAvatarToken.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
-	
 }
 
 // -----------------------------------------------------------------------------
 // Cette fonction affiche le contenu de la carte "Présentation" sur la page de profil
 // -----------------------------------------------------------------------------
 MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
-	pProfileInfo.vPresentationPrenom.innerHTML = this.member.etatCivil.firstName;
 
-	pProfileInfo.vPresentationAge.innerHTML = this.member.etatCivil.birthDate 
+	pProfileInfo.vAboutPrenom.innerHTML = this.member.etatCivil.firstName;
+	pProfileInfo.vAboutAge.innerHTML = this.member.etatCivil.birthDate 
 																					? vToolBox.calculeAge(this.member.etatCivil.birthDate, false)
 																					: '';
+	pProfileInfo.vAboutVille.innerHTML = this.member.etatCivil.address.city;
+	pProfileInfo.vAboutDepartmentName.innerHTML = this.member.etatCivil.address.departmentName;
 
-	pProfileInfo.vPresentationVille.innerHTML = this.member.etatCivil.address.city;
-	pProfileInfo.vPresentationDepartement.innerHTML = this.member.etatCivil.address.department;
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefGravures','idAboutPrefGravuresLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefLivres','idAboutPrefLivresLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFilms','idAboutPrefFilmsLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefJeux','idAboutPrefJeuxLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefMaquettes','idAboutPrefMaquettesLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFigurines','idAboutPrefFigurinesLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefBlindes','idAboutPrefBlindesLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAvions','idAboutPrefAvionsLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefBateaux','idAboutPrefBateauxLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefDioramas','idAboutPrefDioramasLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefPrehistoire','idAboutPrefPrehistoireLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAntiquite','idAboutPrefAntiquiteLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefMoyenAge','idAboutPrefMoyenAgeLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefRenaissance','idAboutPrefRenaissanceLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefDentelles','idAboutPrefDentellesLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAncienRegime','idAboutPrefAncienRegimeLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefRevolution','idAboutPrefRevolutionLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('pref1erEmpire','idAboutPref1erEmpireLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('pref2ndEmpire','idAboutPref2ndEmpireLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefSecession','idAboutPrefSecessionLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFarWest','idAboutPrefFarWestLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW1','idAboutPrefWW1Label');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW2','idAboutPrefWW2Label');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefContemporain','idAboutPrefContemporainLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFuturiste','idAboutPrefFuturisteLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFantastique','idAboutPrefFantastiqueLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefHFrancaise','idAboutPrefHFrancaiseLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefHAmericaine','idAboutPrefHAmericaineLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefHInternationale','idAboutPrefHInternationaleLabel');
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAutre','idAboutPrefAutreLabel');
+
+	pProfileInfo.vAboutPresentation.value = this.member.presentation;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -272,6 +315,7 @@ MemberClient.prototype.initModalSignIn = function(pSignInParameters){
 	pSignInParameters.vSignInAlertMsg.style.visibility = 'hidden';                          
 	this.InitHeaderColor('bg-warning', pSignInParameters.vModalSignInHeader);
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise la modale de saisie de renseignements (Compte) 
 // avec les valeurs récupérées dans la BDD, (et pouvant être vieges)
@@ -402,6 +446,7 @@ MemberClient.prototype.initModalAccount = function(pAccountParameters){
 	pAccountParameters.vAccountAlertMsg.style.visibility = 'hidden';                          
 	this.InitHeaderColor('bg-warning', pAccountParameters.vModalAccountHeader);
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction calcule et MAJ le champ "Age" de la fenêtre de saisie des renseignements
 // -----------------------------------------------------------------------------
@@ -412,6 +457,7 @@ MemberClient.prototype.updateFieldAge = function(pBirthDate, pAccountForm){
 		pAccountForm.idAccountAge.value ='';
 	}
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction récupère la sélection du Sexe à travers les boutons-radio
 // -----------------------------------------------------------------------------
@@ -428,6 +474,7 @@ MemberClient.prototype.outputBtnRadioSex = function(){
 	} 
 	return i;
 }
+
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le bouton-radio du Sexe approprié
 // -----------------------------------------------------------------------------
@@ -444,7 +491,8 @@ MemberClient.prototype.inputBtnRadioSex = function(){
 		}
 	} 
 	return selectedSex;
-}    
+}   
+
 // -----------------------------------------------------------------------------
 // Cette fonction met à jour l'avatar (si aucune photo n a été chargée), avec une 
 // silhouette Profil par défaut, en concordance avec la sélection du sexe
@@ -454,7 +502,6 @@ MemberClient.prototype.inputBtnRadioSex = function(){
 // Sinon, ignorer les changements de sexe
 // -----------------------------------------------------------------------------
 MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){ 
-
 	var myPhoto = pAccountPhotoImg.getAttribute('src').split('static/images/members/')[1];
 
 	if (myPhoto){
@@ -473,13 +520,27 @@ MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){
 		} 
 	}
 }
+
+// -----------------------------------------------------------------------------
+// Cette fonction simule le click des boutons de préférences a true pour refléter
+// le statut et la couleur correspondante des badges colorés :
+// - Elle coche ou decoche (de façon cachée) le bouton Check-box sous-jacent
+// - Elle ajoute ou retire laa classe "active" du label
+// -----------------------------------------------------------------------------
+MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pPref, pPrefLabel){
+var myIdLabel = document.getElementById(pPrefLabel)
+	pPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
+}
+
 // -----------------------------------------------------------------------------
 // Cette fonction simule le click des boutons de préférences a true pour refléter
 // le statut et la couleur correspondante des badges colorés
+// - Elle ajoute ou retire laa classe "active" du label
+// - Comme cette fonction est "Read-Only", on ne change pas le statut ces check-box sous-jacents
 // -----------------------------------------------------------------------------
-MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pAccountPref, pIdAccountPrefLabel){
-	var myIdLabel = document.getElementById(pIdAccountPrefLabel)
-	pAccountPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
+MemberClient.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel){
+	this.member.preferences[pIndex] ? document.getElementById(pPrefLabel).classList.add('active')
+																	: document.getElementById(pPrefLabel).classList.remove('active')
 }
 
 	// -------------------------------------------------------------------------
@@ -509,10 +570,11 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 		this.member.etatCivil.birthDate = pAccountParams.vAccountForm.idAccountBirthDate.value;                ;
 		this.member.etatCivil.sex       = this.outputBtnRadioSex();
 
-		this.member.etatCivil.address.street       = pAccountParams.vAccountForm.idAccountStreet.value;
-		this.member.etatCivil.address.city         = pAccountParams.vAccountForm.idAccountCity.value;
-		this.member.etatCivil.address.zipCode      = pAccountParams.vAccountForm.idAccountZipCode.value;
-		this.member.etatCivil.address.department   = pAccountParams.vAccountForm.idAccountDepartment.value;
+		this.member.etatCivil.address.street       	 = pAccountParams.vAccountForm.idAccountStreet.value;
+		this.member.etatCivil.address.city         	 = pAccountParams.vAccountForm.idAccountCity.value;
+		this.member.etatCivil.address.zipCode      	 = pAccountParams.vAccountForm.idAccountZipCode.value;
+		this.member.etatCivil.address.department   	 = pAccountParams.vAccountForm.idAccountDepartment.value;
+		this.member.etatCivil.address.departmentName = pAccountParams.vAccountDepartment[pAccountParams.vAccountDepartment.selectedIndex].text;
 
 		this.member.preferences['prefGravures']        = pAccountParams.vAccountPrefGravures.checked;
 		this.member.preferences['prefLivres']          = pAccountParams.vAccountPrefLivres.checked;
@@ -552,9 +614,9 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 			this.member.password = pAccountParams.vAccountForm.idAccountPassword.value;
 		}
 
-		webSocketConnection.emit('dataProfilMembre', this.member);   // Transmission au serveur des infos saisies
+		webSocketConnection.emit('dataProfilMembre', this.member);   		// Transmission au serveur des infos saisies
 
-		$('#idModalAccount').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+		$('#idModalAccount').modal('toggle');                           // Fermeture de la fenêtre modale de Login
 		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
 
 		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
@@ -622,6 +684,7 @@ MemberClient.prototype.maskOn = function(elemOrId, settings) {
 	
 	return maskDiv;
 }
+
 // --------------------------------------------------------------------------------------------------------------
 // Décache et déprotège les éléments masqués par "maskOn"
 // --------------------------------------------------------------------------------------------------------------
@@ -638,6 +701,7 @@ MemberClient.prototype.maskOff = function(elemOrId) {
 	elem.removeData('maskDiv');
 	maskDiv.remove();
 }
+
 // --------------------------------------------------------------------------------------------------------------
 // Si l icone "sablier" a été passée en paramètre lors du masquage des éléments, change l icone en sablier
 // Si "decendents" est a true, alors montre également le sablier sur les déscendants ou "elemOrId"  (defaults --> true)
@@ -652,6 +716,7 @@ MemberClient.prototype.hourglassOn = function(elemOrId, decendents) {
 	if ($('style:contains("hourGlassWithDecendents")').length < 1) $('<style>').text('.hourGlassWithDecendents, .hourGlassWithDecendents * { cursor: wait !important; }').appendTo('head');
 	elem.addClass(decendents ? 'hourGlassWithDecendents' : 'hourGlass');
 }
+
 // --------------------------------------------------------------------------------------------------------------
 // Si l icone "sablier" a été passée en paramètre lors du masquage des éléments, retire l icone "sablier"
 // --------------------------------------------------------------------------------------------------------------
@@ -662,6 +727,7 @@ MemberClient.prototype.hourglassOff = function(elemOrId) {
 	elem.removeClass('hourGlass');
 	elem.removeClass('hourGlassWithDecendents');
 }
+
 // --------------------------------------------------------------------------------------------------------------
 // Vérifie que l'élément passé en paramètre est valide
 // --------------------------------------------------------------------------------------------------------------

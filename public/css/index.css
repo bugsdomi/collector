@@ -308,3 +308,18 @@ body {
     border-radius: 50%;
     border: 1px black solid;
 }
+
+/* ********************************** */
+/* Affiche les boutons de preferences */
+/* dans la card "Presentation", mais  */
+/* sans pouvoir les modifier          */
+/* ********************************** */
+.presentationCard {
+    border: 1px black solid;
+    padding: 5px 15px;
+}
+
+.presentationCard label{
+    cursor: pointer;
+    pointer-events: none;
+}

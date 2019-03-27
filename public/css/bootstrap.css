@@ -6190,23 +6190,23 @@ button.bg-dark:focus {
 
 /* DH+* Pour tout le paquet de lignes */
 .border {
-  border: 1px solid #FFC107 !important;
+  border: 1px solid grey !important;
 }
 
 .border-top {
-  border-top: 1px solid #FFC107 !important;
+  border-top: 1px solid grey !important;
 }
 
 .border-right {
-  border-right: 1px solid #FFC107 !important;
+  border-right: 1px solid grey !important;
 }
 
 .border-bottom {
-  border-bottom: 1px solid #FFC107 !important;
+  border-bottom: 1px solid grey !important;
 }
 
 .border-left {
-  border-left: 1px solid #FFC107 !important;
+  border-left: 1px solid grey !important;
 }
 
 .border-0 {
