@@ -15,7 +15,7 @@
 
 		<!-- Fonts -->
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
-		<link href="static/css/font-awesome.css" rel="stylesheet">
+		<link href="static/css/font-awesome.css" rel="stylesheet" type="text/css">
 		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
 		<!-- Styles -->
@@ -175,7 +175,20 @@
 
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
-										<li><a href="about.html"><i class="fa fa-fw fa-user"></i> A propos de moi</a></li>
+
+
+<!-- <a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount">Renseignements</a> -->
+<!-- <li class="nav-item">
+	<a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><span class="fa fa-bell"></span> A propos</a>
+</li>
+						<a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><span class="fa fa-sign-out"></span> Déconnexion</a>
+
+-->
+										<li>
+											<a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a>
+										</li>
+
+
 										<li><a href="friends.html"><i class="fa fa-fw fa-users"></i> Amis</a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
 									</ul>
@@ -244,10 +257,8 @@
 
 								<li>
 									<div class="row">
-										<!-- <div> -->
-											<div class="col-sm-12 text-dark mb-2">Présentation</div>
-											<textarea class="form-control presentationCard font-weight-bold" rows="8"  id="idAboutPresentation" disabled></textarea>
-										<!-- </div> -->
+                    <div class="col-sm-12 text-dark mb-2">Présentation</div>
+                    <textarea class="col-sm-12 presentationCard font-weight-bold" rows="8"  id="idAboutPresentation" disabled></textarea>
 									</div>
 								</li>
 								
@@ -351,28 +362,6 @@
 							</ul>
 						</div> <!-- Card-Body-->
 					</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -523,7 +512,7 @@
 																						<ul class="nav nav-pills">
 																								<li><a href="#"><i class="fa fa-map-marker"></i></a></li>
 																								<li><a href="#"><i class="fa fa-camera"></i></a></li>
-																								<li><a href="#"><i class=" fa fa-film"></i></a></li>
+																								<li><a href="#"><i class="fa fa-film"></i></a></li>
 																								<li><a href="#"><i class="fa fa-microphone"></i></a></li>
 																						</ul>
 																				</div>
@@ -1406,7 +1395,52 @@
 			</div>
 		</div> 
 	</div>
+
+	<!-- ************************************************************************* -->
+	<!--                     Fenêtre Modale d'ajout d'amis                         -->
+	<!-- ************************************************************************* -->
+	<div class="modal" tabindex="-1" role="dialog" id="idModalAddFriend" aria-labelledby="idModalAddFriendTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered mt-5" role="document">
+				<div class="modal-content">
+					<div class="modal-header" id="idModalAddFriendHeader">
+						<h5 class="modal-title">Ajout d'amis</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<!-- <form class="form-AddFriend" id="idAddFriendForm">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+							<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
 	
+							<div class="mb-3">
+								<label for="idAddFriendEmail" class="sr-only">Email <span class="text-muted"></span></label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">@</span>
+									</div>
+									<input type="email" name="AddFriendEmail" class="form-control" id="idAddFriendEmail" placeholder="exemple@provider.com" required autofocus >
+								</div>
+							</div>
+							<p id="idAddFriendAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
+							<div class="modal-footer">
+									<button id='idAddFriendBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
+							</div> 
+						</form>  -->
+					</div>
+				</div>
+			</div>
+		</div>       
+	
+
+
+
+
+
+
+
+
+
+
+
 		<!-- ************************************************************************* -->
 		<!--        Vérification Javascript activé + chargement des librairies         -->
 		<!-- ************************************************************************* -->

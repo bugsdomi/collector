@@ -144,18 +144,46 @@ window.addEventListener('DOMContentLoaded', function(){
 
 // -------------------------------------------------------------------------
 //
-// Eléments de la page "profilePage"
+// Eléments de la page "Profil"
 //
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
-// Eléments du menu du profil
+// Eléments du menu du profil (sous l'Avatar)
 // -------------------------------------------------------------------------
-	var vProfileNavBar = document.getElementById('idProfileNavBar');
+	var vProfileNavBar = document.getElementById('idProfileNavBar');			// Menu du profil
+	var vAddFriend = document.getElementById('idAddFriend');							// Bouton "Ajouter des amis"
+	vAddFriend.addEventListener('click', function(){											// Ouvre la fenêtre d'ajout d'amis
+
+	webSocketConnection.emit('askAddFriend', vMemberClient.member.pseudo);   					// Demande au serveur d'afficher les membres (filtrés) pour les présenter dans une liste d'amis potentiels
+
+// $('#idModalLogin').modal('toggle');                                // Fermeture de la fenêtre modale de Login
+// vLoginAlertMsg.style.visibility = 'hidden';  
+
+
+// console.log('000 - Menu AddFriend clické')
+// vMemberClient.InitHeaderColor('bg-warning', vModalAddFriendHeader);
+// vMemberClient.initModalAddFriend();  
+		
+		
+
+		// if (pDataTransmitted.welcomeMessage === 'Hello') {
+		// 	vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+		// } else {
+		// 	vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText); // Affiche la fenêtre de bienvenue pour un nouveau membre
+		// }
+		// vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
+		// $('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
+
+
+
+
+	});
+
 
 	// Neutralise la NavBar du profil par defaut en appliquant un masque par-dessus 
 	// car aucun membre n'est connecté au lancement de la session
 	// vMemberClient.maskOn('idProfileNavBar', {zIndex:1, color:'white'}); 
-	vMemberClient.maskOn(vProfileNavBar, {zIndex:1, color:'white'}); 
+	vToolBox.maskOn(vProfileNavBar, {zIndex:1, color:'white'}); 
 
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
 	// et le haut du Footer, pour que le fond d'écran ne soit pas interrompu lorsque 
@@ -205,7 +233,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retryLostPWDForm', function(){   
 		vLostPWDAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de saisie d'email erroné
 		vMemberClient.InitHeaderColor('bg-danger', vModalLostPWDHeader);
-		setTimeout(function(){$("#idModalLostPWD").modal('toggle')},300);             // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$("#idModalLostPWD").modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -225,7 +253,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retrySignInForm', function(){   
 		vSignInAlertMsg.style.visibility = 'visible';                               // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalSignInHeader);
-		setTimeout(function(){$("#idModalSignIn").modal('toggle')},300);           // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$("#idModalSignIn").modal('toggle')},300);            // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -250,7 +278,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
 		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
 
-		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo);
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo);			// Affichage de la page de profil
 	});
 
 	// --------------------------------------------------------------
@@ -265,9 +293,9 @@ window.addEventListener('DOMContentLoaded', function(){
 
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
 		if (pTypeChgtPWD === cstLostPWD){
-			vMemberClient.initModalLostPWDText(vGenericModalTitle, vGenericModalBodyText);               // Affiche la fenêtre de notification
+			vMemberClient.initModalLostPWDText(vGenericModalTitle, vGenericModalBodyText);               // Affiche la fenêtre de notification pour MDP perdu
 		} else {
-			vMemberClient.initModalChangedPWDText(vGenericModalTitle, vGenericModalBodyText);            // Affiche la fenêtre de notification
+			vMemberClient.initModalChangedPWDText(vGenericModalTitle, vGenericModalBodyText);            // Affiche la fenêtre de notification pourMDP changé volontairement
 		}
 		$('#idGenericModal').modal('toggle');                                                           // ouverture de la fenêtre modale de notification
 	});    
@@ -279,7 +307,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('memberAlreadyConnected', function(pMember){ 
 		vMemberClient.initModalAlreadyConnectedText(vGenericModalTitle, vGenericModalBodyText);     // Affiche la fenêtre de bienvenue
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                                       // ouverture de la fenêtre modale de Félicitations
+		$('#idGenericModal').modal('toggle');                                                       // ouverture de la fenêtre modale de notification de rejet
 	});    
 
 	// --------------------------------------------------------------
@@ -374,12 +402,12 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vGenericModalBodyText = document.getElementById('idGenericModalBodyText');
 	var vGenericModalBtn = document.getElementById('idGenericModalBtn');
 	
-	vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
-	vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                       
+	// vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
+	// vMemberClient.initModalTextAbout(vGenericModalTitle, vGenericModalBodyText);                       
 
 	vAbout.addEventListener('click', function(){
 		vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
-		vMemberClient.initModalTextAboutMode(vGenericModalTitle, vGenericModalBodyText);                     
+		vMemberClient.initModalTextAbout(vGenericModalTitle, vGenericModalBodyText);                     
 	});
 
 	// *************************************************************************
@@ -412,13 +440,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	vLoginForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
 
-		var visiteurLoginData =                                     // Mise en forme pour transmission au serveur des données saisies
+		var vVisiteurLoginData =                                     // Mise en forme pour transmission au serveur des données saisies
 			{
 				pseudo : vLoginForm.idLoginPseudo.value,
 				password : vLoginForm.idLoginPassword.value,
 			}
 
-		webSocketConnection.emit('visiteurLoginData', visiteurLoginData);   // Transmission au serveur des infos saisies
+		webSocketConnection.emit('visiteurLoginData', vVisiteurLoginData);   // Transmission au serveur des infos saisies
 		
 		$('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
 		vLoginAlertMsg.style.visibility = 'hidden';  
@@ -516,7 +544,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// *************************************************************************
 	// *************************************************************************
 	// 
-	// Eléments de champs de saisie de la Modale de renseignements (Account)
+	// Eléments des champs de saisie de la Modale de renseignements (Account)
 	// 
 	// *************************************************************************
 	// *************************************************************************
@@ -662,6 +690,18 @@ window.addEventListener('DOMContentLoaded', function(){
 	//     // console.log(event.file);
 	// });
 
+
+	// *************************************************************************
+	// *************************************************************************
+	// 
+	// Eléments des champs de saisie de la Modale d'ajout d'amis
+	// 
+	// *************************************************************************
+	// *************************************************************************
+	var vModalAddFriend = document.getElementById('idModalAddFriend');
+	var vModalAddFriendHeader = document.getElementById('idModalAddFriendHeader');
+	
+
 	// *************************************************************************
 	// Structure de transfert des infos de de contexte (NavBar, Options de menus, etc...)
 	// *************************************************************************
@@ -777,7 +817,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
 	// *************************************************************************
 	vAccountPhotoFile.addEventListener("change", function(){
-// if (vAccountPhotoFile.files[0]!==''){		/* DH- */
+// XXXXX if (vAccountPhotoFile.files[0]!==''){		/* DH- */
 		if (vAccountPhotoFile.files[0]!=='undefined'){
 			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
 		}

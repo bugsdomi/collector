@@ -13,7 +13,7 @@ head
   title Collect&apos;Or
   // Fonts
   link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i' rel='stylesheet')
-  link(href='static/css/font-awesome.css' rel='stylesheet')
+  link(href='static/css/font-awesome.css' rel='stylesheet' type='text/css')
   script(src='https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
   // Styles
   link(href='static/css/bootstrap.css' rel='stylesheet' type='text/css')
@@ -141,10 +141,16 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                     a(href='profile.html')
                       i.fa.fa-fw.fa-bars
                       |  Mur
+                  // <a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount">Renseignements</a>
+                  //
+                    <li class="nav-item">
+                    <a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><span class="fa fa-bell"></span> A propos</a>
+                    </li>
+                    <a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><span class="fa fa-sign-out"></span> Déconnexion</a>
                   li
-                    a(href='about.html')
-                      i.fa.fa-fw.fa-user
-                      |  A propos de moi
+                    a#idAddFriend(href='#')
+                      i.fa.fa-fw.fa-user-plus
+                      |  Ajouter des amis
                   li
                     a(href='friends.html')
                       i.fa.fa-fw.fa-users
@@ -196,10 +202,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                     #idAboutDepartmentName.col-sm-8.font-weight-bold
                 li
                   .row
-                    // <div>
                     .col-sm-12.text-dark.mb-2 Pr&eacute;sentation
-                    textarea#idAboutPresentation.form-control.presentationCard.font-weight-bold(rows='8' disabled='')
-                    // </div>
+                    textarea#idAboutPresentation.col-sm-12.presentationCard.font-weight-bold(rows='8' disabled='')
                 li
                   .row
                     .col-sm-12.text-dark.my-2 Mes pr&eacute;f&eacute;rences...
@@ -1070,6 +1074,34 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
             // ******************************************************************************
             .modal-footer
               button#idAccountBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
+// *************************************************************************
+// Fenêtre Modale d'ajout d'amis
+// *************************************************************************
+#idModalAddFriend.modal(tabindex='-1' role='dialog' aria-labelledby='idModalAddFriendTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-centered.mt-5(role='document')
+    .modal-content
+      #idModalAddFriendHeader.modal-header
+        h5.modal-title Ajout d&apos;amis
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      .modal-body
+        //
+          <form class="form-AddFriend" id="idAddFriendForm">
+          <img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+          <h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
+          <div class="mb-3">
+          <label for="idAddFriendEmail" class="sr-only">Email <span class="text-muted"></span></label>
+          <div class="input-group">
+          <div class="input-group-prepend">
+          <span class="input-group-text">@</span>
+          </div>
+          <input type="email" name="AddFriendEmail" class="form-control" id="idAddFriendEmail" placeholder="exemple@provider.com" required autofocus >
+          </div>
+          </div>
+          <p id="idAddFriendAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
+          <div class="modal-footer">
+          <button id='idAddFriendBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
+          </div>
+          </form>
 // *************************************************************************
 // Vérification Javascript activé + chargement des librairies
 // *************************************************************************

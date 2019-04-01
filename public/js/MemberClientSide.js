@@ -96,12 +96,12 @@ MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
 // -----------------------------------------------------------------------------
 // Cette fonction initialise le contenu de la fenetre générique modale en mode "A propos"
 // -----------------------------------------------------------------------------
-MemberClient.prototype.initModalTextAboutMode = function(pModalTitle, pModalBodyText){
+MemberClient.prototype.initModalTextAbout = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerText = 'A propos...'
 	pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
 	pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus.</p>';
 	pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
-	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions.</p>';
+	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions à laa Communauté.</p>';
 }
 
 // -----------------------------------------------------------------------------
@@ -121,7 +121,6 @@ MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyTe
 // Cette fonction initialise le contenu de la fenetre modale "Félicitations et Bienvenue"
 // après la connexion réussie du membre
 // -----------------------------------------------------------------------------
-// MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText, pMemberPseudo){
 MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerText = 'Connexion à Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Bonjour '+this.member.pseudo+'</h5>';
@@ -170,35 +169,24 @@ MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pMo
 // - Active la NavBar du profil
 // -----------------------------------------------------------------------------
 MemberClient.prototype.setMemberContext = function(pContextInfo){
-	pContextInfo.vConnexion.style.display = 'none';         //      Désactivation du bouton 'Connexion'
-	pContextInfo.vCreation.style.display = 'none';          //      Désactivation du bouton 'Creation de compte'
+	pContextInfo.vConnexion.style.display = 'none';         			// Désactivation du bouton 'Connexion'
+	pContextInfo.vCreation.style.display = 'none';          			// Désactivation du bouton 'Creation de compte'
 
-	pContextInfo.vDropDownProfilMenu.style.display = 'block';		// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
+	pContextInfo.vDropDownProfilMenu.style.display = 'block';			// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
 	pContextInfo.vDropDownProfilMenu.innerHTML += ' '+this.member.pseudo;		// Affiche le nom du membre dans la NavBarr d'entête
 
-	pContextInfo.vDeconnexion.classList.remove('disabled');			// Active l'option "Deconnexion" du menu d'entête
-	this.maskOff(pContextInfo.vProfileNavBar); 									// Active la NavBar du profil
+	pContextInfo.vDeconnexion.classList.remove('disabled');				// Active l'option "Deconnexion" du menu d'entête
+	vToolBox.maskOff(pContextInfo.vProfileNavBar); 								// Active la NavBar du profil
 
-	// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
-	// Masquage de la "div" de masquage du menu du profil
-	pContextInfo.vProfilePage.style.display = 'block';
-	pContextInfo.vPad.style.display = 'none';
+	pContextInfo.vProfilePage.style.display = 'block';						// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
+	pContextInfo.vPad.style.display = 'none';											// Masquage de la "div" de masquage du menu du profil
 }
 
 // -----------------------------------------------------------------------------
-// Cette fonction réactive les options de menu Login et Création de compte lorsque
-//  le Membre se déconnecte, et désactive le bouton "Déconnexion"
+// Cette fonction réinitialise complétement l'écran et ferme le socket
 // -----------------------------------------------------------------------------
 MemberClient.prototype.unsetMemberContext = function(pWebSocketConnection, pContextInfo){
-// XXXXX A virer plus tard, lorsque ce sera confirme que ca fonctionne nickel
-
-	// pContextInfo.vProfilePage.style.display = 'none';
-	// pContextInfo.vPad.style.display = 'block';
-
-	// // Désactive la NavBar du profil
-	// this.maskOn('idProfileNavBar', {zIndex:1}); 
-
-	// // Régénération de l'écran from scratch;
+	// Régénération de l'écran from scratch;
 	window.location.reload(true);
 	
 	// Fermeture du socket
@@ -211,25 +199,23 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 	if (pACtiveColor === "bg-warning"){
 		pHeader.classList.remove('bg-danger');
 		pHeader.classList.remove('bg-success');
-		pHeader.classList.remove('txt-yellow-stroke');                       
-		pHeader.classList.add('bg-warning');    	// Jaune Or     
+		pHeader.classList.add('bg-warning');    	    
+		pHeader.classList.add('text-dark');
 		return
 	}
 
 	if (pACtiveColor === 'bg-danger'){
 		pHeader.classList.remove('bg-success');
-		pHeader.classList.remove('bg-warning');    // Jaune Or               
+		pHeader.classList.remove('bg-warning');                  
 		pHeader.classList.add('bg-danger');
-// pHeader.classList.add('txt-yellow-stroke');
 		pHeader.classList.add('text-warning');
 		return
 	}
 	
 	if (pACtiveColor === 'bg-success'){
 		pHeader.classList.remove('bg-danger');
-		pHeader.classList.remove('bg-warning');    // Jaune Or               
+		pHeader.classList.remove('bg-warning');                  
 		pHeader.classList.add('bg-success');
-// pHeader.classList.add('txt-yellow-stroke');
 		pHeader.classList.add('text-warning');
 		return
 	}
@@ -301,7 +287,6 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 	this.activeButtonOfSelectedCheckBoxReadOnly('prefAutre','idAboutPrefAutreLabel');
 
 	pProfileInfo.vAboutPresentation.value = this.member.presentation;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -319,7 +304,7 @@ MemberClient.prototype.initModalSignIn = function(pSignInParameters){
 
 // -----------------------------------------------------------------------------
 // Cette fonction initialise la modale de saisie de renseignements (Compte) 
-// avec les valeurs récupérées dans la BDD, (et pouvant être vieges)
+// avec les valeurs récupérées dans la BDD, (et pouvant être vierges)
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalAccount = function(pAccountParameters){
 	pAccountParameters.vAccountForm.idAccountEmail.value  = this.member.email;                                
@@ -536,8 +521,8 @@ var myIdLabel = document.getElementById(pPrefLabel)
 // -----------------------------------------------------------------------------
 // Cette fonction simule le click des boutons de préférences a true pour refléter
 // le statut et la couleur correspondante des badges colorés
-// - Elle ajoute ou retire laa classe "active" du label
-// - Comme cette fonction est "Read-Only", on ne change pas le statut ces check-box sous-jacents
+// - Elle ajoute ou retire la classe "active" du label
+// - Comme cette fonction est "Read-Only", on ne change pas le statut réel des check-box sous-jacents
 // -----------------------------------------------------------------------------
 MemberClient.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel){
 	this.member.preferences[pIndex] ? document.getElementById(pPrefLabel).classList.add('active')
@@ -627,126 +612,11 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 		this.displayPresentationCard(pProfileInfo);
 	}
 }
-
-// --------------------------------------------------------------------------------------------------------------
-// elemOrId - jquery element or element id, defaults to $('<body>')'
-// settings.color defaults to 'transparent'
-// settings.opacity defaults to 1
-// settings.zIndex defaults to 2147483647
-// if settings.hourglasss==true change cursor to hourglass over mask
-// 
-//  Exemples d'utilisation
-// maskOn(); // transparent page mask
-// maskOn(null, {color:'gray', opacity:0.8}); // gray page mask with opacity
-// maskOff(); // remove page mask
-// maskOn(div); // transparent div mask
-// maskOn(divId, {color:'gray', hourglass:true}); // gray div mask with hourglass
-// maskOff(div); // remove div mask
-// --------------------------------------------------------------------------------------------------------------
-MemberClient.prototype.maskOn = function(elemOrId, settings) {
-	var elem = this.elemFromParam(elemOrId);
-	if (!elem) return;
-	
-	var maskDiv=elem.data('maskDiv');
-	if (!maskDiv) {
-		// maskDiv=$('<div style="position:fixed;display:inline"></div>');		// DH-
-		maskDiv=$('<div style="position:absolute;display:inline"></div>');
-		$('body').append(maskDiv);
-		elem.data('maskDiv', maskDiv);
+// -------------------------------------------------------------------------
+// Modale "AJout d'Amis"
+// -------------------------------------------------------------------------
+	MemberClient.prototype.initModalAddFriend = function(){
 	}
-
-	// Vérification de la présence de styles CSS dans les paramètres, sinon ==> Valeurs par défaut
-	if (typeof settings==='undefined' || settings===null) settings={};
-	if (typeof settings.color==='undefined' || settings.color===null) settings.color='transparent';
-	if (typeof settings.opacity==='undefined' || settings.opacity===null) settings.opacity=1;
-	if (typeof settings.zIndex==='undefined' || settings.zIndex===null) settings.zIndex=2147483647;
-	if (typeof settings.hourglass==='undefined' || settings.hourglass===null) settings.hourglass=false;
-	
-	// DH-*
-	// Etirement du maskdiv au-dessus de l'élément parent
-	// var offsetParent = elem.offsetParent();
-	// var widthPercents=elem.outerWidth()*100/offsetParent.outerWidth()+'%';
-	// var heightPercents=elem.outerHeight()*100/offsetParent.outerHeight()+'%';
-	// maskDiv.width(elem.offsetParent()[0].clientWidth);
-	// maskDiv.height(elem.offsetParent()[0].clientHeight);
-	// maskDiv.offset($(elem).offset());
-
-	// DH+*
-	// Etirement du maskdiv au-dessus de l'élément choisi lors l'appel de la fonction maskOn
-	maskDiv.width(elem[0].clientWidth);
-	maskDiv.height(elem[0].clientHeight);
-	maskDiv.offset($(elem).offset());
-
-	// set styles passés en paramètres ou par défaut
-	maskDiv[0].style.backgroundColor = settings.color;
-	maskDiv[0].style.opacity = settings.opacity;
-	maskDiv[0].style.zIndex = settings.zIndex;
-	if (settings.hourglass) this.hourglassOn(maskDiv);
-	
-	return maskDiv;
-}
-
-// --------------------------------------------------------------------------------------------------------------
-// Décache et déprotège les éléments masqués par "maskOn"
-// --------------------------------------------------------------------------------------------------------------
-MemberClient.prototype.maskOff = function(elemOrId) {
-	var elem = this.elemFromParam(elemOrId);
-	if (!elem) return;
-	
-	var maskDiv=elem.data('maskDiv');
-	if (!maskDiv) {
-		console.log('maskOff no mask !');
-		return;
-	}
-
-	elem.removeData('maskDiv');
-	maskDiv.remove();
-}
-
-// --------------------------------------------------------------------------------------------------------------
-// Si l icone "sablier" a été passée en paramètre lors du masquage des éléments, change l icone en sablier
-// Si "decendents" est a true, alors montre également le sablier sur les déscendants ou "elemOrId"  (defaults --> true)
-// --------------------------------------------------------------------------------------------------------------
-MemberClient.prototype.hourglassOn = function(elemOrId, decendents) {
-	var elem = this.elemFromParam(elemOrId);
-	if (!elem) return;
-
-	if (typeof decendents==='undefined' || decendents===null) decendents=true;
-
-	if ($('style:contains("hourGlass")').length < 1) $('<style>').text('.hourGlass { cursor: wait !important; }').appendTo('head');
-	if ($('style:contains("hourGlassWithDecendents")').length < 1) $('<style>').text('.hourGlassWithDecendents, .hourGlassWithDecendents * { cursor: wait !important; }').appendTo('head');
-	elem.addClass(decendents ? 'hourGlassWithDecendents' : 'hourGlass');
-}
-
-// --------------------------------------------------------------------------------------------------------------
-// Si l icone "sablier" a été passée en paramètre lors du masquage des éléments, retire l icone "sablier"
-// --------------------------------------------------------------------------------------------------------------
-MemberClient.prototype.hourglassOff = function(elemOrId) {
-	var elem = this.elemFromParam(elemOrId);
-	if (!elem) return;
-
-	elem.removeClass('hourGlass');
-	elem.removeClass('hourGlassWithDecendents');
-}
-
-// --------------------------------------------------------------------------------------------------------------
-// Vérifie que l'élément passé en paramètre est valide
-// --------------------------------------------------------------------------------------------------------------
-MemberClient.prototype.elemFromParam = function(elemOrId) {
-	var elem;
-	if (typeof elemOrId==='undefined' || elemOrId===null) 
-		elem=$('body');
-	else if (typeof elemOrId === 'string' || elemOrId instanceof String) 
-		elem=$('#'+elemOrId);
-	else
-		elem=$(elemOrId);
-
-	if (!elem || elem.length===0) {
-		console.log('elemFromParam no element !');
-		return null;
-	}
-	return elem;
-}
 // --------------------------------------------------------------------------------------------------------------
 // -------------------------- Fin du module ---------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------

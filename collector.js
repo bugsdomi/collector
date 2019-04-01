@@ -34,9 +34,9 @@ app.get('/', function(req, res){
 // Création du serveur et lancement du listener
 // -------------------------------------------------------------------------
 const server = app.listen(process.env.PORT || 3000, function() {
-    const addressHote = server.address().address;
-    const portEcoute = server.address().port
-    console.log('Écoute du serveur http://%s:%s',addressHote,portEcoute);
+	const addressHote = server.address().address;
+	const portEcoute = server.address().port
+	console.log('Écoute du serveur http://%s:%s',addressHote,portEcoute);
 });
 // ------------------------------------------------------------
 // Fin de la partie HTTP - Début de la partie WebSocket avec "Socket.io"
@@ -52,46 +52,51 @@ uploader.dir = path.join(__dirname, '/public/images/members');
 let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
-    console.log('Connexion')        
+	console.log('Connexion')        
 
-    uploader.listen(webSocketConnection);
+	uploader.listen(webSocketConnection);
 
 
-    // uploader.on("error", function(event){
-    //     console.log("Error from uploader", event);
-    // });
+	// uploader.on("error", function(event){
+	//     console.log("Error from uploader", event);
+	// });
 
-    vMemberServer.initVisiteur(webSocketConnection, socketIo);    
-    
-    // On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
-    webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-        vMemberServer.visitorBecomeMember(pVisiteurLoginData, webSocketConnection, socketIo)
-        .then((result) => {
-        });
-    });
+	vMemberServer.initVisiteur(webSocketConnection, socketIo);    
+	
+	// On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
+	webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
+		vMemberServer.visitorBecomeMember(pVisiteurLoginData, webSocketConnection, socketIo)
+		.then((result) => {
+		});
+	});
 
-    // On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
-    webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
-        vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo);
-    });    
+	// On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
+	webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
+		vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo);
+	});    
 
-    // On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
-    webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
-        vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
-        uploader.on("saved", function(event){
-            webSocketConnection.emit('displayAvatarOnProfile');      // On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
-        });
-    });    
+	// On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
+	webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
+		vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
+		uploader.on("saved", function(event){
+			webSocketConnection.emit('displayAvatarOnProfile');     // On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
+		});
+	});    
 
-    // On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
-    webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
-        vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection);
-    });
+	// On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
+	webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
+		vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection);
+	});
+	
+	// On a reçu une demande d'ajout d'amis --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis)
+	webSocketConnection.on('askAddFriend', function(pPseudo){
+	vMemberServer.selectMembersToBeFriends(pPseudo, webSocketConnection);
+	});   						
 
-    // Un membre se déconnecte
-    webSocketConnection.on('disconnect', function() {
-        console.log('Disconnexion')        
-        vMemberServer.disconnectMember(webSocketConnection, socketIo);
-    });
+	// Un membre se déconnecte
+	webSocketConnection.on('disconnect', function() {
+		console.log('Déconnexion')        
+		vMemberServer.disconnectMember(webSocketConnection, socketIo);
+	});
 });
 

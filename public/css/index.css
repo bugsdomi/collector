@@ -317,6 +317,8 @@ body {
 .presentationCard {
     border: 1px black solid;
     padding: 5px 15px;
+    background-color: white;
+    color:  black;
 }
 
 .presentationCard label{
