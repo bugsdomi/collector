@@ -563,9 +563,9 @@ console.log('**********************************************************');
 console.log('**********************************************************');
 	let vMembersFriendables = documents.filter(this.filterMembersToBeFriends.bind(this, pPseudo));
 
-	console.log('------------------------------------------------------')
-	console.log('Liste des membres pouvant devenir amis (après filtrage) : Il y a ',vMembersFriendables.length,' membres')
-	console.log('------------------------------------------------------')
+console.log('------------------------------------------------------')
+console.log('Liste des membres pouvant devenir amis (après filtrage) : Il y a ',vMembersFriendables.length,' membres')
+console.log('------------------------------------------------------')
 
 	vMembersFriendables.forEach(function(item, index) {
 console.log('selectMembersToBeFriends après - vMembersFriendables pseudo : ',vMembersFriendables[index].pseudo);
