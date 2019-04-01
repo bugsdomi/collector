@@ -65,6 +65,11 @@ function MemberClient(){   // Fonction constructeur exportée
 			prefHInternationale : false,
 			prefAutre           : false,
 		},
+		amis : 
+		[{
+			pseudo               : '',
+			pendingFriendRequest : false,
+		}],
 		dateCreation    : -1,       // Timestamp de la création du record
 	}
 }
