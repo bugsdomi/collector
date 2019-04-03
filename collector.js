@@ -89,8 +89,8 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	});
 	
 	// On a reçu une demande d'ajout d'amis --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis)
-	webSocketConnection.on('askAddFriend', function(pPseudo){
-	vMemberServer.selectMembersToBeFriends(pPseudo, webSocketConnection);
+	webSocketConnection.on('askAddFriend', function(pMyPseudo){
+	vMemberServer.selectMembersToBeFriends(pMyPseudo, webSocketConnection);
 	});   						
 
 	// Un membre se déconnecte

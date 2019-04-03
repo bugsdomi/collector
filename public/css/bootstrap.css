@@ -2742,7 +2742,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-warning {
-  color: #ffc107;
+  /* color: #ffc107;  */          /* DH- */
+  color: #343a40;               /* DH+ */
   background-color: transparent;
   background-image: none;
   border-color: #ffc107;
@@ -5144,10 +5145,11 @@ input[type="button"].btn-block {
 .list-group-item {
   position: relative;
   display: block;
-  padding: 0.75rem 1.25rem;
+  /* padding: 0.75rem 1.25rem; */                     /* DH- */
   margin-bottom: -1px;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  /* border: 1px solid rgba(0, 0, 0, 0.125); */       /* DH- */
+  border: 1px solid grey;                             /* DH+ */
 }
 
 .list-group-item:first-child {
@@ -5318,6 +5320,24 @@ input[type="button"].btn-block {
   color: #fff;
   background-color: #1b1e21;
   border-color: #1b1e21;
+}
+
+/* DH+ Pour tout le paquet de lignes list-group-item-white */
+.list-group-item-white {
+  color: black;
+  background-color: white;
+}
+
+.list-group-item-white.list-group-item-action:hover, .list-group-item-white.list-group-item-action:focus {
+  color: black;
+  /* background-color: #b9bbbe; */
+  background-color: #dcdcdc;
+}
+
+.list-group-item-white.list-group-item-action.active {
+  color: #fff;
+  background-color: black;
+  border-color: black;
 }
 
 .close {

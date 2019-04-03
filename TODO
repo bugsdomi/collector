@@ -41,17 +41,21 @@ Todo:
   ☐ Gestion de la latence entre Heroku et mLab pour la gestion de l image de l avatar
   ☐ A la création reussie d un compte, dans la fenetre d accueil, inciter le membre a remplir sa fiche de renseignements
   ☐ Dans index.html, harmoniser col-sm et col-md
-  ☐ Changer la couleur de texte des pills jaunes
   ☐ Ne pas attendre l'upload de l image de l avatar pour l afficher sur le client
-  ☐ Dans le DAT faire un schema Client - Serveur Heroku - mLab
   ☐ Reviser completement le coté Responsive de l'application
-  ☐ Voir pourquoi le masque est trop petit en mode responsive
-  ☐ En mode Responsive, les modales sont trop larges
-  ☐ Mettre dans le DAT la Charte des couleurs (Ecritures : FFD700, Menus + Headers : FFC107 (Text-warning)
-  ☐ Mettre dans le DAT les feuilles volantes à la fin du CDC
-  ☐ A la fin du Dev, virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//"
   ☐ Passer tous les CRUD en Promise
   ☐ Convertir les fonctions anonymes en fonctions fleches
+  ☐ Rajouter les petites icones dess menus dans les entetes des fenetres a coté du titre pour rappeler la fonctionnalité
+  ☐ Dans la certe de présentation, si les champs ne sont pas remplis dans la fiche de renseignement, mettre "non renseigné"
+  
+  ☐ En mode Responsive, les modales sont trop larges
+  ☐ Voir pourquoi le masque est trop petit en mode responsive
+  
+  ☐ Dans le DAT faire un schema Client - Serveur Heroku - mLab
+  ☐ Mettre dans le DAT la Charte des couleurs (Ecritures : FFD700, Menus + Headers : FFC107 (Text-warning) bordures : grey
+  ☐ Dans le DAT, mettre une maquette de toutes le fenetres
+  ☐ Mettre dans le DAT les feuilles volantes à la fin du CDC
+  ☐ A la fin du Dev, virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//"
   
   Fiche Renseignements :
   ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
@@ -66,6 +70,7 @@ Todo:
   ✔ Gestion du focus sur le 1er champs @done(19-03-25 10:07)
   ✔ Verifier que le nom de l appli est bien dans l onglet avec le FavIcon @done(19-03-26 10:16)
   ✔ Dans la card "Présentation" rajouter le nom du département en clair a la suite du N° de departement @done(19-03-26 12:11)
-    
-    
-    
+  ✔ Changer la couleur de texte des pills jaunes @done(19-04-02 15:55)
+  
+  
+  

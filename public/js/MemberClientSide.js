@@ -66,10 +66,10 @@ function MemberClient(){   // Fonction constructeur exportée
 			prefAutre           : false,
 		},
 		amis : 
-		[{
-			pseudo               : '',
-			pendingFriendRequest : false,
-		}],
+			[{
+				friendPseudo         : '',
+				pendingFriendRequest : true,
+			}],
 		dateCreation    : -1,       // Timestamp de la création du record
 	}
 }
@@ -102,7 +102,7 @@ MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
 // Cette fonction initialise le contenu de la fenetre générique modale en mode "A propos"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalTextAbout = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerText = 'A propos...'
+	pModalTitle.innerHTML = '<i class="fa fa-bell"></i> A propos...'
 	pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
 	pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus.</p>';
 	pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
@@ -114,7 +114,7 @@ MemberClient.prototype.initModalTextAbout = function(pModalTitle, pModalBodyText
 // après la création réussie du nouveau membre
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerText = 'Bienvenue dans Collect\'Or'
+	pModalTitle.innerHTML = '<i class="fa fa-user"></i> Bienvenue dans Collect\'Or'
 	pModalBodyText.innerHTML = '<h5>Félicitations '+ this.member.pseudo +' !</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Votre compte a été créé avec succès.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Un mail de confirmation vous été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
@@ -127,7 +127,7 @@ MemberClient.prototype.initModalWelcomeText = function(pModalTitle, pModalBodyTe
 // après la connexion réussie du membre
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerText = 'Connexion à Collect\'Or';
+	pModalTitle.innerHTML = '<i class="fa fa-user"></i> Connexion à Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Bonjour '+this.member.pseudo+'</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous êtes bien connecté à \'Collect\'Or\', bonne navigation...</p>';
 }
@@ -137,7 +137,7 @@ MemberClient.prototype.initModalHelloText = function(pModalTitle, pModalBodyText
 // après la déclaration du mot de passe perdu
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalLostPWDText = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerText = 'Mot de passe perdu'
+	pModalTitle.innerHTML = '<i class="fa fa-key"></i> Mot de passe perdu'
 	pModalBodyText.innerHTML = '<h5>Votre nouveau mot de passe ...</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Suite à votre demande, un nouveau mot de passe a été généré.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
@@ -149,7 +149,7 @@ MemberClient.prototype.initModalLostPWDText = function(pModalTitle, pModalBodyTe
 // après la demande de changement du mot de passe
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalChangedPWDText = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerText = 'Mot de passe changé'
+	pModalTitle.innerHTML = '<i class="fa fa-key"></i> Mot de passe changé'
 	pModalBodyText.innerHTML = '<h5>Votre nouveau mot de passe ...</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous avez changé votre mot de passe.</p>';
 	pModalBodyText.innerHTML += '<br /><p>Un mail contenant vos identifiants vous a été envoyé, si vous ne le voyez pas, veuillez regarder dans le dosssier des SPAMs.</p>';
@@ -159,9 +159,22 @@ MemberClient.prototype.initModalChangedPWDText = function(pModalTitle, pModalBod
 // Cette fonction initialise le contenu de la fenetre modale de rejet d'un membre déjà connecté
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerText = 'Collect\'Or';
+	pModalTitle.innerHTML = '<i class="fa fa-user-times"></i> Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Connexion impossible</h5>';
 	pModalBodyText.innerHTML += '<br /><p>Vous ne pouvez pas vous connecter à \'Collect\'Or\', car vous vous êtes déjà connecté dans une autre session.</p>';
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale de d'avertissement 
+// que la liste de membres pouvant devenir amis est vide
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalEmptyFriendList = function(pModalTitle, pModalBodyText){
+	pModalTitle.innerHTML = '<i class="fa fa-frown-o"></i> Demander à être ami';
+	pModalBodyText.innerHTML = '<h5>Pas de membres pouvant devenir amis</h5>';
+	pModalBodyText.innerHTML += '<br /><p>Il n\'y a pas de membre disponible auquel vous pouvez demander à être ami car :</p>';
+	pModalBodyText.innerHTML += '<p>- soit il n\'y a pas d\'autres membres</p>';
+	pModalBodyText.innerHTML += '<p>- soit vous êtes déjà amis avec eux</p>';
+	pModalBodyText.innerHTML += '<p>- soit vous leur avez déjà demandé à être ami et le membre n\'a pas encore accepté votre demande.</p>';
 }
 
 // -----------------------------------------------------------------------------
@@ -565,6 +578,7 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 		this.member.etatCivil.address.city         	 = pAccountParams.vAccountForm.idAccountCity.value;
 		this.member.etatCivil.address.zipCode      	 = pAccountParams.vAccountForm.idAccountZipCode.value;
 		this.member.etatCivil.address.department   	 = pAccountParams.vAccountForm.idAccountDepartment.value;
+
 		this.member.etatCivil.address.departmentName = pAccountParams.vAccountDepartment[pAccountParams.vAccountDepartment.selectedIndex].text;
 
 		this.member.preferences['prefGravures']        = pAccountParams.vAccountPrefGravures.checked;

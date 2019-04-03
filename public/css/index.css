@@ -321,7 +321,22 @@ body {
     color:  black;
 }
 
+/* ********************************** */
+/* Neutralise les events              */
+/* Force le curseur de la souris a    */
+/* rester en pointeur                 */
+/* ********************************** */
+
 .presentationCard label{
     cursor: pointer;
     pointer-events: none;
+}
+
+/* ********************************** */
+/* Change la taille des caractères    */
+/* a 1.25rem pour un usage général    */
+/* ********************************** */
+
+.font-size-120{
+    font-size: 1.2rem;
 }

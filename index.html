@@ -88,27 +88,27 @@
 		<div class="collapse navbar-collapse" id="mainScreenMenu">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item mx-1">
-					<a class="nav-link" id="idConnexion" href="#idModalLogin" data-toggle="modal" data-target="#idModalLogin" ><span class="fa fa-sign-in"></span> Connexion</a>
+					<a class="nav-link" id="idConnexion" href="#idModalLogin" data-toggle="modal" data-target="#idModalLogin" ><i class="fa fa-sign-in"></i> Connexion</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link" id="idCreation" href="#idModalSignIn" data-toggle="modal" data-target="#idModalSignIn"><span class="fa fa-plus"></span>  Créer un compte</a>
+					<a class="nav-link" id="idCreation" href="#idModalSignIn" data-toggle="modal" data-target="#idModalSignIn"><i class="fa fa-plus"></i>  Créer un compte</a>
 				</li>
 				
 				<li class="nav-item mx-1 dropdown">
 					<a class="nav-link dropdown-toggle" id="idDropDownProfilMenu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="fa fa-user" id="idMemberName"></span> 
+						<i class="fa fa-user"></i> 
 					</a>
 					<div class="dropdown-menu" aria-labelledby="templates-dropdown">
 						<a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount">Renseignements</a>
 						<a class="dropdown-item" href="template-4.html">Administration</a> 
 						<hr />
-						<a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><span class="fa fa-sign-out"></span> Déconnexion</a>
+						<a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><i class="fa fa-sign-out"></i> Déconnexion</a>
 					</div>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><span class="fa fa-bell"></span> A propos</a>
+					<a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><i class="fa fa-bell"></i> A propos</a>
 				</li>
 			</ul>
 		</div>
@@ -175,19 +175,7 @@
 
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
-
-
-<!-- <a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount">Renseignements</a> -->
-<!-- <li class="nav-item">
-	<a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><span class="fa fa-bell"></span> A propos</a>
-</li>
-						<a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><span class="fa fa-sign-out"></span> Déconnexion</a>
-
--->
-										<li>
-											<a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a>
-										</li>
-
+										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
 
 										<li><a href="friends.html"><i class="fa fa-fw fa-users"></i> Amis</a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
@@ -272,7 +260,7 @@
 											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefLivresLabel">
 												<input type="checkbox">Livres
 											</label>
-											<label class="btn btn-outline-warning text-body badge badge-pill mr-1" id="idAboutPrefFilmsLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefFilmsLabel">
 												<input type="checkbox">Films
 											</label>
 											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPrefJeuxLabel">
@@ -293,7 +281,7 @@
 											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefBateauxLabel">
 												<input type="checkbox">Bateaux
 											</label>
-											<label class="btn btn-outline-warning text-body badge badge-pill mr-1" id="idAboutPrefDioramasLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefDioramasLabel">
 												<input type="checkbox">Dioramas
 											</label>
 											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPrefPrehistoireLabel">
@@ -338,7 +326,7 @@
 											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefContemporainLabel">
 												<input type="checkbox">Contemporain
 											</label>
-											<label class="btn btn-outline-info text-body badge badge-pill mr-1" id="idAboutPrefFuturisteLabel">
+											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPrefFuturisteLabel">
 												<input type="checkbox">Futuriste
 											</label>
 											<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAboutPrefFantastiqueLabel">
@@ -895,7 +883,7 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalLoginHeader">
-					<h5 class="modal-title">Connexion</h5>
+					<h5 class="modal-title"><i class="fa fa-sign-in"></i> Connexion</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -934,7 +922,7 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalSignInHeader">
-					<h5 class="modal-title">Création de compte</h5>
+					<h5 class="modal-title"><i class="fa fa-plus"></i> Création de compte</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -980,7 +968,7 @@
 		<div class="modal-dialog modal-dialog-centered mt-5" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalLostPWDHeader">
-					<h5 class="modal-title">Mot de passe perdu</h5>
+					<h5 class="modal-title"><i class="fa fa-key"></i> Mot de passe perdu</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -1052,7 +1040,7 @@
 							<fieldset class="border rounded p-3">
 								<div class="row justify-content-around">
 									<div class="col-md-3">
-										<img class="img-thumbnail mb-3 img-responsive" id="idAccountPhotoImg" src="" alt="Image du profile">
+										<img class="img-thumbnail mb-3" id="idAccountPhotoImg" src="" alt="Image du profile">
 										<span class="btn btn-success btn-file mb-3">
 											Changer d'avatar 
 											<input type="file" name="AccountPhotoFile" id="idAccountPhotoFile" accept="image/png, image/jpeg">
@@ -1141,7 +1129,7 @@
 									<div class="col-md-5 mb-3">
 										<label for="idAccountDepartment">Département</label>
 										<select class="custom-select" name="accountDepartment" id="idAccountDepartment">
-											<option selected>Non divulgué</option>
+											<option selected>Non renseigné</option>
 											<option value="00">(00) Hors France</option>
 											<option value="01">(01) Ain </option>
 											<option value="02">(02) Aisne </option>
@@ -1264,7 +1252,7 @@
 											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefLivresLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefLivres" autocomplete="off">Livres
 											</label>
-											<label class="btn btn-outline-warning text-body badge badge-pill mr-1" id="idAccountPrefFilmsLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefFilmsLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefFilms" autocomplete="off">Films
 											</label>
 											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefJeuxLabel">
@@ -1285,7 +1273,7 @@
 											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefBateauxLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefBateaux" autocomplete="off">Bateaux
 											</label>
-											<label class="btn btn-outline-warning text-body badge badge-pill mr-1" id="idAccountPrefDioramasLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefDioramasLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefDioramas" autocomplete="off">Dioramas
 											</label>
 											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefPrehistoireLabel">
@@ -1330,7 +1318,7 @@
 											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefContemporainLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefContemporain" autocomplete="off">Contemporain
 											</label>
-											<label class="btn btn-outline-info text-body badge badge-pill mr-1" id="idAccountPrefFuturisteLabel">
+											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefFuturisteLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefFuturiste" autocomplete="off">Futuriste
 											</label>
 											<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefFantastiqueLabel">
@@ -1400,37 +1388,75 @@
 	<!--                     Fenêtre Modale d'ajout d'amis                         -->
 	<!-- ************************************************************************* -->
 	<div class="modal" tabindex="-1" role="dialog" id="idModalAddFriend" aria-labelledby="idModalAddFriendTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered mt-5" role="document">
-				<div class="modal-content">
-					<div class="modal-header" id="idModalAddFriendHeader">
-						<h5 class="modal-title">Ajout d'amis</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">
-						<!-- <form class="form-AddFriend" id="idAddFriendForm">
-							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
-							<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
-	
-							<div class="mb-3">
-								<label for="idAddFriendEmail" class="sr-only">Email <span class="text-muted"></span></label>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text">@</span>
-									</div>
-									<input type="email" name="AddFriendEmail" class="form-control" id="idAddFriendEmail" placeholder="exemple@provider.com" required autofocus >
-								</div>
-							</div>
-							<p id="idAddFriendAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
-							<div class="modal-footer">
-									<button id='idAddFriendBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
-							</div> 
-						</form>  -->
-					</div>
+		<div class="modal-dialog modal-dialog-centered mt-5" role="document" style="max-width: 600px;">
+			<div class="modal-content">
+				<div class="modal-header" id="idModalAddFriendHeader">
+					<h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
-			</div>
-		</div>       
+				<div class="modal-body">
+					<div class="container">
+						<h6 class="text-center">Sélectionnez les membres avec qui vous souhaitez devenir ami</h6>
+						<div class="list-group" id="idListGroup">
+						</div>
+					</div>
+				</div>			<!-- Modal-Body -->
+			</div>				<!-- Modal-Content -->
+
+					<!-- <form class="form-AddFriend" id="idAddFriendForm">
+						<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+						<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
+
+						<div class="mb-3">
+							<label for="idAddFriendEmail" class="sr-only">Email <span class="text-muted"></span></label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">@</span>
+								</div>
+								<input type="email" name="AddFriendEmail" class="form-control" id="idAddFriendEmail" placeholder="exemple@provider.com" required autofocus >
+							</div>
+						</div>
+						<p id="idAddFriendAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
+						<div class="modal-footer">
+								<button id='idAddFriendBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
+						</div> 
+					</form>  -->
+		</div>	<!-- Modal-Dialog -->
+	</div>		<!-- Modal-->
+		
+      
 	
 
+	<!-- <div class="modal" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idModalLostPWDTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered mt-5" role="document">
+			<div class="modal-content">
+				<div class="modal-header" id="idModalLostPWDHeader">
+					<h5 class="modal-title">Mot de passe perdu</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form class="form-LostPWD" id="idLostPWDForm">
+						<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+						<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
+
+						<div class="mb-3">
+							<label for="idLostPWDEmail" class="sr-only">Email <span class="text-muted"></span></label>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">@</span>
+								</div>
+								<input type="email" name="lostPWDEmail" class="form-control" id="idLostPWDEmail" placeholder="exemple@provider.com" required autofocus >
+							</div>
+						</div>
+						<p id="idLostPWDAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
+						<div class="modal-footer">
+								<button id='idLostPWDBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
+						</div> 
+					</form> 
+				</div>
+			</div>
+		</div>
+	</div>        -->
 
 
 

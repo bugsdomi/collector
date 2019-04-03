@@ -31,7 +31,6 @@ const cstChangedPWD = 1;  // Constante qui désigne que le Chjt de MDP (PWD) a �
 
 
 module.exports = function MemberServer(){ // Fonction constructeur exportée
-	this.objectFound;                       // Objet d'accueil utilisé lors de la recherche d'un objet dans la table des membres
 	this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
 	this.nbrPublicMsgs;                     // Nbre de messages publics
 
@@ -108,8 +107,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		},
 		amis : 
 			[{
-				pseudo               : '',
-				pendingFriendRequest : false,
+				friendPseudo         : '',
+				pendingFriendRequest : true,
 			}],
 		dateCreation : -1,       // Timestamp de la création du record
 	}
@@ -125,27 +124,20 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Cette fonction recherche dans la table des membres, celui qui a la propriété passée en parametre
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.searchMemberInTableOfMembers = (pProperty, pValue) => {
-		let myIndex = this.objectPopulation.members.map((propertyFilter) => {
+		return this.objectPopulation.members.map((propertyFilter) => {
 			return propertyFilter[pProperty];
 		})
 		.indexOf(pValue);
-
-		this.objectFound = this.objectPopulation.members[myIndex];
-		return myIndex; 
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Cette fonction recherche dans le tableau des amis d'un membre, si un record "Pseudo" + "eMail" existe
+	// Cette fonction recherche dans le tableau des amis d'un membre, si un record "friendPseudo" non vide existe
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.searchPendingFriendRequest = (pItem, pProperty, pValue) => {
-		let myIndex = pItem.amis.map((propertyFilter) => {
+	MemberServer.prototype.searchPendingFriendRequest = (pItem, pProperty, pMyPseudo) => {
+		return pItem.amis.map((propertyFilter) => {
 			return propertyFilter[pProperty];
 		})
-		.indexOf(pValue);
-
-		this.objectFound = pItem.amis[myIndex];
-		return myIndex; 
+		.indexOf(pMyPseudo);
 	}
-
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification des données du visiteur (Pseudo + MDP) :
 	// On cherche la combinaison Pseudo et MDP
@@ -185,8 +177,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 				myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // Recherche du visiteur dans le tableau des membres
 				
-				this.objectPopulation.members[myIndex].email        = this.member.email;
-				this.objectPopulation.members[myIndex].pseudo       = this.member.pseudo;
+				this.objectPopulation.members[myIndex].email  = this.member.email;
+				this.objectPopulation.members[myIndex].pseudo = this.member.pseudo;
 
 				this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
@@ -325,16 +317,16 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		sgMail.send(messageToSend);
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Création de l'enregistrement technique avec le Nbre de message initialisé à 0
+	// Création de l'enregistrement technique avec le Nbre de messages initialisé à 0
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.createTechnicalRecord = function(){
 		let technicalRecord = {
 			nbrPublicMsgs : 0,                                       
 		}
 
-		vDBMgr.collectionTechnical.insertOne(techniqualRecord, (error) => {
+		vDBMgr.collectionTechnical.insertOne(technicalRecord, (error) => {
 			if (error){
-				console.log('Erreur d\'insertion dans la collection \'Technical\' : ',techniqualRecord);   // Si erreur technique... Message et Plantage
+				console.log('Erreur d\'insertion dans la collection \'Technical\' : ',technicalRecord);   // Si erreur technique... Message et Plantage
 				throw error;
 			} 
 
@@ -361,10 +353,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			} 
 			
 			if (count === 0 ){
-					this.createTechnicalRecord();   // Si c'est le 1er membre qui s'enregistre, création de l'enregistrement technique avec le Nbre de messages initialisé à 0
-					myRole = cstSuperAdmin;         // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin ==> Creation du membre avec ce statut
+				this.createTechnicalRecord();   // Si c'est le 1er membre qui s'enregistre, création de l'enregistrement technique avec le Nbre de messages initialisé à 0
+				myRole = cstSuperAdmin;         // Si c'est le 1er membre qui s'enregistre, c'est forcément le SuperAdmin ==> Creation du membre avec ce statut
 			} else {    
-					myRole = cstMembre;           
+				myRole = cstMembre;           
 			}
 
 			let myLocalDate = new Date();
@@ -390,8 +382,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 						street     : '',    // N° et voie
 						city       : '',    // Ville
 						zipCode    : '',    // Code Postal
-						department : '',    // Département
-						departmentName : '', // N° et nom du département
+						department : 'Non renseigné',    // Département
+						departmentName : 'Non renseigné', // N° et nom du département
 					},
 				},
 				preferences :
@@ -428,8 +420,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					prefAutre           : false,
 				},
 				amis : [{
-					pseudo               : '',
-					pendingFriendRequest : false,
+					friendPseudo         : '',
+					pendingFriendRequest : true,
 				}],
 				dateCreation    : myLocalDate,         // Timestamp de la création du record en tenant compte du décalage horaire
 			}
@@ -501,9 +493,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
 					throw error;                                                          
 				} 
-
+				
+				// Si pseudo trouvé --> KO pour la création de nouveau membre
 				if (documents.length){                     
-					return pWebSocketConnection.emit('retrySignInForm');                        // Si pseudo trouvé --> KO pour la création de nouveau membre
+					return pWebSocketConnection.emit('retrySignInForm');                        
 				} 
 
 				// Si mail + pseudo non trouvé --> On valide l'inscription en créant le membre
@@ -519,15 +512,15 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// - Les membres dejà amis --> Rejet
 	// - Les membres ayant reçu une invitation (invitation en cours = "Ami" non confirmé) --> Rejet
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.filterMembersToBeFriends = function(pPseudo, pItem){
+	MemberServer.prototype.filterMembersToBeFriends = function(pMyPseudo, pItem){
 		var result = true;
 
-		if (pItem.pseudo === pPseudo){  // Si le membre est moi-même, je ne vais pas m'afficher dans la liste des membres potentiellement futurs amis --> Rejet du membre
+		if (pItem.pseudo === pMyPseudo){  // Si le membre est moi-même, je ne vais pas m'afficher dans la liste des membres potentiellement futurs amis --> Rejet du membre
 			result = false;
 		} else {
-			let myIndex = this.searchPendingFriendRequest(pItem, 'pseudo', pPseudo);	// Vérification que le membre n'a pas déja une demande d'ami de ma part en attente
+			let myIndex = this.searchPendingFriendRequest(pItem, 'friendPseudo', pMyPseudo);	// Vérifie que le membre n'est pas dans la liste d'amis potentiels ou confirmés
 
-			if (myIndex > -1){		// Si je suis dejà un ami confirmé du membre en cours de lecture ou en attente d'acceptation, je rejete le membre de la liste d'amis potentiel
+			if (myIndex > -1){		// Si je suis dejà un ami potentiel ou confirmé du membre en cours de lecture, je rejete le membre de la liste d'amis potentiel
 				result = false;
 			}
 		}
@@ -537,14 +530,14 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.selectMembersToBeFriends = function(pPseudo, pWebSocketConnection, pSocketIo){
+	MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo, pWebSocketConnection, pSocketIo){
 		vDBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
 			{},
 			{
-				pseudo:1, 
-				"etatCivil.firstName":1,
-				"etatCivil.photo":1, 
-				_id:0
+				pseudo : 1, 
+				"etatCivil.firstName" : 1,
+				"etatCivil.photo" : 1, 
+				_id : 0
 			})
 		.toArray((error, documents) => {
 			if (error){
@@ -552,35 +545,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				throw error;
 			} 
 
-			
-// XXXXXXX 
-console.log('Liste des membres brute (avant filtrage) : Il y a ',documents.length,' membres')
-documents.forEach(function(value, index){
-	console.log('selectMembersToBeFriends avant - documents[index].pseudo : ',documents[index].pseudo);
-	console.log('--------------------------------------------------');
-})			
-console.log('**********************************************************');
-console.log('**********************************************************');
-	let vMembersFriendables = documents.filter(this.filterMembersToBeFriends.bind(this, pPseudo));
+			let vMembersFriendables = documents.filter(this.filterMembersToBeFriends.bind(this, pMyPseudo));
 
-console.log('------------------------------------------------------')
-console.log('Liste des membres pouvant devenir amis (après filtrage) : Il y a ',vMembersFriendables.length,' membres')
-console.log('------------------------------------------------------')
-
-	vMembersFriendables.forEach(function(item, index) {
-console.log('selectMembersToBeFriends après - vMembersFriendables pseudo : ',vMembersFriendables[index].pseudo);
-console.log('--------------------------------------------------');
-		});
-		
-		
-// // Si mail trouvé --> KO pour la création de nouveau membre
-// if (documents.length){                            
-// 	return pWebSocketConnection.emit('retrySignInForm'); 
-// }
-		
-		// .sort({name:1});
-
-
+			if (vMembersFriendables.length === 0){
+				return pWebSocketConnection.emit('emptyPotentialFriends'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
+			} else {
+				return pWebSocketConnection.emit('displayPotentialFriends',vMembersFriendables); // Affichage des membres pouvant devenir amis
+			}
 		})
 	};
 	// ---------------------------------------------------------------------------------------------------------------------------
