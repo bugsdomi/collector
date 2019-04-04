@@ -47,6 +47,7 @@ Todo:
   ☐ Convertir les fonctions anonymes en fonctions fleches
   ☐ Rajouter les petites icones dess menus dans les entetes des fenetres a coté du titre pour rappeler la fonctionnalité
   ☐ Dans la certe de présentation, si les champs ne sont pas remplis dans la fiche de renseignement, mettre "non renseigné"
+  ☐ Voir pour unifier le cadre et la bordeure des modales sur le meme modele que la Carte "Presentation"
   
   ☐ En mode Responsive, les modales sont trop larges
   ☐ Voir pourquoi le masque est trop petit en mode responsive

@@ -444,16 +444,16 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vSIOFU = new SocketIOFileUpload(webSocketConnection);
 
-	// siofu.addEventListener("progress", function(event){
-	//     var percent = event.bytesLoaded / event.file.size * 100;
-	//     console.log("File is", percent.toFixed(2), "percent loaded");
-	// });
+	siofu.addEventListener("progress", function(event){
+	    var percent = event.bytesLoaded / event.file.size * 100;
+	    console.log("File is", percent.toFixed(2), "percent loaded");
+	});
 
-	// siofu.addEventListener("complete", function(event){
-	//     console.log('Image upLoadée avec succès');
-	//     // console.log('event.success');
-	//     // console.log(event.file);
-	// });
+	siofu.addEventListener("complete", function(event){
+	    console.log('Image upLoadée avec succès');
+	    console.log('event.success');
+	    console.log(event.file);
+	});
 
 
 	// -------------------------------------------------------------------------

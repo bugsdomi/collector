@@ -57,9 +57,9 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	uploader.listen(webSocketConnection);
 
 
-	// uploader.on("error", function(event){
-	//     console.log("Error from uploader", event);
-	// });
+	uploader.on("error", function(event){
+		console.log("Error from uploader", event);
+	});
 
 	vMemberServer.initVisiteur(webSocketConnection, socketIo);    
 	
