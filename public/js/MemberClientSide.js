@@ -563,8 +563,8 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 	if (!this.newPasswordKO){
 		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisie dans l explorateur windows
 			this.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
-console.log('SubmitFiles pAccountParams.vAccountPhotoFile.files : ',pAccountParams.vAccountPhotoFile.files)
-			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
+// console.log('SubmitFiles pAccountParams.vAccountPhotoFile.files : ',pAccountParams.vAccountPhotoFile.files)
+			// pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
 			cstWaitForUpladToDisplayAvatar = true;
 		} else {
 			this.member.etatCivil.photo = pAccountParams.vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 

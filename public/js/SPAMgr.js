@@ -455,6 +455,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	    console.log(event.file);
 	});
 
+	vSIOFU.listenOnInput(document.getElementById("idAccountPhotoFile"));
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
@@ -587,6 +588,8 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	// -------------------------------------------------------------------------
 	// Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
+	// MAIS elle n'est pas encore envoyée vers le serveur, ce ne sera fait qu'à 
+	// la validation globale de la fiche de renseignement
 	// -------------------------------------------------------------------------
 	vAccountPhotoFile.addEventListener("change", function(){
 
