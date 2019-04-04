@@ -56,8 +56,19 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	
 	const uploader = new SocketIOFileUpload();
 	uploader.dir = path.join(__dirname, '/public/images/members');
-	uploader.listen(webSocketConnection);
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
+console.log('uploader.dir : ',uploader.dir)
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
+console.log('uploader : ',uploader)
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
 
+uploader.listen(webSocketConnection);
 
 	uploader.on("error", function(event){
 		console.log("Error from uploader", event);

@@ -590,8 +590,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	vAccountPhotoFile.addEventListener("change", function(){
 
-// XXXXX if (vAccountPhotoFile.files[0]!==''){		/* DH- */
-		if (vAccountPhotoFile.files[0]!=='undefined'){
+		// if (vAccountPhotoFile.files[0]!=='undefined'){ // Suggestion de Mathos
+		if (vAccountPhotoFile.files[0]!==''){		
 			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
 		}
 	}, false);
