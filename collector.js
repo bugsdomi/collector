@@ -23,7 +23,7 @@ vMemberServer.checkDBConnect();
 // l'affichage
 // -------------------------------------------------------------------------
 const app = express();
-app.use(SocketIOFileUpload.router);     // Gestionnaire de télécargement des photos du client vers le serveur
+app.use(SocketIOFileUpload.router);     // Gestionnaire de téléchargement des photos du client vers le serveur
 app.set('view engine', 'pug');
 app.use('/static', express.static(__dirname + '/public'));
 app.use('/staticNodeModules', express.static(__dirname + '/node_modules'));
@@ -42,8 +42,8 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // Fin de la partie HTTP - Début de la partie WebSocket avec "Socket.io"
 // ------------------------------------------------------------
 
-const uploader = new SocketIOFileUpload();
-uploader.dir = path.join(__dirname, '/public/images/members');
+// const uploader = new SocketIOFileUpload();
+// uploader.dir = path.join(__dirname, '/public/images/members');
 
 
 // -------------------------------------------------------------------------
@@ -53,7 +53,9 @@ let socketIo = new SocketIo(server);
 
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
 	console.log('Connexion')        
-
+	
+	const uploader = new SocketIOFileUpload();
+	uploader.dir = path.join(__dirname, '/public/images/members');
 	uploader.listen(webSocketConnection);
 
 
