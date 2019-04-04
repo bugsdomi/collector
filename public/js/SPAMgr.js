@@ -455,7 +455,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	    console.log(event.file);
 	});
 
-	vSIOFU.listenOnInput(document.getElementById("idAccountPhotoFile"));
+	// XXXXXXXX
+	vSIOFU.listenOnInput(document.getElementById('idAccountPhotoFile'));
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
@@ -591,13 +592,14 @@ window.addEventListener('DOMContentLoaded', function(){
 	// MAIS elle n'est pas encore envoyée vers le serveur, ce ne sera fait qu'à 
 	// la validation globale de la fiche de renseignement
 	// -------------------------------------------------------------------------
-	vAccountPhotoFile.addEventListener("change", function(){
+// XXXXXXXX
+	// vAccountPhotoFile.addEventListener("change", function(){
 
-		// if (vAccountPhotoFile.files[0]!=='undefined'){ // Suggestion de Mathos
-		if (vAccountPhotoFile.files[0]!==''){		
-			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
-		}
-	}, false);
+	// 	// if (vAccountPhotoFile.files[0]!=='undefined'){ // Suggestion de Mathos
+	// 	if (vAccountPhotoFile.files[0]!==''){		
+	// 		vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
+	// 	}
+	// }, false);
 
 	// -------------------------------------------------------------------------
 	// Initialise la gestion du changement de passe

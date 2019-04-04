@@ -70,8 +70,35 @@ console.log('*************************************')
 
 uploader.listen(webSocketConnection);
 
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
+	uploader.on("start", function(event){
+		console.log("Start - event.file", event.file);
+	});
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
+	uploader.on("progress", function(event){
+		console.log("Progress - event.buffer", event.buffer);
+	});
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
+	uploader.on("complete", function(event){
+		console.log("Complete - event.interrupt", event.interrupt);
+	});
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
+uploader.on("saved", function(event){
+	console.log("Saved - event.interrupt", event.interrupt);
+});
+console.log('*************************************')
+console.log('*************************************')
+console.log('*************************************')
 	uploader.on("error", function(event){
-		console.log("Error from uploader", event);
+		console.log("Error event.errorr", event.error);
 	});
 
 	vMemberServer.initVisiteur(webSocketConnection, socketIo);    
