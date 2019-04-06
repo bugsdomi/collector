@@ -287,6 +287,17 @@ body {
 }
 
 /* ******************************* */
+/* Masquage du menu du profil      */
+/* par defaut (lorsqu'on n est pas */ 
+/* connecté)                       */
+/* ******************************* */
+#idProfileNavBar{
+    display : none;
+}
+
+
+
+/* ******************************* */
 /* Avatar Tokenisé                 */
 /* ******************************* */
 .containerAvatarToken{

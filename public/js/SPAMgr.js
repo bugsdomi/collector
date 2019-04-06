@@ -32,92 +32,28 @@ window.addEventListener('DOMContentLoaded', function(){
 	// var webSocketConnection = io('http://192.168.0.20:3000');        // Endormi car je ne veux pas utiliser une adresse IP en dur
 	// var webSocketConnection = io('http://localhost:3000');           // Endormi car je veux pouvoir travailler sur plusieurs ordi
 
-// XXXXX
-	// -------------------------------------------------------------------------
-	// Affiche le fond d'écran bigaré, et le panneau de contrôle
-	// -------------------------------------------------------------------------
-	// webSocketConnection.on('drawGameBackground', function(){
-			// var vPlayerBackground = window.document.createElement('img');   
-			// window.document.body.appendChild(vPlayerBackground);     
-			// vPlayerBackground.setAttribute('src', 'static/images/FondEcran.jpg');
-			// vPlayerBackground.style.height = '100%';
-			// vPlayerBackground.style.width = '100%';
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
 
-			// vMemberClient.drawControlPanel(vOuterBrdrWindowList, vWindowList, webSocketConnection);
-	// });
-	// -------------------------------------------------------------------------
-	// Création et Affichage l'ensemble des pilules du joueurs qui ont été instanciées, 
-	// initialisées et envoyées par le serveur et creation du cadre des données 
-	// du joueurs et de son avatar
-	// -------------------------------------------------------------------------
-	// webSocketConnection.on('drawPils', function(pPlayerData){
-			// var vCurrentPlayer = 'player'+pPlayerData.currentPlayer; 
-
-			// vMemberClient.indexCurrentPlayer = vCurrentPlayer; 
-			// vMemberClient.currentPlayer = pPlayerData.currentPlayer; 
-			// vMemberClient.isItMe = pPlayerData.isItMe; 
-			// if (vMemberClient.isItMe){
-			//     vMemberClient.myClientPlayer = vMemberClient.indexCurrentPlayer;      // Identification de cette session-client car toutes les donnees type                       
-			//                                                                             // "CurrentPlayer" evoluent avec les nouvelles sessions
-			//     vMemberClient.myNumPlayer = vMemberClient.currentPlayer;
-			// }
-			// vMemberClient.maxPlayers = pPlayerData.maxPlayers; 
-			// vMemberClient.maxPilsByPlayer = pPlayerData.maxPilsByPlayer; 
-			// vMemberClient[vCurrentPlayer].pseudo= pPlayerData.objectPlayer[vCurrentPlayer].pseudo;
-			// vMemberClient[vCurrentPlayer].totalPlayedTime= pPlayerData.objectPlayer[vCurrentPlayer].totalPlayedTime;
-
-			// vMemberClient[vCurrentPlayer].couleur= pPlayerData.objectPlayer[vCurrentPlayer].couleur;
-			// vMemberClient[vCurrentPlayer].avatar= pPlayerData.objectPlayer[vCurrentPlayer].avatar;
-			// vMemberClient[vCurrentPlayer].pilsNonMangeesRestantes = pPlayerData.maxPilsByPlayer;
-
-			// for (var i=0; i<=vMemberClient.maxPilsByPlayer-1; i++){
-			//     vMemberClient[vCurrentPlayer].pils[i] = window.document.createElement('div');   // Création physique dynamique et ajout au DOM de chaque pilule
-			//     window.document.body.appendChild(vMemberClient[vCurrentPlayer].pils[i]);     
-			//     vMemberClient[vCurrentPlayer].pils[i].setAttribute('class', 'pils');
-					
-			//     vMemberClient[vCurrentPlayer].pils[i].style.zIndex= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].zIndex;
-			//     vMemberClient[vCurrentPlayer].pils[i].style.backgroundImage= 'url("'+pPlayerData.objectPlayer[vCurrentPlayer].fichier+'")';
-			//     vMemberClient[vCurrentPlayer].pils[i].style.left= pPlayerData.objectPlayer[vCurrentPlayer].pils[i].left;
-			//     vMemberClient[vCurrentPlayer].pils[i].style.top = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].top;
-			//     vMemberClient[vCurrentPlayer].pils[i].style.transform='rotate('+(pPlayerData.objectPlayer[vCurrentPlayer].pils[i].orientation)+'deg)';
-			//     vMemberClient[vCurrentPlayer].pils[i].mangee = pPlayerData.objectPlayer[vCurrentPlayer].pils[i].mangee;
-			// }           
-			// vMemberClient.drawPlayerFrame();           // dessine le cadre du joueur avec son pseudo, son avatar, et son score
-			// vMemberClient.drawAvatarToken();           // Dessine le jeton du joueur (qui sera en fait le nouveau curseur de la souris)
-	// });
-	// -------------------------------------------------------------------------
-	// Suppression et effacement de l'ensemble des pilules du joueurs qui s'est déconnecté 
-	// -------------------------------------------------------------------------
-	// webSocketConnection.on('erasePils', function(pPlayerData){
-			// var vCurrentPlayer = 'player'+pPlayerData.currentPlayer;   
-			
-			// for (var i=0; i<=pPlayerData.maxPilsByPlayer-1; i++){
-			//     vMemberClient[vCurrentPlayer].pils[i].parentNode.removeChild(vMemberClient[vCurrentPlayer].pils[i]);
-			// }
-
-			// vMemberClient[vCurrentPlayer].avatarToken.parentNode.removeChild(vMemberClient[vCurrentPlayer].avatarToken);
-	// });
-
-
-
-
-
-
-
-
-
-
-// ------------------------------------------------------------------------------------------------------------------------------ 
-// ------------------------------------------------------------------------------------------------------------------------------ 
-// ------------------------------------------------------------------------------------------------------------------------------ 
-// ------------------------------------------------------------------------------------------------------------------------------ 
-//																																
-// 																				Partie 1 :Initialisations
-// 
-// ------------------------------------------------------------------------------------------------------------------------------ 
-// ------------------------------------------------------------------------------------------------------------------------------ 
-// ------------------------------------------------------------------------------------------------------------------------------ 
-// ------------------------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	//																																																																
+	//                               Partie 1 : Initialisations
+	// 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------
 
 	// -------------------------------------------------------------------------
 	// Initialisations
@@ -129,6 +65,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	vToolBox = new ToolBox();
 	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()			// Activation des toolTips de BootStrap
+	})
+
 	// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal (Header Menu)
@@ -156,20 +96,14 @@ window.addEventListener('DOMContentLoaded', function(){
 //
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
-// Eléments du menu du profil (Profile Menu sous l'Avatar)
+// Eléments du menu du profil ("Profile Menu" sous l'Avatar)
 // -------------------------------------------------------------------------
 	var vProfileNavBar = document.getElementById('idProfileNavBar');			// Menu du profil
 	var vAddFriend = document.getElementById('idAddFriend');							// Bouton "Ajouter des amis"
 	vAddFriend.addEventListener('click', function(){											// Ouvre la fenêtre d'ajout d'amis
-
 	// Demande au serveur d'afficher les membres (filtrés) pour les présenter dans une liste d'amis potentiels
-	webSocketConnection.emit('askAddFriend', vMemberClient.member.pseudo);  
+		webSocketConnection.emit('askAddFriend', vMemberClient.member.pseudo);  
 	});
-
-	// Neutralise la NavBar du profil par defaut en appliquant un masque par-dessus 
-	// car aucun membre n'est connecté au lancement de la session
-	// vMemberClient.maskOn('idProfileNavBar', {zIndex:1, color:'white'}); 
-	vToolBox.maskOn(vProfileNavBar, {zIndex:1, color:'white'}); 
 
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
 	// et le haut du Footer, pour que le fond d'écran ne soit pas interrompu lorsque 
@@ -212,22 +146,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 
-
-
-
-
-
-
-
-
-
-
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	// Eléments de la fenêtre modale générique
 	// Initialisation du texte de la fenetre modale en mode "A propos" (par défaut 
 	// et également en cas de réaction au "Click")
-	// 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	var vGenericModalHeader = document.getElementById('idGenericModalHeader');
@@ -242,9 +165,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	// 
 	// Eléments de champs de saisie de la Modale de Login
-	// 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	var vLoginForm = document.getElementById('idLoginForm');
@@ -320,15 +241,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	vLostPWDForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
-		webSocketConnection.emit('LostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   // Transmission au serveur des infos saisies
+		webSocketConnection.emit('lostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   // Transmission au serveur des infos saisies
 		$('#idModalLostPWD').modal('toggle');                                        // Fermeture de la fenêtre modale de Login
 	});
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	// 	
 	// Eléments de champs de saisie de la Modale de Création de compte (SignIn)
-	//
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	var vSignInForm = document.getElementById('idSignInForm');
@@ -373,9 +292,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	// 
 	// Eléments des champs de saisie de la Modale de renseignements (Account)
-	// 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	var vAccountForm = document.getElementById('idAccountForm');
@@ -423,7 +340,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAccountPrefWW2 = document.getElementById('idAccountPrefWW2');
 	var vAccountPrefContemporain = document.getElementById('idAccountPrefContemporain');
 	var vAccountPrefFuturiste = document.getElementById('idAccountPrefFuturiste');
-	var vAccountPrefFuturisteLabel = document.getElementById('idAccountPrefFuturisteLabel');
 	var vAccountPrefFantastique = document.getElementById('idAccountPrefFantastique');
 	var vAccountPrefHFrancaise = document.getElementById('idAccountPrefHFrancaise');
 	var vAccountPrefHAmericaine = document.getElementById('idAccountPrefHAmericaine');
@@ -444,40 +360,159 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vSIOFU = new SocketIOFileUpload(webSocketConnection);
 
-	vSIOFU.addEventListener("progress", function(event){
-	    var percent = event.bytesLoaded / event.file.size * 100;
-	    console.log("File is", percent.toFixed(2), "percent loaded");
+	vSIOFU.addEventListener('progress', function(event){
+		var percent = event.bytesLoaded / event.file.size * 100;
+		console.log('File is', percent.toFixed(2), 'percent loaded');
 	});
 
-	vSIOFU.addEventListener("complete", function(event){
-	    console.log('Image upLoadée avec succès');
-	    console.log('event.success');
-	    console.log(event.file);
+	vSIOFU.addEventListener('complete', function(event){
+		console.log('Image upLoadée avec succès');
+		console.log('event.success');
+		console.log(event.file);
 	});
-
-	// XXXXXXXX
-	vSIOFU.listenOnInput(document.getElementById('idAccountPhotoFile'));
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	// 
 	// Eléments des champs de saisie de la Modale d'ajout d'amis
-	// 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
 	var vModalAddFriend = document.getElementById('idModalAddFriend');
 	var vModalAddFriendHeader = document.getElementById('idModalAddFriendHeader');
 	var vListGroup = document.getElementById('idListGroup');
 
-	// Suppression de tous les éléments de la liste des membres pouvant devenir ami
+	// Suppression de tous les éléments de la liste des membres pouvant devenir ami à la fermeture de la modale
 	$('#idModalAddFriend').on('hidden.bs.modal', () => {
 		while (vListGroup.firstChild) {
+			vListGroup.firstChild.removeEventListener('click', sendInvitation);
 			vListGroup.removeChild(vListGroup.firstChild);
 		}
 	})
+
+	// -------------------------------------------------------------------------
+	// Initialisation Modale de la Fiche de renseignements avec 
+	// les datas provenant de la BDD
+	// -------------------------------------------------------------------------
+	vAccount.addEventListener('click', function(){
+		vMemberClient.initModalAccount(vAccountParams);
+	});
+
+	// -------------------------------------------------------------------------
+	// MAJ en temps réel du champ age dès qu'il y a une modification de la date de naissance
+	// -------------------------------------------------------------------------
+	vAccountBirthDate.addEventListener('click', function(){
+		vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
+	});          
+	vAccountBirthDate.addEventListener('input', function(){
+		vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
+	});          
 	
 	// -------------------------------------------------------------------------
-	// Structure de transfert des infos de de contexte (NavBar, Options de menus, etc...)
+	// MAJ en temps réel de la silhouette de l'avatar (si aucune photo n'a été chargée)
+	// en fonction de la sélection du sexe
+	// -------------------------------------------------------------------------
+	vAccountSexNone.addEventListener('click', function(){
+		vMemberClient.updateAvatar(0, vAccountPhotoImg);
+	});          
+	vAccountSexMale.addEventListener('click', function(){
+		vMemberClient.updateAvatar(1, vAccountPhotoImg);
+	});          
+	vAccountSexFemale.addEventListener('click', function(){
+		vMemberClient.updateAvatar(2, vAccountPhotoImg);
+	});              
+
+	// -------------------------------------------------------------------------
+	// Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
+	// MAIS elle n'est pas encore envoyée vers le serveur, ce ne sera fait qu'à 
+	// la validation globale de la fiche de renseignement
+	// -------------------------------------------------------------------------
+	vAccountPhotoFile.addEventListener('change', function(){
+
+		// if (vAccountPhotoFile.files[0]!=='undefined'){ // Suggestion de Mathos
+		if (vAccountPhotoFile.files[0]!==undefined){		
+			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
+		}
+	}, false);
+
+	// -------------------------------------------------------------------------
+	// Initialise la gestion du changement de passe
+	// Si le MDP actuel saisi = a celui qui est stocké en BDD, on active les 2 
+	// champs de New MDP
+	// Sinon, on affiche un Message d'erreur ey on reboucle, et surtout, on ne 
+	// met pas a jour la fiche de renseignement dans la BDD
+	// -------------------------------------------------------------------------
+	vAccountCurrentPassword.onchange = function(){
+		vMemberClient.newPasswordKO = true;
+
+		if (vAccountForm.idAccountCurrentPassword.value !== ''){
+			if (vAccountForm.idAccountCurrentPassword.value === vMemberClient.member.password){
+				vAccountAlertMsg.innerHTML='';
+				vAccountAlertMsg.style.visibility = 'hidden';  
+				vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
+				vAccountPassword.removeAttribute('disabled');
+				vAccountConfirmPassword.removeAttribute('disabled');
+				vAccountPassword.focus();
+			} else {
+				vAccountAlertMsg.innerHTML='Mot de passe actuel erroné';                // Affichage du message d'alerte de MDP actuel erroné
+				vAccountAlertMsg.style.visibility = 'visible';                                 
+				vMemberClient.InitHeaderColor('bg-danger', vModalAccountHeader);
+				vAccountPassword.setAttribute('disabled','true');
+				vAccountConfirmPassword.setAttribute('disabled','true');
+				vAccountPassword.focus();
+			};
+		} else {
+			vMemberClient.newPasswordKO = false;
+			vAccountAlertMsg.innerHTML='';
+			vAccountAlertMsg.style.visibility = 'hidden';  
+			vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
+			vAccountPassword.setAttribute('disabled','true');
+			vAccountConfirmPassword.setAttribute('disabled','true');
+			vAccountPassword.focus();
+		}
+	};
+
+	// -------------------------------------------------------------------------
+	// Vérification que les MDP sont identiques
+	// -------------------------------------------------------------------------
+	vAccountPassword.onchange = function(){
+		vMemberClient.validatePassword(vAccountPassword, vAccountConfirmPassword)
+	};          
+	vAccountConfirmPassword.onkeyup = function(){
+		vMemberClient.validatePassword(vAccountPassword, vAccountConfirmPassword)
+	};     
+
+	// -------------------------------------------------------------------------
+	// Validation Modale  Fiche "Renseignements"
+	// -------------------------------------------------------------------------
+		vAccountForm.addEventListener('submit', function (event){ 
+			event.preventDefault();
+			vMemberClient.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
+		});
+
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	//																																																																
+	//                               Partie 2 : Structures de transfert vers l'objet Principal "vMemberClient"
+	// 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------ 
+	// ------------------------------------------------------------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
+	// Structure de transfert des infos de contexte (NavBar, Options de menus, etc...)
 	// -------------------------------------------------------------------------
 	var vContextInfo = {
 		vConnexion,
@@ -555,121 +590,23 @@ window.addEventListener('DOMContentLoaded', function(){
 		vAccountConfirmPassword,
 	}
 
-	// -------------------------------------------------------------------------
-	// Initialisation Modale de la Fiche de renseignements avec 
-	// les datas provenant de la BDD
-	// -------------------------------------------------------------------------
-	vAccount.addEventListener('click', function(){
-		vMemberClient.initModalAccount(vAccountParams);
-	});
-
-	// -------------------------------------------------------------------------
-	// MAJ en temps réel du champ age dès qu'il y a une modification de la date de naissance
-	// -------------------------------------------------------------------------
-	vAccountBirthDate.addEventListener('click', function(){
-		vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
-	});          
-	vAccountBirthDate.addEventListener('input', function(){
-		vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
-	});          
-	
-	// -------------------------------------------------------------------------
-	// MAJ en temps réel de la silhouette de l'avatar (si aucune photo n'a été chargée)
-	// en fonction de la sélection du sexe
-	// -------------------------------------------------------------------------
-	vAccountSexNone.addEventListener('click', function(){
-		vMemberClient.updateAvatar(0, vAccountPhotoImg);
-	});          
-	vAccountSexMale.addEventListener('click', function(){
-		vMemberClient.updateAvatar(1, vAccountPhotoImg);
-	});          
-	vAccountSexFemale.addEventListener('click', function(){
-		vMemberClient.updateAvatar(2, vAccountPhotoImg);
-	});              
-
-	// -------------------------------------------------------------------------
-	// Affiche l'image de profil apres l'avoir selectionné avec un input type="file"
-	// MAIS elle n'est pas encore envoyée vers le serveur, ce ne sera fait qu'à 
-	// la validation globale de la fiche de renseignement
-	// -------------------------------------------------------------------------
-// XXXXXXXX
-	// vAccountPhotoFile.addEventListener("change", function(){
-
-	// 	// if (vAccountPhotoFile.files[0]!=='undefined'){ // Suggestion de Mathos
-	// 	if (vAccountPhotoFile.files[0]!==''){		
-	// 		vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
-	// 	}
-	// }, false);
-
-	// -------------------------------------------------------------------------
-	// Initialise la gestion du changement de passe
-	// Si le MDP actuel saisi = a celui qui est stocké en BDD, on active les 2 
-	// champs de New MDP
-	// Sinon, on affiche un Message d'erreur ey on reboucle, et surtout, on ne 
-	// met pas a jour la fiche de renseignement dans la BDD
-	// -------------------------------------------------------------------------
-	vAccountCurrentPassword.onchange = function(){
-		vMemberClient.newPasswordKO = true;
-
-		if (vAccountForm.idAccountCurrentPassword.value !== ''){
-			if (vAccountForm.idAccountCurrentPassword.value === vMemberClient.member.password){
-				vAccountAlertMsg.innerHTML='';
-				vAccountAlertMsg.style.visibility = 'hidden';  
-				vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
-				vAccountPassword.removeAttribute('disabled');
-				vAccountConfirmPassword.removeAttribute('disabled');
-				vAccountPassword.focus();
-			} else {
-				vAccountAlertMsg.innerHTML='Mot de passe actuel erroné';                // Affichage du message d'alerte de MDP actuel erroné
-				vAccountAlertMsg.style.visibility = 'visible';                                 
-				vMemberClient.InitHeaderColor('bg-danger', vModalAccountHeader);
-				vAccountPassword.setAttribute('disabled','true');
-				vAccountConfirmPassword.setAttribute('disabled','true');
-				vAccountPassword.focus();
-			};
-		} else {
-			vMemberClient.newPasswordKO = false;
-			vAccountAlertMsg.innerHTML='';
-			vAccountAlertMsg.style.visibility = 'hidden';  
-			vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
-			vAccountPassword.setAttribute('disabled','true');
-			vAccountConfirmPassword.setAttribute('disabled','true');
-			vAccountPassword.focus();
-		}
-	};
-
-	// -------------------------------------------------------------------------
-	// Vérification que les MDP sont identiques
-	// -------------------------------------------------------------------------
-	vAccountPassword.onchange = function(){
-		vMemberClient.validatePassword(vAccountPassword, vAccountConfirmPassword)
-	};          
-	vAccountConfirmPassword.onkeyup = function(){
-		vMemberClient.validatePassword(vAccountPassword, vAccountConfirmPassword)
-	};     
-
-	// -------------------------------------------------------------------------
-	// Validation Modale  Fiche "Renseignements"
-	// -------------------------------------------------------------------------
-		vAccountForm.addEventListener('submit', function (event){ 
-			event.preventDefault();
-			vMemberClient.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
-		});
-
-
-
-
-
-
-
-
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
+// ********************************************************************************************************************************
 
 	// ------------------------------------------------------------------------------------------------------------------------------ 
 	// ------------------------------------------------------------------------------------------------------------------------------ 
 	// ------------------------------------------------------------------------------------------------------------------------------ 
 	// ------------------------------------------------------------------------------------------------------------------------------ 
 	//																																																																
-	//                                   partie 2 :  Reception des messages en provenance du serveur 
+	//                                   Partie 3 :  Reception des messages en provenance du serveur 
 	// 
 	// ------------------------------------------------------------------------------------------------------------------------------ 
 	// ------------------------------------------------------------------------------------------------------------------------------ 
@@ -687,105 +624,108 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
 		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
 	});
+	
+	// --------------------------------------------------------------
+	// Cette fonction alimente un objet avec des créations dans le DOM 
+	// des lignes HTML pour chaque memebre pouvant devenir ami
+	// --------------------------------------------------------------
+	function AddHTMLLines(item, index) {
+		this.lineHTML = {		// Structure HTML générée pour chaque ligne de membre
+			vA 				 : null,				// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
+			vDivRow 	 : null,				// <div class="row">
+			vDivAvatar : null,				// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
+			vImg 			 : null,				// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+			vDivName 	 : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
+			vDivFA 		 : null,				// <div class="col-2 text-center align-self-center">
+			vIFA 			 : null,				// <i class="fa fa-user-plus fa-2x text-dark"></i>
+		};
 
+		this.friend = item;
+		this.index = index;
+
+		// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
+		this.lineHTML.vA = window.document.createElement('a');
+		vListGroup.appendChild(this.lineHTML.vA);
+		this.lineHTML.vA.setAttribute('href', '#');
+		this.lineHTML.vA.setAttribute('id', 'anchor'+index);
+		this.lineHTML.vA.setAttribute('class', 'list-group-item list-group-item-action list-group-item-white');
+		
+		// <div class="row">
+		this.lineHTML.vDivRow = window.document.createElement('div');
+		this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
+		this.lineHTML.vDivRow.setAttribute('class', 'row');
+
+		// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
+		this.lineHTML.vDivAvatar = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
+		this.lineHTML.vDivAvatar.setAttribute('class', 'col-4 containerAvatarToken py-1 text-center align-self-center');
+		
+		// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+		this.lineHTML.vImg = window.document.createElement('img');
+		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
+		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken');
+		this.lineHTML.vImg.setAttribute('class', 'avatar-token');
+		this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
+		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
+		
+		// <div class="col-5 align-self-center font-size-120">xxx</div>
+		this.lineHTML.vDivName = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
+		this.lineHTML.vDivName.setAttribute('class', 'col-5 align-self-center font-size-120');
+		this.lineHTML.vDivName.innerText = item.pseudo;
+		
+		// <div class="col-3 text-center align-self-center">
+		this.lineHTML.vDivFA = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
+		this.lineHTML.vDivFA.setAttribute('class', 'col-3 text-center align-self-center pl-0');
+
+		// <i class="fa fa-user-plus fa-2x text-dark"></i>
+		this.lineHTML.vIFA = window.document.createElement('i');
+		this.lineHTML.vDivFA.appendChild(this.lineHTML.vIFA);
+		this.lineHTML.vIFA.setAttribute('class', 'fa fa-user-plus fa-2x text-dark');
+	}
+
+	// --------------------------------------------------------------
+	// Envoi d'une invitation pour devenir ami (Une seule demande par ami):
+	// Bascule la couleur de l'icône "Ajout d'amis"
+	// 
+	// --------------------------------------------------------------
+	function sendInvitation(pMemberFriendable){
+		if (!pMemberFriendable.lineHTML.vIFA.classList.contains('text-info')){
+			pMemberFriendable.lineHTML.vIFA.classList.replace('text-dark','text-info'); 
+console.log('vMemberClient.member : ',vMemberClient.member)
+console.log('pMemberFriendable : ',pMemberFriendable)
+
+			var vFriendToAdd = {
+				vMyEmail 			: vMemberClient.member.email,
+				vMyPseudo			:	vMemberClient.member.pseudo,
+				vFriendEmail  : pMemberFriendable.friend.email,
+				vFriendPseudo : pMemberFriendable.friend.pseudo,
+			}
+
+console.log('vFriendToAdd : ',vFriendToAdd)
+			webSocketConnection.emit('processInvitation', vFriendToAdd);  
+
+alert('Je deviens ami')
+		}
+	}
 	// --------------------------------------------------------------
 	// On a reçu une liste de membres pouvant devenir amis
 	// Ajout dynamique des membres dans le DOM sur la modale
 	// de sélection des membres pour devenir amis
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayPotentialFriends', function(pMembersFriendables){   
-
-// console.log('pMembersFriendables : ',pMembersFriendables);
-
 		var vMembersFriendables = [];
-
-		var vMembersFriendablesLine = {
-			vA 				 : null,
-			vDivRow 	 : null,
-			vDivAvatar : null,
-			vImg 			 : null,
-			vDivName 	 : null,
-			vDivFA 		 : null,
-			vIFA 			 : null,
-		};
 
 		// Préparation et ouverture de la fenêtre modale de sélection des membres pouvant devenir amis
 		vMemberClient.InitHeaderColor('bg-warning', vModalAddFriendHeader);
 		$('#idModalAddFriend').modal('toggle');                                          
 
+		// Création dynamique des lignes HTML et création des EventListener pour activer les opération de demande d'ami
 		pMembersFriendables.forEach(function(item, index) {
-console.log('forEach - item: ',item,' --- index : ',index);
-
-// console.log('selectMembersToBeFriends - pMembersFriendables pseudo : ',pMembersFriendables[index].pseudo);
-// console.log('--------------------------------------------------');
-
-console.log('vMembersFriendablesLine pendant : ',vMembersFriendablesLine,' --- index : ',index)
-			// Ajoute les éléments d'une ligne vide dans le tableau des éléments
-			vMembersFriendables.push(vMembersFriendablesLine);
-console.log('vMembersFriendables[0] pendant : ',vMembersFriendables[0],' --- index : ',index)
-
-			// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
-			vMembersFriendables[index].vA = window.document.createElement('a');
-			vListGroup.appendChild(vMembersFriendables[index].vA);
-			vMembersFriendables[index].vA.setAttribute('href', '#');
-			vMembersFriendables[index].vA.setAttribute('id', 'ancre'+index);
-			vMembersFriendables[index].vA.setAttribute('class', 'list-group-item list-group-item-action list-group-item-white');
-			
-			// <div class="row">
-			vMembersFriendables[index].vDivRow = window.document.createElement('div');
-			vMembersFriendables[index].vA.appendChild(vMembersFriendables[index].vDivRow);
-			vMembersFriendables[index].vDivRow.setAttribute('class', 'row');
-	
-			// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
-			vMembersFriendables[index].vDivAvatar = window.document.createElement('div');
-			vMembersFriendables[index].vDivRow.appendChild(vMembersFriendables[index].vDivAvatar);
-			vMembersFriendables[index].vDivAvatar.setAttribute('class', 'col-4 containerAvatarToken py-1 text-center align-self-center');
-			
-			// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
-			vMembersFriendables[index].vImg = window.document.createElement('img');
-			vMembersFriendables[index].vDivAvatar.appendChild(vMembersFriendables[index].vImg);
-			vMembersFriendables[index].vImg.setAttribute('id', 'idAvatarToken');
-			vMembersFriendables[index].vImg.setAttribute('class', 'avatar-token');
-			vMembersFriendables[index].vImg.setAttribute('alt', 'Membre pouvant devenir ami');
-			vMembersFriendables[index].vImg.setAttribute('src', 'static/images/members/' + pMembersFriendables[index].etatCivil.photo);
-			
-			// <div class="col-4 align-self-center font-size-120">xxx</div>
-			vMembersFriendables[index].vDivName = window.document.createElement('div');
-			vMembersFriendables[index].vDivRow.appendChild(vMembersFriendables[index].vDivName);
-			vMembersFriendables[index].vDivName.setAttribute('class', 'col-6 align-self-center font-size-120');
-			vMembersFriendables[index].vDivName.innerText = pMembersFriendables[index].pseudo;
-			
-			// <div class="col-4 text-center align-self-center">
-			vMembersFriendables[index].vDivFA = window.document.createElement('div');
-			vMembersFriendables[index].vDivRow.appendChild(vMembersFriendables[index].vDivFA);
-			vMembersFriendables[index].vDivFA.setAttribute('class', 'col-2 text-center align-self-center');
-	
-			// <i class="fa fa-user-plus fa-2x text-dark"></i>
-			vMembersFriendables[index].vIFA = window.document.createElement('i');
-			vMembersFriendables[index].vDivFA.appendChild(vMembersFriendables[index].vIFA);
-			vMembersFriendables[index].vIFA.setAttribute('class', 'fa fa-user-plus fa-2x text-dark');
-
-			vMembersFriendables[index].vA.addEventListener('click', function(){
-				vMembersFriendables[index].vIFA.classList.remove('text-dark');         
-				vMembersFriendables[index].vIFA.classList.add('text-info');      
-			});		
+			vMembersFriendables.push(new AddHTMLLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+			vMembersFriendables[index].lineHTML.vA.addEventListener('click', sendInvitation.bind(this,vMembersFriendables[index]));		
 		});
-
-console.log('vMembersFriendables à la fin : ',vMembersFriendables)
-
-// Modèle apres clic de selection
-// <i class="fa fa-user-plus fa-2x text-secondary"></i>
-// <i class="fa fa-user-times fa-2x text-info"></i>
-
-	// this.adviseBtn.addEventListener('click', function(){
-	// 		this.adviseBtn.parentNode.removeChild(this.adviseBtn);
-	// 		this.adviseLi.parentNode.removeChild(this.adviseLi);            // Suppression de la fenêtre d'avertissement du DOM
-	// 		this.adviseOL.parentNode.removeChild(this.adviseOL);
-	// 		this.clearAdvise();
-	// 		if (pAction){
-	// 				pAction.call(this,pMyPlayer,pWebSocketConnection);     // Lancement de l'action correspondante à celle indiquée sur le bouton de la fenêtre d'avertissement
-	// 		}
-	// }.bind(this));
 	});
 
 	// --------------------------------------------------------------
@@ -795,7 +735,7 @@ console.log('vMembersFriendables à la fin : ',vMembersFriendables)
 	webSocketConnection.on('retryLostPWDForm', function(){   
 		vLostPWDAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de saisie d'email erroné
 		vMemberClient.InitHeaderColor('bg-danger', vModalLostPWDHeader);
-		setTimeout(function(){$("#idModalLostPWD").modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalLostPWD').modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -805,7 +745,7 @@ console.log('vMembersFriendables à la fin : ',vMembersFriendables)
 	webSocketConnection.on('retryLoginForm', function(){   
 		vLoginAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalLoginHeader);
-		setTimeout(function(){$("#idModalLogin").modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalLogin').modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -815,7 +755,7 @@ console.log('vMembersFriendables à la fin : ',vMembersFriendables)
 	webSocketConnection.on('retrySignInForm', function(){   
 		vSignInAlertMsg.style.visibility = 'visible';                               // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalSignInHeader);
-		setTimeout(function(){$("#idModalSignIn").modal('toggle')},300);            // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalSignIn').modal('toggle')},300);            // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------

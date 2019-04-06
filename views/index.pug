@@ -636,7 +636,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
   .container-fluid
     div
-      img.d-inline-block.mr-2(alt='Copyright Vil-Coyote Product' src='static/images/running-vil-coyote.png' height='40')
+      img.d-inline-block.mr-2(alt='Copyright Vil-Coyote Product' src='static/images/Vil-Coyote - Pressé - Transparent.png' height='40')
       span.footer-copyright &copy;Vil-Coyotte Product - 2018
 // ******************************************************************************************************************************
 // ******************************************************************************************************************************
@@ -653,7 +653,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
 // "idModalBodyText" sont alimentés par javascript
 // ***********************************************************************************
-#idGenericModal.modal(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
+#idGenericModal.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idGenericModalHeader.modal-header
@@ -667,7 +667,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale Login
 // *************************************************************************
-#idModalLogin.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
+#idModalLogin.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLoginHeader.modal-header
@@ -695,7 +695,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale Inscription
 // *************************************************************************
-#idModalSignIn.modal(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
+#idModalSignIn.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalSignInHeader.modal-header
@@ -729,8 +729,9 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale de Mot de passe perdu
 // *************************************************************************
-#idModalLostPWD.modal(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered.mt-5(role='document')
+#idModalLostPWD.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
+  // <div class="modal-dialog modal-dialog-centered mt-5" role="document">
+  .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLostPWDHeader.modal-header
         h5.modal-title
@@ -755,7 +756,8 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale de renseignements
 // *************************************************************************
-#idModalAccount.modal(tabindex='-1' role='dialog' aria-labelledby='idModalAccountTitle' aria-hidden='true')
+#idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalAccountTitle' aria-hidden='true')
+  // <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width: 800px;">
   .modal-dialog.modal-dialog-centered(role='document' style='max-width: 800px;')
     .modal-content
       #idModalAccountHeader.modal-header
@@ -1077,8 +1079,9 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale d'ajout d'amis
 // *************************************************************************
-#idModalAddFriend.modal(tabindex='-1' role='dialog' aria-labelledby='idModalAddFriendTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered.mt-5(role='document' style='max-width: 600px;')
+#idModalAddFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalAddFriendTitle' aria-hidden='true')
+  // <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable mt-5" role="document" style="max-width: 600px;">
+  .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalAddFriendHeader.modal-header
         h5.modal-title
@@ -1086,7 +1089,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
           |  Ajout d&apos;amis
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
-        .container
+        .container.px-0
           h6.text-center S&eacute;lectionnez les membres avec qui vous souhaitez devenir ami
           #idListGroup.list-group
       // Modal-Body
@@ -1156,5 +1159,5 @@ script(src='static/js/SPAMgr.js')
 script(src='static/js/MemberClientSide.js')
 script(src='siofu/client.js')
 script(src='static/js/custom.js')
-// </div>
+// </>
 // Opacity

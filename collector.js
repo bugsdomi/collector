@@ -41,11 +41,6 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // ------------------------------------------------------------
 // Fin de la partie HTTP - Début de la partie WebSocket avec "Socket.io"
 // ------------------------------------------------------------
-
-// const uploader = new SocketIOFileUpload();
-// uploader.dir = path.join(__dirname, '/public/images/members');
-
-
 // -------------------------------------------------------------------------
 // Création de la liaison socket.io sur la base du serveur HTTP déja déclaré précédement
 // -------------------------------------------------------------------------
@@ -54,53 +49,35 @@ let socketIo = new SocketIo(server);
 socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
 	console.log('Connexion')        
 	
+	// ------------------------------------
+	// Gestion de l'Upload des Avatars
+	// ------------------------------------
 	const uploader = new SocketIOFileUpload();
 	uploader.dir = path.join(__dirname, '/public/images/members');
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-console.log('uploader.dir : ',uploader.dir)
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-console.log('uploader : ',uploader)
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
+	console.log('uploader : ',uploader)
+	console.log('uploader.dir : ',uploader.dir)
 
-uploader.listen(webSocketConnection);
+	uploader.listen(webSocketConnection);
 
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-	uploader.on("start", function(event){
-		console.log("Start - event.file", event.file);
+	uploader.on('start', function(event){
+		console.log('Start - event.file', event.file);
 	});
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-	uploader.on("progress", function(event){
-		console.log("Progress - event.buffer", event.buffer);
+	uploader.on('progress', function(event){
+		console.log('Progress - event.buffer', event.buffer);
 	});
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-	uploader.on("complete", function(event){
-		console.log("Complete - event.interrupt", event.interrupt);
+	uploader.on('complete', function(event){
+		console.log('Complete - event.interrupt', event.interrupt);
 	});
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-uploader.on("saved", function(event){
-	console.log("Saved - event.interrupt", event.interrupt);
-});
-console.log('*************************************')
-console.log('*************************************')
-console.log('*************************************')
-	uploader.on("error", function(event){
-		console.log("Error event.errorr", event.error);
+	uploader.on('saved', function(event){
+		console.log('Saved - event.file.success', event.file.success);
+	});
+	uploader.on('error', function(event){
+		console.log('Error event.errorr', event.error);
 	});
 
+	// ------------------------------------
+	// Connexion, création et contrôles de connexion
+	// ------------------------------------
 	vMemberServer.initVisiteur(webSocketConnection, socketIo);    
 	
 	// On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
@@ -118,19 +95,27 @@ console.log('*************************************')
 	// On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
 	webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
 		vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
-		uploader.on("saved", function(event){
+		uploader.on('saved', function(event){
 			webSocketConnection.emit('displayAvatarOnProfile');     // On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
 		});
 	});    
 
 	// On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
-	webSocketConnection.on('LostPWDMgr',function(pLostPWDEmail){
+	webSocketConnection.on('lostPWDMgr',function(pLostPWDEmail){
 		vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection);
 	});
-	
+
+	// ------------------------------------
+	// Gestion des amis
+	// ------------------------------------
 	// On a reçu une demande d'ajout d'amis --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis)
 	webSocketConnection.on('askAddFriend', function(pMyPseudo){
-	vMemberServer.selectMembersToBeFriends(pMyPseudo, webSocketConnection);
+		vMemberServer.selectMembersToBeFriends(pMyPseudo, webSocketConnection);
+	});   						
+
+	// On a reçu une ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
+	webSocketConnection.on('processInvitation', function(pFriendToAdd){
+		vMemberServer.processInvitation(pFriendToAdd);
 	});   						
 
 	// Un membre se déconnecte

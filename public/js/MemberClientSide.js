@@ -7,7 +7,7 @@
 function MemberClient(){   // Fonction constructeur exportée
 
 	this.newPasswordKO = false;    // Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
-	this.member =                  // Structure du membre
+	this.member =                   // Structure de stockage provisoire du membre
 	{   
 		email           : '',
 		pseudo          : '',
@@ -18,20 +18,19 @@ function MemberClient(){   // Fonction constructeur exportée
 
 		etatCivil : 
 		{
-				photo          : '',    // Emplacement de la photo de profil
-				firstName      : '',    // Prénom
-				name           : '',    // Nom
-				birthDate      : '',    // Date de naissance
-				sex            : 0,     // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
-				address : 
-				{
-					street     : '',    // N° et voie
-					city       : '',    // Ville
-					zipCode    : '',    // Code Postal
-					department : '',    // N° Département --> Sert a initialiser le champ "select" des départements
-					departmentName : '',    // Département : N° + nom
-
-				},
+			photo          : '',    // Emplacement de la photo de profil
+			firstName      : '',    // Prénom
+			name           : '',    // Nom
+			birthDate      : '',    // Date de naissance
+			sex            : 0,     // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
+			address : 
+			{
+				street     : '',    // N° et voie
+				city       : '',    // Ville
+				zipCode    : '',    // Code Postal
+				department : '',    // N° Département --> Sert a initialiser le champ "select" des départements
+				departmentName : '',    // Département : N° + nom
+			},
 		},
 		preferences : {
 			prefGravures        : false,
@@ -65,12 +64,8 @@ function MemberClient(){   // Fonction constructeur exportée
 			prefHInternationale : false,
 			prefAutre           : false,
 		},
-		amis : 
-			[{
-				friendPseudo         : '',
-				pendingFriendRequest : true,
-			}],
-		dateCreation    : -1,       // Timestamp de la création du record
+		amis : [],
+			dateCreation : -1,       // Timestamp de la création du record
 	}
 }
 
@@ -90,7 +85,7 @@ MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField)
 // -----------------------------------------------------------------------------
 MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
 	if (pPassword.value != pConfirmPassword.value){
-		pConfirmPassword.setCustomValidity("Les mots de passe ne correspondent pas");
+		pConfirmPassword.setCustomValidity('Les mots de passe ne correspondent pas');
 		this.newPasswordKO = true;
 	} else {
 		pConfirmPassword.setCustomValidity('');
@@ -194,8 +189,11 @@ MemberClient.prototype.setMemberContext = function(pContextInfo){
 	pContextInfo.vDropDownProfilMenu.innerHTML += ' '+this.member.pseudo;		// Affiche le nom du membre dans la NavBarr d'entête
 
 	pContextInfo.vDeconnexion.classList.remove('disabled');				// Active l'option "Deconnexion" du menu d'entête
-	vToolBox.maskOff(pContextInfo.vProfileNavBar); 								// Active la NavBar du profil
 
+// XXXXX
+// vToolBox.maskOff(pContextInfo.vProfileNavBar); 								// Active la NavBar du profil
+
+	pContextInfo.vProfileNavBar.style.display = 'block';					// Affichage du menu du profil (sous l'Avatar)
 	pContextInfo.vProfilePage.style.display = 'block';						// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
 	pContextInfo.vPad.style.display = 'none';											// Masquage de la "div" de masquage du menu du profil
 }
@@ -563,8 +561,7 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 	if (!this.newPasswordKO){
 		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisie dans l explorateur windows
 			this.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
-// console.log('SubmitFiles pAccountParams.vAccountPhotoFile.files : ',pAccountParams.vAccountPhotoFile.files)
-			// pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
+			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                                           // Alors on la transfère vers le serveur 
 			cstWaitForUpladToDisplayAvatar = true;
 		} else {
 			this.member.etatCivil.photo = pAccountParams.vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 
@@ -632,11 +629,6 @@ MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 		this.displayPresentationCard(pProfileInfo);
 	}
 }
-// -------------------------------------------------------------------------
-// Modale "AJout d'Amis"
-// -------------------------------------------------------------------------
-	MemberClient.prototype.initModalAddFriend = function(){
-	}
 // --------------------------------------------------------------------------------------------------------------
 // -------------------------- Fin du module ---------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 // *************************************************************************
-// *** MemberServer : Objet représentant les visiteurs et membres       ***
+// *** MemberServer : Objet représentant les visiteurs et membres        ***
 // ***                                                                   ***
-// *** Objet : MemberServer                                             ***
+// *** Objet : MemberServer                                              ***
 // ***                                                                   ***
 // *** Cet objet sert à gérer :                                          ***
 // ***   - Le filtrage des candidats qui aspirent à jouer                ***
@@ -28,7 +28,9 @@ const constFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN
 const constNextCharString = constFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
 const cstLostPWD = 0;     // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par une déclaration de MDP perdu
 const cstChangedPWD = 1;  // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par le mebre dans sa fiche de renseignement
-
+const cstAmiConfirme  = 0; 				// Statut pour un ami confirmé
+const cstInvitEncours = 1;				// Invitation pour devenir ami lancée
+const cstAttenteConfirm = 2; 			// Attente d'acceptation d'une invitation lancée
 
 module.exports = function MemberServer(){ // Fonction constructeur exportée
 	this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
@@ -105,13 +107,17 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			prefHInternationale : false,
 			prefAutre           : false,
 		},
-		amis : 
-			[{
-				friendPseudo         : '',
-				pendingFriendRequest : true,
-			}],
-		dateCreation : -1,       // Timestamp de la création du record
+		amis : [],
+			dateCreation : -1,       // Timestamp de la création du record
 	}
+
+	this.ami = {
+		friendPseudo         : '',
+		pendingFriendRequest : null,	// 0 --> Statut confirmé
+																	// 1 --> Invitation en cours
+																	// 2 --> En attente confirmation
+	}
+
 
 	// --------------------------------------------------------------
 	// Fonction retournant un entien aléatoire entre une valeur 
@@ -149,8 +155,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		return new Promise((resolve, reject) => {
 			vDBMgr.collectionMembers.find(
 				{ 
-						"pseudo": pVisiteurLoginData.pseudo, 
-						"password": pVisiteurLoginData.password, 
+						'pseudo': pVisiteurLoginData.pseudo, 
+						'password': pVisiteurLoginData.password, 
 				})
 			.limit(1)
 			.toArray((error, documents) => {
@@ -169,8 +175,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				this.member.oldPassword = '';                            // RAZ de l'ancien MDP avant envoi au client
 
 				// Recherche du pseudo du membre dans le tableau des membres car je ne veux pas qu'un membre se connecte plusieurs fois sur des sessions différentes
-				let myIndex = this.searchMemberInTableOfMembers('pseudo', this.member.pseudo)
-				if (myIndex !== -1){                                   // Si membre trouvé dans la table ddes membres connectés, on le rejette, sinon, on le connecte
+				let myIndex = this.searchMemberInTableOfMembers('pseudo', this.member.pseudo);
+				if (myIndex !== -1){                                   // Si membre trouvé dans la table des membres connectés, on le rejette, sinon, on le connecte
 					resolve('Membre dejà loggé');
 					return pWebSocketConnection.emit('memberAlreadyConnected',this.member);     
 				}
@@ -194,6 +200,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Point d'appel pour la fonction de Login en mode 'async / await'
+	// Vérification des données du visiteur (Pseudo + MDP) :
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.visitorBecomeMember = async (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
 		var result = await (this.visitorBecomeMemberPromise(pVisiteurLoginData, pWebSocketConnection, pSocketIo));
@@ -219,12 +226,12 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		);
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Sauvegarde du nouveau PWD après avoir au préalable sauvegardé l'ancien dans "oldPassword"
+	// MAJ de la BDD aavec les données envoyées "pDataSet"
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.updateDataInBDD = function(pDataSet){
 		vDBMgr.collectionMembers.updateOne(
 		{ 
-			"email": pDataSet.email, 
+			'email': pDataSet.email, 
 		},
 		{$set:  pDataSet
 		}, (error) => {
@@ -242,7 +249,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
 		vDBMgr.collectionMembers.find(
 		{ 
-			"email": pLostPWDEmail, 
+			'email': pLostPWDEmail, 
 		}).toArray((error, documents) => {
 			if (error) {
 				console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
@@ -330,7 +337,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				throw error;
 			} 
 
-			console.log("add Technical Record In Database - 1 membre inséré : ",technicalRecord);  
+			console.log('add Technical Record In Database - 1 membre inséré : ',technicalRecord);  
 		});       
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -419,10 +426,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					prefHInternationale : false,
 					prefAutre           : false,
 				},
-				amis : [{
-					friendPseudo         : '',
-					pendingFriendRequest : true,
-				}],
+				amis : [],
 				dateCreation    : myLocalDate,         // Timestamp de la création du record en tenant compte du décalage horaire
 			}
 
@@ -434,7 +438,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 				// L'ajout d'enregistrement a reussi
 				this.member = memberLocal;
-				console.log("add Member In Database - 1 membre inséré : ",this.member);  
+				console.log('add Member In Database - 1 membre inséré : ',this.member);  
 				
 				let myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
 				
@@ -468,7 +472,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.checkVisitorSignInISValid = function(pVisiteurSignInData, pWebSocketConnection, pSocketIo){
 		vDBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
 		{ 
-			"email": pVisiteurSignInData.email, 
+			'email': pVisiteurSignInData.email, 
 		})
 		.limit(1)
 		.toArray((error, documents) => {
@@ -485,7 +489,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			// Le mail n a pas été trouvé, on vérifie maintenant la non-existence du Pseudo
 			vDBMgr.collectionMembers.find(                  
 			{ 
-					"pseudo": pVisiteurSignInData.pseudo, 
+					'pseudo': pVisiteurSignInData.pseudo, 
 			})
 			.limit(1)
 			.toArray((error, documents) => {
@@ -505,7 +509,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		});
 	}
 
-
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Filtrage de tous les membres de la BDD, selon les critères suivants
 	// - Je ne peux pas être mon propre ami --> Rejet
@@ -518,7 +521,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		if (pItem.pseudo === pMyPseudo){  // Si le membre est moi-même, je ne vais pas m'afficher dans la liste des membres potentiellement futurs amis --> Rejet du membre
 			result = false;
 		} else {
-			let myIndex = this.searchPendingFriendRequest(pItem, 'friendPseudo', pMyPseudo);	// Vérifie que le membre n'est pas dans la liste d'amis potentiels ou confirmés
+			let myIndex = this.searchPendingFriendRequest(pItem, 'friendPseudo', pMyPseudo);	// Vérifie que le membre n'est pas dans la liste d'amis (potentiels ou confirmés)
 
 			if (myIndex > -1){		// Si je suis dejà un ami potentiel ou confirmé du membre en cours de lecture, je rejete le membre de la liste d'amis potentiel
 				result = false;
@@ -530,14 +533,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo, pWebSocketConnection, pSocketIo){
-		vDBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
+	MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo, pWebSocketConnection){
+		vDBMgr.collectionMembers.find(                                                   
 			{},
 			{
-				pseudo : 1, 
-				"etatCivil.firstName" : 1,
+				"pseudo" : 1, 
 				"etatCivil.photo" : 1, 
-				_id : 0
+				"_id" : 0
 			})
 		.toArray((error, documents) => {
 			if (error){
@@ -545,7 +547,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				throw error;
 			} 
 
-			let vMembersFriendables = documents.filter(this.filterMembersToBeFriends.bind(this, pMyPseudo));
+			// Note : Le Bind permet de passer des paramêtres supplementaires à ceux d'origine du Filter
+			let vMembersFriendables = documents.filter(this.filterMembersToBeFriends.bind(this, pMyPseudo)); 
 
 			if (vMembersFriendables.length === 0){
 				return pWebSocketConnection.emit('emptyPotentialFriends'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
@@ -554,6 +557,152 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			}
 		})
 	};
+
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	// Promesse d'ajout de moi-même dans la liste d'ami de celui que j'ai invité
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	MemberServer.prototype.addMeToPotentialFriendPromise = function(pFriendToAdd, pWebSocketConnection){
+// 		return new Promise((resolve, reject) => {
+// 			vFriendToAdd = {
+// 				friendPseudo : pFriendToAdd.vMyPseudo,
+// 				pendingFriendRequest : cstInvitEncours,
+// 			}
+
+// 			vDBMgr.collectionMembers.updateOne(
+// 			{ 'email': pFriendToAdd.vFriendEmail, },
+// 			{ $push: { amis : vFriendToAdd, } }, 
+// 			(error) => {
+// 				if (error) {
+// 					reject(error)
+// 					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+// 					throw error;
+// 				};
+// 			});
+
+// 			return resolve(true);
+// 		})
+// 	};
+
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	// Point d'appel pour la fonction de Login en mode 'async / await'
+// 	// Ajout de moi-même dans la liste d'ami de celui que j'ai invité
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	MemberServer.prototype.addMeToPotentialFriend = async (pFriendToAdd, pWebSocketConnection) => {
+// 		var result = await(this.addMeToPotentialFriendPromise(pFriendToAdd, pWebSocketConnection));
+// console.log('Promise 2 result : ',result)
+// 		return result
+// 	}
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	// Promesse d'ajout de mon Ami dans mon record
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	MemberServer.prototype.addPotentialFriendToMePromise = function(pFriendToAdd, pWebSocketConnection){
+// 		return new Promise((resolve, reject) => {
+// 			vFriendToAdd = {
+// 				friendPseudo : pFriendToAdd.vFriendPseudo,
+// 				pendingFriendRequest : cstAttenteConfirm,
+// 			}
+
+// 			vDBMgr.collectionMembers.updateOne(
+// 			{ 'email': pFriendToAdd.vMyEmail, },
+// 			{ $push: { amis : vFriendToAdd, } }, 
+// 			(error) => {
+// 				if (error) {
+// 					reject(error)
+// 					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+// 					throw error;
+// 				};
+// 			})
+
+// 			return resolve(true);
+// 		})
+// 	};
+
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	// Point d'appel pour la fonction de Login en mode 'async / await'
+// 	// Ajout de mon Ami dans mon record
+// 	// ---------------------------------------------------------------------------------------------------------------------------
+// 	MemberServer.prototype.processInvitation = async (pFriendToAdd, pWebSocketConnection) => {
+// 		var result = await(this.addPotentialFriendToMePromise(pFriendToAdd, pWebSocketConnection))
+// 		.then(this.addMeToPotentialFriend(pFriendToAdd, pWebSocketConnection));;
+// console.log('Promise 1 result : ',result)
+// 		return result
+// 	}
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Promesse d'ajout de moi-même dans la liste d'ami de celui que j'ai invité
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.addMeToPotentialFriend = function(pFriendToAdd){
+		return new Promise((resolve, reject) => {
+			vFriendToAdd = {
+				friendPseudo : pFriendToAdd.vMyPseudo,
+				pendingFriendRequest : cstAttenteConfirm,
+			}
+
+			vDBMgr.collectionMembers.updateOne(
+			{ 'email': pFriendToAdd.vFriendEmail, },
+			{ $push: { amis : vFriendToAdd, } }, 
+			(error) => {
+				if (error) {
+					reject(error)
+					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+					throw error;
+				};
+			});
+
+			return resolve(true);
+		})
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Promesse d'ajout de mon Ami dans mon record
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.addPotentialFriendToMe = function(pFriendToAdd){
+		return new Promise((resolve, reject) => {
+			vFriendToAdd = {
+				friendPseudo : pFriendToAdd.vFriendPseudo,
+				pendingFriendRequest : cstInvitEncours,
+			}
+
+			vDBMgr.collectionMembers.updateOne(
+			{ 'email': pFriendToAdd.vMyEmail, },
+			{ $push: { amis : vFriendToAdd, } }, 
+			(error) => {
+				if (error) {
+					reject(error)
+					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+					throw error;
+				};
+			})
+
+			return resolve(true);
+		})
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Point d'appel pour la fonction de Login en mode 'async / await'
+	// Ajout de mon Ami dans mon record
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.processInvitation = function(pFriendToAdd){
+		var result1 = this.addPotentialFriendToMe(pFriendToAdd)
+		.then((result1) => {
+			console.log('processInvitation - Promesse 1 addPotentialFriendToMe : ',result1);
+
+			var result2 = this.addMeToPotentialFriend(pFriendToAdd)
+			.then((result2) => {
+				console.log('processInvitation - Promesse 2 addMeToPotentialFriend : ',result2);
+			})
+			.then(() => {
+				this.sendEMail(
+					pFriendToAdd.vFriendEmail, 
+					'Collect\'Or - Notification de demande d\'ami', 
+					'<h1 style="color: black;">Vous avez reçu une demande d\'ami</h1><br />' +
+					'<p><Strong>'+pFriendToAdd.vMyPseudo+'</strong> souhaite devenir votre ami sur le site Collect\'Or.<p><br />'+
+					'<p>Vous pouvez accepter ou refuser sa demande.</p>'+
+					'<br /><br /><br /><i>Vil-Coyote Products</i>'
+				);
+			});
+		});
+	}
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// On MAJ la Bdd avec les données de profil du membre saisies dans la fiche "renseignements"
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -563,7 +712,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		let myDataSet = 
 		{
 			email              : pDataProfilMembre.email, 
-			presentation       : pDataProfilMembre.presentation,                    // Texte de présentation du membre
+			presentation       : pDataProfilMembre.presentation,                  // Texte de présentation du membre
 			etatCivil : 
 			{
 				photo          : pDataProfilMembre.etatCivil.photo,                 // Photo
@@ -573,10 +722,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				sex            : pDataProfilMembre.etatCivil.sex,                   // 0 = Non divulgué, 1 --> Masculin, 2 --> Féminin
 				address : 
 				{
-					street     : pDataProfilMembre.etatCivil.address.street,        // N° et voie
-					city       : pDataProfilMembre.etatCivil.address.city,          // Ville
-					zipCode    : pDataProfilMembre.etatCivil.address.zipCode,       // Code Postal
-					department : pDataProfilMembre.etatCivil.address.department,    // N° Département
+					street     : pDataProfilMembre.etatCivil.address.street,        	// N° et voie
+					city       : pDataProfilMembre.etatCivil.address.city,          	// Ville
+					zipCode    : pDataProfilMembre.etatCivil.address.zipCode,       	// Code Postal
+					department : pDataProfilMembre.etatCivil.address.department,    	// N° Département
 					departmentName : pDataProfilMembre.etatCivil.address.departmentName,    // Département : N° + Libelle
 				},
 			},
@@ -584,7 +733,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		} 
 
 		this.updateDataInBDD(myDataSet);
-
 
 		// Si le MDP a été changé, on le MAJ dans un 2eme temps
 		if (pDataProfilMembre.oldPassword !==''){      
@@ -693,7 +841,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// -------------------------------------------------------------------------
 	MemberServer.prototype.checkDBConnect = function(){
 		vDBMgr.checkDBConnect()
-		.then(() => {
+		.then((valeur) => {
 			this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
 		})
 	};

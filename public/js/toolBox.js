@@ -127,6 +127,13 @@ ToolBox.prototype.calculeAge = function(pBirthDate, pAgeSeulement){
 // maskOn(div); // transparent div mask
 // maskOn(divId, {color:'gray', hourglass:true}); // gray div mask with hourglass
 // maskOff(div); // remove div mask
+// 
+// Exemple réel
+// Neutralise la NavBar du profil par defaut en appliquant un masque par-dessus 
+// car aucun membre n'est connecté au lancement de la session
+// vMemberClient.maskOn('idProfileNavBar', {zIndex:1, color:'white'}); 
+// vToolBox.maskOn(vProfileNavBar, {zIndex:1, color:'white'}); 
+
 // --------------------------------------------------------------------------------------------------------------
 ToolBox.prototype.maskOn = function(elemOrId, settings) {
 	var elem = this.elemFromParam(elemOrId);
