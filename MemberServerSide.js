@@ -20,7 +20,7 @@ let vDBMgr = new DBMgr();       // Instanciation de l'objet descrivant l'ensembl
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const cstSuperAdmin = 1;  // Statut définissant le Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
+const cstSuperAdmin = 1;  // Statut du Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 const cstAdmin = 2;       // Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
 const cstMembre = 4;      // Membre standard qui ne peut qu'utiliser la partie publique de l'application 
 const cstMailFrom = 'collector@vcp.com';    // Adresse "From" du mail
@@ -29,8 +29,8 @@ const constNextCharString = constFirstCharString+'&#$*_-'                       
 const cstLostPWD = 0;     // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par une déclaration de MDP perdu
 const cstChangedPWD = 1;  // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par le mebre dans sa fiche de renseignement
 const cstAmiConfirme  = 0; 				// Statut pour un ami confirmé
-const cstInvitEncours = 1;				// Invitation pour devenir ami lancée
-const cstAttenteConfirm = 2; 			// Attente d'acceptation d'une invitation lancée
+const cstInvitEncours = 1;				// Invitation pour devenir ami lancée							(Ajouté à la liste du membre demandeur)
+const cstAttenteConfirm = 2; 			// Attente d'acceptation d'une invitation lancée	(Ajouté à la liste du membre receveur)
 
 module.exports = function MemberServer(){ // Fonction constructeur exportée
 	this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
@@ -40,13 +40,14 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	{
 		members             : 								// Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
 		[{
-				idMember        : 0,
-				isMember        : false,
+				idSocket        : 0,							// N° de socket "WebSocketConnection.id"
+				isMember        : false,					// Permet de savoir si la personne connectée est un visiteurr ou un membre
 				email           : '',
 				pseudo          : '',
+				nbrWaitingInvit : 0
 		}],   
 		nbrConnections      : 0,    // Nbre de connexions actives sans préjuger de leur rôle
-		nbrMembersInSession : 0,    // ?bre de membres connectés (Membres + Admin)
+		nbrMembersInSession : 0,    // Nbre de membres connectés (Membres + Admin)
 		nbrAdminsInSessions : 0,    // Nombre d'Admins connectés
 	}
 
@@ -181,16 +182,22 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					return pWebSocketConnection.emit('memberAlreadyConnected',this.member);     
 				}
 
-				myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // Recherche du visiteur dans le tableau des membres
+				myIndex = this.searchMemberInTableOfMembers('idSocket', pWebSocketConnection.id);  // Recherche du visiteur par son socket dans le tableau des membres
 				
 				this.objectPopulation.members[myIndex].email  = this.member.email;
 				this.objectPopulation.members[myIndex].pseudo = this.member.pseudo;
+
+				// On constitue une liste des membres ayant envoyé une invitation au memebre qui viient de se connecter
+				// Parmis tous mes amis, filtrage de ceux qui sont en attente d'une confirmation de ma part
+				let vAskingMembers = this.member.amis.filter(this.filterAskingMembers); 
+				this.objectPopulation.members[myIndex].nbrWaitingInvit = vAskingMembers.length;	// On récupère le Nbbre d'invitations en attente
 
 				this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
 				let dataToTransmit = {
 					member : this.member,
-					welcomeMessage : 'Hello'
+					welcomeMessage : 'Hello',
+					askingMembers : vAskingMembers,
 				}
 
 				pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    // On transmet au client les données du membre 
@@ -302,9 +309,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addMemberToActiveMembers = function(pIndex, pSocketIo){
 		this.objectPopulation.members[pIndex].isMember  = true;
-		this.objectPopulation.nbrMembersInSession++;  // On ajoute +1 aux nombre de membres connectésle membre qu'on vient de lire pour cette connexion dans un objet qui les recense
+		this.objectPopulation.nbrMembersInSession++;  // On ajoute +1 aux nombre de membres connectés le membre qu'on vient de lire pour cette connexion dans un objet qui les recense
 		
-		if (this.objectPopulation.members[pIndex].role < cstMembre){    // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
+		if (this.objectPopulation.members[pIndex].role < cstMembre){    // Il s'agit obligatoirement d'un Admin ou Super-Admin
 			this.objectPopulation.nbrAdminsInSessions++;  // On ajoute +1 aux nombre de membres connectés le membre qu'on vient de lire pour cette connexion dans un objet qui les recense
 		}   
 
@@ -440,7 +447,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				this.member = memberLocal;
 				console.log('add Member In Database - 1 membre inséré : ',this.member);  
 				
-				let myIndex = this.searchMemberInTableOfMembers('idMember', pWebSocketConnection.id);  // On ajoute le membre nouvellement créé dans la table des memnbres actifs
+				let myIndex = this.searchMemberInTableOfMembers('idSocket', pWebSocketConnection.id);  
 				
 				this.sendEMail(
 					pMember.email, 
@@ -450,11 +457,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
 
-				this.addMemberToActiveMembers(myIndex, pSocketIo)
+				this.objectPopulation.members[myIndex].nbrWaitingInvit = 0;						// Comme le membre vient d'être créé, il n'a pas encore d'invitations
+				this.addMemberToActiveMembers(myIndex, pSocketIo);										// On ajoute le membre nouvellement créé dans la table des membres actifs
 
-				let dataToTransmit ={
+				let dataToTransmit = {
 					member : this.member,
-					welcomeMessage : 'Congrat'
+					welcomeMessage : 'Congrat',
+					askingMembers : [],
 				}
 
 				pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    // On transmet au client les données du membre 
@@ -531,6 +540,15 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
+	// Filtrage des membres ayant lancé des invitations encore en cours d'attente de validation
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.filterAskingMembers = function(pItem, pIndex){
+console.log('filterAskingMembers - pItem : ',pItem,' --- pIndex : ',pIndex)
+
+		return pItem.pendingFriendRequest === 2;
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo, pWebSocketConnection){
@@ -558,77 +576,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		})
 	};
 
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	// Promesse d'ajout de moi-même dans la liste d'ami de celui que j'ai invité
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	MemberServer.prototype.addMeToPotentialFriendPromise = function(pFriendToAdd, pWebSocketConnection){
-// 		return new Promise((resolve, reject) => {
-// 			vFriendToAdd = {
-// 				friendPseudo : pFriendToAdd.vMyPseudo,
-// 				pendingFriendRequest : cstInvitEncours,
-// 			}
-
-// 			vDBMgr.collectionMembers.updateOne(
-// 			{ 'email': pFriendToAdd.vFriendEmail, },
-// 			{ $push: { amis : vFriendToAdd, } }, 
-// 			(error) => {
-// 				if (error) {
-// 					reject(error)
-// 					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-// 					throw error;
-// 				};
-// 			});
-
-// 			return resolve(true);
-// 		})
-// 	};
-
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	// Point d'appel pour la fonction de Login en mode 'async / await'
-// 	// Ajout de moi-même dans la liste d'ami de celui que j'ai invité
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	MemberServer.prototype.addMeToPotentialFriend = async (pFriendToAdd, pWebSocketConnection) => {
-// 		var result = await(this.addMeToPotentialFriendPromise(pFriendToAdd, pWebSocketConnection));
-// console.log('Promise 2 result : ',result)
-// 		return result
-// 	}
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	// Promesse d'ajout de mon Ami dans mon record
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	MemberServer.prototype.addPotentialFriendToMePromise = function(pFriendToAdd, pWebSocketConnection){
-// 		return new Promise((resolve, reject) => {
-// 			vFriendToAdd = {
-// 				friendPseudo : pFriendToAdd.vFriendPseudo,
-// 				pendingFriendRequest : cstAttenteConfirm,
-// 			}
-
-// 			vDBMgr.collectionMembers.updateOne(
-// 			{ 'email': pFriendToAdd.vMyEmail, },
-// 			{ $push: { amis : vFriendToAdd, } }, 
-// 			(error) => {
-// 				if (error) {
-// 					reject(error)
-// 					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-// 					throw error;
-// 				};
-// 			})
-
-// 			return resolve(true);
-// 		})
-// 	};
-
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	// Point d'appel pour la fonction de Login en mode 'async / await'
-// 	// Ajout de mon Ami dans mon record
-// 	// ---------------------------------------------------------------------------------------------------------------------------
-// 	MemberServer.prototype.processInvitation = async (pFriendToAdd, pWebSocketConnection) => {
-// 		var result = await(this.addPotentialFriendToMePromise(pFriendToAdd, pWebSocketConnection))
-// 		.then(this.addMeToPotentialFriend(pFriendToAdd, pWebSocketConnection));;
-// console.log('Promise 1 result : ',result)
-// 		return result
-// 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Promesse d'ajout de moi-même dans la liste d'ami de celui que j'ai invité
+	// Promesse d'ajout de moi-même dans la liste d'ami de mon futur ami
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addMeToPotentialFriend = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {
@@ -653,7 +602,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Promesse d'ajout de mon Ami dans mon record
+	// Promesse d'ajout de mon futur Ami dans mon record
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addPotentialFriendToMe = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {
@@ -678,28 +627,38 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Point d'appel pour la fonction de Login en mode 'async / await'
-	// Ajout de mon Ami dans mon record
+	// 2 steps update :
+	// 1) Moi-meme avec le pseudo de celui que j'ai invité
+	// 2) Celui que j'ai invité avec mon pseudo
+	// 3) Si le receveur est connecté, Affichage incrémenté en temps réel sur son profil
+	// Emission de mail au receveur
+	// Envoi d'une notification au demandeur
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.processInvitation = function(pFriendToAdd){
+	MemberServer.prototype.processInvitation = function(pFriendToAdd, pWebSocketConnection, pSocketIo){
 		var result1 = this.addPotentialFriendToMe(pFriendToAdd)
-		.then((result1) => {
-			console.log('processInvitation - Promesse 1 addPotentialFriendToMe : ',result1);
+		.then(() => {this.addMeToPotentialFriend(pFriendToAdd)})
+		.then(() => {
+			this.sendEMail(
+				pFriendToAdd.vFriendEmail, 
+				'Collect\'Or - Notification de demande d\'ami', 
+				'<h1 style="color: black;">Vous avez reçu une demande d\'ami</h1><br />' +
+				'<p><Strong>'+pFriendToAdd.vMyPseudo+'</strong> souhaite devenir votre ami sur le site Collect\'Or.<p><br />'+
+				'<p>Vous pouvez accepter ou refuser sa demande.</p>'+
+				'<br /><br /><br /><i>Vil-Coyote Products</i>'
+			);
 
-			var result2 = this.addMeToPotentialFriend(pFriendToAdd)
-			.then((result2) => {
-				console.log('processInvitation - Promesse 2 addMeToPotentialFriend : ',result2);
-			})
-			.then(() => {
-				this.sendEMail(
-					pFriendToAdd.vFriendEmail, 
-					'Collect\'Or - Notification de demande d\'ami', 
-					'<h1 style="color: black;">Vous avez reçu une demande d\'ami</h1><br />' +
-					'<p><Strong>'+pFriendToAdd.vMyPseudo+'</strong> souhaite devenir votre ami sur le site Collect\'Or.<p><br />'+
-					'<p>Vous pouvez accepter ou refuser sa demande.</p>'+
-					'<br /><br /><br /><i>Vil-Coyote Products</i>'
-				);
-			});
+			// Recherche du pseudo du futur ami dans le tableau des membres car s'il est connecté, je MAJ sa puce avec le Nombre (incrémenté) d'invitations
+			let myIndex = this.searchMemberInTableOfMembers('pseudo', pFriendToAdd.vFriendPseudo);
+
+			if (myIndex !== -1){  																													// Si membre trouvé dans la table des membres actuellement connectés
+				this.objectPopulation.members[myIndex].nbrWaitingInvit++;  										// On ajoute +1 à son Nbre d'invitations en memoire vive
+				
+				// Envoi à ce membre seul, la demande de MAJ de son Nbre d'invitations
+				pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('updatePuceNbreInvit',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
+			}
+			
+			// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
+			pWebSocketConnection.emit('displayNotifInvitSend',pFriendToAdd); 			
 		});
 	}
 
@@ -757,7 +716,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Deconnexion d'un visiteur et eventuellement d'un membre  :
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){
-		let myIndex = this.searchMemberInTableOfMembers('idMember' ,pWebSocketConnection.id);
+		let myIndex = this.searchMemberInTableOfMembers('idSocket' ,pWebSocketConnection.id);
 
 		if (this.objectPopulation.members[myIndex].isMember){                 // Le visiteur qui se deconnecte était un membre
 			this.objectPopulation.nbrMembersInSession--;                        // Nombre de visiteurs incluant les [membres + Admins]
@@ -790,10 +749,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 	let memberLocal = 
 	{
-		idMember        : pWebSocketConnection.id,
-		isMember        : false,
-		email           : '',
-		pseudo          : '',
+		idSocket  : pWebSocketConnection.id,
+		isMember  : false,
+		email     : '',
+		pseudo    : '',
 	}
 
 	this.objectPopulation.members.push(memberLocal);

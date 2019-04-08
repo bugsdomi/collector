@@ -18,7 +18,8 @@ body {
 }
 
 .cOpacity{
-    background-color: rgba(1, 44, 1, 0.9);
+    /* background-color: rgba(1, 44, 1, 0.9); */
+    background-color: rgba(1, 44, 1, 0.2);
 }
 .txt-yellow-stroke{
     font-family: 'Montserrat', sans-serif; 
@@ -350,4 +351,9 @@ body {
 
 .font-size-120{
     font-size: 1.2rem;
+}
+
+/* Badge du compteur d'invitations en attente */
+#idNbrWaitingInvit{
+    display: none;
 }

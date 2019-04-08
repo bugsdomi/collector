@@ -16,11 +16,16 @@ Todo:
     - displayxxx
     - updateProfile
   
+
+  ☐ Opacity
+  ☐ delete
+  ☐ Piquer le style wyylde
   ☐ Regex a affiner pour tous les champs
   ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
   ☐ Passer tous les champs a XS-4
   ☐ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher
-  Gerer le nombre de messages :
+
+  ☐ Gerer le nombre de messages :
   ☐ Virer tous les id et les variables associées inutilisées
   ☐ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire
   ☐ A la fermeture, écrire le Nbre de Msg en BDD
@@ -57,6 +62,8 @@ Todo:
   ☐ Dans le DAT, mettre une maquette de toutes le fenetres
   ☐ Mettre dans le DAT les feuilles volantes à la fin du CDC
   ☐ A la fin du Dev, virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//"
+  ☐ A la fin du Dev, virer les fichiers CSS, les outils et autres inutiles
+  ☐ Ajouter "Non renseigné" aux champs vides de la caretde "Présentation"
   
   Fiche Renseignements :
   ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)

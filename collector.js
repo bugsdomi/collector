@@ -115,7 +115,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
 	// On a reçu une ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
 	webSocketConnection.on('processInvitation', function(pFriendToAdd){
-		vMemberServer.processInvitation(pFriendToAdd);
+		vMemberServer.processInvitation(pFriendToAdd, webSocketConnection, socketIo);
 	});   						
 
 	// Un membre se déconnecte

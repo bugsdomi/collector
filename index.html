@@ -66,7 +66,7 @@
 </head>
 <!-- <body class="animated fadeIn">      -->
 <body>     
-	<!-- <div class="cOpacity"> -->				<!-- Ajouté pour créer une opacité sur l'ensemble de la page -->
+	<div class="cOpacity">			<!--	Ajouté pour créer une opacité sur l'ensemble de la page -->
 	<!-- ************************************************************************* -->
 	<!--                                NavBar                                     -->
 	<!-- ************************************************************************* -->
@@ -176,7 +176,7 @@
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
 										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
-										<li><a href="friends.html"><i class="fa fa-fw fa-users"></i> Amis</a></li>
+										<li><a id="idInvitNbr" href="#"><i class="fa fa-fw fa-users"></i> Invitations <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
 									</ul>
 								</div>
@@ -999,7 +999,6 @@
 	<!--                         Fenêtre Modale de renseignements                  -->
 	<!-- ************************************************************************* -->
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idModalAccountTitle" aria-hidden="true">
-<!-- <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width: 800px;"> -->
 		<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalAccountHeader">
@@ -1422,6 +1421,6 @@
 		<script src="static/js/MemberClientSide.js"></script>
 		<script src="siofu/client.js"></script>
 		<script src="static/js/custom.js"></script>
-	<!-- </> -->		<!-- Opacity -->
+</div>		<!-- Opacity -->
 </body>
 </html>

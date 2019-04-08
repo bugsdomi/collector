@@ -181,7 +181,7 @@ MemberClient.prototype.initModalEmptyFriendList = function(pModalTitle, pModalBo
 // - Affiche le nom du membre dans le menu
 // - Active la NavBar du profil
 // -----------------------------------------------------------------------------
-MemberClient.prototype.setMemberContext = function(pContextInfo){
+MemberClient.prototype.setMemberContext = function(pContextInfo, pAskingMembers){
 	pContextInfo.vConnexion.style.display = 'none';         			// Désactivation du bouton 'Connexion'
 	pContextInfo.vCreation.style.display = 'none';          			// Désactivation du bouton 'Creation de compte'
 
@@ -190,14 +190,25 @@ MemberClient.prototype.setMemberContext = function(pContextInfo){
 
 	pContextInfo.vDeconnexion.classList.remove('disabled');				// Active l'option "Deconnexion" du menu d'entête
 
-// XXXXX
-// vToolBox.maskOff(pContextInfo.vProfileNavBar); 								// Active la NavBar du profil
-
 	pContextInfo.vProfileNavBar.style.display = 'block';					// Affichage du menu du profil (sous l'Avatar)
+
+	this.displayPuceNbrWaitingInvit(pContextInfo, pAskingMembers.length);				// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
+
 	pContextInfo.vProfilePage.style.display = 'block';						// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
 	pContextInfo.vPad.style.display = 'none';											// Masquage de la "div" de masquage du menu du profil
 }
 
+
+// -----------------------------------------------------------------------------
+// Cette fonction affiche si besoin est, une puce avec le Nbre d'invitations en attente
+// -----------------------------------------------------------------------------
+MemberClient.prototype.displayPuceNbrWaitingInvit = function(pContextInfo, pNbrWaitingInvit){
+
+	if (pNbrWaitingInvit){																						// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
+		pContextInfo.vNbrWaitingInvit.style.display = 'inline';							// Affiche la puce
+		pContextInfo.vNbrWaitingInvit.innerHTML = pNbrWaitingInvit;		// Affiche le Nbre d'invitations
+	}
+}
 // -----------------------------------------------------------------------------
 // Cette fonction réinitialise complétement l'écran et ferme le socket
 // -----------------------------------------------------------------------------
@@ -239,13 +250,13 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la page de profil complète :
-// - Le contexte du membre
+// - Le contexte du membre (Menus, compteurs, etc)
 // - L'avatar
 // - La page de profil :
 // 		- La carte de "Présentation"
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayProfilePage = function(vContextInfo, vAvatarInfo, vProfileInfo){
-	this.setMemberContext(vContextInfo);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
+MemberClient.prototype.displayProfilePage = function(vContextInfo, vAvatarInfo, vProfileInfo, pAskingMembers){
+	this.setMemberContext(vContextInfo, pAskingMembers);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
 	this.displayAvatar(vAvatarInfo);						// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
 	this.displayPresentationCard(vProfileInfo);	// - Affiche les informations du profil dans la carte "Présentation"
 }
