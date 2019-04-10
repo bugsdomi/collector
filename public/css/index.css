@@ -339,8 +339,9 @@ body {
 /* rester en pointeur                 */
 /* ********************************** */
 
-.presentationCard label{
-    cursor: pointer;
+/* .presentationCard label{ */
+.neutralPointer{
+    cursor: default;
     pointer-events: none;
 }
 
@@ -355,5 +356,6 @@ body {
 
 /* Badge du compteur d'invitations en attente */
 #idNbrWaitingInvit{
-    display: none;
+    /* display: none; */
+    visibility: hidden;
 }

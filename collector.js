@@ -54,27 +54,39 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// ------------------------------------
 	const uploader = new SocketIOFileUpload();
 	uploader.dir = path.join(__dirname, '/public/images/members');
-	console.log('uploader : ',uploader)
-	console.log('uploader.dir : ',uploader.dir)
-
+	console.log('===============================================================================================================')
+	console.log('File Upload - uploader : ',uploader)
+	console.log('===============================================================================================================')
+	console.log('File Upload - uploader.dir : ',uploader.dir)
+	console.log('===============================================================================================================')
+	
 	uploader.listen(webSocketConnection);
 
 	uploader.on('start', function(event){
-		console.log('Start - event.file', event.file);
+		console.log('File Upload - Start - event.file', event.file);
+		console.log('===============================================================================================================')
 	});
+	
 	uploader.on('progress', function(event){
-		console.log('Progress - event.buffer', event.buffer);
+		console.log('File Upload - Progress - event.buffer', event.buffer);
+		console.log('===============================================================================================================')
 	});
+	
 	uploader.on('complete', function(event){
-		console.log('Complete - event.interrupt', event.interrupt);
+		console.log('File Upload - Complete - event.interrupt', event.interrupt);
+		console.log('===============================================================================================================')
 	});
+	
 	uploader.on('saved', function(event){
-		console.log('Saved - event.file.success', event.file.success);
+		console.log('File Upload - Saved - event.file.success', event.file.success);
+		console.log('===============================================================================================================')
 	});
+	
 	uploader.on('error', function(event){
-		console.log('Error event.errorr', event.error);
+		console.log('File Upload - Error event.errorr', event.error);
+		console.log('===============================================================================================================')
 	});
-
+	
 	// ------------------------------------
 	// Connexion, création et contrôles de connexion
 	// ------------------------------------
@@ -96,7 +108,8 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
 		vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
 		uploader.on('saved', function(event){
-			webSocketConnection.emit('displayAvatarOnProfile');     // On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
+			// On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
+			webSocketConnection.emit('displayAvatarOnProfile');     
 		});
 	});    
 
@@ -108,15 +121,34 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// ------------------------------------
 	// Gestion des amis
 	// ------------------------------------
-	// On a reçu une demande d'ajout d'amis --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis)
+	// On a reçu une demande de la liste d'ajout d'amis 
 	webSocketConnection.on('askAddFriend', function(pMyPseudo){
 		vMemberServer.selectMembersToBeFriends(pMyPseudo, webSocketConnection);
 	});   						
 
-	// On a reçu une ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
+	// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
 	webSocketConnection.on('processInvitation', function(pFriendToAdd){
 		vMemberServer.processInvitation(pFriendToAdd, webSocketConnection, socketIo);
 	});   						
+
+	// On a reçu une demande de la liste de validation des amis
+	webSocketConnection.on('validateFriends', function(pMyEmail){
+		vMemberServer.processInvit(pMyEmail, webSocketConnection);
+	});   						
+
+	// On a reçu une validation d'ami
+	webSocketConnection.on('acceptInvitation', function(pSelectedInvit){
+		vMemberServer.acceptInvitation(pSelectedInvit, webSocketConnection);
+	});   						
+
+	// On a reçu un refus d'ami
+	webSocketConnection.on('refuseInvitation', function(pSelectedInvit){
+		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection);
+	});   						
+
+	// ------------------------------------
+	// Déconnexion
+	// ------------------------------------
 
 	// Un membre se déconnecte
 	webSocketConnection.on('disconnect', function() {

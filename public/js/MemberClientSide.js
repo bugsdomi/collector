@@ -160,7 +160,7 @@ MemberClient.prototype.initModalAlreadyConnectedText = function(pModalTitle, pMo
 }
 
 // -----------------------------------------------------------------------------
-// Cette fonction initialise le contenu de la fenetre modale de d'avertissement 
+// Cette fonction initialise le contenu de la fenetre modale d'avertissement 
 // que la liste de membres pouvant devenir amis est vide
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalEmptyFriendList = function(pModalTitle, pModalBodyText){
@@ -170,6 +170,15 @@ MemberClient.prototype.initModalEmptyFriendList = function(pModalTitle, pModalBo
 	pModalBodyText.innerHTML += '<p>- soit il n\'y a pas d\'autres membres</p>';
 	pModalBodyText.innerHTML += '<p>- soit vous êtes déjà amis avec eux</p>';
 	pModalBodyText.innerHTML += '<p>- soit vous leur avez déjà demandé à être ami et le membre n\'a pas encore accepté votre demande.</p>';
+}
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale d'avertissement 
+// qu'il n'y a pas d'invitations en attente
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalEmptyWaitingInvit = function(pModalTitle, pModalBodyText){
+	pModalTitle.innerHTML = '<i class="fa fa-frown-o"></i> Validation des invitations';
+	pModalBodyText.innerHTML = '<h5>Pas d\'invitations en attente</h5>';
+	pModalBodyText.innerHTML += '<br /><p>Vous n\'avez aucune demande d\'amis en cours </p>';
 }
 
 // -----------------------------------------------------------------------------
@@ -204,9 +213,13 @@ MemberClient.prototype.setMemberContext = function(pContextInfo, pAskingMembers)
 // -----------------------------------------------------------------------------
 MemberClient.prototype.displayPuceNbrWaitingInvit = function(pContextInfo, pNbrWaitingInvit){
 
-	if (pNbrWaitingInvit){																						// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
-		pContextInfo.vNbrWaitingInvit.style.display = 'inline';							// Affiche la puce
-		pContextInfo.vNbrWaitingInvit.innerHTML = pNbrWaitingInvit;		// Affiche le Nbre d'invitations
+	if (pNbrWaitingInvit > 0){																				// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
+		// pContextInfo.vNbrWaitingInvit.style.display = 'inline';					// Affiche la puce
+		pContextInfo.vNbrWaitingInvit.style.visibility = 'visible';					// Affiche la puce
+		pContextInfo.vNbrWaitingInvit.innerHTML = pNbrWaitingInvit;			// Affiche le Nbre d'invitations
+	} else {
+		// pContextInfo.vNbrWaitingInvit.style.display = 'none';						// Cache la puce si Invitation = 0
+		pContextInfo.vNbrWaitingInvit.style.visibility = 'hidden';						// Cache la puce si Invitation = 0
 	}
 }
 // -----------------------------------------------------------------------------

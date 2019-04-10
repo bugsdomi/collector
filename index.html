@@ -66,7 +66,7 @@
 </head>
 <!-- <body class="animated fadeIn">      -->
 <body>     
-	<div class="cOpacity">			<!--	Ajouté pour créer une opacité sur l'ensemble de la page -->
+<!--	<div class="cOpacity">	-->		<!--	Ajouté pour créer une opacité sur l'ensemble de la page -->
 	<!-- ************************************************************************* -->
 	<!--                                NavBar                                     -->
 	<!-- ************************************************************************* -->
@@ -160,7 +160,7 @@
 											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 											<span class="sr-only">Previous</span>
 										</a>
-										<a class="carousel-control-next style=" style="z-index: 10;"" href="#mainScreenCaroussel" role="button" data-slide="next">
+										<a class="carousel-control-next style=" style="z-index: 10;" href="#mainScreenCaroussel" role="button" data-slide="next">
 											<span class="carousel-control-next-icon" aria-hidden="true"></span>
 											<span class="sr-only">Next</span>
 										</a>
@@ -176,7 +176,7 @@
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
 										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
-										<li><a id="idInvitNbr" href="#"><i class="fa fa-fw fa-users"></i> Invitations <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
+										<li><a id="idInvitations" href="#"><i class="fa fa-fw fa-users"></i> Invitations <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
 									</ul>
 								</div>
@@ -241,11 +241,10 @@
 											<div class="col-sm-8 font-weight-bold" id="idAboutDepartmentName"></div>
 										</div>
 								</li>
-
 								<li>
 									<div class="row">
                     <div class="col-sm-12 text-dark mb-2">Présentation</div>
-                    <textarea class="col-sm-12 presentationCard font-weight-bold" rows="8"  id="idAboutPresentation" disabled></textarea>
+                    <textarea class="col-sm-12 presentationCard font-weight-bold" rows="1"  id="idAboutPresentation" disabled></textarea>
 									</div>
 								</li>
 								
@@ -253,94 +252,94 @@
 									<div class="row">
 										<div class="col-sm-12 text-dark my-2">Mes préférences...</div>
 										<div class="col-sm-12 presentationCard btn-group-toggle text-center">
-											<label class="btn btn-outline-success badge badge-pill mr-1" id="idAboutPrefGravuresLabel">
+											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefGravuresLabel">
 												<input type="checkbox">Gravures
 											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefLivresLabel">
+											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefLivresLabel">
 												<input type="checkbox">Livres
 											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefFilmsLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefFilmsLabel">
 												<input type="checkbox">Films
 											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPrefJeuxLabel">
+											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPrefJeuxLabel">
 												<input type="checkbox">Jeux
 											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAboutPrefMaquettesLabel">
+											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPrefMaquettesLabel">
 												<input type="checkbox">Maquettes
 											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAboutPrefFigurinesLabel">
+											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefFigurinesLabel">
 												<input type="checkbox">Figurines
 											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAboutPrefBlindesLabel">
+											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefBlindesLabel">
 												<input type="checkbox">Blindés
 											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1" id="idAboutPrefAvionsLabel">
+											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefAvionsLabel">
 												<input type="checkbox">Avions
 											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefBateauxLabel">
+											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefBateauxLabel">
 												<input type="checkbox">Bateaux
 											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefDioramasLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefDioramasLabel">
 												<input type="checkbox">Dioramas
 											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPrefPrehistoireLabel">
+											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPrefPrehistoireLabel">
 												<input type="checkbox">Préhistoire
 											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAboutPrefAntiquiteLabel">
+											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPrefAntiquiteLabel">
 												<input type="checkbox">Antiquité
 											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAboutPrefMoyenAgeLabel">
+											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefMoyenAgeLabel">
 												<input type="checkbox">Moyen-âge
 											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAboutPrefRenaissanceLabel">
+											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefRenaissanceLabel">
 												<input type="checkbox">Renaissance
 											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1" id="idAboutPrefDentellesLabel">
+											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefDentellesLabel">
 												<input type="checkbox">Guerre en dentelles
 											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefAncienRegimeLabel">
+											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefAncienRegimeLabel">
 												<input type="checkbox">Ancien-regime
 											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefRevolutionLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefRevolutionLabel">
 												<input type="checkbox">Révolution Française
 											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPref1erEmpireLabel">
+											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPref1erEmpireLabel">
 												<input type="checkbox">1er Empire
 											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAboutPref2ndEmpireLabel">
+											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPref2ndEmpireLabel">
 												<input type="checkbox">2nd Empire
 											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAboutPrefSecessionLabel">
+											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefSecessionLabel">
 												<input type="checkbox">Guerre de sécession
 											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAboutPrefFarWestLabel">
+											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefFarWestLabel">
 												<input type="checkbox">Far West
 											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1" id="idAboutPrefWW1Label">
+											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefWW1Label">
 												<input type="checkbox">1ère Guerre Mondiale
 											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefWW2Label">
+											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefWW2Label">
 												<input type="checkbox">2ème Guerre mondiale
 											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAboutPrefContemporainLabel">
+											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefContemporainLabel">
 												<input type="checkbox">Contemporain
 											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1" id="idAboutPrefFuturisteLabel">
+											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPrefFuturisteLabel">
 												<input type="checkbox">Futuriste
 											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAboutPrefFantastiqueLabel">
+											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPrefFantastiqueLabel">
 												<input type="checkbox">Fantastique
 											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAboutPrefHFrancaiseLabel">
+											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefHFrancaiseLabel">
 												<input type="checkbox">Histoire Française
 											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAboutPrefHAmericaineLabel">
+											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefHAmericaineLabel">
 												<input type="checkbox">Histoire Américaine
 											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1" id="idAboutPrefHInternationaleLabel">
+											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefHInternationaleLabel">
 												<input type="checkbox">Histoire internationale
 											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAboutPrefAutreLabel">
+											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefAutreLabel">
 												<input type="checkbox">Autre
 											</label> 
 										</div>
@@ -1387,18 +1386,15 @@
 	<!-- ************************************************************************* -->
 	<!--                     Fenêtre Modale d'ajout d'amis                         -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAddFriend" aria-labelledby="idModalAddFriendTitle" aria-hidden="true">
-<!-- <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable mt-5" role="document" style="max-width: 600px;"> -->
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idModalMgrFriendTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idModalAddFriendHeader">
-					<h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+				<div class="modal-header" id="idModalMgrFriendHeader">
+					<button  id="idModalMgrFriendHExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
-					<div class="container px-0">
-						<h6 class="text-center">Sélectionnez les membres avec qui vous souhaitez devenir ami</h6>
-						<div class="list-group" id="idListGroup">
+					<div class="container px-0" id="idModalMgrFriendTitle">
+						<div class="list-group" id="idModalMgrFriendListGroup">
 						</div>
 					</div>
 				</div>			
@@ -1420,7 +1416,8 @@
 		<script src="static/js/SPAMgr.js"></script>
 		<script src="static/js/MemberClientSide.js"></script>
 		<script src="siofu/client.js"></script>
+<!-- XXXXX A virer "custom.js"-->
 		<script src="static/js/custom.js"></script>
-</div>		<!-- Opacity -->
+<!-- </div>	-->	<!-- Opacity -->
 </body>
 </html>

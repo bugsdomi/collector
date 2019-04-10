@@ -100,12 +100,17 @@ window.addEventListener('DOMContentLoaded', function(){
 // -------------------------------------------------------------------------
 	var vProfileNavBar = document.getElementById('idProfileNavBar');			// Menu du profil
 	var vAddFriend = document.getElementById('idAddFriend');							// Bouton "Ajouter des amis"
-	var vNbrWaitingInvit = document.getElementById('idNbrWaitingInvit');							// Bouton "Ajouter des amis"
-
+	var vInvitations = document.getElementById('idInvitations');					// Bouton "Valider des amis"
+	var vNbrWaitingInvit = document.getElementById('idNbrWaitingInvit');	// Puce "Nbre d'invit en attentes"
 
 	vAddFriend.addEventListener('click', function(){											// Ouvre la fenêtre d'ajout d'amis
 	// Demande au serveur d'afficher les membres (filtrés) pour les présenter dans une liste d'amis potentiels
 		webSocketConnection.emit('askAddFriend', vMemberClient.member.pseudo);  
+	});
+
+	vInvitations.addEventListener('click', function(){											// Ouvre la fenêtre de validation des amis
+	// Demande au serveur d'afficher les membres qui ont envoyé une invitation pour devenir ami
+		webSocketConnection.emit('validateFriends', vMemberClient.member.email);  
 	});
 
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
@@ -364,12 +369,12 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	vSIOFU.addEventListener('progress', function(event){
 		var percent = event.bytesLoaded / event.file.size * 100;
-		console.log('File is', percent.toFixed(2), 'percent loaded');
+		console.log('File Upload - File is', percent.toFixed(2), 'percent loaded');
 	});
 
 	vSIOFU.addEventListener('complete', function(event){
-		console.log('Image upLoadée avec succès');
-		console.log('event.success');
+		console.log('File Upload - Image upLoadée avec succès');
+		console.log('File Upload - event.success');
 		console.log(event.file);
 	});
 
@@ -378,15 +383,19 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Eléments des champs de saisie de la Modale d'ajout d'amis
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	var vModalAddFriend = document.getElementById('idModalAddFriend');
-	var vModalAddFriendHeader = document.getElementById('idModalAddFriendHeader');
-	var vListGroup = document.getElementById('idListGroup');
+	var vModalMgrFriend = document.getElementById('idModalMgrFriend');
+	var vModalMgrFriendHeader = document.getElementById('idModalMgrFriendHeader');
+	var vModalMgrFriendHExitBtn = document.getElementById('idModalMgrFriendHExitBtn');
+	var vModalMgrFriendTitle = document.getElementById('idModalMgrFriendTitle');
+	var vModalMgrFriendListGroup = document.getElementById('idModalMgrFriendListGroup');
 
 	// Suppression de tous les éléments de la liste des membres pouvant devenir ami à la fermeture de la modale
-	$('#idModalAddFriend').on('hidden.bs.modal', () => {
-		while (vListGroup.firstChild) {
-			vListGroup.firstChild.removeEventListener('click', sendInvitation);
-			vListGroup.removeChild(vListGroup.firstChild);
+	$('#idModalMgrFriend').on('hidden.bs.modal', () => {
+		vModalMgrFriendHeader.removeChild(vModalMgrFriendHeader.firstChild);
+		vModalMgrFriendTitle.removeChild(vModalMgrFriendTitle.firstChild);
+
+		while (vModalMgrFriendListGroup.firstChild) {
+			vModalMgrFriendListGroup.removeChild(vModalMgrFriendListGroup.firstChild);
 		}
 	})
 
@@ -617,22 +626,201 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ------------------------------------------------------------------------------------------------------------------------------
 	
 	// --------------------------------------------------------------
-	// Le serveur n'a pas trouvé de membres susceptibles de devenir amis
-	// car soit c'est le membre lui-même (et ne peut donc devenir son 
-	// propre ami, soit ils sont dejà amis ou en attente de confirmation 
-	// (tel que demandé dans le CDC))
+	// Le serveur n'a pas trouvé d'invitations en attente --> Message d'erreur
 	// --------------------------------------------------------------
-	webSocketConnection.on('emptyPotentialFriends', function(){   
-		vMemberClient.initModalEmptyFriendList(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+	webSocketConnection.on('emptyWaitingInvitation', function(){   
+		vMemberClient.initModalEmptyWaitingInvit(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
+		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
 	
 	// --------------------------------------------------------------
 	// Cette fonction alimente un objet avec des créations dans le DOM 
-	// des lignes HTML pour chaque memebre pouvant devenir ami
+	// des lignes HTML pour chaque invitation en attente à valider
 	// --------------------------------------------------------------
-	function AddHTMLLines(item, index) {
+	function AddInvitLines(item, index) {
+		this.lineHTML = {		// Structure HTML générée pour chaque ligne de membre
+			vA 				 : null,				// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
+			vDivRow 	 : null,				// <div class="row">
+			vDivAvatar : null,				// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
+			vImg 			 : null,				// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+			vDivName 	 : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
+			vDivFA 		 : null,				// <div class="col-2 text-center align-self-center">
+			vIFADown 	 : null,				// <i class="fa fa-thumbs-o-up fa-2x text-dark"></i>
+			vIFAUp 		 : null,				// <i class="fa fa-thumbs-o-down fa-2x text-dark"></i>
+		};
+
+		this.friend = item;
+		this.index = index;
+
+		// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
+		this.lineHTML.vA = window.document.createElement('a');
+		vModalMgrFriendListGroup.appendChild(this.lineHTML.vA);
+		this.lineHTML.vA.setAttribute('href', '#');
+		this.lineHTML.vA.setAttribute('class', 'list-group-item list-group-item-action list-group-item-white');
+		
+		// <div class="row">
+		this.lineHTML.vDivRow = window.document.createElement('div');
+		this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
+		this.lineHTML.vDivRow.setAttribute('class', 'row');
+		
+		// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
+		this.lineHTML.vDivAvatar = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
+		this.lineHTML.vDivAvatar.setAttribute('class', 'col-4 containerAvatarToken py-1 text-center align-self-center');
+
+		// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+		this.lineHTML.vImg = window.document.createElement('img');
+		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
+		this.lineHTML.vImg.setAttribute('class', 'avatar-token');
+		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken'+index);
+		this.lineHTML.vImg.setAttribute('alt', 'Membre demandant à devenir ami');
+		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.friendPhoto);
+
+		this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
+		this.lineHTML.vImg.setAttribute('data-placement', 'right');
+
+		// <div class="col-5 align-self-center font-size-120">xxx</div>
+		this.lineHTML.vDivName = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
+		this.lineHTML.vDivName.setAttribute('class', 'col-5 align-self-center font-size-120');
+		this.lineHTML.vDivName.innerHTML = item.friendPseudo;
+		
+		// <div class="col-3 text-center align-self-center">
+		this.lineHTML.vDivFA = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
+		this.lineHTML.vDivFA.setAttribute('class', 'col-3 text-center align-self-center pl-0');
+
+		// <i class="fa fa-thumbs-o-up fa-2x text-dark"></i>
+		this.lineHTML.vIFAUp = window.document.createElement('i');
+		this.lineHTML.vDivFA.appendChild(this.lineHTML.vIFAUp);
+		this.lineHTML.vIFAUp.setAttribute('class', 'fa fa-thumbs-o-up fa-2x text-dark');
+		this.lineHTML.vIFAUp.innerHTML='&nbsp;&nbsp;&nbsp;';
+
+		// <i class="fa fa-thumbs-o-down fa-2x text-dark"></i>
+		this.lineHTML.vIFADown = window.document.createElement('i');
+		this.lineHTML.vDivFA.appendChild(this.lineHTML.vIFADown);
+		this.lineHTML.vIFADown.setAttribute('class', 'fa fa-thumbs-o-down fa-2x text-dark');
+	}
+
+	// --------------------------------------------------------------
+	// On a reçu une liste d'invitations à traiter
+	// Ajout dynamique des membres demandeurs dans le DOM sur la modale
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayWaitingInvitation', function(pWaitingInvit){   
+		// Préparation et ouverture de la fenêtre modale de sélection des invitations à traiter
+		vMemberClient.InitHeaderColor('bg-warning', vModalMgrFriendHeader);
+		$('#idModalMgrFriend').modal('toggle');     // Ouverture de la modale                                     
+
+		var lineHTML = {						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
+			vH5        : null,				// <h5 class="modal-title"><i class="fa fa-fw fa-check"></i> Validation d'amis</h5>
+			vH6 	     : null,				// <h6 class="text-center">Validez les membres avec qui vous acceptez de devenir ami</h6>
+		}
+
+		// <h5 class="modal-title"><i class="fa fa-fw fa-check"></i> Validation d'amis</h5>
+		lineHTML.vH5 = window.document.createElement('h5');
+		var parentDiv1 = vModalMgrFriendHExitBtn.parentNode;
+		parentDiv1.insertBefore(lineHTML.vH5, vModalMgrFriendHExitBtn);
+		lineHTML.vH5.setAttribute('class', 'modal-title');
+		lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-check"></i>'+' Validation d\'amis';
+		
+		// <h6 class="text-center">Validez les membres avec qui vous acceptez de devenir ami</h6>
+		lineHTML.vH6 = window.document.createElement('h6');
+		var parentDiv2 = vModalMgrFriendListGroup.parentNode;
+		parentDiv2.insertBefore(lineHTML.vH6, vModalMgrFriendListGroup);
+		lineHTML.vH6.setAttribute('class', 'text-center');
+		lineHTML.vH6.innerHTML = 'Validez les membres avec qui vous acceptez de devenir ami';
+
+		// Création dynamique des lignes HTML et création des EventListener pour activer les opération de validation ou de rejet
+		var vInvitAvailable = [];
+		pWaitingInvit.forEach(function(item, index) {
+			vInvitAvailable.push(new AddInvitLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+			vInvitAvailable[index].lineHTML.vIFAUp.addEventListener('click', acceptInvitation.bind(this, vInvitAvailable[index]));
+			vInvitAvailable[index].lineHTML.vIFADown.addEventListener('click', refuseInvitation.bind(this, vInvitAvailable[index]));
+		});
+	});
+
+	// --------------------------------------------------------------
+	// Envoi d'une acceptation d'invitation pour devenir ami au serveur (Une seule demande par ami):
+	// Bascule la couleur de l'icône "Accord d'amis"
+	// --------------------------------------------------------------
+	function acceptInvitation(pSelectedInvit){
+		if (!pSelectedInvit.lineHTML.vIFAUp.classList.contains('text-info')){
+			pSelectedInvit.lineHTML.vIFAUp.classList.replace('text-dark','text-info'); 
+			pSelectedInvit.lineHTML.vA.classList.add('neutralPointer'); 
+
+			var vSelectedInvit = {
+				vMyEmail 			: vMemberClient.member.email,
+				vMyPseudo			:	vMemberClient.member.pseudo,
+				vFriendEmail  : pSelectedInvit.friend.friendEmail,
+				vFriendPseudo : pSelectedInvit.friend.friendPseudo,
+				vLinePressediD: pSelectedInvit.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			}
+			webSocketConnection.emit('acceptInvitation', vSelectedInvit);  
+		}
+	}
+
+	// --------------------------------------------------------------
+	// Affichage d'une Notification d'acceptation d'ami envoyée par 
+	// le serveur après les MAJ réussies de la BDD
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayNotifInvitationValided', function(pSelectedInvit){   
+		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('title', 'Invitation acceptée');
+		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('data-content', 'Vous êtes désormais ami avec '+pSelectedInvit.vFriendPseudo);
+
+		$('#'+pSelectedInvit.vLinePressediD).popover('show')
+		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},2500);     // Fermeture temporisée de la PopOver
+	});
+
+	// --------------------------------------------------------------
+	// Envoi d'un refus d'invitation pour devenir ami au serveur (Une seule demande par ami):
+	// Bascule la couleur de l'icône "Refus d'amis"
+	// --------------------------------------------------------------
+	function refuseInvitation(pSelectedInvit){
+		if (!pSelectedInvit.lineHTML.vIFADown.classList.contains('text-info')){
+			pSelectedInvit.lineHTML.vIFADown.classList.replace('text-dark','text-info'); 
+			pSelectedInvit.lineHTML.vA.classList.add('neutralPointer'); 
+
+			var vSelectedInvit = {
+				vMyEmail 			: vMemberClient.member.email,
+				vMyPseudo			:	vMemberClient.member.pseudo,
+				vFriendEmail  : pSelectedInvit.friend.friendEmail,
+				vFriendPseudo : pSelectedInvit.friend.friendPseudo,
+				vLinePressediD: pSelectedInvit.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			}
+			webSocketConnection.emit('refuseInvitation', vSelectedInvit);  
+		}
+	}
+
+	// --------------------------------------------------------------
+	// Affichage d'une Notification de refus d'ami envoyée par 
+	// le serveur après les MAJ réussies de la BDD
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayNotifInvitationRefused', function(pSelectedInvit){   
+		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('title', 'Invitation refusée');
+		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('data-content', 'Vous avez décliné la demande d\'ami de '+pSelectedInvit.vFriendPseudo);
+
+		$('#'+pSelectedInvit.vLinePressediD).popover('show')
+		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},2500);     // Fermeture temporisée de la PopOver
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur n'a pas trouvé de membres susceptibles de devenir amis
+	// car soit c'est le membre lui-même (et ne peut donc devenir son 
+	// propre ami, soit ils sont dejà amis ou en attente de confirmation 
+	// (tel que demandé dans le CDC)) --> Message d'erreur
+	// --------------------------------------------------------------
+	webSocketConnection.on('emptyPotentialFriends', function(){   
+		vMemberClient.initModalEmptyFriendList(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
+		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de message d'erreur
+	});
+
+	// --------------------------------------------------------------
+	// Cette fonction alimente un objet avec des créations dans le DOM 
+	// des lignes HTML pour chaque membre pouvant devenir ami
+	// --------------------------------------------------------------
+	function AddPotentialFriendLines(item, index) {
 		this.lineHTML = {		// Structure HTML générée pour chaque ligne de membre
 			vA 				 : null,				// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
 			vDivRow 	 : null,				// <div class="row">
@@ -648,7 +836,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 		// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
 		this.lineHTML.vA = window.document.createElement('a');
-		vListGroup.appendChild(this.lineHTML.vA);
+		vModalMgrFriendListGroup.appendChild(this.lineHTML.vA);
 		this.lineHTML.vA.setAttribute('href', '#');
 		this.lineHTML.vA.setAttribute('class', 'list-group-item list-group-item-action list-group-item-white');
 		
@@ -669,7 +857,6 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
-
 		this.lineHTML.vImg.setAttribute('title', 'Invitation envoyée');
 		this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
 		this.lineHTML.vImg.setAttribute('data-placement', 'right');
@@ -678,7 +865,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vDivName = window.document.createElement('div');
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
 		this.lineHTML.vDivName.setAttribute('class', 'col-5 align-self-center font-size-120');
-		this.lineHTML.vDivName.innerText = item.pseudo;
+		this.lineHTML.vDivName.innerHTML = item.pseudo;
 		
 		// <div class="col-3 text-center align-self-center">
 		this.lineHTML.vDivFA = window.document.createElement('div');
@@ -692,6 +879,44 @@ window.addEventListener('DOMContentLoaded', function(){
 	}
 
 	// --------------------------------------------------------------
+	// On a reçu une liste de membres pouvant devenir amis
+	// Ajout dynamique des membres dans le DOM sur la modale
+	// de sélection des membres pour devenir amis
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayPotentialFriends', function(pMembersFriendables){   
+
+		// Préparation et ouverture de la fenêtre modale de sélection des membres pouvant devenir amis
+		vMemberClient.InitHeaderColor('bg-warning', vModalMgrFriendHeader);
+		$('#idModalMgrFriend').modal('toggle');     // Ouverture de la modale                                     
+
+		var lineHTML = {						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
+			vH5        : null,				// <h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
+			vH6 	     : null,				// <h6 class="text-center">Sélectionnez les membres avec qui vous souhaitez devenir ami</h6>
+		}
+
+		// <h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
+		lineHTML.vH5 = window.document.createElement('h5');
+		var parentDiv1 = vModalMgrFriendHExitBtn.parentNode;
+		parentDiv1.insertBefore(lineHTML.vH5, vModalMgrFriendHExitBtn);
+		lineHTML.vH5.setAttribute('class', 'modal-title');
+		lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-user-plus"></i>'+' Ajout d\'amis';
+		
+		// <h6 class="text-center">Sélectionnez les membres avec qui vous souhaitez devenir ami</h6>
+		lineHTML.vH6 = window.document.createElement('h6');
+		var parentDiv2 = vModalMgrFriendListGroup.parentNode;
+		parentDiv2.insertBefore(lineHTML.vH6, vModalMgrFriendListGroup);
+		lineHTML.vH6.setAttribute('class', 'text-center');
+		lineHTML.vH6.innerHTML = 'Sélectionnez les membres avec qui vous souhaitez devenir ami';
+
+ 		// Création dynamique des lignes HTML et création des EventListener pour activer les opération de demande d'ami
+		var vMembersFriendables = [];
+		pMembersFriendables.forEach(function(item, index) {
+			vMembersFriendables.push(new AddPotentialFriendLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+			vMembersFriendables[index].lineHTML.vA.addEventListener('click', sendInvitation.bind(this,vMembersFriendables[index]));		
+		});
+	});
+
+	// --------------------------------------------------------------
 	// Envoi d'une invitation pour devenir ami (Une seule demande par ami):
 	// Bascule la couleur de l'icône "Ajout d'amis"
 	// Si le receveur est connecté, son nombre d'invitations evoluera en temps réel
@@ -699,43 +924,26 @@ window.addEventListener('DOMContentLoaded', function(){
 	function sendInvitation(pMemberFriendable){
 		if (!pMemberFriendable.lineHTML.vIFA.classList.contains('text-info')){
 			pMemberFriendable.lineHTML.vIFA.classList.replace('text-dark','text-info'); 
-console.log('vMemberClient.member : ',vMemberClient.member)
-console.log('pMemberFriendable : ',pMemberFriendable)
+			pMemberFriendable.lineHTML.vA.classList.add('neutralPointer'); 
 
 			var vFriendToAdd = {
 				vMyEmail 			: vMemberClient.member.email,
 				vMyPseudo			:	vMemberClient.member.pseudo,
+				vMyPhoto			: vMemberClient.member.etatCivil.photo,
 				vFriendEmail  : pMemberFriendable.friend.email,
 				vFriendPseudo : pMemberFriendable.friend.pseudo,
-				vLinePressediD: pMemberFriendable.lineHTML.vImg.id,
+				vFriendPhoto  : pMemberFriendable.friend.etatCivil.photo,
+				vLinePressediD: pMemberFriendable.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 			}
 			webSocketConnection.emit('processInvitation', vFriendToAdd);  
 		}
 	}
-	// --------------------------------------------------------------
-	// On a reçu une liste de membres pouvant devenir amis
-	// Ajout dynamique des membres dans le DOM sur la modale
-	// de sélection des membres pour devenir amis
-	// --------------------------------------------------------------
-	webSocketConnection.on('displayPotentialFriends', function(pMembersFriendables){   
-		var vMembersFriendables = [];
-
-		// Préparation et ouverture de la fenêtre modale de sélection des membres pouvant devenir amis
-		vMemberClient.InitHeaderColor('bg-warning', vModalAddFriendHeader);
-		$('#idModalAddFriend').modal('toggle');                                          
-
-		// Création dynamique des lignes HTML et création des EventListener pour activer les opération de demande d'ami
-		pMembersFriendables.forEach(function(item, index) {
-			vMembersFriendables.push(new AddHTMLLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
-			vMembersFriendables[index].lineHTML.vA.addEventListener('click', sendInvitation.bind(this,vMembersFriendables[index]));		
-		});
-	});
 
 	// --------------------------------------------------------------
 	// Affichage d'une Notification d'envoi d'invitation envoyée par 
 	// le serveur après les MAJ réussies de la BDD et l'envoi du mail
 	// --------------------------------------------------------------
-	webSocketConnection.on('displayNotifInvitSend', function(pFriendToAdd){   
+	webSocketConnection.on('displayNotifInvitationSent', function(pFriendToAdd){   
 		document.getElementById(pFriendToAdd.vLinePressediD).setAttribute('data-content', 'Vous avez demandé à être ami avec '+pFriendToAdd.vFriendPseudo);
 
 		$('#'+pFriendToAdd.vLinePressediD).popover('show')
@@ -746,7 +954,7 @@ console.log('pMemberFriendable : ',pMemberFriendable)
 	// Le serveur a demandé la MAJ de la puce du Nbre d'invitations 
 	// en attente de validation
 	// --------------------------------------------------------------
-	webSocketConnection.on('updatePuceNbreInvit', function(pNbrWaitingInvit) {   
+	webSocketConnection.on('updatePuceNbreInvitations', function(pNbrWaitingInvit) {   
 		MemberClient.prototype.displayPuceNbrWaitingInvit(vContextInfo, pNbrWaitingInvit);
 	});
 

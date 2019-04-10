@@ -114,9 +114,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 	this.ami = {
 		friendPseudo         : '',
-		pendingFriendRequest : null,	// 0 --> Statut confirmé
-																	// 1 --> Invitation en cours
-																	// 2 --> En attente confirmation
+		pendingFriendRequest : null,	// 0 --> Statut confirmé (Demander et receveur)		// 1 --> Invitation en cours  (demandeur)		// 2 --> En attente confirmation (receveur)
+		friendEmail		  		 : '',
+		friendPhoto					 : '',
 	}
 
 
@@ -187,10 +187,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				this.objectPopulation.members[myIndex].email  = this.member.email;
 				this.objectPopulation.members[myIndex].pseudo = this.member.pseudo;
 
-				// On constitue une liste des membres ayant envoyé une invitation au memebre qui viient de se connecter
-				// Parmis tous mes amis, filtrage de ceux qui sont en attente d'une confirmation de ma part
-				let vAskingMembers = this.member.amis.filter(this.filterAskingMembers); 
-				this.objectPopulation.members[myIndex].nbrWaitingInvit = vAskingMembers.length;	// On récupère le Nbbre d'invitations en attente
+				// On constitue une liste des membres ayant envoyé une invitation au membre qui viient de se connecter
+				// Parmi tous mes amis, filtrage de ceux qui sont en attente d'une confirmation de ma part (Pour alimenter la puce du Nbre d'invitations)
+				let vAskingMembers = this.member.amis.filter(this.filterWaitingInvit); 
+				this.objectPopulation.members[myIndex].nbrWaitingInvit = vAskingMembers.length;	// On récupère le Nbre d'invitations en attente
 
 				this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
@@ -240,7 +240,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		{ 
 			'email': pDataSet.email, 
 		},
-		{$set:  pDataSet
+		{
+			$set:  pDataSet
 		}, (error) => {
 			if (error) {
 					console.log('Erreur de MAJ dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
@@ -540,16 +541,18 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Filtrage des membres ayant lancé des invitations encore en cours d'attente de validation
+	// Filtrage de tous les membres de la BDD, selon les critères suivants
+	// - Je ne peux pas être mon propre ami --> Rejet
+	// - Les membres dejà amis --> Rejet
+	// - Les membres ayant reçu une invitation (invitation en cours = "Ami" non confirmé) --> Rejet
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.filterAskingMembers = function(pItem, pIndex){
-console.log('filterAskingMembers - pItem : ',pItem,' --- pIndex : ',pIndex)
-
-		return pItem.pendingFriendRequest === 2;
+	MemberServer.prototype.filterWaitingInvit = function(pItem,pIndex){
+		return pItem.pendingFriendRequest === cstAttenteConfirm;
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
+	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo, pWebSocketConnection){
 		vDBMgr.collectionMembers.find(                                                   
@@ -582,8 +585,10 @@ console.log('filterAskingMembers - pItem : ',pItem,' --- pIndex : ',pIndex)
 	MemberServer.prototype.addMeToPotentialFriend = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {
 			vFriendToAdd = {
-				friendPseudo : pFriendToAdd.vMyPseudo,
+				friendPseudo 				 : pFriendToAdd.vMyPseudo,
 				pendingFriendRequest : cstAttenteConfirm,
+				friendEmail					 : pFriendToAdd.vMyEmail,
+				friendPhoto					 : pFriendToAdd.vMyPhoto,
 			}
 
 			vDBMgr.collectionMembers.updateOne(
@@ -607,8 +612,10 @@ console.log('filterAskingMembers - pItem : ',pItem,' --- pIndex : ',pIndex)
 	MemberServer.prototype.addPotentialFriendToMe = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {
 			vFriendToAdd = {
-				friendPseudo : pFriendToAdd.vFriendPseudo,
+				friendPseudo 				 : pFriendToAdd.vFriendPseudo,
 				pendingFriendRequest : cstInvitEncours,
+				friendEmail		 			 : pFriendToAdd.vFriendEmail,
+				friendPhoto					 : pFriendToAdd.vFriendPhoto,
 			}
 
 			vDBMgr.collectionMembers.updateOne(
@@ -654,14 +661,249 @@ console.log('filterAskingMembers - pItem : ',pItem,' --- pIndex : ',pIndex)
 				this.objectPopulation.members[myIndex].nbrWaitingInvit++;  										// On ajoute +1 à son Nbre d'invitations en memoire vive
 				
 				// Envoi à ce membre seul, la demande de MAJ de son Nbre d'invitations
-				pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('updatePuceNbreInvit',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
+				pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 			}
 			
 			// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
-			pWebSocketConnection.emit('displayNotifInvitSend',pFriendToAdd); 			
+			pWebSocketConnection.emit('displayNotifInvitationSent',pFriendToAdd); 			
 		});
 	}
+// XXXXX
+	// // ---------------------------------------------------------------------------------------------------------------------------
+	// // Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut cstAttenteConfirm
+	// // ---------------------------------------------------------------------------------------------------------------------------
+	// MemberServer.prototype.validateFriends = function(pMyEmail, pWebSocketConnection){
+	// 	return new Promise((resolve, reject) => {
 
+	// 		vDBMgr.collectionMembers.find(                                                   
+	// 			{ 
+	// 				'email': pMyEmail, 
+	// 			},
+	// 			{
+	// 				"amis" : 1, 
+	// 				"_id" : 0
+	// 			})
+	// 		.toArray((error, documents) => {
+	// 			if (error){
+	// 				reject(error)
+	// 				console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+	// 				throw error;
+	// 			} 
+
+	// 			resolve(true);
+
+	// 			// Filtre les demandes d'invitation que l'on m'a envoyées
+	// 			let vWaitingInvit = documents[0].amis.filter(this.filterWaitingInvit); 
+
+	// 			if (vWaitingInvit.length === 0){
+	// 				return pWebSocketConnection.emit('emptyWaitingInvitation'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
+	// 			} else {
+	// 				return pWebSocketConnection.emit('displayWaitingInvitation',vWaitingInvit); // Affichage des membres ayant envoyé des invitations
+	// 			}
+	// 		})
+	// 	})
+	// };
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Prréparation de la liste des invitattions à traiter
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.validateFriends = function(pMyEmail){
+		return new Promise((resolve, reject) => {
+			vDBMgr.collectionMembers.find(                                                   
+			{ 
+				'email': pMyEmail, 
+			},
+			{
+				"amis" : 1, 
+				"_id" : 0
+			})
+			.toArray((error, documents) => {
+				if (error){
+					reject(error);
+				} 
+
+				if(!documents.length) {
+					reject('pas de docs --> Anormal')
+				}
+
+				resolve(documents);
+			})
+		})
+	};
+
+// ---------------------------------------------------------------------------------------------------------------------------
+// Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut cstAttenteConfirm
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.processInvit = function(pMyEmail, pWebSocketConnection){
+
+	this.validateFriends(pMyEmail)
+	.then(documents => {
+		let vWaitingInvit = documents[0].amis.filter(this.filterWaitingInvit); // Filtre les demandes d'invitation que l'on m'a envoyées
+
+		if (vWaitingInvit.length === 0){
+			return pWebSocketConnection.emit('emptyWaitingInvitation'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
+		} else {
+			return pWebSocketConnection.emit('displayWaitingInvitation',vWaitingInvit); // Affichage des membres ayant envoyé des invitations
+		}
+	})
+	.catch(error => {
+		console.log(error)
+		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+		throw error;
+	});
+};
+
+
+// ---------------------------------------------------------------------------------------------------------------------------
+// MAJ du statut du demandeur dans ma propre liste d'amis --> cstAmiConfirme => Le demandeur devient un ami confirmé
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.acceptFriendIntoMyFriendList = function(pSelectedInvit){
+	return new Promise((resolve, reject) => {
+		vDBMgr.collectionMembers.updateOne(                                                   
+		{ 
+			'email': pSelectedInvit.vMyEmail,
+			'amis.friendPseudo' : pSelectedInvit.vFriendPseudo
+		},
+		{ 
+			$set: {'amis.$.pendingFriendRequest' : cstAmiConfirme} 
+		},(error) => {
+			if (error) {
+				reject(error);
+			};
+
+			resolve('Ami MAJ dans ma liste d\amis');
+		})		
+	});
+}
+// ---------------------------------------------------------------------------------------------------------------------------
+// MAJ de mon statut dans la liste d'amis du demandeur --> cstAmiConfirme => Je deviens ami confirmé du demandeur
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.acceptMeIntoFriendList = function(pSelectedInvit){
+	return new Promise((resolve, reject) => {
+		vDBMgr.collectionMembers.updateOne(                                                   
+		{ 
+			'email': pSelectedInvit.vFriendEmail,
+			'amis.friendPseudo' : pSelectedInvit.vMyPseudo
+		},
+		{ 
+			$set: {'amis.$.pendingFriendRequest' : cstAmiConfirme} 
+		},(error) => {
+			if (error) {
+				reject(error);
+			};
+
+			resolve('Mon statut d\'Ami MAJ dans la liste de mon ami');
+		})		
+	});
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------
+// Acceptation d'une invitation :
+// MAJ du statut du demandeur dans ma propre liste d'amis --> cstAmiConfirme
+// MAJ chez le demandeur de mon propre statut dans sa liste d'amis --> cstAmiConfirme
+// Envoi d'une Notification d'opération effectuée
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketConnection){
+	this.acceptFriendIntoMyFriendList(pSelectedInvit)
+	.then(() => {
+		this.acceptMeIntoFriendList(pSelectedInvit)
+	})
+	.then(() => {
+		// Recherche de mmon pseudo le tableau des membres car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
+		let myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.vMyPseudo);
+
+		this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à mon Nbre d'invitations en memoire vive 
+				
+		// Envoi à moi-même, la demande de MAJ de mon Nbre d'invitations
+		pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
+			
+		// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
+		pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 			
+	})
+	.catch(error => {
+		console.log(error)
+		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+		throw error;
+	});
+};
+
+// ---------------------------------------------------------------------------------------------------------------------------
+// Suppression du demandeur dans ma propre liste d'amis
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.deleteFriendIntoMyFriendList = function(pSelectedInvit){
+	return new Promise((resolve, reject) => {
+		vDBMgr.collectionMembers.updateOne(
+		{ 
+			'email': pSelectedInvit.vMyEmail,
+		},
+		{ $pull: 
+			{ amis: 
+				{ friendPseudo: pSelectedInvit.vFriendPseudo }
+			}
+		},(error) => {
+			if (error) {
+				reject(error);
+			};
+
+			resolve('Demandeur supprimé de ma liste d\amis');
+		})		
+	});
+}
+// ---------------------------------------------------------------------------------------------------------------------------
+// / MAJ de mon statut dans la liste d'amis du demandeur --> cstAmiConfirme => Je deviens ami confirmé du demandeur
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.deleteMeIntoFriendList = function(pSelectedInvit){
+	return new Promise((resolve, reject) => {
+		vDBMgr.collectionMembers.updateOne(
+		{ 
+			'email': pSelectedInvit.vFriendEmail,
+		},
+		{ $pull: 
+			{ amis: 
+				{ friendPseudo: pSelectedInvit.vMyPseudo }
+			}
+		},(error) => {
+		if (error) {
+			reject(error);
+		};
+
+		resolve('Suppression de moi-même de la liste du demandeur');
+		})		
+	});
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------
+// Rejet d'une invitation :
+// Suppression du demandeur dans ma propre liste d'amis
+// Suppression de moi  dans la liste d'amis du demandeur
+// Envoi d'une Notification d'opération effectuée
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.refuseInvitation = function(pSelectedInvit, pWebSocketConnection){
+
+console.log('refuseInvitation - pSelectedInvit : ',pSelectedInvit);
+
+	this.deleteFriendIntoMyFriendList(pSelectedInvit)
+	.then(() => {
+		this.deleteMeIntoFriendList(pSelectedInvit)
+	})
+	.then(() => {
+		// Recherche de mmon pseudo le tableau des membres car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
+		let myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.vMyPseudo);
+
+		this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à mon Nbre d'invitations en memoire vive 
+				
+		// Envoi à moi-même, la demande de MAJ de mon Nbre d'invitations
+		pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
+			
+		// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
+		pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 			
+	})
+	.catch(error => {
+		console.log(error)
+		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+		throw error;
+	});
+};
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// On MAJ la Bdd avec les données de profil du membre saisies dans la fiche "renseignements"
 	// ---------------------------------------------------------------------------------------------------------------------------
