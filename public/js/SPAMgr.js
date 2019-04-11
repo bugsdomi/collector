@@ -664,15 +664,15 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
 		this.lineHTML.vDivRow.setAttribute('class', 'row');
 		
-		// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
+		// <div class="col-3 containerAvatarToken py-1 text-center align-self-center">
 		this.lineHTML.vDivAvatar = window.document.createElement('div');
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
-		this.lineHTML.vDivAvatar.setAttribute('class', 'col-4 containerAvatarToken py-1 text-center align-self-center');
+		this.lineHTML.vDivAvatar.setAttribute('class', 'col-3 containerAvatarToken py-1 text-center align-self-center');
 
 		// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
 		this.lineHTML.vImg = window.document.createElement('img');
 		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
-		this.lineHTML.vImg.setAttribute('class', 'avatar-token');
+		this.lineHTML.vImg.setAttribute('class', 'avatar-token mx-1');
 		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre demandant à devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.friendPhoto);
@@ -680,10 +680,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
 		this.lineHTML.vImg.setAttribute('data-placement', 'right');
 
-		// <div class="col-5 align-self-center font-size-120">xxx</div>
+		// <div class="col-6 align-self-center font-size-120">xxx</div>
 		this.lineHTML.vDivName = window.document.createElement('div');
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
-		this.lineHTML.vDivName.setAttribute('class', 'col-5 align-self-center font-size-120');
+		this.lineHTML.vDivName.setAttribute('class', 'col-6 align-self-center font-size-120');
 		this.lineHTML.vDivName.innerHTML = item.friendPseudo;
 		
 		// <div class="col-3 text-center align-self-center">
@@ -691,15 +691,26 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
 		this.lineHTML.vDivFA.setAttribute('class', 'col-3 text-center align-self-center pl-0');
 
+		// <button type="button" class="btn btn-outline-success btn-sm mr-2">
+		this.lineHTML.vBtnUp = window.document.createElement('button');
+		this.lineHTML.vDivFA.appendChild(this.lineHTML.vBtnUp);
+		this.lineHTML.vBtnUp.setAttribute('type', 'button');
+		this.lineHTML.vBtnUp.setAttribute('class', 'btn btn-outline-success btn-sm mr-2');
+
 		// <i class="fa fa-thumbs-o-up fa-2x text-dark"></i>
 		this.lineHTML.vIFAUp = window.document.createElement('i');
-		this.lineHTML.vDivFA.appendChild(this.lineHTML.vIFAUp);
+		this.lineHTML.vBtnUp.appendChild(this.lineHTML.vIFAUp);
 		this.lineHTML.vIFAUp.setAttribute('class', 'fa fa-thumbs-o-up fa-2x text-dark');
-		this.lineHTML.vIFAUp.innerHTML='&nbsp;&nbsp;&nbsp;';
+
+		// <button type="button" class="btn btn-outline-danger btn-sm">
+		this.lineHTML.vBtnDown = window.document.createElement('button');
+		this.lineHTML.vDivFA.appendChild(this.lineHTML.vBtnDown);
+		this.lineHTML.vBtnDown.setAttribute('type', 'button');
+		this.lineHTML.vBtnDown.setAttribute('class', 'btn btn-outline-danger btn-sm');
 
 		// <i class="fa fa-thumbs-o-down fa-2x text-dark"></i>
 		this.lineHTML.vIFADown = window.document.createElement('i');
-		this.lineHTML.vDivFA.appendChild(this.lineHTML.vIFADown);
+		this.lineHTML.vBtnDown.appendChild(this.lineHTML.vIFADown);
 		this.lineHTML.vIFADown.setAttribute('class', 'fa fa-thumbs-o-down fa-2x text-dark');
 	}
 
@@ -735,8 +746,13 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vInvitAvailable = [];
 		pWaitingInvit.forEach(function(item, index) {
 			vInvitAvailable.push(new AddInvitLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
-			vInvitAvailable[index].lineHTML.vIFAUp.addEventListener('click', acceptInvitation.bind(this, vInvitAvailable[index]));
-			vInvitAvailable[index].lineHTML.vIFADown.addEventListener('click', refuseInvitation.bind(this, vInvitAvailable[index]));
+			
+			// Cette façon de procéder pour les 4 lignes qui suivent permettent de passer des paramètres à la fonction appelée et surtout de pouvoir "Remove" les Listeners
+			// StackOverflow : https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function - "Why not just get the arguments from the target attribute of the event?"
+			vInvitAvailable[index].lineHTML.vIFAUp.addEventListener('click', acceptInvitation,false);
+			vInvitAvailable[index].lineHTML.vIFADown.addEventListener('click', refuseInvitation,false);
+			vInvitAvailable[index].lineHTML.vIFAUp.invitation = vInvitAvailable[index];
+			vInvitAvailable[index].lineHTML.vIFADown.invitation = vInvitAvailable[index];
 		});
 	});
 
@@ -744,20 +760,29 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Envoi d'une acceptation d'invitation pour devenir ami au serveur (Une seule demande par ami):
 	// Bascule la couleur de l'icône "Accord d'amis"
 	// --------------------------------------------------------------
-	function acceptInvitation(pSelectedInvit){
-		if (!pSelectedInvit.lineHTML.vIFAUp.classList.contains('text-info')){
-			pSelectedInvit.lineHTML.vIFAUp.classList.replace('text-dark','text-info'); 
-			pSelectedInvit.lineHTML.vA.classList.add('neutralPointer'); 
+	function acceptInvitation(event){
+		// Bascule Look des boutons et de leur texte, puis désactive les boutons 
+		event.target.invitation.lineHTML.vBtnUp.classList.replace('btn-outline-success','btn-success'); 
+		event.target.invitation.lineHTML.vIFAUp.classList.replace('text-dark','text-light'); 
+		event.target.invitation.lineHTML.vBtnUp.classList.add('active'); 
+		event.target.invitation.lineHTML.vBtnUp.classList.add('disabled'); 
+		event.target.invitation.lineHTML.vBtnDown.classList.add('disabled'); 
 
-			var vSelectedInvit = {
-				vMyEmail 			: vMemberClient.member.email,
-				vMyPseudo			:	vMemberClient.member.pseudo,
-				vFriendEmail  : pSelectedInvit.friend.friendEmail,
-				vFriendPseudo : pSelectedInvit.friend.friendPseudo,
-				vLinePressediD: pSelectedInvit.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
-			}
-			webSocketConnection.emit('acceptInvitation', vSelectedInvit);  
+		// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
+		event.target.invitation.lineHTML.vA.classList.add('neutralPointer'); 
+
+		// Suppression des Listeners
+		event.target.invitation.lineHTML.vIFAUp.removeEventListener('click', acceptInvitation,false);
+		event.target.invitation.lineHTML.vIFADown.removeEventListener('click', refuseInvitation,false);
+
+		var vSelectedInvit = {
+			vMyEmail 			: vMemberClient.member.email,
+			vMyPseudo			:	vMemberClient.member.pseudo,
+			vFriendEmail  : event.target.invitation.friend.friendEmail,
+			vFriendPseudo : event.target.invitation.friend.friendPseudo,
+			vLinePressediD: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
+		webSocketConnection.emit('acceptInvitation', vSelectedInvit);  
 	}
 
 	// --------------------------------------------------------------
@@ -769,27 +794,36 @@ window.addEventListener('DOMContentLoaded', function(){
 		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('data-content', 'Vous êtes désormais ami avec '+pSelectedInvit.vFriendPseudo);
 
 		$('#'+pSelectedInvit.vLinePressediD).popover('show')
-		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},2500);     // Fermeture temporisée de la PopOver
+		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
 	});
 
 	// --------------------------------------------------------------
 	// Envoi d'un refus d'invitation pour devenir ami au serveur (Une seule demande par ami):
 	// Bascule la couleur de l'icône "Refus d'amis"
 	// --------------------------------------------------------------
-	function refuseInvitation(pSelectedInvit){
-		if (!pSelectedInvit.lineHTML.vIFADown.classList.contains('text-info')){
-			pSelectedInvit.lineHTML.vIFADown.classList.replace('text-dark','text-info'); 
-			pSelectedInvit.lineHTML.vA.classList.add('neutralPointer'); 
+	function refuseInvitation(event){
+		// Bascule Look des boutons et de leur texte, puis désactive les boutons 
+		event.target.invitation.lineHTML.vBtnDown.classList.replace('btn-outline-danger','btn-danger'); 
+		event.target.invitation.lineHTML.vIFADown.classList.replace('text-dark','text-light'); 
+		event.target.invitation.lineHTML.vBtnDown.classList.add('active'); 
+		event.target.invitation.lineHTML.vBtnDown.classList.add('disabled'); 
+		event.target.invitation.lineHTML.vBtnUp.classList.add('disabled'); 
 
-			var vSelectedInvit = {
-				vMyEmail 			: vMemberClient.member.email,
-				vMyPseudo			:	vMemberClient.member.pseudo,
-				vFriendEmail  : pSelectedInvit.friend.friendEmail,
-				vFriendPseudo : pSelectedInvit.friend.friendPseudo,
-				vLinePressediD: pSelectedInvit.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
-			}
-			webSocketConnection.emit('refuseInvitation', vSelectedInvit);  
+		// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
+		event.target.invitation.lineHTML.vA.classList.add('neutralPointer'); 
+	
+		// Suppression des Listeners
+		event.target.invitation.lineHTML.vBtnUp.removeEventListener('click', acceptInvitation,false);
+		event.target.invitation.lineHTML.vBtnDown.removeEventListener('click', refuseInvitation,false);
+
+		var vSelectedInvit = {
+			vMyEmail 			: vMemberClient.member.email,
+			vMyPseudo			:	vMemberClient.member.pseudo,
+			vFriendEmail  : event.target.invitation.friend.friendEmail,
+			vFriendPseudo : event.target.invitation.friend.friendPseudo,
+			vLinePressediD: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
+		webSocketConnection.emit('refuseInvitation', vSelectedInvit);  
 	}
 
 	// --------------------------------------------------------------
@@ -801,7 +835,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('data-content', 'Vous avez décliné la demande d\'ami de '+pSelectedInvit.vFriendPseudo);
 
 		$('#'+pSelectedInvit.vLinePressediD).popover('show')
-		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},2500);     // Fermeture temporisée de la PopOver
+		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
 	});
 
 	// --------------------------------------------------------------
@@ -845,15 +879,15 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
 		this.lineHTML.vDivRow.setAttribute('class', 'row');
 		
-		// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
+		// <div class="col-3 containerAvatarToken py-1 text-center align-self-center">
 		this.lineHTML.vDivAvatar = window.document.createElement('div');
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
-		this.lineHTML.vDivAvatar.setAttribute('class', 'col-4 containerAvatarToken py-1 text-center align-self-center');
+		this.lineHTML.vDivAvatar.setAttribute('class', 'col-3 containerAvatarToken py-1 text-center align-self-center');
 
 		// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
 		this.lineHTML.vImg = window.document.createElement('img');
 		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
-		this.lineHTML.vImg.setAttribute('class', 'avatar-token');
+		this.lineHTML.vImg.setAttribute('class', 'avatar-token mx1');
 		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
@@ -861,10 +895,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
 		this.lineHTML.vImg.setAttribute('data-placement', 'right');
 
-		// <div class="col-5 align-self-center font-size-120">xxx</div>
+		// <div class="col-6 align-self-center font-size-120">xxx</div>
 		this.lineHTML.vDivName = window.document.createElement('div');
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
-		this.lineHTML.vDivName.setAttribute('class', 'col-5 align-self-center font-size-120');
+		this.lineHTML.vDivName.setAttribute('class', 'col-6 align-self-center font-size-120');
 		this.lineHTML.vDivName.innerHTML = item.pseudo;
 		
 		// <div class="col-3 text-center align-self-center">
@@ -872,9 +906,15 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
 		this.lineHTML.vDivFA.setAttribute('class', 'col-3 text-center align-self-center pl-0');
 
+		// <button type="button" class="btn btn-outline-success btn-sm">
+		this.lineHTML.vBtn = window.document.createElement('button');
+		this.lineHTML.vDivFA.appendChild(this.lineHTML.vBtn);
+		this.lineHTML.vBtn.setAttribute('type', 'button');
+		this.lineHTML.vBtn.setAttribute('class', 'btn btn-outline-success btn-sm');
+
 		// <i class="fa fa-user-plus fa-2x text-dark"></i>
 		this.lineHTML.vIFA = window.document.createElement('i');
-		this.lineHTML.vDivFA.appendChild(this.lineHTML.vIFA);
+		this.lineHTML.vBtn.appendChild(this.lineHTML.vIFA);
 		this.lineHTML.vIFA.setAttribute('class', 'fa fa-user-plus fa-2x text-dark');
 	}
 
@@ -912,7 +952,8 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vMembersFriendables = [];
 		pMembersFriendables.forEach(function(item, index) {
 			vMembersFriendables.push(new AddPotentialFriendLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
-			vMembersFriendables[index].lineHTML.vA.addEventListener('click', sendInvitation.bind(this,vMembersFriendables[index]));		
+			vMembersFriendables[index].lineHTML.vIFA.addEventListener('click', sendInvitation,false);
+			vMembersFriendables[index].lineHTML.vIFA.invitation = vMembersFriendables[index];
 		});
 	});
 
@@ -921,22 +962,29 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Bascule la couleur de l'icône "Ajout d'amis"
 	// Si le receveur est connecté, son nombre d'invitations evoluera en temps réel
 	// --------------------------------------------------------------
-	function sendInvitation(pMemberFriendable){
-		if (!pMemberFriendable.lineHTML.vIFA.classList.contains('text-info')){
-			pMemberFriendable.lineHTML.vIFA.classList.replace('text-dark','text-info'); 
-			pMemberFriendable.lineHTML.vA.classList.add('neutralPointer'); 
+	function sendInvitation(event){
+		// Bascule Look des boutons et de leur texte, puis désactive les boutons 
+		event.target.invitation.lineHTML.vBtn.classList.replace('btn-outline-success','btn-success'); 
+		event.target.invitation.lineHTML.vIFA.classList.replace('text-dark','text-light'); 
+		event.target.invitation.lineHTML.vBtn.classList.add('active'); 
+		event.target.invitation.lineHTML.vBtn.classList.add('disabled'); 
 
-			var vFriendToAdd = {
-				vMyEmail 			: vMemberClient.member.email,
-				vMyPseudo			:	vMemberClient.member.pseudo,
-				vMyPhoto			: vMemberClient.member.etatCivil.photo,
-				vFriendEmail  : pMemberFriendable.friend.email,
-				vFriendPseudo : pMemberFriendable.friend.pseudo,
-				vFriendPhoto  : pMemberFriendable.friend.etatCivil.photo,
-				vLinePressediD: pMemberFriendable.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
-			}
-			webSocketConnection.emit('processInvitation', vFriendToAdd);  
+		// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
+		event.target.invitation.lineHTML.vA.classList.add('neutralPointer'); 
+
+		// Suppression du Listener
+		event.target.invitation.lineHTML.vIFA.removeEventListener('click', sendInvitation,false);
+
+		var vFriendToAdd = {
+			vMyEmail 			: vMemberClient.member.email,
+			vMyPseudo			:	vMemberClient.member.pseudo,
+			vMyPhoto			: vMemberClient.member.etatCivil.photo,
+			vFriendEmail  : event.target.invitation.friend.email,
+			vFriendPseudo : event.target.invitation.friend.pseudo,
+			vFriendPhoto  : event.target.invitation.friend.etatCivil.photo,
+			vLinePressediD: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
+		webSocketConnection.emit('processInvitation', vFriendToAdd);  
 	}
 
 	// --------------------------------------------------------------
@@ -947,7 +995,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		document.getElementById(pFriendToAdd.vLinePressediD).setAttribute('data-content', 'Vous avez demandé à être ami avec '+pFriendToAdd.vFriendPseudo);
 
 		$('#'+pFriendToAdd.vLinePressediD).popover('show')
-		setTimeout(function(){$('#'+pFriendToAdd.vLinePressediD).popover('hide')},2500);     // Fermeture temporisée de la PopOver
+		setTimeout(function(){$('#'+pFriendToAdd.vLinePressediD).popover('hide')},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
 	});
 
 	// --------------------------------------------------------------
@@ -965,7 +1013,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retryLostPWDForm', function(){   
 		vLostPWDAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de saisie d'email erroné
 		vMemberClient.InitHeaderColor('bg-danger', vModalLostPWDHeader);
-		setTimeout(function(){$('#idModalLostPWD').modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalLostPWD').modal('toggle')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -975,7 +1023,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retryLoginForm', function(){   
 		vLoginAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalLoginHeader);
-		setTimeout(function(){$('#idModalLogin').modal('toggle')},300);              // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalLogin').modal('toggle')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -985,7 +1033,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retrySignInForm', function(){   
 		vSignInAlertMsg.style.visibility = 'visible';                               // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalSignInHeader);
-		setTimeout(function(){$('#idModalSignIn').modal('toggle')},300);            // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalSignIn').modal('toggle')},cstDelayToggleModal);            // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -1088,23 +1136,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.displayAvatar(vAvatarInfo)
 	});
 
-//  XXXXX En Chantier  (Amélioration du comportement des pills de Préférences)
-// --------------------------------------------------------------------------------------------------------------
-// function addListener(pPreferenceLabel, pPreferencePill, pColorChecked, pColorNotChecked){
-// 	pPreferenceLabel.addEventListener('click', function(){
-
-// console.log('addListener - pPreferencePill.checked : ',pPreferencePill.checked);
-
-// 	if (pPreferencePill.checked) {
-// 		pPreferenceLabel.classList.remove(pColorNotChecked);    // Jaune Or     
-// 		pPreferenceLabel.classList.add(pColorChecked);    // Jaune Or     
-// 	} else {
-// 		pPreferenceLabel.classList.remove(pColorChecked);    // Jaune Or     
-// 		pPreferenceLabel.classList.add(pColorNotChecked);    // Jaune Or     
-// 	}
-// 	})
-// };
-// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 // 

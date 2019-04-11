@@ -339,7 +339,6 @@ body {
 /* rester en pointeur                 */
 /* ********************************** */
 
-/* .presentationCard label{ */
 .neutralPointer{
     cursor: default;
     pointer-events: none;

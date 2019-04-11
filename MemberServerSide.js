@@ -668,41 +668,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			pWebSocketConnection.emit('displayNotifInvitationSent',pFriendToAdd); 			
 		});
 	}
-// XXXXX
-	// // ---------------------------------------------------------------------------------------------------------------------------
-	// // Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut cstAttenteConfirm
-	// // ---------------------------------------------------------------------------------------------------------------------------
-	// MemberServer.prototype.validateFriends = function(pMyEmail, pWebSocketConnection){
-	// 	return new Promise((resolve, reject) => {
-
-	// 		vDBMgr.collectionMembers.find(                                                   
-	// 			{ 
-	// 				'email': pMyEmail, 
-	// 			},
-	// 			{
-	// 				"amis" : 1, 
-	// 				"_id" : 0
-	// 			})
-	// 		.toArray((error, documents) => {
-	// 			if (error){
-	// 				reject(error)
-	// 				console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
-	// 				throw error;
-	// 			} 
-
-	// 			resolve(true);
-
-	// 			// Filtre les demandes d'invitation que l'on m'a envoyées
-	// 			let vWaitingInvit = documents[0].amis.filter(this.filterWaitingInvit); 
-
-	// 			if (vWaitingInvit.length === 0){
-	// 				return pWebSocketConnection.emit('emptyWaitingInvitation'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
-	// 			} else {
-	// 				return pWebSocketConnection.emit('displayWaitingInvitation',vWaitingInvit); // Affichage des membres ayant envoyé des invitations
-	// 			}
-	// 		})
-	// 	})
-	// };
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Prréparation de la liste des invitattions à traiter
