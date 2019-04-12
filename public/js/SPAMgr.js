@@ -110,7 +110,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	vInvitations.addEventListener('click', function(){											// Ouvre la fenêtre de validation des amis
 	// Demande au serveur d'afficher les membres qui ont envoyé une invitation pour devenir ami
-		webSocketConnection.emit('validateFriends', vMemberClient.member.email);  
+		webSocketConnection.emit('listInvitations', vMemberClient.member.email);  
 	});
 
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
@@ -204,9 +204,8 @@ window.addEventListener('DOMContentLoaded', function(){
 				password : vLoginForm.idLoginPassword.value,
 			}
 
-		webSocketConnection.emit('visiteurLoginData', vVisiteurLoginData);   // Transmission au serveur des infos saisies
-		
-		$('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
+		webSocketConnection.emit('visiteurLoginData', vVisiteurLoginData);   	// Transmission au serveur des infos saisies
+		$('#idModalLogin').modal('hide');                                 		// Fermeture de la fenêtre modale de Login
 		vLoginAlertMsg.style.visibility = 'hidden';  
 	});
 
@@ -220,8 +219,8 @@ window.addEventListener('DOMContentLoaded', function(){
 			vModalSignInHeader,
 		}
 		vMemberClient.initModalSignIn(lSignInParameters);
-		$('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
-		$('#idModalSignIn').modal('toggle');                                // Ouverture de la fenêtre modale de gestion de PWD perdu
+		$('#idModalLogin').modal('hide');                                 // Fermeture de la fenêtre modale de Login
+		$('#idModalSignIn').modal('show');                                // Ouverture de la fenêtre modale de gestion de PWD perdu
 	});
 
 	// -------------------------------------------------------------------------
@@ -237,8 +236,8 @@ window.addEventListener('DOMContentLoaded', function(){
 		vLostPWDForm.idLostPWDEmail.value = '';
 		vLostPWDAlertMsg.style.visibility = 'hidden';                       // Cache du message d'alerte de saisie d'email erroné
 		vMemberClient.InitHeaderColor('bg-warning', vModalLostPWDHeader);
-		$('#idModalLogin').modal('toggle');                                 // Fermeture de la fenêtre modale de Login
-		$('#idModalLostPWD').modal('toggle');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
+		$('#idModalLogin').modal('hide');                                 // Fermeture de la fenêtre modale de Login
+		$('#idModalLostPWD').modal('show');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
 	});
 
 	// -------------------------------------------------------------------------
@@ -249,7 +248,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vLostPWDForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
 		webSocketConnection.emit('lostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   // Transmission au serveur des infos saisies
-		$('#idModalLostPWD').modal('toggle');                                        // Fermeture de la fenêtre modale de Login
+		$('#idModalLostPWD').modal('hide');                                        // Fermeture de la fenêtre modale de Login
 	});
 
 	// -------------------------------------------------------------------------
@@ -293,7 +292,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		}
 
 		webSocketConnection.emit('visiteurSignInData', visiteurSignInData);     // Transmission au serveur des infos saisies
-		$('#idModalSignIn').modal('toggle');                                    // Fermeture de la fenêtre modale de Sign-In
+		$('#idModalSignIn').modal('hide');                                    	// Fermeture de la fenêtre modale de Sign-In
 		vSignInAlertMsg.style.visibility = 'hidden';                            // Affichage du message d'alerte de connexion erronée
 	});
 
@@ -631,10 +630,40 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('emptyWaitingInvitation', function(){   
 		vMemberClient.initModalEmptyWaitingInvit(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de message d'erreur
+		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
 	
 	// --------------------------------------------------------------
+	// Change la classe (de couleur BS) lorsque la souris quitte le 
+	// boutons, en noir
+	// --------------------------------------------------------------
+	function acceptFriendBtnTxtColOver(event){
+		event.target.invitation.lineHTML.vIFAUp.classList.replace('text-dark','text-light'); 
+	}
+	// --------------------------------------------------------------
+	// Change la classe (de couleur BS) lorsque la souris quitte le 
+	// boutons, en noir
+	// --------------------------------------------------------------
+	function acceptFriendBtnTxtColOut(event){
+		event.target.invitation.lineHTML.vIFAUp.classList.replace('text-light','text-dark'); 
+	}
+
+	// --------------------------------------------------------------
+	// Change la classe (de couleur BS) lorsque la souris quitte le 
+	// boutons, en noir
+	// --------------------------------------------------------------
+	function refuseFriendBtnTxtColOver(event){
+		event.target.invitation.lineHTML.vIFADown.classList.replace('text-dark','text-light'); 
+	}
+	// --------------------------------------------------------------
+	// Change la classe (de couleur BS) lorsque la souris quitte le 
+	// boutons, en noir
+	// --------------------------------------------------------------
+	function refuseFriendBtnTxtColOut(event){
+		event.target.invitation.lineHTML.vIFADown.classList.replace('text-light','text-dark'); 
+	}
+	
+// --------------------------------------------------------------
 	// Cette fonction alimente un objet avec des créations dans le DOM 
 	// des lignes HTML pour chaque invitation en attente à valider
 	// --------------------------------------------------------------
@@ -656,6 +685,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
 		this.lineHTML.vA = window.document.createElement('a');
 		vModalMgrFriendListGroup.appendChild(this.lineHTML.vA);
+		this.lineHTML.vA.setAttribute('id', 'idInvitAnchor'+index);
 		this.lineHTML.vA.setAttribute('href', '#');
 		this.lineHTML.vA.setAttribute('class', 'list-group-item list-group-item-action list-group-item-white');
 		
@@ -673,7 +703,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vImg = window.document.createElement('img');
 		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
 		this.lineHTML.vImg.setAttribute('class', 'avatar-token mx-1');
-		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken'+index);
+		this.lineHTML.vImg.setAttribute('id', 'idInvitAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre demandant à devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.friendPhoto);
 
@@ -721,7 +751,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('displayWaitingInvitation', function(pWaitingInvit){   
 		// Préparation et ouverture de la fenêtre modale de sélection des invitations à traiter
 		vMemberClient.InitHeaderColor('bg-warning', vModalMgrFriendHeader);
-		$('#idModalMgrFriend').modal('toggle');     // Ouverture de la modale                                     
+		$('#idModalMgrFriend').modal('show');     // Ouverture de la modale                                     
 
 		var lineHTML = {						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
 			vH5        : null,				// <h5 class="modal-title"><i class="fa fa-fw fa-check"></i> Validation d'amis</h5>
@@ -746,15 +776,40 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vInvitAvailable = [];
 		pWaitingInvit.forEach(function(item, index) {
 			vInvitAvailable.push(new AddInvitLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
-			
-			// Cette façon de procéder pour les 4 lignes qui suivent permettent de passer des paramètres à la fonction appelée et surtout de pouvoir "Remove" les Listeners
+
 			// StackOverflow : https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function - "Why not just get the arguments from the target attribute of the event?"
+			// Cette façon de procéder pour les 4 lignes qui suivent permettent de passer des paramètres à la fonction appelée et surtout de pouvoir "Remove" les Listeners
 			vInvitAvailable[index].lineHTML.vIFAUp.addEventListener('click', acceptInvitation,false);
 			vInvitAvailable[index].lineHTML.vIFADown.addEventListener('click', refuseInvitation,false);
 			vInvitAvailable[index].lineHTML.vIFAUp.invitation = vInvitAvailable[index];
 			vInvitAvailable[index].lineHTML.vIFADown.invitation = vInvitAvailable[index];
+
+			vInvitAvailable[index].lineHTML.vBtnUp.addEventListener('mouseover', acceptFriendBtnTxtColOver,false);
+			vInvitAvailable[index].lineHTML.vBtnUp.invitation = vInvitAvailable[index];
+
+			vInvitAvailable[index].lineHTML.vBtnUp.addEventListener('mouseout', acceptFriendBtnTxtColOut,false);
+			vInvitAvailable[index].lineHTML.vBtnUp.invitation = vInvitAvailable[index];
+
+			vInvitAvailable[index].lineHTML.vBtnDown.addEventListener('mouseover', refuseFriendBtnTxtColOver,false);
+			vInvitAvailable[index].lineHTML.vBtnDown.invitation = vInvitAvailable[index];
+
+			vInvitAvailable[index].lineHTML.vBtnDown.addEventListener('mouseout', refuseFriendBtnTxtColOut,false);
+			vInvitAvailable[index].lineHTML.vBtnDown.invitation = vInvitAvailable[index];
 		});
 	});
+
+	// --------------------------------------------------------------
+	// Supprime la ligne à partir de laquelle on a envoyé une invitation
+	// S'il n'y a plus de lignes, je ferme la modale
+	// --------------------------------------------------------------
+	function deleteLineInvitProcessed(pSelectedInvit){
+		var elem = document.getElementById(pSelectedInvit.vAnchorTarget);
+		elem.parentNode.removeChild(elem);
+
+		if (!vModalMgrFriendListGroup.firstChild) {	// S'il n'y a plus de lignes alors
+			$('#idModalMgrFriend').modal('hide');     // Fermeture de la modale                                     
+		}
+	}
 
 	// --------------------------------------------------------------
 	// Envoi d'une acceptation d'invitation pour devenir ami au serveur (Une seule demande par ami):
@@ -774,13 +829,18 @@ window.addEventListener('DOMContentLoaded', function(){
 		// Suppression des Listeners
 		event.target.invitation.lineHTML.vIFAUp.removeEventListener('click', acceptInvitation,false);
 		event.target.invitation.lineHTML.vIFADown.removeEventListener('click', refuseInvitation,false);
+		event.target.invitation.lineHTML.vBtnUp.removeEventListener('mouseover', acceptFriendBtnTxtColOver,false);
+		event.target.invitation.lineHTML.vBtnUp.removeEventListener('mouseout', acceptFriendBtnTxtColOut,false);
+		event.target.invitation.lineHTML.vBtnDown.removeEventListener('mouseover', refuseFriendBtnTxtColOver,false);
+		event.target.invitation.lineHTML.vBtnDown.removeEventListener('mouseout', refuseFriendBtnTxtColOut,false);
 
 		var vSelectedInvit = {
 			vMyEmail 			: vMemberClient.member.email,
 			vMyPseudo			:	vMemberClient.member.pseudo,
 			vFriendEmail  : event.target.invitation.friend.friendEmail,
 			vFriendPseudo : event.target.invitation.friend.friendPseudo,
-			vLinePressediD: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			vAnchorTarget	: event.target.invitation.lineHTML.vA.id,			  // Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			vImgTarget		: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
 		webSocketConnection.emit('acceptInvitation', vSelectedInvit);  
 	}
@@ -790,11 +850,17 @@ window.addEventListener('DOMContentLoaded', function(){
 	// le serveur après les MAJ réussies de la BDD
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationValided', function(pSelectedInvit){   
-		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('title', 'Invitation acceptée');
-		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('data-content', 'Vous êtes désormais ami avec '+pSelectedInvit.vFriendPseudo);
+		document.getElementById(pSelectedInvit.vImgTarget).setAttribute('title', 'Invitation acceptée');
+		document.getElementById(pSelectedInvit.vImgTarget).setAttribute('data-content', 'Vous êtes désormais ami avec '+pSelectedInvit.vFriendPseudo);
 
-		$('#'+pSelectedInvit.vLinePressediD).popover('show')
-		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
+		$('#'+pSelectedInvit.vImgTarget).popover('show')
+		setTimeout(function(){
+			$('#'+pSelectedInvit.vImgTarget).popover('hide')
+		},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
+
+		setTimeout(function(){
+			deleteLineInvitProcessed(pSelectedInvit)
+		},cstDelayClosingPopover+500);																	// Supprime la ligne après un délai de quelques secondes
 	});
 
 	// --------------------------------------------------------------
@@ -815,13 +881,18 @@ window.addEventListener('DOMContentLoaded', function(){
 		// Suppression des Listeners
 		event.target.invitation.lineHTML.vBtnUp.removeEventListener('click', acceptInvitation,false);
 		event.target.invitation.lineHTML.vBtnDown.removeEventListener('click', refuseInvitation,false);
+		event.target.invitation.lineHTML.vBtnUp.removeEventListener('mouseover', acceptFriendBtnTxtColOver,false);
+		event.target.invitation.lineHTML.vBtnUp.removeEventListener('mouseout', acceptFriendBtnTxtColOut,false);
+		event.target.invitation.lineHTML.vBtnDown.removeEventListener('mouseover', refuseFriendBtnTxtColOver,false);
+		event.target.invitation.lineHTML.vBtnDown.removeEventListener('mouseout', refuseFriendBtnTxtColOut,false);
 
 		var vSelectedInvit = {
 			vMyEmail 			: vMemberClient.member.email,
 			vMyPseudo			:	vMemberClient.member.pseudo,
 			vFriendEmail  : event.target.invitation.friend.friendEmail,
 			vFriendPseudo : event.target.invitation.friend.friendPseudo,
-			vLinePressediD: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			vAnchorTarget	: event.target.invitation.lineHTML.vA.id,			  // Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			vImgTarget	  : event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
 		webSocketConnection.emit('refuseInvitation', vSelectedInvit);  
 	}
@@ -831,11 +902,17 @@ window.addEventListener('DOMContentLoaded', function(){
 	// le serveur après les MAJ réussies de la BDD
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationRefused', function(pSelectedInvit){   
-		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('title', 'Invitation refusée');
-		document.getElementById(pSelectedInvit.vLinePressediD).setAttribute('data-content', 'Vous avez décliné la demande d\'ami de '+pSelectedInvit.vFriendPseudo);
+		document.getElementById(pSelectedInvit.vImgTarget).setAttribute('title', 'Invitation refusée');
+		document.getElementById(pSelectedInvit.vImgTarget).setAttribute('data-content', 'Vous avez décliné la demande d\'ami de '+pSelectedInvit.vFriendPseudo);
 
-		$('#'+pSelectedInvit.vLinePressediD).popover('show')
-		setTimeout(function(){$('#'+pSelectedInvit.vLinePressediD).popover('hide')},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
+		$('#'+pSelectedInvit.vImgTarget).popover('show')
+		setTimeout(function(){
+			$('#'+pSelectedInvit.vImgTarget).popover('hide')
+		},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
+
+		setTimeout(function(){
+			deleteLineInvitProcessed(pSelectedInvit)
+		},cstDelayClosingPopover+500);																		// Supprime la ligne après un délai de quelques secondes
 	});
 
 	// --------------------------------------------------------------
@@ -847,8 +924,23 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('emptyPotentialFriends', function(){   
 		vMemberClient.initModalEmptyFriendList(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de message d'erreur
+		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
+
+	// --------------------------------------------------------------
+	// Change la classe (de couleur BS) lors du survol des boutons, 
+	// en blanc
+	// --------------------------------------------------------------
+	function AddFriendModalChgBtnTextColorOver(event){
+		event.target.invitation.lineHTML.vIFA.classList.replace('text-dark','text-light'); 
+	}
+	// --------------------------------------------------------------
+	// Change la classe (de couleur BS) lorsque la souris quitte le 
+	// boutons, en noir
+	// --------------------------------------------------------------
+	function AddFriendModalChgBtnTextColorOut(event){
+		event.target.invitation.lineHTML.vIFA.classList.replace('text-light','text-dark'); 
+	}
 
 	// --------------------------------------------------------------
 	// Cette fonction alimente un objet avec des créations dans le DOM 
@@ -871,6 +963,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
 		this.lineHTML.vA = window.document.createElement('a');
 		vModalMgrFriendListGroup.appendChild(this.lineHTML.vA);
+		this.lineHTML.vA.setAttribute('id', 'idAddFriendAnchor'+index);
 		this.lineHTML.vA.setAttribute('href', '#');
 		this.lineHTML.vA.setAttribute('class', 'list-group-item list-group-item-action list-group-item-white');
 		
@@ -888,7 +981,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vImg = window.document.createElement('img');
 		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
 		this.lineHTML.vImg.setAttribute('class', 'avatar-token mx1');
-		this.lineHTML.vImg.setAttribute('id', 'idAvatarToken'+index);
+		this.lineHTML.vImg.setAttribute('id', 'idAddFriendAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
 		this.lineHTML.vImg.setAttribute('title', 'Invitation envoyée');
@@ -927,7 +1020,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 		// Préparation et ouverture de la fenêtre modale de sélection des membres pouvant devenir amis
 		vMemberClient.InitHeaderColor('bg-warning', vModalMgrFriendHeader);
-		$('#idModalMgrFriend').modal('toggle');     // Ouverture de la modale                                     
+		$('#idModalMgrFriend').modal('show');     // Ouverture de la modale                                     
 
 		var lineHTML = {						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
 			vH5        : null,				// <h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
@@ -954,6 +1047,12 @@ window.addEventListener('DOMContentLoaded', function(){
 			vMembersFriendables.push(new AddPotentialFriendLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
 			vMembersFriendables[index].lineHTML.vIFA.addEventListener('click', sendInvitation,false);
 			vMembersFriendables[index].lineHTML.vIFA.invitation = vMembersFriendables[index];
+
+			vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', AddFriendModalChgBtnTextColorOver,false);
+			vMembersFriendables[index].lineHTML.vBtn.invitation = vMembersFriendables[index];
+
+			vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', AddFriendModalChgBtnTextColorOut,false);
+			vMembersFriendables[index].lineHTML.vBtn.invitation = vMembersFriendables[index];
 		});
 	});
 
@@ -972,8 +1071,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
 		event.target.invitation.lineHTML.vA.classList.add('neutralPointer'); 
 
-		// Suppression du Listener
+		// Suppression des Listenerss
 		event.target.invitation.lineHTML.vIFA.removeEventListener('click', sendInvitation,false);
+		event.target.invitation.lineHTML.vBtn.removeEventListener('mouseover', AddFriendModalChgBtnTextColorOver,false);
+		event.target.invitation.lineHTML.vBtn.removeEventListener('mouseout', AddFriendModalChgBtnTextColorOut,false);
 
 		var vFriendToAdd = {
 			vMyEmail 			: vMemberClient.member.email,
@@ -982,20 +1083,39 @@ window.addEventListener('DOMContentLoaded', function(){
 			vFriendEmail  : event.target.invitation.friend.email,
 			vFriendPseudo : event.target.invitation.friend.pseudo,
 			vFriendPhoto  : event.target.invitation.friend.etatCivil.photo,
-			vLinePressediD: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			vAnchorTarget	: event.target.invitation.lineHTML.vA.id,			  // Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+			vImgTarget		: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
-		webSocketConnection.emit('processInvitation', vFriendToAdd);  
+		webSocketConnection.emit('InvitationSent', vFriendToAdd);  
 	}
 
+	// --------------------------------------------------------------
+	// Supprime la ligne à partir de laquelle on a envoyé une invitation
+	// S'il n'y a plus de lignes, je ferme la modale
+	// --------------------------------------------------------------
+	function deleteLine(pFriendToAdd){
+		var elem = document.getElementById(pFriendToAdd.vAnchorTarget);
+		elem.parentNode.removeChild(elem);
+
+		if (!vModalMgrFriendListGroup.firstChild) {	// S'il n'y a plus de lignes alors
+			$('#idModalMgrFriend').modal('hide');     // Fermeture de la modale                                     
+		}
+	}
 	// --------------------------------------------------------------
 	// Affichage d'une Notification d'envoi d'invitation envoyée par 
 	// le serveur après les MAJ réussies de la BDD et l'envoi du mail
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationSent', function(pFriendToAdd){   
-		document.getElementById(pFriendToAdd.vLinePressediD).setAttribute('data-content', 'Vous avez demandé à être ami avec '+pFriendToAdd.vFriendPseudo);
+		document.getElementById(pFriendToAdd.vImgTarget).setAttribute('data-content', 'Vous avez demandé à être ami avec '+pFriendToAdd.vFriendPseudo);
 
-		$('#'+pFriendToAdd.vLinePressediD).popover('show')
-		setTimeout(function(){$('#'+pFriendToAdd.vLinePressediD).popover('hide')},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
+		$('#'+pFriendToAdd.vImgTarget).popover('show');										// Affiche la notification d'envoi de la demande d'ami
+		setTimeout(function(){
+			$('#'+pFriendToAdd.vImgTarget).popover('hide');
+		},cstDelayClosingPopover);																				// Ferme la notif après un délai de quelques secondes
+
+		setTimeout(function(){
+			deleteLine(pFriendToAdd)
+		},cstDelayClosingPopover+500);																		// Supprime la ligne après un délai de quelques secondes
 	});
 
 	// --------------------------------------------------------------
@@ -1013,7 +1133,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retryLostPWDForm', function(){   
 		vLostPWDAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de saisie d'email erroné
 		vMemberClient.InitHeaderColor('bg-danger', vModalLostPWDHeader);
-		setTimeout(function(){$('#idModalLostPWD').modal('toggle')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalLostPWD').modal('show')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -1023,7 +1143,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retryLoginForm', function(){   
 		vLoginAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalLoginHeader);
-		setTimeout(function(){$('#idModalLogin').modal('toggle')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalLogin').modal('show')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -1033,7 +1153,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('retrySignInForm', function(){   
 		vSignInAlertMsg.style.visibility = 'visible';                               // Affichage du message d'alerte de connexion erronée
 		vMemberClient.InitHeaderColor('bg-danger', vModalSignInHeader);
-		setTimeout(function(){$('#idModalSignIn').modal('toggle')},cstDelayToggleModal);            // Obligation de temporiser la réouverture sinon ça ne marche pas
+		setTimeout(function(){$('#idModalSignIn').modal('show')},cstDelayToggleModal);            // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
 	// --------------------------------------------------------------
@@ -1057,7 +1177,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText); // Affiche la fenêtre de bienvenue pour un nouveau membre
 		}
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                           // ouverture de la fenêtre modale de Félicitations
+		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de Félicitations
 
 		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers);			// Affichage de la page de profil
 	});
@@ -1078,7 +1198,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		} else {
 			vMemberClient.initModalChangedPWDText(vGenericModalTitle, vGenericModalBodyText);            // Affiche la fenêtre de notification pourMDP changé volontairement
 		}
-		$('#idGenericModal').modal('toggle');                                                           // ouverture de la fenêtre modale de notification
+		$('#idGenericModal').modal('show');                                                           // ouverture de la fenêtre modale de notification
 	});    
 
 	// --------------------------------------------------------------
@@ -1088,7 +1208,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('memberAlreadyConnected', function(pMember){ 
 		vMemberClient.initModalAlreadyConnectedText(vGenericModalTitle, vGenericModalBodyText);     // Affiche la fenêtre de bienvenue
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
-		$('#idGenericModal').modal('toggle');                                                       // ouverture de la fenêtre modale de notification de rejet
+		$('#idGenericModal').modal('show');                                                       // ouverture de la fenêtre modale de notification de rejet
 	});    
 
 	// --------------------------------------------------------------

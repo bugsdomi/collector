@@ -5158,7 +5158,8 @@ input[type="button"].btn-block {
 }
 
 .list-group-item:last-child {
-  margin-bottom: 0;
+  /* margin-bottom: 0; */                             /* DH- */
+  margin-bottom: 0.5rem;                                   /* DH+ */
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
 }

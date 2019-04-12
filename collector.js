@@ -127,13 +127,13 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	});   						
 
 	// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
-	webSocketConnection.on('processInvitation', function(pFriendToAdd){
-		vMemberServer.processInvitation(pFriendToAdd, webSocketConnection, socketIo);
+	webSocketConnection.on('InvitationSent', function(pFriendToAdd){
+		vMemberServer.InvitationSent(pFriendToAdd, webSocketConnection, socketIo);
 	});   						
 
-	// On a reçu une demande de la liste de validation des amis
-	webSocketConnection.on('validateFriends', function(pMyEmail){
-		vMemberServer.processInvit(pMyEmail, webSocketConnection);
+	// On a reçu une demande de la liste des invitations à valider
+	webSocketConnection.on('listInvitations', function(pMyEmail){
+		vMemberServer.listInvitations(pMyEmail, webSocketConnection);
 	});   						
 
 	// On a reçu une validation d'ami

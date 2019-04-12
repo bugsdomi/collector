@@ -641,7 +641,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Emission de mail au receveur
 	// Envoi d'une notification au demandeur
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.processInvitation = function(pFriendToAdd, pWebSocketConnection, pSocketIo){
+	MemberServer.prototype.InvitationSent = function(pFriendToAdd, pWebSocketConnection, pSocketIo){
 		var result1 = this.addPotentialFriendToMe(pFriendToAdd)
 		.then(() => {this.addMeToPotentialFriend(pFriendToAdd)})
 		.then(() => {
@@ -699,7 +699,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 // ---------------------------------------------------------------------------------------------------------------------------
 // Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut cstAttenteConfirm
 // ---------------------------------------------------------------------------------------------------------------------------
-MemberServer.prototype.processInvit = function(pMyEmail, pWebSocketConnection){
+MemberServer.prototype.listInvitations = function(pMyEmail, pWebSocketConnection){
 
 	this.validateFriends(pMyEmail)
 	.then(documents => {
@@ -783,7 +783,15 @@ MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketCon
 		pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 			
 		// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
-		pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 			
+		pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
+		
+		this.sendEMail(
+			pSelectedInvit.vFriendEmail, 
+			'Collect\'Or - Acceptation de votre demande d\'ami', 
+			'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
+			'<p><Strong>'+pSelectedInvit.vMyPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
+			'<br /><br /><br /><i>Vil-Coyote Products</i>'
+		);
 	})
 	.catch(error => {
 		console.log(error)
@@ -861,7 +869,15 @@ console.log('refuseInvitation - pSelectedInvit : ',pSelectedInvit);
 		pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 			
 		// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
-		pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 			
+		pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 		
+
+		this.sendEMail(
+			pSelectedInvit.vFriendEmail, 
+			'Collect\'Or - Rejet de votre demande d\'ami', 
+			'<h1 style="color: black;">Votre demande d\'ami a été rejetée</h1><br />' +
+			'<p><Strong>'+pSelectedInvit.vMyPseudo+'</strong> ne souhaite pas devenir votre ami sur le site Collect\'Or.<p><br />'+
+			'<br /><br /><br /><i>Vil-Coyote Products</i>'
+		);
 	})
 	.catch(error => {
 		console.log(error)
