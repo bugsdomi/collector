@@ -138,7 +138,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
 	// On a reçu une validation d'ami
 	webSocketConnection.on('acceptInvitation', function(pSelectedInvit){
-		vMemberServer.acceptInvitation(pSelectedInvit, webSocketConnection);
+		vMemberServer.acceptInvitation(pSelectedInvit, webSocketConnection, socketIo);
 	});   						
 
 	// On a reçu un refus d'ami

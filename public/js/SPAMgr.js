@@ -65,9 +65,16 @@ window.addEventListener('DOMContentLoaded', function(){
 	vToolBox = new ToolBox();
 	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 	
+
+	vMemberClient.InitPopOverAndToolTip();
 	$(function () {
 		$('[data-toggle="popover"]').popover()			// Activation des PopOver de Bootstrap
-	})
+	});
+
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()			// Activation des ToolTips de Bootstrap
+	});
+
 
 	// -------------------------------------------------------------------------
 	// 
@@ -142,7 +149,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAboutVille = document.getElementById('idAboutVille');
 	var vAboutDepartmentName = document.getElementById('idAboutDepartmentName');
 	var vAboutPresentation = document.getElementById('idAboutPresentation');
-		
+	
+
+	// -------------------------------------------------------------------------
+	// Eléments de la carte des amis du membre sur son profil
+	// -------------------------------------------------------------------------
+	var vFriendUL = document.getElementById('idFriendUL');
+	
 	// -------------------------------------------------------------------------
 	// Déconnexion du membre:
 	// - Réinitialisation de la landing-page
@@ -398,6 +411,9 @@ window.addEventListener('DOMContentLoaded', function(){
 		}
 	})
 
+
+	idFriendUL
+
 	// -------------------------------------------------------------------------
 	// Initialisation Modale de la Fiche de renseignements avec 
 	// les datas provenant de la BDD
@@ -554,6 +570,13 @@ window.addEventListener('DOMContentLoaded', function(){
 		vAboutDepartmentName,
 		vAboutPresentation,
 	}
+
+	// -------------------------------------------------------------------------
+	// Structure de transfert des infos des amis
+	// -------------------------------------------------------------------------
+	var vFriendInfo = {
+		vFriendUL,
+	}
 	
 	// -------------------------------------------------------------------------
 	// Structure de transfert des infos de la page de renseignements vers la 
@@ -635,7 +658,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	
 	// --------------------------------------------------------------
 	// Change la classe (de couleur BS) lorsque la souris quitte le 
-	// boutons, en noir
+	// boutons, en blanc
 	// --------------------------------------------------------------
 	function acceptFriendBtnTxtColOver(event){
 		event.target.invitation.lineHTML.vIFAUp.classList.replace('text-dark','text-light'); 
@@ -650,7 +673,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 	// --------------------------------------------------------------
 	// Change la classe (de couleur BS) lorsque la souris quitte le 
-	// boutons, en noir
+	// boutons, en blanc
 	// --------------------------------------------------------------
 	function refuseFriendBtnTxtColOver(event){
 		event.target.invitation.lineHTML.vIFADown.classList.replace('text-dark','text-light'); 
@@ -672,7 +695,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			vA 				 : null,				// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
 			vDivRow 	 : null,				// <div class="row">
 			vDivAvatar : null,				// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
-			vImg 			 : null,				// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+			vImg 			 : null,				// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
 			vDivName 	 : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
 			vDivFA 		 : null,				// <div class="col-2 text-center align-self-center">
 			vIFADown 	 : null,				// <i class="fa fa-thumbs-o-up fa-2x text-dark"></i>
@@ -699,10 +722,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
 		this.lineHTML.vDivAvatar.setAttribute('class', 'col-3 containerAvatarToken py-1 text-center align-self-center');
 
-		// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+		// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
 		this.lineHTML.vImg = window.document.createElement('img');
 		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
-		this.lineHTML.vImg.setAttribute('class', 'avatar-token mx-1');
+		this.lineHTML.vImg.setAttribute('class', 'avatarToken mx-1');
 		this.lineHTML.vImg.setAttribute('id', 'idInvitAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre demandant à devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.friendPhoto);
@@ -799,7 +822,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 	// --------------------------------------------------------------
-	// Supprime la ligne à partir de laquelle on a envoyé une invitation
+	// Supprime la ligne à partir de laquelle on a validé ou refusé 
+	// une invitation.
 	// S'il n'y a plus de lignes, je ferme la modale
 	// --------------------------------------------------------------
 	function deleteLineInvitProcessed(pSelectedInvit){
@@ -837,8 +861,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vSelectedInvit = {
 			vMyEmail 			: vMemberClient.member.email,
 			vMyPseudo			:	vMemberClient.member.pseudo,
+			vMyPhoto			: vMemberClient.member.etatCivil.photo,
 			vFriendEmail  : event.target.invitation.friend.friendEmail,
 			vFriendPseudo : event.target.invitation.friend.friendPseudo,
+			vFriendPhoto 	: event.target.invitation.friend.friendPhoto,
 			vAnchorTarget	: event.target.invitation.lineHTML.vA.id,			  // Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 			vImgTarget		: event.target.invitation.lineHTML.vImg.id,			// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 		}
@@ -848,8 +874,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	// Affichage d'une Notification d'acceptation d'ami envoyée par 
 	// le serveur après les MAJ réussies de la BDD
+	// et ajout de son avaatar dans ma liste d'amis
 	// --------------------------------------------------------------
-	webSocketConnection.on('displayNotifInvitationValided', function(pSelectedInvit){   
+	webSocketConnection.on('displayNotifInvitationValided', function(pSelectedInvit){ 
+console.log('displayNotifInvitationValided - pSelectedInvit : ',pSelectedInvit)  
 		document.getElementById(pSelectedInvit.vImgTarget).setAttribute('title', 'Invitation acceptée');
 		document.getElementById(pSelectedInvit.vImgTarget).setAttribute('data-content', 'Vous êtes désormais ami avec '+pSelectedInvit.vFriendPseudo);
 
@@ -861,8 +889,17 @@ window.addEventListener('DOMContentLoaded', function(){
 		setTimeout(function(){
 			deleteLineInvitProcessed(pSelectedInvit)
 		},cstDelayClosingPopover+500);																	// Supprime la ligne après un délai de quelques secondes
+
+		vMemberClient.addFriendIntoCard(pSelectedInvit,vFriendInfo);
 	});
 
+	// --------------------------------------------------------------
+	// Ajout de mon Avatar d'ami sur la liste de mon nouvel ami
+	// --------------------------------------------------------------
+	webSocketConnection.on('addFriendIntoHisList', function(pSelectedInvit){ 
+console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)  
+		vMemberClient.addFriendIntoCard(pSelectedInvit,vFriendInfo);
+	});
 	// --------------------------------------------------------------
 	// Envoi d'un refus d'invitation pour devenir ami au serveur (Une seule demande par ami):
 	// Bascule la couleur de l'icône "Refus d'amis"
@@ -951,7 +988,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			vA 				 : null,				// <a href="#" class="list-group-item list-group-item-action list-group-item-white">
 			vDivRow 	 : null,				// <div class="row">
 			vDivAvatar : null,				// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
-			vImg 			 : null,				// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+			vImg 			 : null,				// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
 			vDivName 	 : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
 			vDivFA 		 : null,				// <div class="col-2 text-center align-self-center">
 			vIFA 			 : null,				// <i class="fa fa-user-plus fa-2x text-dark"></i>
@@ -977,10 +1014,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
 		this.lineHTML.vDivAvatar.setAttribute('class', 'col-3 containerAvatarToken py-1 text-center align-self-center');
 
-		// <img id="idAvatarToken" class="avatar-token" alt="Membre" src="static/images/members/xxx.jpg">
+		// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
 		this.lineHTML.vImg = window.document.createElement('img');
 		this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
-		this.lineHTML.vImg.setAttribute('class', 'avatar-token mx1');
+		this.lineHTML.vImg.setAttribute('class', 'avatarToken mx1');
 		this.lineHTML.vImg.setAttribute('id', 'idAddFriendAvatarToken'+index);
 		this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
 		this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
@@ -1172,14 +1209,16 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.member = pDataTransmitted.member;    
 
 		if (pDataTransmitted.welcomeMessage === 'Hello') {
-			vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+			vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  	// Affiche la fenêtre de bienvenue
 		} else {
-			vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText); // Affiche la fenêtre de bienvenue pour un nouveau membre
+			if (pDataTransmitted.welcomeMessage === 'Congrat'){
+				vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText); 	// Affiche la fenêtre de bienvenue pour un nouveau membre
+			}
 		}
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
-		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de Félicitations
+		$('#idGenericModal').modal('show');                                           		// ouverture de la fenêtre modale de Félicitations
 
-		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers);			// Affichage de la page de profil
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers,vMemberClient.member.amis,vFriendInfo);			// Affichage de la page de profil
 	});
 
 	// --------------------------------------------------------------

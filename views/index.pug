@@ -173,7 +173,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             // ******************************************************************************
             .card-header.bg-warning.border-bottom.border-warning
               .containerAvatarToken
-                img#idAvatarToken.avatar-token(alt='Avatar' src='')
+                img#idAvatarToken.avatarToken(alt='Avatar' src='')
               h5.card-title Pr&eacute;sentation
             // ******************************************************************************
             // Corps de la carte "Présentation"
@@ -199,7 +199,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 li
                   .row
                     .col-sm-12.text-dark.mb-2 Pr&eacute;sentation
-                    textarea#idAboutPresentation.col-sm-12.presentationCard.font-weight-bold(rows='1' disabled='')
+                    textarea#idAboutPresentation.col-sm-12.presentationCard.font-weight-bold(rows='2' disabled='')
                 li
                   .row
                     .col-sm-12.text-dark.my-2 Mes pr&eacute;f&eacute;rences...
@@ -295,40 +295,22 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                         input(type='checkbox')
                         | Autre
             // Card-Body
-          .widget.widget-friends
-            .widget-header
-              h3.widget-caption Friends
-            .widget-body.bordered-top.bordered-sky
+          // ******************************************************************************
+          // Carte "Amis"
+          // ******************************************************************************
+          .card.border-warning.mb-4
+            // ******************************************************************************
+            // Entête de la carte "Amis"
+            // ******************************************************************************
+            .card-header.bg-warning.border-bottom.border-warning
+              h5.card-title Amis
+            // ******************************************************************************
+            // Corps de la carte "Amis"
+            // ******************************************************************************
+            .card-body(style='border: 1px black solid;')
               .row
-                .col-md-12
-                  ul.img-grid(style='margin: 0 auto;')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-6.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/woman-3.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-2.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-9.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/woman-9.jpg' alt='image')
-                    li.clearfix
-                      a(href='#')
-                        img(src='static/images/Friends/guy-4.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-1.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/woman-4.jpg' alt='image')
-                    li
-                      a(href='#')
-                        img(src='static/images/Friends/guy-6.jpg' alt='image')
+                .col-md-12.px-0.text-dark
+                  ul#idFriendUL.p-0.m-0(style='list-style: none;')
           .widget
             .widget-header
               h3.widget-caption Groups

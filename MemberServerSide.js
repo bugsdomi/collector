@@ -768,13 +768,13 @@ MemberServer.prototype.acceptMeIntoFriendList = function(pSelectedInvit){
 // MAJ chez le demandeur de mon propre statut dans sa liste d'amis --> cstAmiConfirme
 // Envoi d'une Notification d'opération effectuée
 // ---------------------------------------------------------------------------------------------------------------------------
-MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketConnection){
+MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketConnection, pSocketIo){
 	this.acceptFriendIntoMyFriendList(pSelectedInvit)
 	.then(() => {
 		this.acceptMeIntoFriendList(pSelectedInvit)
 	})
 	.then(() => {
-		// Recherche de mmon pseudo le tableau des membres car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
+		// Recherche de mon pseudo dans le tableau des membres car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
 		let myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.vMyPseudo);
 
 		this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à mon Nbre d'invitations en memoire vive 
@@ -784,7 +784,28 @@ MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketCon
 			
 		// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
 		pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
-		
+
+
+		// Recherche du pseudo de mon nouvel ami dans le tableau des membres car s'il est connecté, j'ajoute mon Avatar dans carte Carte "Liste d'Amis" en temps réel
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.vFriendPseudo);
+
+		// Si membre trouvé dans la table des membres actuellement connectés
+		// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+		if (myIndex !== -1){  																													
+			let vReverseRoles = {
+				vMyEmail 			: pSelectedInvit.vFriendEmail,
+				vMyPseudo			:	pSelectedInvit.vFriendPseudo,
+				vMyPhoto			: pSelectedInvit.vFriendPhoto,
+				vFriendEmail  : pSelectedInvit.vMyEmail,
+				vFriendPseudo : pSelectedInvit.vMyPseudo,
+				vFriendPhoto 	: pSelectedInvit.vMyPhoto,
+				vAnchorTarget	: pSelectedInvit.vAnchorTarget,			 
+				vImgTarget		: pSelectedInvit.vImgTarget,		
+			}
+console.log('acceptInvitation - vReverseRoles : ',vReverseRoles,' --- myIndex : ',myIndex);
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReverseRoles);     
+		}
+
 		this.sendEMail(
 			pSelectedInvit.vFriendEmail, 
 			'Collect\'Or - Acceptation de votre demande d\'ami', 
@@ -794,8 +815,8 @@ MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketCon
 		);
 	})
 	.catch(error => {
-		console.log(error)
-		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+
+		console.log('Erreur de lecture dans la collection \'membres\' - Erreur : ',error);   // Si erreur technique... Message et Plantage
 		throw error;
 	});
 };
@@ -852,9 +873,6 @@ MemberServer.prototype.deleteMeIntoFriendList = function(pSelectedInvit){
 // Envoi d'une Notification d'opération effectuée
 // ---------------------------------------------------------------------------------------------------------------------------
 MemberServer.prototype.refuseInvitation = function(pSelectedInvit, pWebSocketConnection){
-
-console.log('refuseInvitation - pSelectedInvit : ',pSelectedInvit);
-
 	this.deleteFriendIntoMyFriendList(pSelectedInvit)
 	.then(() => {
 		this.deleteMeIntoFriendList(pSelectedInvit)
@@ -880,8 +898,7 @@ console.log('refuseInvitation - pSelectedInvit : ',pSelectedInvit);
 		);
 	})
 	.catch(error => {
-		console.log(error)
-		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+		console.log('Erreur de lecture dans la collection \'membres\' - Erreur : ',error);   // Si erreur technique... Message et Plantage
 		throw error;
 	});
 };
