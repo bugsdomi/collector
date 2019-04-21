@@ -74,7 +74,7 @@ function MemberClient(){   // Fonction constructeur exportée
 // -----------------------------------------------------------------------------
 //  Cette fonction initialise les popOver et toolTip de Bootstrap
 // -----------------------------------------------------------------------------
-MemberClient.prototype.InitPopOverAndToolTip = function(){
+MemberClient.prototype.InitPopOverAndToolTipAndDropDown = function(){
 	$(function () {
 		$('[data-toggle="popover"]').popover();			// Activation des PopOver de Bootstrap
 	});
@@ -84,7 +84,7 @@ MemberClient.prototype.InitPopOverAndToolTip = function(){
 	});
 
 	$(function () {
-		$('[data-toggle="dropdown"]').dropdown();			// Activation des DropDown de Bootstrap
+		$('[data-toggle="dropdown"]').dropdown();		// Activation des DropDown de Bootstrap
 	});
 }
 
@@ -115,11 +115,24 @@ MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
 // Cette fonction initialise le contenu de la fenetre générique modale en mode "A propos"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalTextAbout = function(pModalTitle, pModalBodyText){
-	pModalTitle.innerHTML = '<i class="fa fa-bell"></i> A propos...'
+	pModalTitle.innerHTML = '<i class="fa fa-bell"></i> A propos...';
 	pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
 	pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus.</p>';
 	pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
 	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions à laa Communauté.</p>';
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre d'erreur d'absence 
+// d'amis à recommander
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalNoFriendToRecommend = function(pModalTitle, pModalBodyText){
+	pModalTitle.innerHTML = '<i class="fa fa-frown-o"></i> Il n\'y a pas d\'ami pouvant être recommandé';
+	pModalBodyText.innerHTML = '<h5>Il n\'y a pas d\'ami à recommander</h5>';
+	pModalBodyText.innerHTML += '<p>Vous ne pouvez actuellement pas recommander d\'amis pour les raisons suivantes :</p>';
+	pModalBodyText.innerHTML += '<p>- soit vous n\'avez pas au moins 2 amis.</p>';
+	pModalBodyText.innerHTML += '<p>- soit vous avez déjà recommandé tous vos amis.</p>';
+	pModalBodyText.innerHTML += '<p>- soit l\'ami que vous souhaiter recommander à déjà des invitations en cours avec vos autres amis.</p>';
 }
 
 // -----------------------------------------------------------------------------
@@ -243,12 +256,12 @@ MemberClient.prototype.displayPuceNbrWaitingInvit = function(pContextInfo, pNbrW
 // -----------------------------------------------------------------------------
 // Cette fonction réinitialise complétement l'écran et ferme le socket
 // -----------------------------------------------------------------------------
-MemberClient.prototype.unsetMemberContext = function(pWebSocketConnection, pContextInfo){
+MemberClient.prototype.unsetMemberContext = function(){
 	// Régénération de l'écran from scratch;
 	window.location.reload(true);
 	
 	// Fermeture du socket
-	pWebSocketConnection.close();
+	webSocketConnection.close();
 }
 // -----------------------------------------------------------------------------
 // Cette fonction gère les couleurs de fond et de texte des Header des modales
@@ -257,6 +270,7 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 	if (pACtiveColor === "bg-warning"){
 		pHeader.classList.remove('bg-danger');
 		pHeader.classList.remove('bg-success');
+		pHeader.classList.remove('text-warning');
 		pHeader.classList.add('bg-warning');    	    
 		pHeader.classList.add('text-dark');
 		return
@@ -265,6 +279,7 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 	if (pACtiveColor === 'bg-danger'){
 		pHeader.classList.remove('bg-success');
 		pHeader.classList.remove('bg-warning');                  
+		pHeader.classList.remove('text-dark');
 		pHeader.classList.add('bg-danger');
 		pHeader.classList.add('text-warning');
 		return
@@ -273,6 +288,7 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 	if (pACtiveColor === 'bg-success'){
 		pHeader.classList.remove('bg-danger');
 		pHeader.classList.remove('bg-warning');                  
+		pHeader.classList.remove('text-dark');
 		pHeader.classList.add('bg-success');
 		pHeader.classList.add('text-warning');
 		return
@@ -285,12 +301,13 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 // - L'avatar
 // - La page de profil :
 // 		- La carte de "Présentation"
+// 		- La carte des "Amis"
 // -----------------------------------------------------------------------------
 MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pProfileInfo, pAskingMembers, pFriends, pFriendInfo){
 	this.setMemberContext(pContextInfo, pAskingMembers);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
-	this.displayAvatar(pAvatarInfo);						// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
-	this.displayPresentationCard(pProfileInfo);	// - Affiche les informations du profil dans la carte "Présentation"
-	this.displayFriendsCard(pFriends,pFriendInfo);	// - Affiche les informations du profil dans la carte "Présentation"
+	this.displayAvatar(pAvatarInfo);														// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
+	this.displayPresentationCard(pProfileInfo);									// - Affiche les informations du profil dans la carte "Présentation"
+	this.displayFriendsCard(pFriends,pFriendInfo);							// - Affiche les amis dans la carte "Amis"
 }
 
 // -----------------------------------------------------------------------------
@@ -348,99 +365,273 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 	pProfileInfo.vAboutPresentation.value = this.member.presentation;
 }
 
+
+
+
+
 // -----------------------------------------------------------------------------
-// Cette fonction ajoute un Ami sur la carte "Amis" de la page de profil
+// Cette fonction affiche une Popup avec les amis à qui on peut recommander un ami
+// La recommandation ne peut fonctionner qu'à partir du moment où on a au moins 2 amis
+// En effet, pour recommander un ami "A" à un ami "B", il faut au minimum 2 amis.
+// 
+// lorsqu'on a cliqué sur l'avatar d'un ami :
+// On affiche tous mes autres amis sauf :
+// - L'ami vers qui je vais envoyer les recommandations
+// - ceux qui n'ont pas déjà une recommandation par moi-même en cours
 // -----------------------------------------------------------------------------
-MemberClient.prototype.addFriendIntoCard = function(pSelectedInvit, pFriendInfo){
+MemberClient.prototype.displayRecommendableFriendList = function(pRecommendableFriends){
+	var vDivContain = document.getElementById(pRecommendableFriends.myDivContainId)
+
+	// Création dynamique des lignes HTML et création des EventListener pour activer les opération de recommandation d'ami
+	var vTargetFriendForRecommend = [];
+	pRecommendableFriends.recommendableFriendsList.forEach((item, index) => {
+		vTargetFriendForRecommend.push(new AddTargetFriendsforRecommendLines(item, index, vDivContain));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+		
+		var vRecommendFriendToFriend = {
+			recommendedFriendEmail 		: pRecommendableFriends.recommendedFriendEmail,
+			recommendedFriendPseudo 	: pRecommendableFriends.recommendedFriendPseudo,
+			recommendedFriendPhoto 		: pRecommendableFriends.recommendedFriendPhoto,
+			targetFriendForRecommend  : vTargetFriendForRecommend[index],
+		}
+
+		vTargetFriendForRecommend[index].lineHTML.vIFA.addEventListener('click', this.sendRecommendation.bind(this),false);
+		vTargetFriendForRecommend[index].lineHTML.vIFA.invitation = vRecommendFriendToFriend;
+
+		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseover', this.AddFriendModalChgBtnTextColorOver,false);
+		vTargetFriendForRecommend[index].lineHTML.vBtn.invitation = vRecommendFriendToFriend;
+
+		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseout', this.AddFriendModalChgBtnTextColorOut,false);
+		vTargetFriendForRecommend[index].lineHTML.vBtn.invitation = vRecommendFriendToFriend;
+	});
+};
+
+// --------------------------------------------------------------
+// Envoi d'une recommandation d'un ami(A) à un autre ami(B) pour 
+// qu'ils deviennent amis (Une seule demande par ami):
+// Bascule la couleur de l'icône "Ajout d'amis"
+// Si le receveur est connecté, son nombre d'invitations evoluera en temps réel
+// --------------------------------------------------------------
+MemberClient.prototype.sendRecommendation = function(event){
+	// Bascule Look des boutons et de leur texte, puis désactive les boutons 
+	event.target.invitation.targetFriendForRecommend.lineHTML.vBtn.classList.replace('btn-outline-success','btn-success'); 
+	event.target.invitation.targetFriendForRecommend.lineHTML.vIFA.classList.replace('text-dark','text-light'); 
+	event.target.invitation.targetFriendForRecommend.lineHTML.vBtn.classList.add('active'); 
+	event.target.invitation.targetFriendForRecommend.lineHTML.vBtn.classList.add('disabled'); 
+
+	// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
+	event.target.invitation.targetFriendForRecommend.lineHTML.vA.classList.add('neutralPointer'); 
+
+	// Suppression des Listeners
+	event.target.invitation.targetFriendForRecommend.lineHTML.vIFA.removeEventListener('click', this.sendRecommendation,false);
+	event.target.invitation.targetFriendForRecommend.lineHTML.vBtn.removeEventListener('mouseover', this.AddFriendModalChgBtnTextColorOver,false);
+	event.target.invitation.targetFriendForRecommend.lineHTML.vBtn.removeEventListener('mouseout', this.AddFriendModalChgBtnTextColorOut,false);
+
+	var vFriendToAdd = {
+		vMyEmail 						: this.member.email,
+		vMyPseudo						:	this.member.pseudo,																											// C'est moi qui recommande l'ami 'recommendedFriendPseudo
+		vMyPhoto						: this.member.etatCivil.photo,
+		friendEmail 			 	: event.target.invitation.recommendedFriendEmail,
+		friendPseudo 				: event.target.invitation.recommendedFriendPseudo,												// Ami recommandé par moi
+		friendPhoto  				: event.target.invitation.recommendedFriendPhoto,
+		targetFriendEmail  	: event.target.invitation.targetFriendForRecommend.friend.friendEmail,
+		targetFriendPseudo	: event.target.invitation.targetFriendForRecommend.friend.friendPseudo,		// Ami à qui je recommande un ami (La cible)
+		targetFriendPhoto  	: event.target.invitation.targetFriendForRecommend.friend.friendPhoto,
+		vAnchorTarget	: event.target.invitation.targetFriendForRecommend.lineHTML.vA.id,	// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification.targetFriendForRecommend
+		vImgTarget		: event.target.invitation.targetFriendForRecommend.lineHTML.vImg.id,// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
+	}
+
+console.log('sendRecommendation -  : ',vFriendToAdd);
+	// webSocketConnection.emit('InvitationSent', vFriendToAdd);  
+}
+
+// --------------------------------------------------------------
+// Cette fonction alimente un objet avec des créations dans le DOM 
+// des lignes HTML pour chaque ami-cible à qui l'on peut recommander un ami 
+// --------------------------------------------------------------
+function AddTargetFriendsforRecommendLines (pItem, pIndex, pDivContain) {
+	this.lineHTML = {						// Structure HTML générée pour chaque ligne de membre
+		vA							: null,
+		vDivRow					: null,
+		vDivAvatar			: null,
+		vImg						: null,
+		vDivPseudo			: null,
+		vDivFA					: null,
+		vBtn						: null,
+		vIFA 						: null,	
+	}
+
+	this.friend = pItem; 
+	this.index = pIndex;
+
+	// <a href="#" class="container list-group-item list-group-item-action list-group-item-white">
+	this.lineHTML.vA = window.document.createElement('a');
+	pDivContain.appendChild(this.lineHTML.vA);
+// XXXXX
+// this.lineHTML.vA.setAttribute('id', 'idInvitAnchor'+pIndex);
+	this.lineHTML.vA.setAttribute('href', '#');
+	this.lineHTML.vA.setAttribute('class', 'container list-group-item list-group-item-action list-group-item-white');
+
+	// <div class="row">
+	this.lineHTML.vDivRow = window.document.createElement('div');
+	this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
+	this.lineHTML.vDivRow.setAttribute('class', 'row');
+	
+	// <div class="col-3 containerAvatarToken p-0 text-center withNoScaling">
+	this.lineHTML.vDivAvatar = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
+	this.lineHTML.vDivAvatar.setAttribute('class', 'col-3 containerAvatarToken p-0 text-center withNoScaling');
+
+	// <img class="avatarToken m-1"  src="static/images/members/'+ pItem.friendPhoto +'" style="width:32px; height: 32px">
+	this.lineHTML.vImg = window.document.createElement('img');
+	this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
+	this.lineHTML.vImg.setAttribute('class', 'avatarToken m-1');
+	this.lineHTML.vImg.setAttribute('alt', 'Amis à qui je peux recommander un ami');
+	this.lineHTML.vImg.setAttribute('title', 'Recommandations d\'ami');
+	this.lineHTML.vImg.setAttribute('src', 'static/images/members/'+pItem.friendPhoto);
+	this.lineHTML.vImg.setAttribute('style', 'width:32px; height: 32px;');
+
+	// <div class="col-6 align-self-center px-0" style="font-size: 0.8rem;">pItem.friendPseudo</div>
+	this.lineHTML.vDivPseudo = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+	this.lineHTML.vDivPseudo.setAttribute('class', 'col-6 align-self-center px-0');
+	this.lineHTML.vDivPseudo.setAttribute('style', 'font-size: 0.8rem;');
+	this.lineHTML.vDivPseudo.innerHTML = pItem.friendPseudo;
+	
+	// <div class="col-3 text-center align-self-center px-0">
+	this.lineHTML.vDivFA = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
+	this.lineHTML.vDivFA.setAttribute('class', 'col-3 text-center align-self-center px-0');
+
+	// <button type="button" class="btn btn-outline-success btn-sm">
+	this.lineHTML.vBtn = window.document.createElement('button');
+	this.lineHTML.vDivFA.appendChild(this.lineHTML.vBtn);
+	this.lineHTML.vBtn.setAttribute('type', 'button');
+	this.lineHTML.vBtn.setAttribute('class', 'btn btn-outline-success btn-sm');
+
+	// <i class="fa fa-user-plus text-dark"></i>
+	this.lineHTML.vIFA = window.document.createElement('i');
+	this.lineHTML.vBtn.appendChild(this.lineHTML.vIFA);
+	this.lineHTML.vIFA.setAttribute('class', 'fa fa-user-plus text-dark');
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction va demander au serveur de lui fournir une liste d'amis à qui je peux recommander mon ami
+// 
+// La recommandation ne peut fonctionner qu'à partir du moment où on a au moins 2 amis
+// En effet, pour recommander un ami "A" à un ami "B", il faut au minimum 2 amis.
+// 
+// lorsqu'on a cliqué sur l'avatar d'un ami :
+// On affiche tous mes autres amis sauf :
+// - L'ami vers qui je vais envoyer les recommandations
+// - ceux qui n'ont pas déjà une recommandation par moi-même en cours
+// -----------------------------------------------------------------------------
+MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pIndex, pDropDownMenuId, pDivContainId){
+	vRecommendFriendsList = {
+		friendEmail 		: vMyFriendList[pIndex].friendEmail,
+		friendPseudo 		: vMyFriendList[pIndex].friendPseudo,
+		friendPhoto 		: vMyFriendList[pIndex].friendPhoto,
+		myFriendList 		: vMyFriendList,
+		myDivContainId	: pDivContainId,
+	}
+
+	// Demande au serveur de vérifier si MES amis ne sont pas déjà dans un processus d'invitation avec l'Ami cible (celui à qui on veut recommander des amis)
+	webSocketConnection.emit('searchFriendsNotAlreadyInvitWithTargetFriend', vRecommendFriendsList);   		
+}
+
+// -----------------------------------------------------------------------------
+// Suppression de tous les éléments de la liste des membres pouvant devenir ami 
+// à la fermeture du sous-menu
+// -----------------------------------------------------------------------------
+MemberClient.prototype.removeFriendToRecommendMenu = function(pDivDropDown){
+	while (pDivDropDown.firstChild) {
+		pDivDropDown.removeChild(pDivDropDown.firstChild);
+	}
+}
+
+// --------------------------------------------------------------
+// Change la classe (de couleur BS) lors du survol des boutons, 
+// en blanc
+// --------------------------------------------------------------
+MemberClient.prototype.AddFriendModalChgBtnTextColorOver = function (event){
+	event.target.invitation.targetFriendForRecommend.lineHTML.vIFA.classList.replace('text-dark','text-light'); 
+}
+
+// --------------------------------------------------------------
+// Change la classe (de couleur BS) lorsque la souris quitte le 
+// boutons, en noir
+// --------------------------------------------------------------
+MemberClient.prototype.AddFriendModalChgBtnTextColorOut = function (event){
+	event.target.invitation.targetFriendForRecommend.lineHTML.vIFA.classList.replace('text-light','text-dark'); 
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction ajoute un Ami sur la carte "Amis" de la page de profil 
+// et prépare son sous-menu PopUp pour les recommandations d'amis
+// -----------------------------------------------------------------------------
+MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	var vFriendLocal = 
 	{
-		vFriendEmail  : pSelectedInvit.vFriendEmail,
-		vFriendPseudo : pSelectedInvit.vFriendPseudo,
-		vFriendPhoto 	: pSelectedInvit.vFriendPhoto,
+		friendEmail  	: pMyFriend.friendEmail,
+		friendPseudo 	: pMyFriend.friendPseudo,
+		friendPhoto 	: pMyFriend.friendPhoto,
 	}
 
 	vMyFriendList.push(vFriendLocal);
+	var index = (vMyFriendList.length-1);
 
-	var vlineHTML = {						// Structure HTML générée pour chaque ligne de membre
-		Vli 				: null,				// <li class="friendList">
-		vA	 				: null,				// <a id ="xxxx" href="#">
-vDivDropDown : null,
-vSpan : null,
-vADropDownItem1 : null,
-vADropDownItem2 : null,
-vADropDownItem3 : null,
-vADropDownItem4 : null,
-		vDivAvatar  : null,				// <div class="containerAvatarToken text-center align-self-center">
-		vImg 			 	: null,				// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
+	var vlineHTML = {					// Structure HTML générée pour chaque ligne de membre
+		Vli 					: null,		// <li class="friendList withScaling">
+		vA	 					: null,		// <a id ="xxxx" href="#">
+		vDivDropDown 	: null,		// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black; transform: translate3d(45px, 30px, 0px);"></div> 
+		vSpan 				: null,		// <span class="bg-warning dropdown-item-text text-center" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; border-bottom: 1px solid black;">xxxx</span>
+		vDivContain		: null,		// <div style="max-height: 400px; overflow-y: auto"></div> 
+		vDivAvatar  	: null,		// <div class="containerAvatarToken text-center align-self-center">
+		vImg 			 		: null,		// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
 	};
 
-	// <li class="friendList">
+	// <li class="friendList withScaling dropdown dropright">
 	vlineHTML.vLi = window.document.createElement('li');
 	pFriendInfo.vFriendUL.appendChild(vlineHTML.vLi);
-	// vlineHTML.vLi.setAttribute('class', 'friendList');
-	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList');
+	vlineHTML.vLi.setAttribute('id', 'idMyFriendLi'+index);
+	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
 
-	// XXXXX
-// <a id ="xxxx" href="#"></a> 
-vlineHTML.vA = window.document.createElement('a');
-vlineHTML.vLi.appendChild(vlineHTML.vA);
-vlineHTML.vA.setAttribute('id', 'idMyFriendAnchor'+(vMyFriendList.length-1));
-vlineHTML.vA.setAttribute('href', '#');
+	// <a id ="xxxx" href="#" class="btn-sm dropdown-toggle dropdown-toggle-split" style="padding-left: 0;padding-right: 0; color: white;" data-toggle="dropdown"></a> 
+	vlineHTML.vA = window.document.createElement('a');
+	vlineHTML.vLi.appendChild(vlineHTML.vA);
+	vlineHTML.vA.setAttribute('href', '#');
+	vlineHTML.vA.setAttribute('style', 'padding-left: 0;padding-right: 0; color: white;');
+	vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
+	vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
 
-// vlineHTML.vA.setAttribute('class', 'btn btn-sm dropdown-toggle dropdown-toggle-split');
-vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
-vlineHTML.vA.setAttribute('style', 'padding-left: 0;padding-right: 0; color: white;');
-vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
-// vlineHTML.vA.setAttribute('role', 'button');
-// vlineHTML.vA.setAttribute('data-placement', 'top');
-// vlineHTML.vA.setAttribute('data-title', pSelectedInvit.vFriendPseudo);
+	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black; transform: translate3d(45px, 30px, 0px);"></div> 
+	vlineHTML.vDivDropDown = window.document.createElement('div');
+	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
+	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
+	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 220px; border: 1px solid black;');
 
-// <div class="dropdown-menu"></div> 
-vlineHTML.vDivDropDown = window.document.createElement('div');
-vlineHTML.vLi.appendChild(vlineHTML.vDivDropDown);
-vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
-vlineHTML.vDivDropDown.setAttribute('style', 'width: 150px; border: 1px solid black; transform: translate3d(57px, 20px, 0px);');
+	// <span class="bg-warning dropdown-item-text text-center" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; border-bottom: 1px solid black;">xxxx</span>
+	vlineHTML.vSpan = window.document.createElement('span');
+	vlineHTML.vDivDropDown.appendChild(vlineHTML.vSpan);
+	vlineHTML.vSpan.setAttribute('class', 'bg-warning dropdown-item-text px-0 py-1');
+	vlineHTML.vSpan.setAttribute('style', 'font-size: 0.8rem; border-bottom: 1px solid black;');
+	vlineHTML.vSpan.innerHTML = 
+	'<div class="containerAvatarToken px-0 withNoScaling">'+
+	'<img class="avatarToken ml-1 my-1" alt="Membre" src="static/images/members/'+ vMyFriendList[index].friendPhoto +'" style="width:25px; height: 25px">'+ ' Recommander '+vMyFriendList[index].friendPseudo+' à :';
 
+	// <div style="max-height: 400px; overflow-y: auto"></div> 
+	vlineHTML.vDivContain = window.document.createElement('div');
+	vlineHTML.vDivDropDown.appendChild(vlineHTML.vDivContain);
+	vlineHTML.vDivContain.setAttribute('id', 'idDivContain'+index);
+	vlineHTML.vDivContain.setAttribute('style', 'max-height: 400px; overflow-y: auto');
 
-// <span class="dropdown-item-text">xxxx</span>
-vlineHTML.vSpan = window.document.createElement('span');
-vlineHTML.vDivDropDown.appendChild(vlineHTML.vSpan);
-vlineHTML.vSpan.setAttribute('class', 'dropdown-item-text text-center');
-vlineHTML.vSpan.setAttribute('style', 'padding: 0.25rem 0.5rem; font-size: 0.8rem');
-vlineHTML.vSpan.innerHTML = 'Recommander cet ami à';
-
-
-// <a class="dropdown-item" href="#">Action</a>
-vlineHTML.vADropDownItem1 = window.document.createElement('a');
-vlineHTML.vDivDropDown.appendChild(vlineHTML.vADropDownItem1);
-vlineHTML.vADropDownItem1.setAttribute('class', 'dropdown-item');
-vlineHTML.vADropDownItem1.setAttribute('href', '#');
-vlineHTML.vADropDownItem1.innerHTML = '<div class="containerAvatarToken text-center align-self-center"><img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/Mad - Finger in the nose.jpg" style="width:25px; height: 25px">'+pSelectedInvit.vFriendPseudo+'</div>';
-
-vlineHTML.vADropDownItem2 = window.document.createElement('a');
-vlineHTML.vDivDropDown.appendChild(vlineHTML.vADropDownItem2);
-vlineHTML.vADropDownItem2.setAttribute('class', 'dropdown-item');
-vlineHTML.vADropDownItem2.setAttribute('href', '#');
-vlineHTML.vADropDownItem2.innerHTML = '<div class="containerAvatarToken text-center align-self-center"><img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/Mad - Finger in the nose.jpg" style="width:25px; height: 25px">'+pSelectedInvit.vFriendPseudo+'</div>';
-
-vlineHTML.vADropDownItem3 = window.document.createElement('a');
-vlineHTML.vDivDropDown.appendChild(vlineHTML.vADropDownItem3);
-vlineHTML.vADropDownItem3.setAttribute('class', 'dropdown-item');
-vlineHTML.vADropDownItem3.setAttribute('href', '#');
-vlineHTML.vADropDownItem3.innerHTML = '<div class="containerAvatarToken text-center align-self-center"><img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/Mad - Finger in the nose.jpg" style="width:25px; height: 25px">'+pSelectedInvit.vFriendPseudo+'</div>';
-
-vlineHTML.vADropDownItem4 = window.document.createElement('a');
-vlineHTML.vDivDropDown.appendChild(vlineHTML.vADropDownItem4);
-vlineHTML.vADropDownItem4.setAttribute('class', 'dropdown-item');
-vlineHTML.vADropDownItem4.setAttribute('href', '#');
-vlineHTML.vADropDownItem4.innerHTML = '<div class="containerAvatarToken text-center align-self-center"><img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/Mad - Finger in the nose.jpg" style="width:25px; height: 25px">'+pSelectedInvit.vFriendPseudo+'</div>';
-
-
+// <--- Endroit à partir duquel les lignes "Item" du menu Popup vont venir s'insérer --->
 
 	// <div class="containerAvatarToken text-center align-self-center">
 	vlineHTML.vDivAvatar = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivAvatar);
-// vlineHTML.vLi.appendChild(vlineHTML.vDivAvatar);
+// XXXXX
+// vlineHTML.vDivAvatar.setAttribute('id', 'idMyFriendDivAvatar'+index);
 	vlineHTML.vDivAvatar.setAttribute('class', 'containerAvatarToken py-1 text-center align-self-center');
 
 	// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg"></img>
@@ -448,39 +639,60 @@ vlineHTML.vADropDownItem4.innerHTML = '<div class="containerAvatarToken text-cen
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
 	vlineHTML.vImg.setAttribute('class', 'avatarToken');
 	vlineHTML.vImg.setAttribute('alt', 'Ami');
-	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pSelectedInvit.vFriendPhoto);
+	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pMyFriend.friendPhoto);
 	vlineHTML.vImg.setAttribute('data-toggle', 'tooltip');
 	vlineHTML.vImg.setAttribute('data-placement', 'top');
-	vlineHTML.vImg.setAttribute('data-title', pSelectedInvit.vFriendPseudo);
+	vlineHTML.vImg.setAttribute('data-title', pMyFriend.friendPseudo);
 
-	this.InitPopOverAndToolTip();
+// XXXXX
+// vlineHTML.vLi.addEventListener('onclick', () => {
+// 	alert('Tente de faire event.preventDefault')
+// 	event.stopPropagation();
+// });
+	
+	// Pour empêcher la fermeture de DropDownMenu lorsque l'on clique quelque part dedans (Comportement par défaut)
+	// $('.dropdown-menu').on("click.bs.dropdown", (event) => { 
+	$('#'+vlineHTML.vDivDropDown.id).on("click.bs.dropdown", (event) => { 
+		event.stopPropagation(); 
+		event.preventDefault(); 
+	});
+
+	// A l'ouverture du DropDownMenu, on créée dynamiquement tous ses sous-éléments dans le DOM
+	$('#'+vlineHTML.vLi.id).on('shown.bs.dropdown', () => {
+		this.searchFriendsNotAlreadyInvitWithTargetFriend(index, vlineHTML.vLi.id, vlineHTML.vDivContain.id);
+	});
+	
+	// A la fermeture du DropDownMenu, on detruit tous ses sous-éléments dans le DOM
+	$('#'+vlineHTML.vLi.id).on('hidden.bs.dropdown', () => {
+		this.removeFriendToRecommendMenu(vlineHTML.vDivContain);
+	});
+
+	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
+	this.InitPopOverAndToolTipAndDropDown();
 };
 
 // -----------------------------------------------------------------------------
-// Cette fonction affiche le contenu de la carte "Mes Amis" sur la page de profil
+// Cette fonction affiche le contenu de la carte "Mes Amis" sur ma page de profil
 // -----------------------------------------------------------------------------
 MemberClient.prototype.displayFriendsCard = function(pFriends, pFriendInfo){
-	var vSelectedInvit = {
-		vFriendEmail  : null,
-		vFriendPseudo : null,
-		vFriendPhoto 	: null,
+	var vMyFriend = {
+		friendEmail  : null,
+		friendPseudo : null,
+		friendPhoto 	: null,
 	}
 
-	pFriends.forEach((item, index) => {
+	pFriends.forEach((item, index) => {																						// Pour chacun de mles amis en BDD
 		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personnes est un ami confirmé, je l'ajoute à ma liste
-			vSelectedInvit.vFriendEmail = item.friendEmail;
-			vSelectedInvit.vFriendPseudo = item.friendPseudo;
-			vSelectedInvit.vFriendPhoto = item.friendPhoto;
-			this.addFriendIntoCard(vSelectedInvit, pFriendInfo);
+			vMyFriend.friendEmail = item.friendEmail;
+			vMyFriend.friendPseudo = item.friendPseudo;
+			vMyFriend.friendPhoto = item.friendPhoto;
+			this.addFriendIntoCard(vMyFriend, pFriendInfo);
 		}
-// XXXXX
-// vMemberFriends[index].vlineHTML.vIFA.addEventListener('click', sendInvitation,false);
-		});
-	};
-
+	});
+};
 
 // -----------------------------------------------------------------------------
-// Cette fonction initialise la modale de création, quel que soit son mode 
+// Cette fonction initialise la modale de création de compte, quel que soit son mode 
 // d'appel (par l'option de menu ou par le raccourci de la fenetre de Login
 // -----------------------------------------------------------------------------
 MemberClient.prototype.initModalSignIn = function(pSignInParameters){

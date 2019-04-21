@@ -138,12 +138,24 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Cette fonction recherche dans le tableau des amis d'un membre, si un record "friendPseudo" non vide existe
+	// et s'il trouve dans ce tableau le pseudo envoyé en parrametre
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.searchPendingFriendRequest = (pItem, pProperty, pMyPseudo) => {
 		return pItem.amis.map((propertyFilter) => {
 			return propertyFilter[pProperty];
 		})
 		.indexOf(pMyPseudo);
+	}
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Cette fonction recherche dans le tableau des amis d'un membre, si un record "friendPseudo" non vide existe
+	// et s'il trouve dans ce tableau le pseudo envoyé en parrametre
+	// Variante de la fonction précédente quyi travaille déja au niveau "Amis" et non au niveau "RRecord global"
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.searchMyFriendsInRecommendedFriendFriendList = (pItem, pProperty, pPseudo) => {
+		return pItem.map((propertyFilter) => {
+			return propertyFilter[pProperty];
+		})
+		.indexOf(pPseudo);
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification des données du visiteur (Pseudo + MDP) :
@@ -345,7 +357,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				throw error;
 			} 
 
-			console.log('add Technical Record In Database - 1 membre inséré : ',technicalRecord);  
+			console.log('Ajout d\'un Record \'Technical\' dans la BDD - 1 membre inséré : ',technicalRecord);  
 		});       
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -541,10 +553,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Filtrage de tous les membres de la BDD, selon les critères suivants
-	// - Je ne peux pas être mon propre ami --> Rejet
-	// - Les membres dejà amis --> Rejet
-	// - Les membres ayant reçu une invitation (invitation en cours = "Ami" non confirmé) --> Rejet
+	// Filtrage de tous les membres de la BDD qui m'ont envoyé une invitation
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.filterWaitingInvit = function(pItem,pIndex){
 		return pItem.pendingFriendRequest === cstAttenteConfirm;
@@ -670,9 +679,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Prréparation de la liste des invitattions à traiter
+	// Préparation de la liste des invitations à traiter
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.validateFriends = function(pMyEmail){
+	MemberServer.prototype.readFriends = function(pMyEmail){
 		return new Promise((resolve, reject) => {
 			vDBMgr.collectionMembers.find(                                                   
 			{ 
@@ -697,11 +706,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 // ---------------------------------------------------------------------------------------------------------------------------
-// Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut cstAttenteConfirm
+// Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut "cstAttenteConfirm"
 // ---------------------------------------------------------------------------------------------------------------------------
 MemberServer.prototype.listInvitations = function(pMyEmail, pWebSocketConnection){
-
-	this.validateFriends(pMyEmail)
+	this.readFriends(pMyEmail)
 	.then(documents => {
 		let vWaitingInvit = documents[0].amis.filter(this.filterWaitingInvit); // Filtre les demandes d'invitation que l'on m'a envoyées
 
@@ -712,12 +720,64 @@ MemberServer.prototype.listInvitations = function(pMyEmail, pWebSocketConnection
 		}
 	})
 	.catch(error => {
-		console.log(error)
 		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
 		throw error;
 	});
 };
 
+// ---------------------------------------------------------------------------------------------------------------------------
+// Filtrage de tous les membres de la BDD, selon les critères suivants
+// - Je ne peux pas être mon propre ami --> Rejet
+// - Les membres dejà amis --> Rejet
+// - Les membres ayant reçu une invitation (invitation en cours = "Ami" non confirmé) --> Rejet
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.filterFriendsRecommendable = function(pFriendToRecommend, pItem){
+	var result = true;
+
+	// Si l'ami en cours de filtrage est celui que je veux recommander, je ne vais pas l'afficher dans la liste des amis-cibles des recommandations --> Rejet
+	if (pItem.friendPseudo === pFriendToRecommend.pseudo){  
+		result = false;
+	} else {
+		// Vérifie que mon ami n'est pas dans la liste d'amis (potentiels ou confirmés)
+		let myIndex = this.searchMyFriendsInRecommendedFriendFriendList(pFriendToRecommend.amis, 'friendPseudo', pItem.friendPseudo);	
+		if (myIndex > -1){		// Si je suis dejà un ami potentiel ou confirmé du membre en cours de lecture, je rejete le membre de la liste d'amis potentiel
+			result = false;
+		}
+	}
+	return result ? pItem : undefined;
+};
+
+// ---------------------------------------------------------------------------------------------------------------------------
+// Dans le cadre des recommandations, vérification que chacun de mes amis n'est pas déja en process d'invitation avec l'ami que je recommande
+// ---------------------------------------------------------------------------------------------------------------------------
+MemberServer.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pRecommendFriendsList, pWebSocketConnection){
+
+console.log('searchFriendsNotAlreadyInvitWithTargetFriend - pRecommendFriendsList : ',pRecommendFriendsList)
+
+	this.readFriends(pRecommendFriendsList.friendEmail)
+	.then(documents => {
+		let vRecommendableFriendsList = pRecommendFriendsList.myFriendList.filter(this.filterFriendsRecommendable.bind(this, documents[0])); 
+
+		if (vRecommendableFriendsList.length === 0){
+			// Il n'y pas d'amis à qui on peut recommander mon ami ==> La liste est vide, on signale et abandonne 
+			return pWebSocketConnection.emit('emptyRecommendableFriendList',pRecommendFriendsList); 
+		} else {
+			// Affichage des amis à qui on peut recommander mon ami
+			vRecommendableFriends = {
+				recommendedFriendEmail 		: pRecommendFriendsList.friendEmail,
+				recommendedFriendPseudo 	: pRecommendFriendsList.friendPseudo,
+				recommendedFriendPhoto 		: pRecommendFriendsList.friendPhoto,
+				recommendableFriendsList 	:	vRecommendableFriendsList,
+				myDivContainId   					: pRecommendFriendsList.myDivContainId,
+			}
+			return pWebSocketConnection.emit('displayRecommendableFriendList',vRecommendableFriends); 
+		}
+	})	
+	.catch(error => {
+		console.log('Erreur de lecture dans la collection \'membres\' : ',error);   // Si erreur technique... Message et Plantage
+		throw error;
+	});
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------
 // MAJ du statut du demandeur dans ma propre liste d'amis --> cstAmiConfirme => Le demandeur devient un ami confirmé
@@ -802,7 +862,6 @@ MemberServer.prototype.acceptInvitation = function(pSelectedInvit, pWebSocketCon
 				vAnchorTarget	: pSelectedInvit.vAnchorTarget,			 
 				vImgTarget		: pSelectedInvit.vImgTarget,		
 			}
-console.log('acceptInvitation - vReverseRoles : ',vReverseRoles,' --- myIndex : ',myIndex);
 			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReverseRoles);     
 		}
 
@@ -815,7 +874,6 @@ console.log('acceptInvitation - vReverseRoles : ',vReverseRoles,' --- myIndex : 
 		);
 	})
 	.catch(error => {
-
 		console.log('Erreur de lecture dans la collection \'membres\' - Erreur : ',error);   // Si erreur technique... Message et Plantage
 		throw error;
 	});

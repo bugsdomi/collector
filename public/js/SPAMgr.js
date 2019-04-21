@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Initialisation coté client de la connexion SocketIO
 	// -------------------------------------------------------------------------
 	webSocketConnection = io();
+
 	// var webSocketConnection = io('http://192.168.0.20:3000');        // Endormi car je ne veux pas utiliser une adresse IP en dur
 	// var webSocketConnection = io('http://localhost:3000');           // Endormi car je veux pouvoir travailler sur plusieurs ordi
 
@@ -65,18 +66,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	vToolBox = new ToolBox();
 	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 	
-
-	vMemberClient.InitPopOverAndToolTip();
-	$(function () {
-		$('[data-toggle="popover"]').popover()			// Activation des PopOver de Bootstrap
-	});
-
-	$(function () {
-		$('[data-toggle="tooltip"]').tooltip()			// Activation des ToolTips de Bootstrap
-	});
-
-
-	// -------------------------------------------------------------------------
+	vMemberClient.InitPopOverAndToolTipAndDropDown();
+		// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal (Header Menu)
 	// 
@@ -163,7 +154,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// - Blocage de la NavBar du profil
 	// -------------------------------------------------------------------------
 	vDeconnexion.addEventListener('click', function(){
-		vMemberClient.unsetMemberContext(webSocketConnection, vContextInfo);
+		vMemberClient.unsetMemberContext();
 	});
 
 	// -------------------------------------------------------------------------
@@ -375,7 +366,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');    
 
 	// -------------------------------------------------------------------------
-	// Eléments du UpLoader d'images du profil
+	// Eléments du UpLoader d'images du profil (avec ses events)
 	// -------------------------------------------------------------------------
 	var vSIOFU = new SocketIOFileUpload(webSocketConnection);
 
@@ -391,35 +382,12 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 	// -------------------------------------------------------------------------
-	// -------------------------------------------------------------------------
-	// Eléments des champs de saisie de la Modale d'ajout d'amis
-	// -------------------------------------------------------------------------
-	// -------------------------------------------------------------------------
-	var vModalMgrFriend = document.getElementById('idModalMgrFriend');
-	var vModalMgrFriendHeader = document.getElementById('idModalMgrFriendHeader');
-	var vModalMgrFriendHExitBtn = document.getElementById('idModalMgrFriendHExitBtn');
-	var vModalMgrFriendTitle = document.getElementById('idModalMgrFriendTitle');
-	var vModalMgrFriendListGroup = document.getElementById('idModalMgrFriendListGroup');
-
-	// Suppression de tous les éléments de la liste des membres pouvant devenir ami à la fermeture de la modale
-	$('#idModalMgrFriend').on('hidden.bs.modal', () => {
-		vModalMgrFriendHeader.removeChild(vModalMgrFriendHeader.firstChild);
-		vModalMgrFriendTitle.removeChild(vModalMgrFriendTitle.firstChild);
-
-		while (vModalMgrFriendListGroup.firstChild) {
-			vModalMgrFriendListGroup.removeChild(vModalMgrFriendListGroup.firstChild);
-		}
-	})
-
-
-	idFriendUL
-
-	// -------------------------------------------------------------------------
 	// Initialisation Modale de la Fiche de renseignements avec 
 	// les datas provenant de la BDD
 	// -------------------------------------------------------------------------
 	vAccount.addEventListener('click', function(){
 		vMemberClient.initModalAccount(vAccountParams);
+		// $('#idModalAccount').modal('show');
 	});
 
 	// -------------------------------------------------------------------------
@@ -463,7 +431,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Initialise la gestion du changement de passe
 	// Si le MDP actuel saisi = a celui qui est stocké en BDD, on active les 2 
 	// champs de New MDP
-	// Sinon, on affiche un Message d'erreur ey on reboucle, et surtout, on ne 
+	// Sinon, on affiche un Message d'erreur et on reboucle, et surtout, on ne 
 	// met pas a jour la fiche de renseignement dans la BDD
 	// -------------------------------------------------------------------------
 	vAccountCurrentPassword.onchange = function(){
@@ -513,6 +481,29 @@ window.addEventListener('DOMContentLoaded', function(){
 			event.preventDefault();
 			vMemberClient.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
 		});
+
+
+	// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Eléments des champs de saisie de la Modale d'ajout d'amis
+	// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	var vModalMgrFriend = document.getElementById('idModalMgrFriend');
+	var vModalMgrFriendHeader = document.getElementById('idModalMgrFriendHeader');
+	var vModalMgrFriendExitBtn = document.getElementById('idModalMgrFriendExitBtn');
+	var vModalMgrFriendTitle = document.getElementById('idModalMgrFriendTitle');
+	var vModalMgrFriendListGroup = document.getElementById('idModalMgrFriendListGroup');
+
+	// Suppression de tous les éléments de la liste des membres pouvant devenir ami à la fermeture de la modale
+	$('#idModalMgrFriend').on('hidden.bs.modal', () => {
+		vModalMgrFriendHeader.removeChild(vModalMgrFriendHeader.firstChild);
+		vModalMgrFriendTitle.removeChild(vModalMgrFriendTitle.firstChild);
+
+		while (vModalMgrFriendListGroup.firstChild) {
+			vModalMgrFriendListGroup.removeChild(vModalMgrFriendListGroup.firstChild);
+		}
+	})
+
 
 // ********************************************************************************************************************************
 // ********************************************************************************************************************************
@@ -575,6 +566,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Structure de transfert des infos des amis
 	// -------------------------------------------------------------------------
 	var vFriendInfo = {
+		vGenericModal,
+		vGenericModalHeader,
+		vGenericModalTitle,
+		vGenericModalBodyText,
 		vFriendUL,
 	}
 	
@@ -648,10 +643,28 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ------------------------------------------------------------------------------------------------------------------------------
 	
 	// --------------------------------------------------------------
+	// Le serveur n'a pas trouvé d'amis à qui envoyer la recommendation de mon ami --> Message d'erreur
+	// --------------------------------------------------------------
+	webSocketConnection.on('emptyRecommendableFriendList', function(pRecommendFriendsList){   
+		vMemberClient.initModalNoFriendToRecommend(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
+		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
+		$('#idGenericModal').modal('show');      																		// ouverture de la fenêtre modale de message d'erreur
+		$('#'+pRecommendFriendsList.myDropDownMenuId).dropdown('toggle');						// Fermeture de la DropDown d'amis à recommander puisque vide
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur a envoyé une liste d'amis à qui je peux recommander mon ami
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){   
+console.log('displayRecommendableFriendList SPAM - pRecommendableFriends : ',pRecommendableFriends)
+
+		vMemberClient.displayRecommendableFriendList(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
+	});
+	// --------------------------------------------------------------
 	// Le serveur n'a pas trouvé d'invitations en attente --> Message d'erreur
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyWaitingInvitation', function(){   
-		vMemberClient.initModalEmptyWaitingInvit(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+		vMemberClient.initModalEmptyWaitingInvit(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
 		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
@@ -686,7 +699,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		event.target.invitation.lineHTML.vIFADown.classList.replace('text-light','text-dark'); 
 	}
 	
-// --------------------------------------------------------------
+	// --------------------------------------------------------------
 	// Cette fonction alimente un objet avec des créations dans le DOM 
 	// des lignes HTML pour chaque invitation en attente à valider
 	// --------------------------------------------------------------
@@ -696,7 +709,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			vDivRow 	 : null,				// <div class="row">
 			vDivAvatar : null,				// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
 			vImg 			 : null,				// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
-			vDivName 	 : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
+			vDivPseudo : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
 			vDivFA 		 : null,				// <div class="col-2 text-center align-self-center">
 			vIFADown 	 : null,				// <i class="fa fa-thumbs-o-up fa-2x text-dark"></i>
 			vIFAUp 		 : null,				// <i class="fa fa-thumbs-o-down fa-2x text-dark"></i>
@@ -734,10 +747,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		this.lineHTML.vImg.setAttribute('data-placement', 'right');
 
 		// <div class="col-6 align-self-center font-size-120">xxx</div>
-		this.lineHTML.vDivName = window.document.createElement('div');
-		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
-		this.lineHTML.vDivName.setAttribute('class', 'col-6 align-self-center font-size-120');
-		this.lineHTML.vDivName.innerHTML = item.friendPseudo;
+		this.lineHTML.vDivPseudo = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+		this.lineHTML.vDivPseudo.setAttribute('class', 'col-6 align-self-center font-size-120');
+		this.lineHTML.vDivPseudo.innerHTML = item.friendPseudo;
 		
 		// <div class="col-3 text-center align-self-center">
 		this.lineHTML.vDivFA = window.document.createElement('div');
@@ -783,8 +796,8 @@ window.addEventListener('DOMContentLoaded', function(){
 
 		// <h5 class="modal-title"><i class="fa fa-fw fa-check"></i> Validation d'amis</h5>
 		lineHTML.vH5 = window.document.createElement('h5');
-		var parentDiv1 = vModalMgrFriendHExitBtn.parentNode;
-		parentDiv1.insertBefore(lineHTML.vH5, vModalMgrFriendHExitBtn);
+		var parentDiv1 = vModalMgrFriendExitBtn.parentNode;
+		parentDiv1.insertBefore(lineHTML.vH5, vModalMgrFriendExitBtn);
 		lineHTML.vH5.setAttribute('class', 'modal-title');
 		lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-check"></i>'+' Validation d\'amis';
 		
@@ -801,7 +814,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			vInvitAvailable.push(new AddInvitLines(item, index));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
 
 			// StackOverflow : https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function - "Why not just get the arguments from the target attribute of the event?"
-			// Cette façon de procéder pour les 4 lignes qui suivent permettent de passer des paramètres à la fonction appelée et surtout de pouvoir "Remove" les Listeners
+			// Cette façon de procéder pour les 4 lignes qui suivent permet de passer des paramètres à la fonction appelée et surtout de pouvoir "Remove" les Listeners
 			vInvitAvailable[index].lineHTML.vIFAUp.addEventListener('click', acceptInvitation,false);
 			vInvitAvailable[index].lineHTML.vIFADown.addEventListener('click', refuseInvitation,false);
 			vInvitAvailable[index].lineHTML.vIFAUp.invitation = vInvitAvailable[index];
@@ -959,25 +972,10 @@ console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)
 	// (tel que demandé dans le CDC)) --> Message d'erreur
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyPotentialFriends', function(){   
-		vMemberClient.initModalEmptyFriendList(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre de bienvenue
+		vMemberClient.initModalEmptyFriendList(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
 		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
-
-	// --------------------------------------------------------------
-	// Change la classe (de couleur BS) lors du survol des boutons, 
-	// en blanc
-	// --------------------------------------------------------------
-	function AddFriendModalChgBtnTextColorOver(event){
-		event.target.invitation.lineHTML.vIFA.classList.replace('text-dark','text-light'); 
-	}
-	// --------------------------------------------------------------
-	// Change la classe (de couleur BS) lorsque la souris quitte le 
-	// boutons, en noir
-	// --------------------------------------------------------------
-	function AddFriendModalChgBtnTextColorOut(event){
-		event.target.invitation.lineHTML.vIFA.classList.replace('text-light','text-dark'); 
-	}
 
 	// --------------------------------------------------------------
 	// Cette fonction alimente un objet avec des créations dans le DOM 
@@ -989,7 +987,7 @@ console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)
 			vDivRow 	 : null,				// <div class="row">
 			vDivAvatar : null,				// <div class="col-4 containerAvatarToken py-1 text-center align-self-center">
 			vImg 			 : null,				// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
-			vDivName 	 : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
+			vDivPseudo : null,				// <div class="col-4 align-self-center font-size-120">xxx</div>
 			vDivFA 		 : null,				// <div class="col-2 text-center align-self-center">
 			vIFA 			 : null,				// <i class="fa fa-user-plus fa-2x text-dark"></i>
 		};
@@ -1026,10 +1024,10 @@ console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)
 		this.lineHTML.vImg.setAttribute('data-placement', 'right');
 
 		// <div class="col-6 align-self-center font-size-120">xxx</div>
-		this.lineHTML.vDivName = window.document.createElement('div');
-		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
-		this.lineHTML.vDivName.setAttribute('class', 'col-6 align-self-center font-size-120');
-		this.lineHTML.vDivName.innerHTML = item.pseudo;
+		this.lineHTML.vDivPseudo = window.document.createElement('div');
+		this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+		this.lineHTML.vDivPseudo.setAttribute('class', 'col-6 align-self-center font-size-120');
+		this.lineHTML.vDivPseudo.innerHTML = item.pseudo;
 		
 		// <div class="col-3 text-center align-self-center">
 		this.lineHTML.vDivFA = window.document.createElement('div');
@@ -1066,8 +1064,8 @@ console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)
 
 		// <h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
 		lineHTML.vH5 = window.document.createElement('h5');
-		var parentDiv1 = vModalMgrFriendHExitBtn.parentNode;
-		parentDiv1.insertBefore(lineHTML.vH5, vModalMgrFriendHExitBtn);
+		var parentDiv1 = vModalMgrFriendExitBtn.parentNode;
+		parentDiv1.insertBefore(lineHTML.vH5, vModalMgrFriendExitBtn);
 		lineHTML.vH5.setAttribute('class', 'modal-title');
 		lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-user-plus"></i>'+' Ajout d\'amis';
 		
@@ -1085,10 +1083,10 @@ console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)
 			vMembersFriendables[index].lineHTML.vIFA.addEventListener('click', sendInvitation,false);
 			vMembersFriendables[index].lineHTML.vIFA.invitation = vMembersFriendables[index];
 
-			vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', AddFriendModalChgBtnTextColorOver,false);
+			vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', vMemberClient.AddFriendModalChgBtnTextColorOver,false);
 			vMembersFriendables[index].lineHTML.vBtn.invitation = vMembersFriendables[index];
 
-			vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', AddFriendModalChgBtnTextColorOut,false);
+			vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', vMemberClient.AddFriendModalChgBtnTextColorOut,false);
 			vMembersFriendables[index].lineHTML.vBtn.invitation = vMembersFriendables[index];
 		});
 	});
@@ -1108,10 +1106,10 @@ console.log('addFriendIntoHiisList - pSelectedInvit : ',pSelectedInvit)
 		// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
 		event.target.invitation.lineHTML.vA.classList.add('neutralPointer'); 
 
-		// Suppression des Listenerss
+		// Suppression des Listeners
 		event.target.invitation.lineHTML.vIFA.removeEventListener('click', sendInvitation,false);
-		event.target.invitation.lineHTML.vBtn.removeEventListener('mouseover', AddFriendModalChgBtnTextColorOver,false);
-		event.target.invitation.lineHTML.vBtn.removeEventListener('mouseout', AddFriendModalChgBtnTextColorOut,false);
+		event.target.invitation.lineHTML.vBtn.removeEventListener('mouseover', vMemberClient.AddFriendModalChgBtnTextColorOver,false);
+		event.target.invitation.lineHTML.vBtn.removeEventListener('mouseout', vMemberClient.AddFriendModalChgBtnTextColorOut,false);
 
 		var vFriendToAdd = {
 			vMyEmail 			: vMemberClient.member.email,

@@ -55,7 +55,8 @@ Todo:
     ☐ Montrer un effet "Bouton bouton appuyé" sur les icones de demande d'amis, d'acceptation et de refus
     ☐ Voir pourquoi la puce du Nbre d invits decale le menu suivant a son 1er affichage
     ☐ Ajouter des boutons sous les icones d'action des invitations
-    ☐ Passer les adrresses email en minuscules
+    ☐ Passer les adresses email en minuscules
+    ☐ changer les couleurs de menu déroulants (gris foncé et bleu quand sélectionné moche)
 ☐ 
     Mode Responsive :
     ☐ Les modales sont trop larges
@@ -104,7 +105,17 @@ Todo:
         ☐ Faire apparaitre les bordures de champs de saisie en erreur en rouge
         ☐ Voir pour faire un journal des connexions / Deconnexions / Creations / Suppression / Chgt MDP
         ☐ Passer les images du carroussel en mode "Slide"
-        ☐ 
+        ☐ Faire un template idéal qui utilise :
+        - Promise
+        - reject
+        - Resolve
+        - try
+        - catch,
+        - finally
+        - then
+        - async
+        - await
+        - ...
         
         Fiche Renseignements :
         ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
@@ -165,3 +176,5 @@ Todo:
         ✔ Opacity --> On retire, car meme avec ça, l'opacité ne fonctionne pas sur les mobiles @done(19-04-09 10:16)
         ✔ delete --> Pas besoin : "The garbage collector will take care of the object if it has no other references to it." @done(19-04-09 10:15)
         ✔ Voir pourquoi le masque "MaskOn" est trop petit en mode responsive @done(19-04-10 09:57)
+
+

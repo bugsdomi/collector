@@ -144,7 +144,12 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// On a reçu un refus d'ami
 	webSocketConnection.on('refuseInvitation', function(pSelectedInvit){
 		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection);
-	});   						
+	});   				
+	
+	// On a reçu une demande  de liste d'amis dont la recommandabilité est à vérifier
+	webSocketConnection.on('searchFriendsNotAlreadyInvitWithTargetFriend', function(pRecommendFriendsList){
+		vMemberServer.searchFriendsNotAlreadyInvitWithTargetFriend(pRecommendFriendsList, webSocketConnection);
+	}); 
 
 	// ------------------------------------
 	// Déconnexion

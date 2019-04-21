@@ -82,8 +82,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
           i.fa.fa-user
         .dropdown-menu(aria-labelledby='templates-dropdown')
-          a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount') Renseignements
-          a.dropdown-item(href='template-4.html') Administration
+          a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount')
+            i.fa.fa-id-card-o
+            |  Renseignements
+          a.dropdown-item(href='template-4.html')
+            i.fa.fa-sliders
+            |  Administration
           hr
           a#idDeconnexion.dropdown-item.disabled(href='#' target='_top')
             i.fa.fa-sign-out
@@ -92,6 +96,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a#idAbout.nav-link(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
           i.fa.fa-bell
           |  A propos
+//
+  <i class="fa fa-bar-chart"></i>
+  <i class="fa fa-cogs"></i>
+  <i class="fa fa-shield"></i>
+  <i class="fa fa-sliders"></i>
+  <i class="fa fa-map-signs"></i>
 // *************************************************************************
 // Carroussel de fond d'écran
 // *************************************************************************
@@ -744,7 +754,9 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
   .modal-dialog.modal-dialog-centered(role='document' style='max-width: 800px;')
     .modal-content
       #idModalAccountHeader.modal-header
-        h5.modal-title Renseignements personnels
+        h5.modal-title
+          i.fa.fa-id-card-o
+          |  Renseignements personnels
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         // ******************************************************************************
@@ -1066,7 +1078,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalMgrFriendHeader.modal-header
-        button#idModalMgrFriendHExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+        button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         #idModalMgrFriendTitle.container.px-0
           #idModalMgrFriendListGroup.list-group
