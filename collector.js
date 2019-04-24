@@ -127,8 +127,8 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	});   						
 
 	// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
-	webSocketConnection.on('InvitationSent', function(pFriendToAdd){
-		vMemberServer.InvitationSent(pFriendToAdd, webSocketConnection, socketIo);
+	webSocketConnection.on('invitationSent', function(pFriendToAdd){
+		vMemberServer.invitationSent(pFriendToAdd, webSocketConnection, socketIo);
 	});   						
 
 	// On a reçu une demande de la liste des invitations à valider
@@ -145,12 +145,20 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	webSocketConnection.on('refuseInvitation', function(pSelectedInvit){
 		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection);
 	});   				
-	
+
+	// ------------------------------------
+	// Gestion des recommandations
+	// ------------------------------------
 	// On a reçu une demande  de liste d'amis dont la recommandabilité est à vérifier
 	webSocketConnection.on('searchFriendsNotAlreadyInvitWithTargetFriend', function(pRecommendFriendsList){
 		vMemberServer.searchFriendsNotAlreadyInvitWithTargetFriend(pRecommendFriendsList, webSocketConnection);
 	}); 
 
+	// On a reçu une recommandation d'amis --> Ajout des relations ami-recommandé et ami-cible
+	webSocketConnection.on('recommendationSent', function(pFriendToAdd){
+		vMemberServer.recommendationSent(pFriendToAdd, webSocketConnection, socketIo);
+	});   						
+	
 	// ------------------------------------
 	// Déconnexion
 	// ------------------------------------

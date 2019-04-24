@@ -7,7 +7,7 @@
 // ***                                                                  ***
 // ************************************************************************
 // --------------------------------------------------------------
-var vLoginForm;                     // Instance du formulaire de saisie du Login
+// var vLoginForm;                     // Instance du formulaire de saisie du Login
 var vToolBox;                       // Instance de la Boîte à outils
 var webSocketConnection;            // Variable pour la connexion WebSocket
 var cstDelayClosingPopover = 3000;  // Délai en msec avant la fermeture des notifications diverses
@@ -15,6 +15,7 @@ var cstDelayToggleModal = 300;      // Délai nécessaire pour réouvrir des mod
 var cstAmiConfirme    = 0; 				  // Statut pour un ami confirmé
 var cstInvitEncours   = 1;				  // Invitation pour devenir ami lancée							(Ajouté à la liste du membre demandeur)
 var cstAttenteConfirm = 2; 			    // Attente d'acceptation d'une invitation lancée	(Ajouté à la liste du membre receveur)
-var cstRecommandation = 3; 			    // Ami "B", recommandé par un ami "A" commun avec moi, ami "C"
+var cstInvitation     = 0; 			    // Demande d'invitation classique
+var cstRecommendation = 1; 			    // Recommandation d'un Ami "B", recommandé par moi "A" vers un ami à moi "C"
 
 

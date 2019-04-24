@@ -16,8 +16,11 @@ Todo:
     - displayxxx
     - updateProfile
   
-
-    ☐ Piquer le style wyylde
+☐ Regler la taille de la notification sur le Popup-Menu (qui est beaucoup trop grosse) et la centrer sur l image
+☐ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des membres friendables
+☐ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des amis recommandables
+Voir pourquoi notification reste allumée
+    Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
     ☐ Passer tous les champs a XS-4
@@ -176,5 +179,7 @@ Todo:
         ✔ Opacity --> On retire, car meme avec ça, l'opacité ne fonctionne pas sur les mobiles @done(19-04-09 10:16)
         ✔ delete --> Pas besoin : "The garbage collector will take care of the object if it has no other references to it." @done(19-04-09 10:15)
         ✔ Voir pourquoi le masque "MaskOn" est trop petit en mode responsive @done(19-04-10 09:57)
-
+        ✔ Pourquoi pas de mail de recommandation pour l'ami que je recommande @done(19-04-24 10:49)
+        ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les invitations et la MAJ sur les fichiers @done(19-04-24 10:50)
+        
 
