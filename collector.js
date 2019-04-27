@@ -94,14 +94,12 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	
 	// On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
 	webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-		vMemberServer.visitorBecomeMember(pVisiteurLoginData, webSocketConnection, socketIo)
-		.then((result) => {
-		});
+		vMemberServer.visitorLogin(pVisiteurLoginData, webSocketConnection, socketIo);
 	});
 
 	// On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
-	webSocketConnection.on('visiteurSignInData',function(pVisiteurSignInData){
-		vMemberServer.checkVisitorSignInISValid(pVisiteurSignInData, webSocketConnection, socketIo);
+	webSocketConnection.on('visitorSignInData',function(pVisitorSignInData){
+		vMemberServer.visitorSignIn(pVisitorSignInData, webSocketConnection, socketIo);
 	});    
 
 	// On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
@@ -115,7 +113,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
 	// On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
 	webSocketConnection.on('lostPWDMgr',function(pLostPWDEmail){
-		vMemberServer.checkLostPWDMailIsValid(pLostPWDEmail, webSocketConnection);
+		vMemberServer.lostPWDMgr(pLostPWDEmail, webSocketConnection);
 	});
 
 	// ------------------------------------
@@ -123,7 +121,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// ------------------------------------
 	// On a reçu une demande de la liste d'ajout d'amis 
 	webSocketConnection.on('askAddFriend', function(pMyPseudo){
-		vMemberServer.selectMembersToBeFriends(pMyPseudo, webSocketConnection);
+		vMemberServer.askAddFriend(pMyPseudo, webSocketConnection);
 	});   						
 
 	// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"

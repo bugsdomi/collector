@@ -71,19 +71,19 @@ function MemberClient(){   // Fonction constructeur exportée
 
 // ===================================================== Fonctions ===========================================================
 // -----------------------------------------------------------------------------
-//  Cette fonction initialise les popOver et toolTip de Bootstrap
+//  Cette fonction initialise les popOver, toolTip et DropDown Menus de Bootstrap
 // -----------------------------------------------------------------------------
 MemberClient.prototype.InitPopOverAndToolTipAndDropDown = function(){
 	$(function () {
-		$('[data-toggle="popover"]').popover();			// Activation des PopOver de Bootstrap
+		$('[data-toggle="popover"]').popover();			// Activation des PopOver de Bootstrap (pour les Notifications)
 	});
 
 	$(function () {
-		$('[data-toggle="tooltip"]').tooltip();			// Activation des ToolTips de Bootstrap
+		$('[data-toggle="tooltip"]').tooltip();			// Activation des ToolTips de Bootstrap	(Pour les noms de mes amis)
 	});
 
 	$(function () {
-		$('[data-toggle="dropdown"]').dropdown();		// Activation des DropDown de Bootstrap
+		$('[data-toggle="dropdown"]').dropdown();		// Activation des DropDown de Bootstrap	(Pour les PopUp de recommandation)
 	});
 }
 
@@ -363,6 +363,11 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 	pProfileInfo.vAboutPresentation.value = this.member.presentation;
 }
 
+
+
+
+
+
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la carte "Mes Amis" sur ma page de profil
 // -----------------------------------------------------------------------------
@@ -423,12 +428,12 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
 	vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
 
-	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black; transform: translate3d(45px, 30px, 0px);"></div> 
+	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black;"></div> 
 	vlineHTML.vDivDropDown = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
-	vlineHTML.vDivDropDown.setAttribute('style', 'width: 220px; border: 1px solid black;');
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black;');
 
 	// <span class="bg-warning dropdown-item-text text-center" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; border-bottom: 1px solid black;">xxxx</span>
 	vlineHTML.vSpan = window.document.createElement('span');
@@ -450,8 +455,6 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	// <div class="containerAvatarToken text-center align-self-center">
 	vlineHTML.vDivAvatar = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivAvatar);
-// XXXXX
-// vlineHTML.vDivAvatar.setAttribute('id', 'idMyFriendDivAvatar'+index);
 	vlineHTML.vDivAvatar.setAttribute('class', 'containerAvatarToken py-1 text-center align-self-center');
 
 	// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg"></img>
@@ -472,7 +475,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 
 	// A l'ouverture du DropDownMenu, on créée dynamiquement tous ses sous-éléments (les amis-cibles des recommandations)dans le DOM
 	$('#'+vlineHTML.vLi.id).on('shown.bs.dropdown', () => {
-		this.searchFriendsNotAlreadyInvitWithTargetFriend(index, vlineHTML.vLi.id, vlineHTML.vDivContain.id);
+		this.searchFriendsNotAlreadyInvitWithTargetFriend(index, vlineHTML.vDivDropDown.id, vlineHTML.vDivContain.id);
 	});
 	
 	// A la fermeture du DropDownMenu, on detruit tous ses sous-éléments dans le DOM
@@ -512,13 +515,14 @@ MemberClient.prototype.displayRecommendableFriendList = function(pRecommendableF
 	// Création dynamique des lignes HTML et création des EventListener pour activer les opération de recommandation d'ami
 	var vTargetFriendForRecommend = [];
 	pRecommendableFriends.recommendableFriendsList.forEach((item, index) => {
-		vTargetFriendForRecommend.push(new AddTargetFriendsforRecommendLines(item, index, vDivContain));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+		vTargetFriendForRecommend.push(new AddTargetFriendsforRecommendLines(item, index, vDivContain, pRecommendableFriends.recommendedFriendPseudo));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
 		
 		var vDataToTransmit = {
 			member										: this.member,
 			recommendedFriendEmail 		: pRecommendableFriends.recommendedFriendEmail,
 			recommendedFriendPseudo 	: pRecommendableFriends.recommendedFriendPseudo,
 			recommendedFriendPhoto 		: pRecommendableFriends.recommendedFriendPhoto,
+			myDropDownMenuId					: pRecommendableFriends.myDropDownMenuId,
 			dataToTransmit  					: vTargetFriendForRecommend[index],
 		}
 
@@ -565,25 +569,62 @@ MemberClient.prototype.sendRecommendation = function(event){
 		targetFriendPseudo	: event.target.invitation.dataToTransmit.friend.friendPseudo,		// Ami à qui je recommande un ami (La cible)
 		targetFriendPhoto  	: event.target.invitation.dataToTransmit.friend.friendPhoto,
 		anchorTarget				: event.target.invitation.dataToTransmit.lineHTML.vA.id,	// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification.dataToTransmit
+		myDropDownMenuId		: event.target.invitation.myDropDownMenuId,
 		imgTarget						: event.target.invitation.dataToTransmit.lineHTML.vImg.id,// Envoyé au serveur pour qu'il retourne cette info à la procédure d'envoi des notification
 	}
+
 	webSocketConnection.emit('recommendationSent', vFriendToAdd);  
+}
+
+// --------------------------------------------------------------
+// Affichage d'une Notification de recommandation envoyée par 
+// le serveur après les MAJ réussies de la BDD et l'envoi du mail
+// --------------------------------------------------------------
+MemberClient.prototype.displayNotifRecommendationSent = function(pFriendToAdd){   
+	var vImgTarget = '#'+pFriendToAdd.imgTarget;
+
+	$(vImgTarget).popover('show');																		// Affiche la notification d'envoi de la recommandation d'ami
+
+	setTimeout(function(){
+		$(vImgTarget).popover('hide');
+	},cstDelayClosingPopover);																				// Ferme la notif après un délai de quelques secondes
+
+	setTimeout(() => {
+		this.deleteLineRecommendationSent(pFriendToAdd, pFriendToAdd.myDropDownMenuId)
+	},cstDelayClosingPopover + 500);																	// Supprime la ligne après un délai après la fermeture de la PopOver
+};
+
+// --------------------------------------------------------------
+// Supprime la ligne à partir de laquelle on a envoyé une recommandation
+// S'il n'y a plus de lignes, je ferme la DropDownMenu
+// --------------------------------------------------------------
+MemberClient.prototype.deleteLineRecommendationSent = function(pFriendToAdd, pDropDownMenuId){
+	var elem = document.getElementById(pFriendToAdd.anchorTarget);
+	
+	if (elem){
+		var vParentNode = elem.parentNode;
+		vParentNode.removeChild(elem);
+
+		if (!vParentNode.firstChild) {										// S'il n'y a plus de lignes alors
+			$('#'+pDropDownMenuId).dropdown('toggle');     	// Fermeture du DropDownMenu
+		}
+	}
 }
 
 // --------------------------------------------------------------
 // Cette fonction alimente un objet avec des créations dans le DOM 
 // des lignes HTML pour chaque ami-cible à qui l'on peut recommander un ami 
 // --------------------------------------------------------------
-function AddTargetFriendsforRecommendLines (pItem, pIndex, pDivContain) {
+function AddTargetFriendsforRecommendLines (pItem, pIndex, pDivContain, pRecommendedFriendPseudo) {
 	this.lineHTML = {						// Structure HTML générée pour chaque ligne de membre
-		vA							: null,
-		vDivRow					: null,
-		vDivAvatar			: null,
-		vImg						: null,
-		vDivPseudo			: null,
-		vDivFA					: null,
-		vBtn						: null,
-		vIFA 						: null,	
+		vA							: null,		// <a href="#" class="container list-group-item list-group-item-action list-group-item-white">
+		vDivRow					: null,		// 	<div class="row">
+		vDivAvatar			: null,		// 		<div class="col-3 containerAvatarToken p-0 text-center withNoScaling">
+		vImg						: null,		//			<img class="avatarToken m-1" id="idRecommendImg0" src="static/images/members/'+ pItem.friendPhoto +'" style="width:32px; height: 32px">
+		vDivPseudo			: null,		//		<div class="col-6 align-self-center px-0" style="font-size: 0.8rem;">pItem.friendPseudo</div>
+		vDivFA					: null,		//		<div class="col-3 text-center align-self-center px-0">
+		vBtn						: null,		//			<button type="button" class="btn btn-outline-success btn-sm">
+		vIFA 						: null,		//				<i class="fa fa-user-plus text-dark"></i>
 	}
 
 	this.friend = pItem; 
@@ -606,15 +647,20 @@ function AddTargetFriendsforRecommendLines (pItem, pIndex, pDivContain) {
 	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
 	this.lineHTML.vDivAvatar.setAttribute('class', 'col-3 containerAvatarToken p-0 text-center withNoScaling');
 
-	// <img class="avatarToken m-1"  src="static/images/members/'+ pItem.friendPhoto +'" style="width:32px; height: 32px">
+	// <img class="avatarToken m-1" id="idRecommendImg0" src="static/images/members/'+ pItem.friendPhoto +'" style="width:32px; height: 32px">
 	this.lineHTML.vImg = window.document.createElement('img');
 	this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
 	this.lineHTML.vImg.setAttribute('id', 'idRecommendImg'+pIndex);
 	this.lineHTML.vImg.setAttribute('class', 'avatarToken m-1');
 	this.lineHTML.vImg.setAttribute('alt', 'Amis à qui je peux recommander un ami');
-	this.lineHTML.vImg.setAttribute('title', 'Recommandations d\'ami');
 	this.lineHTML.vImg.setAttribute('src', 'static/images/members/'+pItem.friendPhoto);
 	this.lineHTML.vImg.setAttribute('style', 'width:32px; height: 32px;');
+	this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
+	this.lineHTML.vImg.setAttribute('data-placement', 'right');
+	this.lineHTML.vImg.setAttribute('title', 'Recommandation envoyée');
+	this.lineHTML.vImg.setAttribute('data-content', 'Vous avez recommandé '+pRecommendedFriendPseudo+' à '+pItem.friendPseudo);
+	this.lineHTML.vImg.setAttribute('data-boundary', 'viewport');
+	
 
 	// <div class="col-6 align-self-center px-0" style="font-size: 0.8rem;">pItem.friendPseudo</div>
 	this.lineHTML.vDivPseudo = window.document.createElement('div');
@@ -657,6 +703,7 @@ MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(p
 		friendPseudo 		: vMyFriendList[pIndex].friendPseudo,
 		friendPhoto 		: vMyFriendList[pIndex].friendPhoto,
 		myFriendList 		: vMyFriendList,
+		myDropDownMenuId: pDropDownMenuId,
 		myDivContainId	: pDivContainId,
 	}
 
@@ -665,14 +712,34 @@ MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(p
 }
 
 // -----------------------------------------------------------------------------
-// Suppression de tous les éléments de la liste des membres pouvant devenir ami 
+// Suppression de tous les éléments de la liste des amis recommandables
 // à la fermeture du sous-menu
 // -----------------------------------------------------------------------------
 MemberClient.prototype.removeFriendToRecommendMenu = function(pDivDropDown){
+
+	// Bootstrap sets a data field with key `bs.popover` on elements that have a popover.
+	// Note that there is no corresponding **HTML attribute** on the elements so we cannot
+	// perform a search by attribute.
+	$("*").each(function () {
+		var popover = $.data(this, "bs.popover");
+		if (popover)
+				$(this).popover('hide');
+	});
+
 	while (pDivDropDown.firstChild) {
 		pDivDropDown.removeChild(pDivDropDown.firstChild);
 	}
 }
+
+
+
+
+
+
+
+
+
+
 
 // -----------------------------------------------------------------------------
 // Cette fonction initialise la modale de création de compte, quel que soit son mode 
@@ -1044,12 +1111,13 @@ function AddInvitLines(item, index, pModalMgrFriendListGroup) {
 	this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.friendPhoto);
 	this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
 	this.lineHTML.vImg.setAttribute('data-placement', 'right');
+	this.lineHTML.vImg.setAttribute('data-boundary', 'viewport');
+
 
 	// <div class="col-6 align-self-center font-size-120">xxx</div>
 	this.lineHTML.vDivPseudo = window.document.createElement('div');
 	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
 	this.lineHTML.vDivPseudo.setAttribute('class', 'col-6 align-self-center px-0 font-size-120');
-
 
 	var friendPair = item.friendPseudo.split('/')
 	if (friendPair.length === 1){													// S'il ne s'agit pas d'une recommandation, donc c'est une invitation directe
@@ -1265,10 +1333,13 @@ MemberClient.prototype.displayNotifInvitationRefused = function(pSelectedInvit, 
 // --------------------------------------------------------------
 MemberClient.prototype.deleteLineInvitProcessed = function(pSelectedInvit, pModalMgrFriendListGroup){
 	var elem = document.getElementById(pSelectedInvit.anchorTarget);
-	elem.parentNode.removeChild(elem);
+	
+	if (elem){
+		elem.parentNode.removeChild(elem);
 
-	if (!pModalMgrFriendListGroup.firstChild) {	// S'il n'y a plus de lignes alors
-		$('#idModalMgrFriend').modal('hide');     // Fermeture de la modale                                     
+		if (!pModalMgrFriendListGroup.firstChild) {	// S'il n'y a plus de lignes alors
+			$('#idModalMgrFriend').modal('hide');     // Fermeture de la modale                                     
+		}
 	}
 }
 
@@ -1315,8 +1386,10 @@ function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
 	this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
 	this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
 	this.lineHTML.vImg.setAttribute('title', 'Invitation envoyée');
+	this.lineHTML.vImg.setAttribute('data-content', 'Vous avez demandé à être ami avec '+item.pseudo);
 	this.lineHTML.vImg.setAttribute('data-toggle', 'popover');
 	this.lineHTML.vImg.setAttribute('data-placement', 'right');
+	this.lineHTML.vImg.setAttribute('data-boundary', 'viewport');
 
 	// <div class="col-6 align-self-center font-size-120">xxx</div>
 	this.lineHTML.vDivPseudo = window.document.createElement('div');
@@ -1430,12 +1503,15 @@ MemberClient.prototype.sendInvitation = function(event){
 // Supprime la ligne à partir de laquelle on a envoyé une invitation
 // S'il n'y a plus de lignes, je ferme la modale
 // --------------------------------------------------------------
-MemberClient.prototype.deleteLine = function(pFriendToAdd, pModalMgrFriendListGroup){
+MemberClient.prototype.deleteLineInvitSent = function(pFriendToAdd, pModalMgrFriendListGroup){
 	var elem = document.getElementById(pFriendToAdd.anchorTarget);
-	elem.parentNode.removeChild(elem);
 
-	if (!pModalMgrFriendListGroup.firstChild) {	// S'il n'y a plus de lignes alors
-		$('#idModalMgrFriend').modal('hide');     // Fermeture de la modale                                     
+	if (elem){
+		elem.parentNode.removeChild(elem);
+
+		if (!pModalMgrFriendListGroup.firstChild) {	// S'il n'y a plus de lignes alors
+			$('#idModalMgrFriend').modal('hide');     // Fermeture de la modale                                     
+		}
 	}
 }
 
@@ -1444,18 +1520,15 @@ MemberClient.prototype.deleteLine = function(pFriendToAdd, pModalMgrFriendListGr
 // le serveur après les MAJ réussies de la BDD et l'envoi du mail
 // --------------------------------------------------------------
 MemberClient.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData){   
-	document.getElementById(pFriendToAdd.imgTarget).setAttribute('data-content', 'Vous avez demandé à être ami avec '+pFriendToAdd.friendPseudo);
-
 	$('#'+pFriendToAdd.imgTarget).popover('show');										// Affiche la notification d'envoi de la demande d'ami
 	setTimeout(function(){
 		$('#'+pFriendToAdd.imgTarget).popover('hide');
 	},cstDelayClosingPopover);																				// Ferme la notif après un délai de quelques secondes
 
 	setTimeout(() => {
-		this.deleteLine(pFriendToAdd, pDisplayNotifInvitationSentData.modalMgrFriendListGroup)
+		this.deleteLineInvitSent(pFriendToAdd, pDisplayNotifInvitationSentData.modalMgrFriendListGroup)
 	},cstDelayClosingPopover + 500);																		// Supprime la ligne après un délai de quelques secondes
-};
-
+}
 // --------------------------------------------------------------
 // Change la classe (de couleur BS) lors du survol des boutons, 
 // en blanc

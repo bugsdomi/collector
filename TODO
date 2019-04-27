@@ -15,11 +15,8 @@ Todo:
     - Structure de données
     - displayxxx
     - updateProfile
-  
-☐ Regler la taille de la notification sur le Popup-Menu (qui est beaucoup trop grosse) et la centrer sur l image
-☐ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des membres friendables
-☐ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des amis recommandables
-Voir pourquoi notification reste allumée
+
+☐ Voir pourquoi notification reste allumée
     Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
@@ -181,5 +178,7 @@ Voir pourquoi notification reste allumée
         ✔ Voir pourquoi le masque "MaskOn" est trop petit en mode responsive @done(19-04-10 09:57)
         ✔ Pourquoi pas de mail de recommandation pour l'ami que je recommande @done(19-04-24 10:49)
         ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les invitations et la MAJ sur les fichiers @done(19-04-24 10:50)
+        ✔ Regler la taille de la notification sur le Popup-Menu (qui est beaucoup trop grosse) et la centrer sur l image @done(19-04-25 20:11)
+        ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des membres friendables @done(19-04-26 18:11)
+        ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des amis recommandables @done(19-04-26 18:11)
         
-

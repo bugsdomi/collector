@@ -277,14 +277,14 @@ window.addEventListener('DOMContentLoaded', function(){
 	vSignInForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
 
-		var visiteurSignInData =                                     // Mise en forme pour transmission au serveur des données saisies
+		var visitorSignInData =                                     // Mise en forme pour transmission au serveur des données saisies
 		{
 			email    : vSignInForm.idSignInEmail.value,
 			pseudo   : vSignInForm.idSignInPseudo.value,
 			password : vSignInForm.idSignInPassword.value,
 		}
 
-		webSocketConnection.emit('visiteurSignInData', visiteurSignInData);     // Transmission au serveur des infos saisies
+		webSocketConnection.emit('visitorSignInData', visitorSignInData);     // Transmission au serveur des infos saisies
 		$('#idModalSignIn').modal('hide');                                    	// Fermeture de la fenêtre modale de Sign-In
 		vSignInAlertMsg.style.visibility = 'hidden';                            // Affichage du message d'alerte de connexion erronée
 	});
@@ -615,6 +615,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.initModalNoFriendToRecommend(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
 		$('#idGenericModal').modal('show');      																		// ouverture de la fenêtre modale de message d'erreur
+
 		$('#'+pRecommendFriendsList.myDropDownMenuId).dropdown('toggle');						// Fermeture de la DropDown d'amis à recommander puisque vide
 	});
 
@@ -624,6 +625,16 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){   
 		vMemberClient.displayRecommendableFriendList(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
 	});
+
+	// --------------------------------------------------------------
+	// Affichage d'une Notification de recommandation envoyée par 
+	// le serveur après les MAJ réussies de la BDD et l'envoi du mail
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayNotifRecommendationSent', function(pFriendToAdd){  
+		vMemberClient.displayNotifRecommendationSent(pFriendToAdd);
+	});
+
+
 
 	// --------------------------------------------------------------
 	// Le serveur n'a pas trouvé d'invitations en attente --> Message d'erreur
