@@ -241,3 +241,17 @@ ToolBox.prototype.elemFromParam = function(elemOrId) {
 }
 
 
+// --------------------------------------------------------------
+// Fonction retournant le Pseudo d'un ami éventuellement splitté
+// à partir d'un combo "PseudoAmiRecommandé/PseudoAmiRecommandeur"
+// --------------------------------------------------------------
+ToolBox.prototype.splitFriendFromCombo = function(pFriendCombo){
+	var friendPair = pFriendCombo.split('/');
+
+	if (friendPair.length === 1){													// S'il ne s'agit pas d'une recommandation, donc c'est une invitation directe
+		vFriendPseudo = pFriendCombo;
+	} else {
+		vFriendPseudo = friendPair[0];
+	}
+	return vFriendPseudo;
+}

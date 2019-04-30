@@ -16,7 +16,6 @@ Todo:
     - displayxxx
     - updateProfile
 
-☐ Voir pourquoi notification reste allumée
     Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
@@ -181,4 +180,5 @@ Todo:
         ✔ Regler la taille de la notification sur le Popup-Menu (qui est beaucoup trop grosse) et la centrer sur l image @done(19-04-25 20:11)
         ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des membres friendables @done(19-04-26 18:11)
         ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des amis recommandables @done(19-04-26 18:11)
+        ✔ Voir pourquoi notification reste allumée @done(19-04-29 11:25)
         

@@ -1178,10 +1178,11 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 			let vRecommendableFriendsList = pRecommendFriendsList.myFriendList.filter(this.filterFriendsRecommendable.bind(this, vRecommendedFriendCleanFriendsList, documents[0].pseudo)); 
 
-			if (vRecommendableFriendsList.length === 0){
-				// Il n'y pas d'amis à qui on peut recommander mon ami ==> La liste est vide, on signale et abandonne 
-				return pWebSocketConnection.emit('emptyRecommendableFriendList',pRecommendFriendsList); 
-			} else {
+// if (vRecommendableFriendsList.length === 0){
+// 	// Il n'y pas d'amis à qui on peut recommander mon ami ==> La liste est vide, on signale et abandonne 
+// 	return pWebSocketConnection.emit('emptyRecommendableFriendList',pRecommendFriendsList); 
+// } else {
+	
 				// Affichage des amis à qui on peut recommander mon ami
 				vRecommendableFriends = {
 					recommendedFriendEmail 		: pRecommendFriendsList.friendEmail,
@@ -1190,9 +1191,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					recommendableFriendsList 	:	vRecommendableFriendsList,
 					myDropDownMenuId					: pRecommendFriendsList.myDropDownMenuId,
 					myDivContainId   					: pRecommendFriendsList.myDivContainId,
+					myIndex										: pRecommendFriendsList.myIndex,
 				}
 				return pWebSocketConnection.emit('displayRecommendableFriendList',vRecommendableFriends); 
-			}
+// }
 		})	
 	}
 

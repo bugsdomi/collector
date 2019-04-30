@@ -80,7 +80,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           |   Cr&eacute;er un compte
       li.nav-item.mx-1.dropdown
         a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-          i.fa.fa-user
+          // <i class="fa fa-user"></i>
         .dropdown-menu(aria-labelledby='templates-dropdown')
           a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount')
             i.fa.fa-id-card-o
@@ -92,8 +92,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           a#idDeconnexion.dropdown-item.disabled(href='#' target='_top')
             i.fa.fa-sign-out
             |  D&eacute;connexion
-      li.nav-item
-        a#idAbout.nav-link(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
+      li.nav-item.align-self-center
+        // <a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><i class="fa fa-bell"></i> A propos</a>
+        a#idAbout.nav-link.mb-3(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
           i.fa.fa-bell
           |  A propos
 //

@@ -612,6 +612,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Le serveur n'a pas trouvé d'amis à qui envoyer la recommendation de mon ami --> Message d'erreur
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyRecommendableFriendList', function(pRecommendFriendsList){   
+
 		vMemberClient.initModalNoFriendToRecommend(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
 		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
 		$('#idGenericModal').modal('show');      																		// ouverture de la fenêtre modale de message d'erreur
