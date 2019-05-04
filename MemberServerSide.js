@@ -1189,9 +1189,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					recommendedFriendPseudo 	: pRecommendFriendsList.friendPseudo,
 					recommendedFriendPhoto 		: pRecommendFriendsList.friendPhoto,
 					recommendableFriendsList 	:	vRecommendableFriendsList,
-					myDropDownMenuId					: pRecommendFriendsList.myDropDownMenuId,
-					myDivContainId   					: pRecommendFriendsList.myDivContainId,
-					myIndex										: pRecommendFriendsList.myIndex,
+// myDropDownMenuId					: pRecommendFriendsList.myDropDownMenuId,
+					indexFriendToRecommend		: pRecommendFriendsList.indexFriendToRecommend,
 				}
 				return pWebSocketConnection.emit('displayRecommendableFriendList',vRecommendableFriends); 
 // }

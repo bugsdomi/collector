@@ -70,6 +70,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	
 	var vGenericModal = document.getElementById('idGenericModal');
 	var vDropDownProfilMenu = document.getElementById('idDropDownProfilMenu');
+	var vImgAvatarDropDownMenu = document.getElementById('idImgAvatarDropDownMenu');
 	var vNbrPopulation = document.getElementById('idNbrPopulation');
 	
 // XXXXX MembersConnected.onclick =  function(event) {
@@ -240,8 +241,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	vLostPWDForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
-		webSocketConnection.emit('lostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   // Transmission au serveur des infos saisies
-		$('#idModalLostPWD').modal('hide');                                        // Fermeture de la fenêtre modale de Login
+		webSocketConnection.emit('lostPWDMgr', vLostPWDForm.idLostPWDEmail.value);   	// Transmission au serveur des infos saisies
+		$('#idModalLostPWD').modal('hide');                                        		// Fermeture de la fenêtre modale de Login
 	});
 
 	// -------------------------------------------------------------------------
@@ -523,6 +524,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Structure de transfert des infos de l'avatar
 	// -------------------------------------------------------------------------
 	var vAvatarInfo = {
+		vImgAvatarDropDownMenu,
 		vAvatarImg1,
 		vAvatarToken,
 		vAvatarMemberNameImg1
