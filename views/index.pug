@@ -81,6 +81,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
       li.nav-item.mx-1.dropdown
         a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
           img#idImgAvatarDropDownMenu.avatarToken.ml-1.my-1(alt='Membre')
+          span#idSpanAvatarDropDownMenu
           // <i class="fa fa-user"></i>
         .dropdown-menu(aria-labelledby='templates-dropdown')
           a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount')
@@ -94,7 +95,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             i.fa.fa-sign-out
             |  D&eacute;connexion
       li.nav-item.align-self-center
-        // <a class="nav-link" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><i class="fa fa-bell"></i> A propos</a>
         a#idAbout.nav-link.mb-3(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
           i.fa.fa-bell
           |  A propos

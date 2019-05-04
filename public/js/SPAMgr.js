@@ -71,6 +71,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vGenericModal = document.getElementById('idGenericModal');
 	var vDropDownProfilMenu = document.getElementById('idDropDownProfilMenu');
 	var vImgAvatarDropDownMenu = document.getElementById('idImgAvatarDropDownMenu');
+	var vSpanAvatarDropDownMenu = document.getElementById('idSpanAvatarDropDownMenu');
 	var vNbrPopulation = document.getElementById('idNbrPopulation');
 	
 // XXXXX MembersConnected.onclick =  function(event) {
@@ -525,6 +526,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vAvatarInfo = {
 		vImgAvatarDropDownMenu,
+		vSpanAvatarDropDownMenu,
 		vAvatarImg1,
 		vAvatarToken,
 		vAvatarMemberNameImg1
@@ -637,8 +639,6 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.displayNotifRecommendationSent(pFriendToAdd);
 	});
 
-
-
 	// --------------------------------------------------------------
 	// Le serveur n'a pas trouvé d'invitations en attente --> Message d'erreur
 	// --------------------------------------------------------------
@@ -678,7 +678,6 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationValidedData = {
 			modalMgrFriendListGroup : vModalMgrFriendListGroup,
 		}
-	
 		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
 	});	
 

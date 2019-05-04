@@ -106,7 +106,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
 		vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
 		uploader.on('saved', function(event){
-			// On demande au client d'afficher l'avatar sur le carroussel après que l'image ait été téléchargée sur le serveur
+			// On demande au client d'afficher l'avatar à tous les endroits nécessaires après que l'image ait été téléchargée sur le serveur
 			webSocketConnection.emit('displayAvatarOnProfile');     
 		});
 	});    

@@ -234,7 +234,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		}
 
 		pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    // On transmet au client les données du membre 
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Point d'appel pour la fonction de Login
@@ -243,7 +243,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// - Si la combinaison n'existe pas --> Rejet de la demande Login ('retryLoginForm')
 	// - Par contre, si elle existe, il s'agit d'un membre et on demande au client de désactiver l'icône de Login et d'activer 
 	// l'icône de déconnexion ('welcomeMember')
-
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.visitorLogin = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
 		this.findVisitorBecomeMember(pVisiteurLoginData, pWebSocketConnection, pSocketIo)
@@ -251,6 +250,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			this.visitorBecomeMember(documents, pWebSocketConnection, pSocketIo);
 		})
 	};
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Création d'un PWD de 12 caractères, respectant le masque de saisie du PWD
 	// - envoi de celui par mail
@@ -269,7 +269,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			'Vos identifiants sont : <p><strong>Pseudonyme : </strong>'+this.member.pseudo+'<p><strong>Mot de passe : </strong>'+this.newPassword +
 			'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 		);
-	}
+	};
 
   // ---------------------------------------------------------------------------------------------------------------------------
 	// MAJ de la BDD avec les données envoyées "pDataSet"
@@ -295,7 +295,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 			resolve('MAJ BDD OK')
 		});
-	}
+	};
   
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// En cas de chgt de MDP, MAJ la BDD avec les nouveaux et anciens MDP, et envoie un mail de notification
@@ -305,7 +305,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		.then(() => {
 			pWebSocketConnection.emit('notifyNewPWDSent', pTypeChgtPWD); 
 		})
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification que l'email fourni pour la récupération du PWD existe
@@ -332,7 +332,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				resolve(documents);
 			})
 		})
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification que l'email fourni pour la récupération du PWD existe :
@@ -357,7 +357,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			}
 			this.updatePasswordChange(myDataSet, cstLostPWD, pWebSocketConnection);
 		})
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Prépare les données de population et les envoie à tous clients connectés
@@ -371,7 +371,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		}
 
 		pSocketIo.emit('displayNbrConnectedMembers', population); // Affichage sur tous les clients de la MAJ du nombre de membres connectés
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Ajoute le membre nouvellement créé ou Loggé avec succès à la liste des membres connectés
@@ -400,7 +400,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		console.log('--------------------------------------------------------------------------------------------------------------------');
 
 		this.UpdateDisplayPopulation(pSocketIo);
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Envoi de mail générique en format HTML
@@ -469,7 +469,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				resolve(count);
 			});
 		});
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification des données de Sign-in du visiteur  :
@@ -500,7 +500,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				resolve('Mail non trouvé --> Ok')
 			});
 		});
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification des données de Sign-in du visiteur  :
@@ -532,8 +532,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 				resolve('Pseudo non trouvé --> Ok')
 			});
-		})
-	}
+		});
+	};
 
 // ---------------------------------------------------------------------------------------------------------------------------
 	// Ajout des données du visiteur (futur membre) (Email, Pseudo, MDP, timestamp (au format brut), et statut dans la BDD)
@@ -685,10 +685,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				.then((count) => {
 					this.addMemberInDatabase(pVisiteurSignInData, count)
 					.then(() => { this.finalizeAddingMember(pWebSocketConnection, pSocketIo) })
-				})
-			})
-		})
-	}
+				});
+			});
+		});
+	};
 
 	// ***************************************************************************************************************************
 	// 															Gestion des invitations
@@ -710,8 +710,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 			if (myIndex > -1){		// Si je suis dejà un ami potentiel ou confirmé du membre en cours de lecture, je rejete le membre de la liste d'amis potentiel
 				result = false;
-			}
-		}
+			};
+		};
 		return result ? pItem : undefined;
 	};
 
@@ -764,8 +764,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			pWebSocketConnection.emit('emptyPotentialFriends'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
 		} else {
 			pWebSocketConnection.emit('displayPotentialFriends',vMembersFriendables); // Affichage des membres pouvant devenir amis
-		}
-	}
+		};
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
@@ -775,8 +775,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		this.selectMembersToBeFriends(pMyPseudo, pWebSocketConnection)
 		.then((documents) => {
 			this.filtersMembersFriendables(documents, pMyPseudo, pWebSocketConnection);
-		})
-	}
+		});
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Promesse d'ajout de moi-même dans la liste d'ami de mon futur ami
@@ -805,7 +805,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			});
 
 			resolve(true);
-		})
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -832,10 +832,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					reject(error);
 					throw error;
 				};
-			})
+			});
 
 			resolve(true);
-		})
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -874,8 +874,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
 				pWebSocketConnection.emit('displayNotifInvitationSent',pFriendToAdd); 			
 			});
-		})
-	}
+		});
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Préparation de la liste des invitations à traiter
@@ -898,15 +898,15 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					console.log('-------------------------------------------------------------');
 					reject(error);
 					throw error;
-				} 
+				};
 
 				if(!documents.length) {
 					reject('pas de docs --> Anormal')
-				}
+				};
 
 				resolve(documents);
-			})
-		})
+			});
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -921,8 +921,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				return pWebSocketConnection.emit('emptyWaitingInvitation'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
 			} else {
 				return pWebSocketConnection.emit('displayWaitingInvitation',vWaitingInvit); // Affichage des membres ayant envoyé des invitations
-			}
-		})
+			};
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -955,9 +955,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				};
 
 				resolve('Ami MAJ dans ma liste d\amis');
-			})		
+			});
 		});
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// MAJ de mon statut dans la liste d'amis du demandeur --> cstAmiConfirme => Je deviens ami confirmé du demandeur
@@ -983,9 +983,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				};
 
 				resolve('Mon statut d\'Ami MAJ dans la liste de mon ami');
-			})		
+			});		
 		});
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Acceptation d'une invitation :
@@ -1030,7 +1030,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					}
 		
 					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReverseRoles);     
-				}
+				};
 		
 				this.sendEMail(
 					pSelectedInvit.friendEmail, 
@@ -1039,8 +1039,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
 					'<br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
-			})
-		})
+			});
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1067,9 +1067,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				};
 
 				resolve('Demandeur supprimé de ma liste d\amis');
-			})		
+			});		
 		});
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// / MAJ de mon statut dans la liste d'amis du demandeur --> cstAmiConfirme => Je deviens ami confirmé du demandeur
@@ -1095,9 +1095,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				};
 
 				resolve('Suppression de moi-même de la liste du demandeur');
-			})		
+			});		
 		});
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Rejet d'une invitation :
@@ -1128,8 +1128,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					'<p><strong>'+pSelectedInvit.myPseudo+'</strong> ne souhaite pas devenir votre ami sur le site Collect\'Or.<p><br />'+
 					'<br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
-			})
-		})
+			});
+		});
 	};
 
 
@@ -1159,8 +1159,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 			if (myIndex > -1){		// Si je suis dejà un ami potentiel ou confirmé du membre en cours de lecture, je rejete le membre de la liste d'amis potentiel
 				result = false;
-			}
-		}
+			};
+		};
+
 		return result ? pMySelfFilteringOneFriend : undefined;
 	};
 
@@ -1168,7 +1169,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Dans le cadre des recommandations, vérification que chacun de mes amis n'est pas déja en process d'invitation avec l'ami que je recommande
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pRecommendFriendsList, pWebSocketConnection){
-
 		this.readFriends(pRecommendFriendsList.friendEmail)
 		.then(documents => {
 			let vRecommendedFriendCleanFriendsList =  documents[0].amis.map((propertyFilter) => { // Extraction du champ 'FriendPseudo' des objets de l'Array 'amis'
@@ -1189,13 +1189,12 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					recommendedFriendPseudo 	: pRecommendFriendsList.friendPseudo,
 					recommendedFriendPhoto 		: pRecommendFriendsList.friendPhoto,
 					recommendableFriendsList 	:	vRecommendableFriendsList,
-// myDropDownMenuId					: pRecommendFriendsList.myDropDownMenuId,
 					indexFriendToRecommend		: pRecommendFriendsList.indexFriendToRecommend,
 				}
 				return pWebSocketConnection.emit('displayRecommendableFriendList',vRecommendableFriends); 
 // }
-		})	
-	}
+		});	
+	};
 
   // ---------------------------------------------------------------------------------------------------------------------------
 	// Promesse d'ajout de l'ami que je recommande dans la liste d'amis de l'Ami-cible
@@ -1253,7 +1252,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					reject(error);
 					throw error;
 				};
-			})
+			});
 
 			return resolve(true);
 		});
@@ -1301,12 +1300,12 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				
 				// Envoi à ce membre seul, la demande de MAJ de son Nbre d'invitations
 				pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
-			}
+			};
 			
 			// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
 			pWebSocketConnection.emit('displayNotifRecommendationSent',pFriendToAdd); 			
 		});
-	}
+	};
 
 
 
@@ -1347,9 +1346,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				};
 
 			resolve('Avatar MAJ');
-			})		
-		})
-	}
+			});		
+		});
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// J'explore ma liste d'amis (confirmés ou en cours) pour MAJ mon avatar dans leur record me concernant
@@ -1369,7 +1368,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 			this.updateAvatarInOneFriend(vMyFriend)								// Je MAJ mon avatar dans son record
 		});
-	}
+	};
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1423,9 +1422,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					'Vos identifiants sont : <p><strong>Pseudonyme : </strong>'+pDataProfilMembre.pseudo+'<p><strong>Mot de passe : </strong>'+pDataProfilMembre.password +
 					'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
-			}
-		})
-	}
+			};
+		});
+	};
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1439,8 +1438,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			
 			if (this.objectPopulation.members[myIndex].role < cstMembre){       // Il s'agit obligatoiremennt d'un Admin ou Super-Admin
 				this.objectPopulation.nbrAdminsInSessions--;                      // Si le memnbre est un Admin, on retire 1 aux nombre d'Admin connectés
-			}
-		}
+			};
+		};
 
 		this.objectPopulation.members.splice(myIndex, 1);   // Efface l'occurence du membre du tableau des membres connectés
 		this.objectPopulation.nbrConnections--;
@@ -1454,7 +1453,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		console.log('disconnectMember 0 : objectPopulation.members.length : ',this.objectPopulation.members.length);
 		console.log('disconnectMember 0 : objectPopulation.members : ',this.objectPopulation.members);
 		console.log('--------------------------------------------------------------------------------------------------------------------');
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Initialisation d'un visiteur :
@@ -1495,7 +1494,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	console.log('initVisiteur 1 : objectPopulation.members.length : ',this.objectPopulation.members.length);
 	console.log('initVisiteur 1 : objectPopulation.members : ',this.objectPopulation.members);
 	console.log('--------------------------------------------------------------------------------------------------------------------');
-	}
+	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Au lancement du serveur, on tente de lire le Nbre de messages publics stockés dans la BDD, si KO, on initialise a 0
@@ -1513,20 +1512,20 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					console.log('-------------------------------------------------------------');
 					reject(error);
 					throw error;
-				}
+				};
 
 				if (documents.length) {
 					this.nbrPublicMsgs = documents[0].nbrPublicMsgs;                    
 				} else {
 					this.nbrPublicMsgs = 0;
-				}
+				};
 
 				this.objectPopulation.nbrConnections = 0;
 				this.objectPopulation.nbrMembersInSession = 0;
 				this.objectPopulation.nbrAdminsInSessions = 0;
 			});
 		});
-	}
+	};
 	
 	// -------------------------------------------------------------------------
 	// Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
@@ -1539,8 +1538,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		vDBMgr.checkDBConnect()
 		.then((valeur) => {
 			this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
-		})
+		});
 	};
 	// ------------------------------------------- Fin du module -------------------------------------------------------------------------
-}
+};
 	// ------------------------------------------- Fin du module -------------------------------------------------------------------------
