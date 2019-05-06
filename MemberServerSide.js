@@ -144,7 +144,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		return Math.round(((pValSup - pValInf) * Math.random()) + pValInf);
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Cette fonction recherche dans la table des membres, celui qui a la propriété passée en parametre
+	// Cette fonction recherche dans la table des membres connectés, celui qui a la propriété passée en parametre
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.searchMemberInTableOfMembers = (pProperty, pValue) => {
 		return this.objectPopulation.members.map((propertyFilter) => {
@@ -208,7 +208,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		this.member = pDocuments[0];                             // Récupération des infos du membre dans l'objet de stockage provisoire
 		this.member.oldPassword = '';                            // RAZ de l'ancien MDP avant envoi au client
 
-		// Recherche du pseudo du membre dans le tableau des membres car je ne veux pas qu'un membre se connecte plusieurs fois sur des sessions différentes
+		// Recherche du pseudo du membre dans le tableau des membres connectés car je ne veux pas qu'un membre se connecte plusieurs fois sur des sessions différentes
 		let myIndex = this.searchMemberInTableOfMembers('pseudo', this.member.pseudo);
 		if (myIndex !== -1){                                   // Si membre trouvé dans la table des membres connectés, on le rejette, sinon, on le connecte
 			return pWebSocketConnection.emit('memberAlreadyConnected',this.member);     
@@ -861,7 +861,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					'<br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
 	
-				// Recherche du pseudo du futur ami dans le tableau des membres car s'il est connecté, je MAJ sa puce avec le Nombre (incrémenté) d'invitations
+				// Recherche du pseudo du futur ami dans le tableau des membres connectés car s'il est connecté, je MAJ sa puce avec le Nombre (incrémenté) d'invitations
 				let myIndex = this.searchMemberInTableOfMembers('pseudo', pFriendToAdd.friendPseudo);
 	
 				if (myIndex !== -1){  																													// Si membre trouvé dans la table des membres actuellement connectés
@@ -998,38 +998,37 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		.then(() => {
 			this.acceptMeIntoFriendList(pSelectedInvit)
 			.then(() => {
-				// Recherche de mon pseudo dans le tableau des membres car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
+				// Recherche de mon pseudo dans le tableau des membres connectés car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
 				let myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.myPseudo);
 		
 				this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à mon Nbre d'invitations en memoire vive 
 						
-				// Envoi à moi-même, la demande de MAJ de mon Nbre d'invitations
+				// Envoi à moi-même de la MAJ de mon Nbre d'invitations
 				pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 		
 				let vFriendPseudo = this.splitFriendFromCombo(pSelectedInvit.friendPseudo);
 				pSelectedInvit.friendPseudo = vFriendPseudo;
 		
-				// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
+				// Envoi au client de la demande d'affichage de la notification d'invitation acceptée
 				pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
 		
-				// Recherche du pseudo de mon nouvel ami dans le tableau des membres car s'il est connecté, j'ajoute mon Avatar dans sa Carte "Liste d'Amis" en temps réel
+				// Recherche du pseudo de mon nouvel ami dans le tableau des membres connectés car s'il est connecté, j'ajoute mon Avatar dans sa Carte "Liste d'Amis" en temps réel
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
 		
 				// Si membre trouvé dans la table des membres actuellement connectés
 				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
 				if (myIndex !== -1){  																													
-					let vReverseRoles = {
+					let vReversedRoles = {
 						myEmail 			: pSelectedInvit.friendEmail,
 						myPseudo			:	pSelectedInvit.friendPseudo,
 						myPhoto				: pSelectedInvit.friendPhoto,
 						friendEmail  	: pSelectedInvit.myEmail,
 						friendPseudo 	: pSelectedInvit.myPseudo,
 						friendPhoto 	: pSelectedInvit.myPhoto,
-						anchorTarget	: pSelectedInvit.anchorTarget,			 
-						imgTarget			: pSelectedInvit.imgTarget,		
+						indexInvitation	: pSelectedInvit.indexInvitation,			 
 					}
 		
-					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReverseRoles);     
+					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReversedRoles);     
 				};
 		
 				this.sendEMail(
@@ -1048,6 +1047,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.deleteFriendIntoMyFriendList = function(pSelectedInvit){
 		return new Promise((resolve, reject) => {
+
 			vDBMgr.collectionMembers.updateOne(
 			{ 
 				'email': pSelectedInvit.myEmail,
@@ -1102,7 +1102,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Rejet d'une invitation :
 	// Suppression du demandeur dans ma propre liste d'amis
-	// Suppression de moi  dans la liste d'amis du demandeur
+	// Suppression de moi-même  dans la liste d'amis du demandeur
 	// Envoi d'une Notification d'opération effectuée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.refuseInvitation = function(pSelectedInvit, pWebSocketConnection){
@@ -1110,15 +1110,15 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		.then(() => {
 			this.deleteMeIntoFriendList(pSelectedInvit)
 			.then(() => {
-				// Recherche de mmon pseudo le tableau des membres car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
+				// Recherche de mon pseudo dans le tableau des membres connectés car je vais MAJ ma puce avec le Nombre (décrémenté) d'invitations
 				let myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.myPseudo);
 	
 				this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à mon Nbre d'invitations en memoire vive 
 	
-				// Envoi à moi-même, la demande de MAJ de mon Nbre d'invitations
+				// Envoi à moi-même de la MAJ de mon Nbre d'invitations
 				pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 					
-				// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
+				// Envoi au client de la demande d'affichage de la notification du refus de l'invitation
 				pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 		
 	
 				this.sendEMail(
@@ -1134,6 +1134,47 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 
 
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Suppression d'un ami
+	// Suppression de l'ami dans ma propre liste d'amis
+	// Suppression de moi-même dans la liste d'amis de mon ami
+	// Envoi d'une Notification d'opération effectuée
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.deleteFriendOfMine = function(pFriendToDelete, pWebSocketConnection, pSocketIo){
+		this.deleteFriendIntoMyFriendList(pFriendToDelete)
+		.then(() => {
+			this.deleteMeIntoFriendList(pFriendToDelete)
+			.then(() => {
+
+				// Envoi à moi-même de la demande de suppression de l'Avatar de mon ex-ami dans ma liste d'amis
+				pWebSocketConnection.emit('deleteFriendFromMyFriendList',pFriendToDelete);     
+
+				// Recherche du pseudo de mon ex-ami dans le tableau des membres connectés car s'il est connecté, je supprime mon Avatar dans sa Carte "Liste d'Amis" en temps réel
+				myIndex = this.searchMemberInTableOfMembers('pseudo', pFriendToDelete.friendPseudo);
+		
+				// Si membre trouvé dans la table des membres actuellement connectés
+				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+				if (myIndex !== -1){  																													
+					let vReversedRoles = {
+						myEmail 			: pFriendToDelete.friendEmail,
+						myPseudo			:	pFriendToDelete.friendPseudo,
+						friendEmail  	: pFriendToDelete.myEmail,
+						friendPseudo 	: pFriendToDelete.myPseudo,
+					}
+		
+					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('deleteMeFromHisFriendList',vReversedRoles);     
+				};
+
+				this.sendEMail(
+					pFriendToDelete.friendEmail, 
+					'Collect\'Or - Suppression de la liste d\'un ami', 
+					'<h1 style="color: black;">Un ami vous a supprimé de sa liste d\'amis</h1><br />' +
+					'<p><strong>'+pFriendToDelete.myPseudo+'</strong> ne souhaite plus être votre ami sur le site Collect\'Or.<p><br />'+
+					'<br /><br /><br /><i>Vil-Coyote Products</i>'
+				);
+			});
+		});
+	};
 
 
 
@@ -1292,7 +1333,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				'<br /><br /><br /><i>Vil-Coyote Products</i>'
 			);
 
-			// Recherche du pseudo de l'ami-cible dans le tableau des membres car s'il est connecté, je MAJ sa puce avec le Nombre (incrémenté) d'invitations
+			// Recherche du pseudo de l'ami-cible dans le tableau des membres connectés car s'il est connecté, je MAJ sa puce avec le Nombre (incrémenté) d'invitations
 			let myIndex = this.searchMemberInTableOfMembers('pseudo', pFriendToAdd.targetFriendPseudo);
 
 			if (myIndex !== -1){  																													// Si membre trouvé dans la table des membres actuellement connectés

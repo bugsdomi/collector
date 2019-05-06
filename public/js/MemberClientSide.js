@@ -677,8 +677,9 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 
 	vDataToTransmit = 
 	{
-		friendAction	: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
-		actionBtn  		: vlineHTML.vHdrIFAViewFriend.id,
+		friendEmail				: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
+		actionBtn  				: vlineHTML.vHdrIFAViewFriend.id,
+		indexFriendToView : pRecommendableFriends.indexFriendToRecommend,
 	}
 
 	vlineHTML.vHdrBtnViewFriend.addEventListener('mouseover', this.ChangeBtnTxtColOver);
@@ -689,8 +690,11 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 
 	vDataToTransmit = 
 	{
-		friendAction	: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
-		actionBtn  		: vlineHTML.vHdrIFADelFriend.id,
+		myPseudo 						: this.member.pseudo,
+		myEmail 						: this.member.email,
+		friendPseudo				: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo,
+		friendEmail					: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
+		actionBtn  					: vlineHTML.vHdrIFADelFriend.id,
 	}
 
 	vlineHTML.vHdrBtnDelFriend.addEventListener('mouseover', this.ChangeBtnTxtColOver);
@@ -794,22 +798,80 @@ alert('View Friend');
 // - Fermeture définitive de la PopUp Menu
 // -----------------------------------------------------------------------------
 MemberClient.prototype.deleteFriend = function(event){
-alert('Delete Friend');
 	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', this.ChangeBtnTxtColOver);						
 	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', this.ChangeBtnTxtColOut);						
 	document.getElementById(event.target.datas.actionBtn).removeEventListener('click', this.deleteFriend);					
 
+	var vFriendToDelete = {
+		myPseudo 			: event.target.datas.myPseudo,
+		myEmail 			: event.target.datas.myEmail,
+		friendPseudo 	: event.target.datas.friendPseudo,
+		friendEmail 	: event.target.datas.friendEmail,
+	}
 
-// event.target.friendToDelete.pMyFriend.pseudo;
-
-// 	var vDataToTransmit = {
-// 		myPseudo 			: this.member.pseudo,
-// 		myMail 				: this.member.mail,
-// 		friendPseudo 	:
-// 	}
-
-//  webSocketConnection.emit('deleteFriendFromMyList',)
+	webSocketConnection.emit('deleteFriendOfMine',vFriendToDelete)
 }
+
+	// -----------------------------------------------------------------------------
+	// Cette fonction recherche dans la table des amis, celui qui a la propriété 
+	// "pProperty", et la valeur correspondante à celle recherchée "pValue"
+	// ---------------------------------------------------------------------------
+	MemberClient.prototype.searchFriendInTableOfFriends = (pProperty, pValue) => {
+		return vMyFriendList.map((propertyFilter) => {
+			return propertyFilter[pProperty];
+		})
+		.indexOf(pValue);
+	}
+
+// -----------------------------------------------------------------------------
+// Suppression d'un Ami
+// - Suppression de mon ex-ami du tableau de mes amis
+// - Fermeture définitive de la PopUp Menu
+// - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
+// -----------------------------------------------------------------------------
+MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, pFriendInfo){
+
+	var myIndex = this.searchFriendInTableOfFriends('friendPseudo', pFriendToDelete.friendPseudo);
+	vMyFriendList.splice(myIndex, 1);   // Efface l'occurence de mon ami du tableau de mes amis
+	
+	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
+	// Suppression de tous les avatars affichés
+	var vElem = document.getElementById('idMyFriendLi'+0); // Je régénère ma liste d'amis pour recaler les indexes
+
+	if (vElem){
+		var vParentNode = vElem.parentNode;
+
+		// Effacement des tokens de tous mes amis
+		while (vParentNode.firstChild) {
+			vParentNode.removeChild(vParentNode.firstChild);
+		}
+
+		var vMyFriend = 
+		{
+			friendEmail  	: null,
+			friendPseudo 	: null,
+			friendPhoto 	: null,
+		}
+
+		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
+		vSaveMyFriendList = vMyFriendList.splice(0,vMyFriendList.length);		
+
+		// Recréation des avatars de mes amis dans ma carte d'amis
+		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
+			vMyFriend.friendEmail = item.friendEmail;
+			vMyFriend.friendPseudo = item.friendPseudo;
+			vMyFriend.friendPhoto = item.friendPhoto;
+
+			this.addFriendIntoCard(vMyFriend, pFriendInfo);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
+		});
+	}
+}
+
+
+
+
+
+
 
 
 
@@ -928,7 +990,7 @@ MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(p
 MemberClient.prototype.displayNotifRecommendationSent = function(pFriendToAdd){   
 	var vImgTarget = '#'+'idRecommendImg'+pFriendToAdd.indexTargetFriend;
 
-	// Je créée les 3 variables ci-dessous pour figer leur valeur, pour eviter qu'une ligne ne soit effacée sur la liste des amis-cibles, si l'utilisateur change d'azmi à recommander avant que le processus de notification PopOver + Suppression de ligne ne soit terminée (et supprime donc une ligne sur le mauvais DropDown Menu)
+	// Je créée les 3 variables ci-dessous pour figer leur valeur, et eviter qu'une ligne ne soit effacée sur la liste des amis-cibles, si l'utilisateur change d'azmi à recommander avant que le processus de notification PopOver + Suppression de ligne ne soit terminée (et supprime donc une ligne sur le mauvais DropDown Menu)
 	var vElem = document.getElementById('idRecommendAnchor'+pFriendToAdd.indexTargetFriend);
 	var vIndexFriendToRecommend = pFriendToAdd.indexFriendToRecommend;
 	var vFriendPseudo = pFriendToAdd.friendPseudo;
@@ -949,7 +1011,6 @@ MemberClient.prototype.displayNotifRecommendationSent = function(pFriendToAdd){
 // S'il n'y a plus de lignes, je ferme la DropDownMenu
 // --------------------------------------------------------------
 MemberClient.prototype.deleteLineRecommendationSent = function(pElem, pIndexFriendToRecommend, pFriendPseudo){
-	// var elem = document.getElementById('idRecommendAnchor'+pFriendToAdd.indexTargetFriend);
 
 	if (pElem){
 		var vParentNode = pElem.parentNode;
@@ -1546,7 +1607,7 @@ MemberClient.prototype.acceptInvitation = function(event){
 // --------------------------------------------------------------
 // Affichage d'une Notification d'acceptation d'ami envoyée par 
 // le serveur après les MAJ réussies de la BDD
-// et ajout de son avatar dans ma liste d'amis
+// et ajout de l'avatar de mon nouvel ami dans ma liste d'amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, pFriendInfo, pDisplayNotifInvitationValidedData){
 	var idImg = 'idImgInvitAvatarToken' + pSelectedInvit.indexInvitation;

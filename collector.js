@@ -144,6 +144,12 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection);
 	});   				
 
+
+	// On a reçu une suppression d'ami
+	webSocketConnection.on('deleteFriendOfMine', function(pFriendToDelete){
+		vMemberServer.deleteFriendOfMine(pFriendToDelete, webSocketConnection, socketIo);
+	});   				
+	
 	// ------------------------------------
 	// Gestion des recommandations
 	// ------------------------------------

@@ -613,6 +613,23 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ******************************************************************************************************************************
 	
 	// --------------------------------------------------------------
+	// Le serveur a supprimé mon ex-ami, et je dois donc l'effacer 
+	// de ma carte "Liste d'amis"
+	// --------------------------------------------------------------
+	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
+		vMemberClient.deleteFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur a supprimé mon ex-ami à l'initiative de la suppression, 
+	// et je dois donc l'effacer également de ma carte "Liste d'amis"
+	// Même procédure que ci-dessus, sauf que les rôles sont inversés
+	// --------------------------------------------------------------
+	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
+		vMemberClient.deleteFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+	});
+
+	// --------------------------------------------------------------
 	// Le serveur n'a pas trouvé d'amis à qui envoyer la recommendation de mon ami --> Message d'erreur
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyRecommendableFriendList', function(pRecommendFriendsList){   
@@ -663,10 +680,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 	// --------------------------------------------------------------
-	// Ajout de mon Avatar d'ami sur la liste de mon nouvel ami
+	// Ajout de mon Avatar sur la liste de mon nouvel ami
 	// --------------------------------------------------------------
-	webSocketConnection.on('addFriendIntoHisList', function(pSelectedInvit){ 
-		vMemberClient.addFriendIntoCard(pSelectedInvit,vFriendInfo);
+	webSocketConnection.on('addFriendIntoHisList', function(pMyFriend){ 
+		vMemberClient.addFriendIntoCard(pMyFriend, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -792,7 +809,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
 		$('#idGenericModal').modal('show');                                           		// ouverture de la fenêtre modale de Félicitations
 
-		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers,vMemberClient.member.amis,vFriendInfo);			// Affichage de la page de profil
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers, vMemberClient.member.amis, vFriendInfo);			// Affichage de la page de profil
 	});
 
 	// --------------------------------------------------------------
