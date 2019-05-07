@@ -41,12 +41,12 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		members             : 								// Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
 		[
 		// {
-			// idSocket        : 0,							// N° de socket "WebSocketConnection.id"
-			// isMember        : false,					// Permet de savoir si la personne connectée est un visiteurr ou un membre
-			// email           : '',
-			// pseudo          : '',
-			// role						 : 0;
-			// nbrWaitingInvit : 0
+			// idSocket        	: 0,							// N° de socket "WebSocketConnection.id"
+			// isMember        	: false,					// Permet de savoir si la personne connectée est un visiteurr ou un membre
+			// email           	: '',
+			// pseudo          	: '',
+			// role						 	: 0,
+			// nbrWaitingInvit 	: 0,
 		// }
 	],   
 		nbrConnections      : 0,    // Nbre de connexions actives sans préjuger de leur rôle
@@ -113,13 +113,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		},
 		amis : [],
 			dateCreation : -1,       // Timestamp de la création du record
-	}
-
-	this.ami = {
-		friendPseudo         : '',
-		pendingFriendRequest : null,	// 0 --> Statut confirmé (Demander et receveur)		// 1 --> Invitation en cours  (demandeur)		// 2 --> En attente confirmation (receveur)
-		friendEmail		  		 : '',
-		friendPhoto					 : '',
 	}
 
 	// --------------------------------------------------------------
@@ -225,15 +218,15 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		let vAskingMembers = this.member.amis.filter(this.filterWaitingInvit); 
 		this.objectPopulation.members[myIndex].nbrWaitingInvit = vAskingMembers.length;	// On récupère le Nbre d'invitations en attente
 
-		this.addMemberToActiveMembers(myIndex, pSocketIo);                         // Le visiteur est bien un membre, on l'ajoute à la liste des membres
+		this.addMemberToActiveMembers(myIndex, pSocketIo);                    					// Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
 		let dataToTransmit = {
-			member : this.member,
-			welcomeMessage : 'Hello',
-			askingMembers : vAskingMembers,
+			member 					: this.member,
+			welcomeMessage 	: 'Hello',
+			askingMembers 	: vAskingMembers,
 		}
 
-		pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    // On transmet au client les données du membre 
+		pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -653,16 +646,16 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 		);
 
-		this.objectPopulation.members[myIndex].nbrWaitingInvit = 0;						// Comme le membre vient d'être créé, il n'a pas encore d'invitations
+		this.objectPopulation.members[myIndex].nbrWaitingInvit = 0;						// Comme le membre vient d'être créé, il n'a pas encore reçu d'invitations
 		this.objectPopulation.members[myIndex].email  = this.member.email;
 		this.objectPopulation.members[myIndex].pseudo = this.member.pseudo;
 		this.objectPopulation.members[myIndex].role = this.member.role;
 		this.addMemberToActiveMembers(myIndex, pSocketIo);										// On ajoute le membre nouvellement créé dans la table des membres actifs
 
 		let dataToTransmit = {
-			member : this.member,
-			welcomeMessage : 'Congrat',
-			askingMembers : [],
+			member 					: this.member,
+			welcomeMessage 	: 'Congrat',
+			askingMembers 	: [],
 		}
 
 		pWebSocketConnection.emit('welcomeMember',dataToTransmit);             // On transmet au client les données du membre 
@@ -720,6 +713,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.filterWaitingInvit = function(pItem){
 		return pItem.pendingFriendRequest === cstAttenteConfirm;
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Filtrage de tous les membres à qui j'ai envoyé une invitation
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.filterInvitSent = function(pItem){
+		return pItem.pendingFriendRequest === cstInvitEncours;
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -867,7 +867,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				if (myIndex !== -1){  																													// Si membre trouvé dans la table des membres actuellement connectés
 					this.objectPopulation.members[myIndex].nbrWaitingInvit++;  										// On ajoute +1 à son Nbre d'invitations en memoire vive
 					
-					// Envoi à ce membre seul, la demande de MAJ de son Nbre d'invitations
+					// Envoi à ce membre seul de la demande de MAJ de son Nbre d'invitations
 					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 				}
 				
@@ -910,7 +910,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Lecture de la liste des amis (quelque soit leur statut) puis filtrage sur le statut "cstAttenteConfirm"
+	// Constitution de la liste des membres qui m'ont envoyé une invitation que je n'ai toujours pas confirmé "cstAttenteConfirm"
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.listInvitations = function(pMyEmail, pWebSocketConnection){
 		this.readFriends(pMyEmail)
@@ -1002,7 +1002,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				let myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.myPseudo);
 		
 				this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à mon Nbre d'invitations en memoire vive 
-						
+
 				// Envoi à moi-même de la MAJ de mon Nbre d'invitations
 				pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 		
@@ -1105,7 +1105,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Suppression de moi-même  dans la liste d'amis du demandeur
 	// Envoi d'une Notification d'opération effectuée
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.refuseInvitation = function(pSelectedInvit, pWebSocketConnection){
+	MemberServer.prototype.refuseInvitation = function(pSelectedInvit, pWebSocketConnection, pSocketIo){
 		this.deleteFriendIntoMyFriendList(pSelectedInvit)
 		.then(() => {
 			this.deleteMeIntoFriendList(pSelectedInvit)
@@ -1119,8 +1119,28 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 					
 				// Envoi au client de la demande d'affichage de la notification du refus de l'invitation
-				pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 		
-	
+				pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 	
+				
+				
+				// Recherche du pseudo du membre que je refuse dans le tableau des membres connectés car s'il est connecté, je supprime mon Avatar dans sa Carte "Invitations lancées" en temps réel
+				myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
+		
+				// Si membre trouvé dans la table des membres actuellement connectés
+				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+				if (myIndex !== -1){  																													
+					let vReversedRoles = {
+						myEmail 			: pSelectedInvit.friendEmail,
+						myPseudo			:	pSelectedInvit.friendPseudo,
+						myPhoto				: pSelectedInvit.friendPhoto,
+						friendEmail  	: pSelectedInvit.myEmail,
+						friendPseudo 	: pSelectedInvit.myPseudo,
+						friendPhoto 	: pSelectedInvit.myPhoto,
+						indexInvitation	: pSelectedInvit.indexInvitation,			 
+					}
+		
+					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('deleteInvitedMemberFromMyInvitSentList',vReversedRoles);     
+				};
+
 				this.sendEMail(
 					pSelectedInvit.friendEmail, 
 					'Collect\'Or - Rejet de votre demande d\'ami', 
@@ -1131,8 +1151,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			});
 		});
 	};
-
-
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Suppression d'un ami
@@ -1153,7 +1171,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pFriendToDelete.friendPseudo);
 		
 				// Si membre trouvé dans la table des membres actuellement connectés
-				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+				// Envoi à ce membre seul, de la demande de suppression de mon Avatar dans sa liste d'amis
 				if (myIndex !== -1){  																													
 					let vReversedRoles = {
 						myEmail 			: pFriendToDelete.friendEmail,
@@ -1176,8 +1194,46 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		});
 	};
 
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Annulation d'une invitatiion
+	// Suppression du membre dans ma propre liste d'amis
+	// Suppression de moi-même dans la liste d'amis du mmebre qui avait été invité
+	// Envoi d'une Notification d'opération effectuée
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.cancelInvitation = function(pcancelInvitSent, pWebSocketConnection, pSocketIo){
 
+console.log('------------------------------------------------------------------')
+console.log('cancelInvitation - pcancelInvitSent : ',pcancelInvitSent)
+console.log('------------------------------------------------------------------')
 
+		this.deleteFriendIntoMyFriendList(pcancelInvitSent)
+		.then(() => {
+			this.deleteMeIntoFriendList(pcancelInvitSent)
+			.then(() => {
+
+				// Envoi à moi-même de la demande de suppression de l'Avatar de l'ami qui avait reçu l'invitation
+				pWebSocketConnection.emit('deleteInvitedMemberFromMyInvitSentList',pcancelInvitSent);     
+
+				// Recherche du pseudo de mon ex-ami dans le tableau des membres connectés car s'il est connecté, je déduis 1 de son nombre d'invitations reçues à traiter
+				myIndex = this.searchMemberInTableOfMembers('pseudo', pcancelInvitSent.friendPseudo);
+
+				if (myIndex !== -1){  																													// Si membre trouvé dans la table des membres actuellement connectés
+					this.objectPopulation.members[myIndex].nbrWaitingInvit--;  										// On retire 1 à son Nbre d'invitations en memoire vive
+					
+					// Envoi à ce membre seul de la demande de MAJ de son Nbre d'invitations
+					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
+				}
+
+				this.sendEMail(
+					pcancelInvitSent.friendEmail, 
+					'Collect\'Or - Annulation d\'une invitation', 
+					'<h1 style="color: black;">Un membre a annulé l\'invitation qu\'il vous avait envoyé</h1><br />' +
+					'<p><strong>'+pcancelInvitSent.myPseudo+'</strong> ne souhaite plus devenir votre ami sur le site Collect\'Or.<p><br />'+
+					'<br /><br /><br /><i>Vil-Coyote Products</i>'
+				);
+			});
+		});
+	};
 
 	// ***************************************************************************************************************************
 	// 															Gestion des recommandations
@@ -1219,6 +1275,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 			let vRecommendableFriendsList = pRecommendFriendsList.myFriendList.filter(this.filterFriendsRecommendable.bind(this, vRecommendedFriendCleanFriendsList, documents[0].pseudo)); 
 
+// Gardé pour Historique
+// Bout de code correspondant à l'ancienne formulation où j'affichais une Modale Générique pour 
+// dire qu'il n'y avait aucun ami-cible à qui recommander mon ami
+// 
 // if (vRecommendableFriendsList.length === 0){
 // 	// Il n'y pas d'amis à qui on peut recommander mon ami ==> La liste est vide, on signale et abandonne 
 // 	return pWebSocketConnection.emit('emptyRecommendableFriendList',pRecommendFriendsList); 
@@ -1506,11 +1566,11 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 	let memberLocal = 
 	{
-		idSocket  : pWebSocketConnection.id,
-		isMember  : false,
-		email     : '',
-		pseudo    : '',
-		role			: 0,
+		idSocket  			: pWebSocketConnection.id,
+		isMember  			: false,
+		email     			: '',
+		pseudo    			: '',
+		role						: 0,
 		nbrWaitingInvit : 0,
 	}
 
@@ -1569,7 +1629,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 	
 	// -------------------------------------------------------------------------
-	// Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
+	// Verification de l'accessibilité de la base - Je ne le fais qu'au debut de l'appli, 
 	// mais en tout état de cause, normalement, professionnellement, je devrais 
 	// m'assurer qu'elle est toujours accessible en cours de partie, mais dans le 
 	// contexte ultra-limité de cet atelier, ce n'est pas nécessaire

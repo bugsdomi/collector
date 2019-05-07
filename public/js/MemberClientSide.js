@@ -3,11 +3,15 @@
 // d'y accéder pour travailler dessus (Modifier, supprimer, ajouter, etc...)
 // -------------------------------------------------------------------------
 
-var vMyFriendList = []
+function MemberClient(){   						// Fonction constructeur exportée
+	this.newPasswordKO 		= false;			// Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
+	this.vMyFriendList		= [];					// Ma liste d'amis
+	this.vMyInvitSentList = [];					// Ma liste d'invitations envoyées
+	this.vInvitSentCardVisible = false;	// Indicateur de visibilté de la carte des invitations en attente
 
-function MemberClient(){   // Fonction constructeur exportée
-	this.newPasswordKO = false;    // Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
-	this.member =                   // Structure de stockage provisoire du membre
+
+
+	this.member =                 // Structure de stockage provisoire du membre
 	{   
 		email           : '',
 		pseudo          : '',
@@ -302,11 +306,12 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 // 		- La carte de "Présentation"
 // 		- La carte des "Amis"
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pProfileInfo, pAskingMembers, pFriends, pFriendInfo){
+MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pProfileInfo, pAskingMembers, pFriendInfo, pInvitSentInfo){
 	this.setMemberContext(pContextInfo, pAvatarInfo, pAskingMembers);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
-	this.displayAvatar(pAvatarInfo);														// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
-	this.displayPresentationCard(pProfileInfo);									// - Affiche les informations du profil dans la carte "Présentation"
-	this.displayFriendsCard(pFriends,pFriendInfo);							// - Affiche les amis dans la carte "Amis"
+	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
+	this.displayPresentationCard(pProfileInfo);															// - Affiche les informations du profil dans la carte "Présentation"
+	this.displayFriendsCard(pFriendInfo);																		// - Affiche les amis dans la carte "Amis"
+	this.displayInvitSentCard(pInvitSentInfo);															// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
 }
 
 // -----------------------------------------------------------------------------
@@ -372,7 +377,7 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la carte "Mes Amis" sur ma page de profil
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayFriendsCard = function(pFriends, pFriendInfo){
+MemberClient.prototype.displayFriendsCard = function(pFriendInfo){
 	var vMyFriend = 
 	{
 		friendEmail  	: null,
@@ -380,7 +385,7 @@ MemberClient.prototype.displayFriendsCard = function(pFriends, pFriendInfo){
 		friendPhoto 	: null,
 	}
 
-	pFriends.forEach((item, index) => {																						// Pour chacun de mes amis en BDD
+	this.member.amis.forEach((item) => {																					// Pour chacun de mes amis en BDD
 		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personne est un ami confirmé, je l'ajoute à ma liste
 			vMyFriend.friendEmail = item.friendEmail;
 			vMyFriend.friendPseudo = item.friendPseudo;
@@ -403,8 +408,8 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 		friendPhoto 	: pMyFriend.friendPhoto,
 	}
 
-	vMyFriendList.push(vFriendLocal);
-	var index = (vMyFriendList.length-1);
+	this.vMyFriendList.push(vFriendLocal);
+	var index = (this.vMyFriendList.length-1);
 
 	var vlineHTML = {						// Structure HTML générée pour chaque ligne de membre
 		Vli 						: null,		// <li class="friendList withScaling">
@@ -467,7 +472,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	
 	// A la fermeture du DropDownMenu, on detruit tous ses sous-éléments dans le DOM
 	$('#'+vlineHTML.vLi.id).on('hidden.bs.dropdown', () => {
-		this.removeFriendToRecommendMenu(vlineHTML.vDivDropDown);
+		this.removeLinesOfDropDownMenu(vlineHTML.vDivDropDown);
 	});
 
 	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
@@ -538,7 +543,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivAvatarViewFriend.appendChild(vlineHTML.vHdrImgViewFriend);
 	vlineHTML.vHdrImgViewFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgViewFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgViewFriend.setAttribute('src', 'static/images/members/'+vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgViewFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgViewFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
@@ -546,7 +551,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivRowViewFriend.appendChild(vlineHTML.vHdrDivViewFriend);
 	vlineHTML.vHdrDivViewFriend.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vHdrDivViewFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo;
+	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo;
 
 	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vHdrDivBtnViewFriend = window.document.createElement('div');
@@ -592,7 +597,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivAvatarDelFriend.appendChild(vlineHTML.vHdrImgDelFriend);
 	vlineHTML.vHdrImgDelFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgDelFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgDelFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Ôter Vil-Coyote de mes amis
@@ -600,7 +605,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivDelFriend);
 	vlineHTML.vHdrDivDelFriend.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vHdrDivDelFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivDelFriend.innerHTML = ' Ôter '+vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' de mes amis';
+	vlineHTML.vHdrDivDelFriend.innerHTML = ' Ôter '+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' de mes amis';
 
 	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vHdrDivBtnDelFriend = window.document.createElement('div');
@@ -653,7 +658,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivAvatarRecoFriend.appendChild(vlineHTML.vHdrImgRecoFriend);
 	vlineHTML.vHdrImgRecoFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgRecoFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgRecoFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
@@ -664,9 +669,9 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivRecoFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
 	if (pRecommendableFriends.recommendableFriendsList.length > 0){
-		vlineHTML.vHdrDivRecoFriend.innerHTML = ' Recommander '+vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' à :';
+		vlineHTML.vHdrDivRecoFriend.innerHTML = ' Recommander '+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' à :';
 	} else {
-		vlineHTML.vHdrDivRecoFriend.innerHTML = vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' n\'a pas d\'ami à qui être recommandé';	
+		vlineHTML.vHdrDivRecoFriend.innerHTML = this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' n\'a pas d\'ami à qui être recommandé';	
 	}
 
 	// <div id="idDivContain" style="max-height: 400px; overflow-y: auto"></div> 
@@ -677,7 +682,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 
 	vDataToTransmit = 
 	{
-		friendEmail				: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
+		friendEmail				: this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
 		actionBtn  				: vlineHTML.vHdrIFAViewFriend.id,
 		indexFriendToView : pRecommendableFriends.indexFriendToRecommend,
 	}
@@ -692,8 +697,8 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	{
 		myPseudo 						: this.member.pseudo,
 		myEmail 						: this.member.email,
-		friendPseudo				: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo,
-		friendEmail					: vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
+		friendPseudo				: this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo,
+		friendEmail					: this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
 		actionBtn  					: vlineHTML.vHdrIFADelFriend.id,
 	}
 
@@ -813,11 +818,11 @@ MemberClient.prototype.deleteFriend = function(event){
 }
 
 	// -----------------------------------------------------------------------------
-	// Cette fonction recherche dans la table des amis, celui qui a la propriété 
+	// Cette fonction recherche dans un Array (amis ou invitations), celui qui a la propriété 
 	// "pProperty", et la valeur correspondante à celle recherchée "pValue"
 	// ---------------------------------------------------------------------------
-	MemberClient.prototype.searchFriendInTableOfFriends = (pProperty, pValue) => {
-		return vMyFriendList.map((propertyFilter) => {
+	MemberClient.prototype.searchObjectInArray = (pArray, pProperty, pValue) => {
+		return pArray.map((propertyFilter) => {
 			return propertyFilter[pProperty];
 		})
 		.indexOf(pValue);
@@ -831,8 +836,8 @@ MemberClient.prototype.deleteFriend = function(event){
 // -----------------------------------------------------------------------------
 MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, pFriendInfo){
 
-	var myIndex = this.searchFriendInTableOfFriends('friendPseudo', pFriendToDelete.friendPseudo);
-	vMyFriendList.splice(myIndex, 1);   // Efface l'occurence de mon ami du tableau de mes amis
+	var myIndex = this.searchObjectInArray(this.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
+	this.vMyFriendList.splice(myIndex, 1);   // Efface l'occurence de mon ami du tableau de mes amis
 	
 	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
 	// Suppression de tous les avatars affichés
@@ -854,7 +859,7 @@ MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, 
 		}
 
 		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
-		vSaveMyFriendList = vMyFriendList.splice(0,vMyFriendList.length);		
+		vSaveMyFriendList = this.vMyFriendList.splice(0,this.vMyFriendList.length);		
 
 		// Recréation des avatars de mes amis dans ma carte d'amis
 		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
@@ -972,10 +977,10 @@ MemberClient.prototype.sendRecommendation = function(event){
 // -----------------------------------------------------------------------------
 MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pIndex, pDropDownMenuId){
 	vRecommendFriendsList = {
-		friendEmail 						: vMyFriendList[pIndex].friendEmail,
-		friendPseudo 						: vMyFriendList[pIndex].friendPseudo,
-		friendPhoto 						: vMyFriendList[pIndex].friendPhoto,
-		myFriendList 						: vMyFriendList,
+		friendEmail 						: this.vMyFriendList[pIndex].friendEmail,
+		friendPseudo 						: this.vMyFriendList[pIndex].friendPseudo,
+		friendPhoto 						: this.vMyFriendList[pIndex].friendPhoto,
+		myFriendList 						: this.vMyFriendList,
 		indexFriendToRecommend 	: pIndex,
 	}
 
@@ -1034,7 +1039,7 @@ MemberClient.prototype.deleteLineRecommendationSent = function(pElem, pIndexFrie
 // Suppression de tous les éléments de la liste des amis recommandables
 // à la fermeture du sous-menu
 // -----------------------------------------------------------------------------
-MemberClient.prototype.removeFriendToRecommendMenu = function(pDivDropDown){
+MemberClient.prototype.removeLinesOfDropDownMenu = function(pDivDropDown){
 
 	// Bootstrap sets a data field with key `bs.popover` on elements that have a popover.
 	// Note that there is no corresponding **HTML attribute** on the elements so we cannot
@@ -1566,6 +1571,61 @@ MemberClient.prototype.displayWaitingInvitation = function(pWaitingInvit, pDispl
 	});
 };
 
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// Suppression d'une de mes invitations en attente (car acceptée ou refusée)
+// - Suppression de mon invitation envoyée du tableau de mes invitations lancées
+// - Suppression de l'avatar à qui j'avais fait l'invitation et de tous ses 
+// sous-elements (Popup-Menu, Lignes de reco, etc...) de ma liste d'invitations en attente
+// Si plus d'invitation en attente, fermeture de la carte des invitations en attente
+// -----------------------------------------------------------------------------
+MemberClient.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete, pInvitSentInfo){
+	var myIndex = this.searchObjectInArray(this.vMyInvitSentList, 'friendPseudo', pInvitToDelete.friendPseudo);
+
+	this.vMyInvitSentList.splice(myIndex, 1);   // Efface l'occurence de mon invitation du tableau de mes invitations en attente
+	
+	// Je régénère ma liste d'invitations pour recaler les indexes attachés à chaque invitation et utilisés pour les "Id" HTML:
+	// Suppression de tous les avatars affichés
+	var vElem = document.getElementById('idMyInvitSentLi'+0); // Je régénère ma liste d'invitations pour recaler les indexes
+
+	if (vElem){
+		var vParentNode = vElem.parentNode;
+
+		// Effacement des tokens de toutes mes invitations
+		while (vParentNode.firstChild) {
+			vParentNode.removeChild(vParentNode.firstChild);
+		}
+
+		var vMyInvitationSent = 
+		{
+			friendEmail  	: null,
+			friendPseudo 	: null,
+			friendPhoto 	: null,
+		}
+
+		if (this.vMyInvitSentList.length > 0){																		// S'il y a encore des invitations en attente
+			// Vidage et sauvegarde simultanée de ma liste d'invitations (moins celui que je viens de supprimer plus haut)
+			vSaveMyInvitSentList = this.vMyInvitSentList.splice(0,this.vMyInvitSentList.length);		
+
+			// Recréation des avatars de mes invitations dans ma carte d'invitations
+			vSaveMyInvitSentList.forEach((item) => {																// Pour chacune de mes invitations en déjà dans ma table d'invitations
+				vMyInvitationSent.friendEmail = item.friendEmail;
+				vMyInvitationSent.friendPseudo = item.friendPseudo;
+				vMyInvitationSent.friendPhoto = item.friendPhoto;
+
+				this.addInvitSentIntoCard(vMyInvitationSent, pInvitSentInfo);					// Ajout de l'avatar de l'invitation en cours dans ma carte d'invitations
+			});
+		} else {
+			pInvitSentInfo.vInvitSentCard.style.display = 'none';										// Je cache la carte des invitations en attente puisqu'elle est vide
+			this.vInvitSentCardVisible = false;
+		}
+	}
+}
+
 // --------------------------------------------------------------
 // Envoi d'une acceptation d'invitation pour devenir ami au serveur (Une seule demande par ami):
 // Bascule la couleur de l'icône "Accord d'amis"
@@ -1609,7 +1669,7 @@ MemberClient.prototype.acceptInvitation = function(event){
 // le serveur après les MAJ réussies de la BDD
 // et ajout de l'avatar de mon nouvel ami dans ma liste d'amis
 // --------------------------------------------------------------
-MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, pFriendInfo, pDisplayNotifInvitationValidedData){
+MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, pFriendInfo, pInvitSentInfo, pNotifInvitValidedData){
 	var idImg = 'idImgInvitAvatarToken' + pSelectedInvit.indexInvitation;
 	var vImg = document.getElementById(idImg);
 
@@ -1623,10 +1683,10 @@ MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, 
 	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
 
 	setTimeout(() => {
-		this.deleteLineInvitProcessed(pSelectedInvit, pDisplayNotifInvitationValidedData.modalMgrFriendListGroup)
+		this.deleteLineInvitProcessed(pSelectedInvit, pNotifInvitValidedData.modalMgrFriendListGroup)
 	},cstDelayClosingPopover+500);																	// Supprime la ligne après un délai de quelques secondes
 
-	this.addFriendIntoCard(pSelectedInvit, pFriendInfo);
+	this.addFriendIntoCard(pSelectedInvit, pFriendInfo);						// Ajout de mon nouvel ami dans la carte "Mes amis"
 };
 
 // --------------------------------------------------------------
@@ -1882,6 +1942,26 @@ MemberClient.prototype.sendInvitation = function(event){
 }
 
 // --------------------------------------------------------------
+// Annulation d'une invitation envoyée à un membre
+// Bascule la couleur de l'icône "Ajout d'amis"
+// Si le receveur est connecté, son nombre d'invitations evoluera en temps réel
+// --------------------------------------------------------------
+MemberClient.prototype.cancelInvitation = function(event){
+	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', this.ChangeBtnTxtColOver);						
+	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', this.ChangeBtnTxtColOut);						
+	document.getElementById(event.target.datas.actionBtn).removeEventListener('click', this.cancelInvitation);					
+
+	var vInvitSentToDelete = {
+		myPseudo 			: event.target.datas.myPseudo,
+		myEmail 			: event.target.datas.myEmail,
+		friendPseudo 	: event.target.datas.friendPseudo,
+		friendEmail 	: event.target.datas.friendEmail,
+	}
+
+	webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
+}
+
+// --------------------------------------------------------------
 // Supprime la ligne à partir de laquelle on a envoyé une invitation
 // S'il n'y a plus de lignes, je ferme la modale
 // --------------------------------------------------------------
@@ -1900,8 +1980,10 @@ MemberClient.prototype.deleteLineInvitSent = function(pFriendToAdd, pModalMgrFri
 // --------------------------------------------------------------
 // Affichage d'une Notification d'envoi d'invitation envoyée par 
 // le serveur après les MAJ réussies de la BDD et l'envoi du mail
+// Ajout de l'invitation envoyée dans la carte gestionnaire  
+// d'invitation
 // --------------------------------------------------------------
-MemberClient.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData){   
+MemberClient.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData, pInvitSentInfo){   
 	// Ferme la notif après un délai de quelques secondes
 	$('#'+'idImgPotentialFriends'+pFriendToAdd.indexPotentialFriend).popover('show');										// Affiche la notification d'envoi de la demande d'ami
 
@@ -1912,7 +1994,188 @@ MemberClient.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisp
 	setTimeout(() => {
 		this.deleteLineInvitSent(pFriendToAdd, pDisplayNotifInvitationSentData.modalMgrFriendListGroup)
 	},cstDelayClosingPopover + 500);																	// Supprime la ligne après un délai de quelques secondes
+
+	if (!this.vInvitSentCardVisible){
+		pInvitSentInfo.vInvitSentCard.style.display = 'block';					// S'il y a des invitations en attente, affiche la carte des invitations en attente
+		this.vInvitSentCardVisible = true;
+	}
+
+	this.addInvitSentIntoCard(pFriendToAdd, pInvitSentInfo);
 }
+
+// -----------------------------------------------------------------------------
+// Cette fonction affiche la carte "Mes invitations lancées" sur ma page de profil
+// -----------------------------------------------------------------------------
+MemberClient.prototype.displayInvitSentCard = function(pInvitSentInfo){
+
+	var vMyinvitSent = 
+	{
+		friendEmail  	: null,
+		friendPseudo 	: null,
+		friendPhoto 	: null,
+	}
+
+	this.member.amis.forEach((item, index) => {																					// Pour chacun de mes amis en BDD
+		if (item.pendingFriendRequest === cstInvitEncours){													// Si la personne a reçu une invitation de ma part je l'ajoute à ma liste
+			vMyinvitSent.friendEmail = item.friendEmail;
+			vMyinvitSent.friendPseudo = item.friendPseudo;
+			vMyinvitSent.friendPhoto = item.friendPhoto;
+
+			if (!this.vInvitSentCardVisible){
+				pInvitSentInfo.vInvitSentCard.style.display = 'block';								// S'il y a des invitations en attente, affiche la carte des invitations en attente
+				this.vInvitSentCardVisible = true;
+			}
+			this.addInvitSentIntoCard(vMyinvitSent, pInvitSentInfo);								// et je la peuple avec mes invitations en attente
+		}
+	});
+};
+
+// -----------------------------------------------------------------------------
+// Cette fonction ajoute une invitation sur la carte "Invitations lancées" de la 
+// page de profil et prépare son sous-menu PopUp pour les éventuelles annulations
+// -----------------------------------------------------------------------------
+MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentInfo){
+
+	var vInvitSentLocal = 
+	{
+		friendEmail  	: pMyInvitSent.friendEmail,
+		friendPseudo 	: pMyInvitSent.friendPseudo,
+		friendPhoto 	: pMyInvitSent.friendPhoto,
+	}
+
+	this.vMyInvitSentList.push(vInvitSentLocal);
+	var index = (this.vMyInvitSentList.length-1);
+
+	var vlineHTML = {									// Structure HTML générée pour chaque ligne de membre
+		Vli 									: null,		// <li class="friendList withScaling">
+		vA	 									: null,		// <a id ="xxxx" href="#">
+		vDivDropDown 					: null,		// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black; transform: translate3d(45px, 30px, 0px);"></div> 
+		vACancelInvit					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-white">
+		vDivRowCancelInvit		: null,		//		<div class="row bg-success text-light" style="cursor: default;">
+		vDivAvatarCancelInvit	: null,		// 			<div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
+		vImgCancelInvit				: null,		// 				<img id="idCancelInvitImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/xxx" style="width:32px; height: 32px;">
+		vDivCancelInvit				: null,		// 			<div class="col-7 align-self-center px-0" style="font-size: 0.8rem;"> Voir le profil de xxx
+		vDivBtnCancelInvit		: null,		// 			<div class="col-3 text-center align-self-center px-0">
+		vBtnCancelInvit				: null,		// 				<button type="button" class="btn btn-outline-dark btn-sm">
+		vIFACancelInvit 			: null,		// 					<i class="fa fa-eye text-dark">
+		vDivAvatar  					: null,		// <div class="containerAvatarToken text-center align-self-center">
+		vImg 			 						: null,		// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
+	};
+
+	// <li class="friendList withScaling dropdown dropright">
+	vlineHTML.vLi = window.document.createElement('li');
+	pInvitSentInfo.vInvitSentUL.appendChild(vlineHTML.vLi);
+	vlineHTML.vLi.setAttribute('id', 'idMyInvitSentLi'+index);
+	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
+
+	// <a id ="xxxx" href="#" class="btn-sm dropdown-toggle dropdown-toggle-split" style="padding-left: 0;padding-right: 0; color: white;" data-toggle="dropdown"></a> 
+	vlineHTML.vA = window.document.createElement('a');
+	vlineHTML.vLi.appendChild(vlineHTML.vA);
+	vlineHTML.vA.setAttribute('href', '#');
+	vlineHTML.vA.setAttribute('style', 'padding-left: 0;padding-right: 0; color: white;');
+	vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
+	vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
+
+	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black;"></div> 
+	vlineHTML.vDivDropDown = window.document.createElement('div');
+	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
+	vlineHTML.vDivDropDown.setAttribute('id', 'idMyInvitSentDropDown'+index);
+	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black;');
+
+	// ----------------------------
+	// Annuler une invitation lancée
+	// ----------------------------
+	// <a href="#" class="container list-group-item list-group-item-danger">
+	vlineHTML.vACancelInvit = window.document.createElement('a');
+	vlineHTML.vDivDropDown.appendChild(vlineHTML.vACancelInvit);
+	vlineHTML.vACancelInvit.setAttribute('href', '#');
+	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white mx-0 py-0 my-0');
+	vlineHTML.vACancelInvit.setAttribute('style', 'border-bottom: 1px solid black;');
+
+	// <div class="row bg-danger text-light" style="cursor: default;">
+	vlineHTML.vDivRowCancelInvit = window.document.createElement('div');
+	vlineHTML.vACancelInvit.appendChild(vlineHTML.vDivRowCancelInvit);
+	vlineHTML.vDivRowCancelInvit.setAttribute('class', 'row');
+	vlineHTML.vDivRowCancelInvit.setAttribute('style', 'cursor: default;');
+
+	// <div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
+	vlineHTML.vDivAvatarCancelInvit = window.document.createElement('div');
+	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivAvatarCancelInvit);
+	vlineHTML.vDivAvatarCancelInvit.setAttribute('class', 'col-2 containerAvatarToken p-0 text-center withNoScaling');
+
+	// <img id="idCancelInvitImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
+	vlineHTML.vImgCancelInvit = window.document.createElement('img');
+	vlineHTML.vDivAvatarCancelInvit.appendChild(vlineHTML.vImgCancelInvit);
+	vlineHTML.vImgCancelInvit.setAttribute('class', 'avatarToken m-1');
+	vlineHTML.vImgCancelInvit.setAttribute('alt', 'Membre');
+	vlineHTML.vImgCancelInvit.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
+	vlineHTML.vImgCancelInvit.setAttribute('style', 'width:32px; height: 32px;');
+	
+	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Annuler l\'invit Vil-Coyote de mes amis
+	vlineHTML.vDivCancelInvit = window.document.createElement('div');
+	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivCancelInvit);
+	vlineHTML.vDivCancelInvit.setAttribute('class', 'col-7 align-self-center px-0');
+	vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vDivCancelInvit.innerHTML = ' Annuler l\'invit de '+pMyInvitSent.friendPseudo;
+
+	// <div class="col-3 text-center align-self-center px-0">
+	vlineHTML.vDivBtnCancelInvit = window.document.createElement('div');
+	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivBtnCancelInvit);
+	vlineHTML.vDivBtnCancelInvit.setAttribute('class', 'col-3 text-center align-self-center px-0');
+
+	// <button type="button" class="btn btn-outline-dark btn-sm">
+	vlineHTML.vBtnCancelInvit = window.document.createElement('button');
+	vlineHTML.vDivBtnCancelInvit.appendChild(vlineHTML.vBtnCancelInvit);
+	vlineHTML.vBtnCancelInvit.setAttribute('type', 'button');
+	vlineHTML.vBtnCancelInvit.setAttribute('class', 'btn btn-outline-danger btn-sm');
+
+	// <i class="fa fa-user-times text-dark">
+	vlineHTML.vIFACancelInvit = window.document.createElement('i');
+	vlineHTML.vBtnCancelInvit.appendChild(vlineHTML.vIFACancelInvit);
+	vlineHTML.vIFACancelInvit.setAttribute('id', 'idIFACancelInvit'+index);
+	vlineHTML.vIFACancelInvit.setAttribute('class', 'fa fa-envelope text-dark');
+
+	// <div class="containerAvatarToken text-center align-self-center">
+	vlineHTML.vDivAvatar = window.document.createElement('div');
+	vlineHTML.vA.appendChild(vlineHTML.vDivAvatar);
+	vlineHTML.vDivAvatar.setAttribute('class', 'containerAvatarToken py-1 text-center align-self-center');
+
+	// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg"></img>
+	vlineHTML.vImg = window.document.createElement('img');
+	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
+	vlineHTML.vImg.setAttribute('class', 'avatarToken');
+	vlineHTML.vImg.setAttribute('alt', 'Ami');
+	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
+	vlineHTML.vImg.setAttribute('data-toggle', 'tooltip');
+	vlineHTML.vImg.setAttribute('data-placement', 'top');
+	vlineHTML.vImg.setAttribute('data-title', pMyInvitSent.friendPseudo);
+
+	vDataToTransmit = 
+	{
+		myPseudo 						: this.member.pseudo,
+		myEmail 						: this.member.email,
+		friendPseudo				: this.vMyInvitSentList[index].friendPseudo,
+		friendEmail					: this.vMyInvitSentList[index].friendEmail,
+		actionBtn  					: vlineHTML.vIFACancelInvit.id,
+	}
+
+	vlineHTML.vBtnCancelInvit.addEventListener('mouseover', this.ChangeBtnTxtColOver);
+	vlineHTML.vBtnCancelInvit.addEventListener('mouseout', this.ChangeBtnTxtColOut);
+	vlineHTML.vBtnCancelInvit.addEventListener('click', this.cancelInvitation);						// Suppression d'un ami
+	vlineHTML.vBtnCancelInvit.datas = vDataToTransmit;
+	vlineHTML.vIFACancelInvit.datas = vDataToTransmit;
+
+	// Pour empêcher la fermeture de DropDownMenu lorsque l'on clique quelque part dedans (Comportement par défaut)
+	$('#'+vlineHTML.vDivDropDown.id).on("click.bs.dropdown", (event) => { 
+		event.stopPropagation(); 
+		event.preventDefault(); 
+	});
+
+	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
+	this.InitPopOverAndToolTipAndDropDown();
+};
+
 
 // --------------------------------------------------------------
 // Change la classe (de couleur BS) lorsque la souris quitte le 

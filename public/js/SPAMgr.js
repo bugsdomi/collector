@@ -139,6 +139,12 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vFriendUL = document.getElementById('idFriendUL');
 	
 	// -------------------------------------------------------------------------
+	// Eléments de la carte des invitations lancées membre sur son profil
+	// -------------------------------------------------------------------------
+	var vInvitSentCard = document.getElementById('idInvitSentCard');
+	var vInvitSentUL = document.getElementById('idInvitSentUL');
+
+	// -------------------------------------------------------------------------
 	// Déconnexion du membre:
 	// - Réinitialisation de la landing-page
 	// - Fermeture du socket
@@ -553,6 +559,14 @@ window.addEventListener('DOMContentLoaded', function(){
 		vGenericModalBodyText,
 		vFriendUL,
 	}
+
+	// -------------------------------------------------------------------------
+	// Structure de transfert des infos des invitations lancées
+	// -------------------------------------------------------------------------
+	var vInvitSentInfo = {
+		vInvitSentCard,
+		vInvitSentUL,
+	}
 	
 	// -------------------------------------------------------------------------
 	// Structure de transfert des infos de la page de renseignements vers la 
@@ -612,6 +626,14 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
 	
+	// --------------------------------------------------------------
+	// Le serveur a supprimé le membre à qui j'avais envoyé une 
+	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
+	// --------------------------------------------------------------
+	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
+		vMemberClient.removeInvitSentFromMyInvitSentList(pcancelInvitSent, vInvitSentInfo);
+	});
+
 	// --------------------------------------------------------------
 	// Le serveur a supprimé mon ex-ami, et je dois donc l'effacer 
 	// de ma carte "Liste d'amis"
@@ -684,6 +706,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('addFriendIntoHisList', function(pMyFriend){ 
 		vMemberClient.addFriendIntoCard(pMyFriend, vFriendInfo);
+		vMemberClient.removeInvitSentFromMyInvitSentList(pMyFriend, vInvitSentInfo);		// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
 	});
 
 	// --------------------------------------------------------------
@@ -695,7 +718,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationValidedData = {
 			modalMgrFriendListGroup : vModalMgrFriendListGroup,
 		}
-		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
+		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vInvitSentInfo, vDisplayNotifInvitationValidedData);
 	});	
 
 	// --------------------------------------------------------------
@@ -743,7 +766,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationSentData = {
 			modalMgrFriendListGroup : vModalMgrFriendListGroup,
 		}
-		vMemberClient.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData);
+		vMemberClient.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData, vInvitSentInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -809,7 +832,8 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
 		$('#idGenericModal').modal('show');                                           		// ouverture de la fenêtre modale de Félicitations
 
-		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers, vMemberClient.member.amis, vFriendInfo);			// Affichage de la page de profil
+		// Affichage de la page de profil avec les avatars, les amis, les invitations...
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers, vFriendInfo, vInvitSentInfo);			// Affichage de la page de profil
 	});
 
 	// --------------------------------------------------------------

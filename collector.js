@@ -129,6 +129,11 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		vMemberServer.invitationSent(pFriendToAdd, webSocketConnection, socketIo);
 	});   						
 
+	// On a reçu une annulation d'invitation --> retrait des amis potentiels de nos listes d'amis mutuelles
+	webSocketConnection.on('cancelInvitation', function(pInvitSentToDelete){
+		vMemberServer.cancelInvitation(pInvitSentToDelete, webSocketConnection, socketIo);
+	});   						
+
 	// On a reçu une demande de la liste des invitations à valider
 	webSocketConnection.on('listInvitations', function(pMyEmail){
 		vMemberServer.listInvitations(pMyEmail, webSocketConnection);
@@ -141,9 +146,8 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
 	// On a reçu un refus d'ami
 	webSocketConnection.on('refuseInvitation', function(pSelectedInvit){
-		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection);
+		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection, socketIo);
 	});   				
-
 
 	// On a reçu une suppression d'ami
 	webSocketConnection.on('deleteFriendOfMine', function(pFriendToDelete){

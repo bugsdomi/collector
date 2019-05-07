@@ -161,7 +161,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                   li
                     a#idInvitations(href='#')
                       i.fa.fa-fw.fa-users
-                      |  Invitations 
+                      |  Invitations re&ccedil;ues 
                       span#idNbrWaitingInvit.badge.badge-danger
                   li
                     a(href='photos1.html')
@@ -323,6 +323,22 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
               .row
                 .col-md-12.px-0.text-dark
                   ul#idFriendUL.p-0.m-0(style='list-style: none;')
+          // ******************************************************************************
+          // Carte "Invitations lancées"
+          // ******************************************************************************
+          #idInvitSentCard.card.border-warning.mb-4
+            // ******************************************************************************
+            // Entête de la carte "Invitations lancées"
+            // ******************************************************************************
+            .card-header.bg-warning.border-bottom.border-warning
+              h5.card-title Invitations lanc&eacute;es aux membres suivants :
+            // ******************************************************************************
+            // Corps de la carte "Invitations lancées"
+            // ******************************************************************************
+            .card-body(style='border: 1px black solid;')
+              .row
+                .col-md-12.px-0.text-dark
+                  ul#idInvitSentUL.p-0.m-0(style='list-style: none;')
           .widget
             .widget-header
               h3.widget-caption Groups
