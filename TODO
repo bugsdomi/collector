@@ -16,6 +16,8 @@ Todo:
     - displayxxx
     - updateProfile
 
+    ☐ Changer les avatars dynamiquement chez mes amis ou futurs amis
+    ☐ Voir Toastr
     Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo

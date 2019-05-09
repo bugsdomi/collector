@@ -301,8 +301,6 @@ body {
 /* ******************************* */
 .containerAvatarToken{
     overflow: hidden;
-    /* width: 50px;
-    height: 50px; */
     display: inline;
 }
 
@@ -414,11 +412,18 @@ body {
     z-index: 1;
 }
 
-
 /* ************************************ */
 /* Masquage par défaut de la carte des  */ 
 /* invitations envoyées                 */ 
 /* ************************************ */
 #idInvitSentCard{
     display: none;
+}
+
+/* ************************************ */
+/* Suppression des décorations sur les  */ 
+/* ancres                               */ 
+/* ************************************ */
+a, a:hover {
+    text-decoration: none;
 }

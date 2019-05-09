@@ -184,6 +184,33 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		});
 	};
 
+	// // ---------------------------------------------------------------------------------------------------------------------------
+	// // Lecture d'un ami pour récupération de ses infos de Patronyme et alimenter ma liste d'amis coté client
+	// // ---------------------------------------------------------------------------------------------------------------------------
+	// MemberServer.prototype.getFriendsInfo = function(pMyFriend){
+	// 	return new Promise((resolve, reject) => {
+	// 		vDBMgr.collectionMembers.find(
+	// 		{ 
+	// 			'email': pMyFriend, 
+	// 		}).toArray((error, documents) => {
+	// 			if (error) {
+	// 				console.log('-------------------------------------------------------------');
+	// 				console.log('checkLostPWDMailIsValid - pMyFriend : ',pMyFriend);
+	// 				console.log('checkLostPWDMailIsValid - Erreur de lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
+	// 				console.log('-------------------------------------------------------------');
+	// 				reject(error);
+	// 				throw error;
+	// 			} 
+				
+	// 			if (!documents.length){                                                         // Si mail non trouvé dans la BDD, on resoumet le formulaire
+	// 				return pWebSocketConnection.emit('retryLostPWDForm'); 
+	// 			} 
+
+	// 			resolve(documents);
+	// 		})
+	// 	})
+	// };
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification des données du visiteur (Pseudo + MDP) :
 	// - Si la combinaison Pseudo et MDP n'existe pas --> Rejet de la demande Login ('retryLoginForm')
@@ -220,13 +247,20 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 		this.addMemberToActiveMembers(myIndex, pSocketIo);                    					// Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
-		let dataToTransmit = {
-			member 					: this.member,
-			welcomeMessage 	: 'Hello',
-			askingMembers 	: vAskingMembers,
-		}
+		// // Pour chaque ami de ma liste d'amis, je vais chercher son Nom et son prenom
+		// this.member.amis.forEach((item) => {
+		// 	this.getFriendsInfo(item);	
+		// }).then (() => {	});
 
-		pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
+		
+			let dataToTransmit = {
+				member 					: this.member,
+				welcomeMessage 	: 'Hello',
+				askingMembers 	: vAskingMembers,
+			}
+
+			pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
+		// });
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -302,7 +336,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification que l'email fourni pour la récupération du PWD existe
-// ---------------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
 		return new Promise((resolve, reject) => {
 			vDBMgr.collectionMembers.find(
@@ -1624,6 +1658,8 @@ console.log('------------------------------------------------------------------'
 				this.objectPopulation.nbrConnections = 0;
 				this.objectPopulation.nbrMembersInSession = 0;
 				this.objectPopulation.nbrAdminsInSessions = 0;
+
+				resolve('Ok')
 			});
 		});
 	};

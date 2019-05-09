@@ -167,8 +167,8 @@
 }
 .cover.profile .cover-info .avatar img {
   width: 110px;       
-  /* height: 110px; */      /* DH- */
-  height: auto;             /* DH+ */
+  /* height: 110px; */              /* DH- */
+  height: auto;                     /* DH+ */
   /* border: 5px solid white ;  */  /* DH- */
   border: 1px solid black;        /* DH+ */
 }

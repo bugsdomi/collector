@@ -7,9 +7,7 @@ function MemberClient(){   						// Fonction constructeur exportée
 	this.newPasswordKO 		= false;			// Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
 	this.vMyFriendList		= [];					// Ma liste d'amis
 	this.vMyInvitSentList = [];					// Ma liste d'invitations envoyées
-	this.vInvitSentCardVisible = false;	// Indicateur de visibilté de la carte des invitations en attente
-
-
+	this.vInvitSentCardVisible = false;	// Indicateur de visibilité de la carte des invitations en attente
 
 	this.member =                 // Structure de stockage provisoire du membre
 	{   
@@ -483,11 +481,17 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 // Cette fonction prépare toutes les options du menu Popup et le header pour 
 // les amis à recommander
 // -----------------------------------------------------------------------------
-MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
-	var vDivDropDown = document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend);
+MemberClient.prototype.preparePopupHeader = function(pFriend){
+	var vDivDropDown = document.getElementById('idMyDropDown'+pFriend.indexFriendToRecommend);
 	var vDataToTransmit = null;
 
 	var vlineHTML = {						// Structure HTML générée pour chaque ligne de membre
+		vHdrDivMicroViewFriend 		: null,
+		vHdrDivRowMicroViewFriend:null,
+		vHdrDivAvatarMicroViewFriend: null,
+		vHdrImgMicroViewFriend	: null,
+		vHdrDivMicroViewFriend	: null,
+
 		vHdrAViewFriend					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-success">
 		vHdrDivRowViewFriend		: null,		//		<div class="row bg-success text-light" style="cursor: default;">
 		vHdrDivAvatarViewFriend	: null,		// 			<div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
@@ -518,13 +522,72 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	};
 
 	// ----------------------------
+	// Micro-fiche d'un ami
+	// ----------------------------
+	// <a href="#" class="container list-group-item list-group-item-success">
+	vlineHTML.vHdrDivMicroViewFriend = window.document.createElement('div');
+	vDivDropDown.appendChild(vlineHTML.vHdrDivMicroViewFriend);
+	vlineHTML.vHdrDivMicroViewFriend.setAttribute('href', '#');
+	vlineHTML.vHdrDivMicroViewFriend.setAttribute('class', 'container list-group-item m-0 p-0');
+	vlineHTML.vHdrDivMicroViewFriend.setAttribute('style', 'border-bottom: 1px solid black;');
+
+	// <div class="row bg-success text-light" style="cursor: default;">
+	vlineHTML.vHdrDivRowMicroViewFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivMicroViewFriend.appendChild(vlineHTML.vHdrDivRowMicroViewFriend);
+	vlineHTML.vHdrDivRowMicroViewFriend.setAttribute('class', 'row mx-0 list-group-item-warning');
+	vlineHTML.vHdrDivRowMicroViewFriend.setAttribute('style', 'cursor: default;');
+
+	// <div class="row bg-success text-light" style="cursor: default;">
+	vlineHTML.vHdrDivColMicroViewFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivRowMicroViewFriend.appendChild(vlineHTML.vHdrDivColMicroViewFriend);
+	vlineHTML.vHdrDivColMicroViewFriend.setAttribute('class', 'col-5 mx-0 px-0 withNoScaling');
+	
+	// <img id="idMicroViewFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
+	vlineHTML.vHdrImgMicroViewFriend = window.document.createElement('img');
+	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrImgMicroViewFriend);
+	vlineHTML.vHdrImgMicroViewFriend.setAttribute('class', 'm-1');
+	vlineHTML.vHdrImgMicroViewFriend.setAttribute('alt', 'Membre');
+	vlineHTML.vHdrImgMicroViewFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgMicroViewFriend.setAttribute('style', 'width:110px; height: auto;');
+	
+	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
+	vlineHTML.vHdrDivColMicroViewFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivRowMicroViewFriend.appendChild(vlineHTML.vHdrDivColMicroViewFriend);
+	// vlineHTML.vHdrDivColMicroViewFriend.setAttribute('class', 'col px-0');
+	vlineHTML.vHdrDivColMicroViewFriend.setAttribute('class', 'col-7 d-flex align-items-start flex-column px-0');
+	vlineHTML.vHdrDivColMicroViewFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+
+	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
+	vlineHTML.vHdrDivMicroViewFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrDivMicroViewFriend);
+	vlineHTML.vHdrDivMicroViewFriend.setAttribute('class', 'align-self-center mb-auto p-0 font-size-120');
+	vlineHTML.vHdrDivMicroViewFriend.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo;
+
+	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
+	vlineHTML.vHdrDivMicroViewFriend1 = window.document.createElement('div');
+	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrDivMicroViewFriend1);
+	vlineHTML.vHdrDivMicroViewFriend1.setAttribute('class', 'mb-auto');
+	vlineHTML.vHdrDivMicroViewFriend1.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vHdrDivMicroViewFriend1.innerHTML = 'Thomas';
+
+	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
+	vlineHTML.vHdrDivMicroViewFriend2 = window.document.createElement('div');
+	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrDivMicroViewFriend2);
+	vlineHTML.vHdrDivMicroViewFriend2.setAttribute('class', 'mb-auto');
+	vlineHTML.vHdrDivMicroViewFriend2.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vHdrDivMicroViewFriend2.innerHTML = 'Rudrauf';
+
+
+
+
+	// ----------------------------
 	// Voir le Profil d'un ami
 	// ----------------------------
 	// <a href="#" class="container list-group-item list-group-item-success">
 	vlineHTML.vHdrAViewFriend = window.document.createElement('a');
 	vDivDropDown.appendChild(vlineHTML.vHdrAViewFriend);
 	vlineHTML.vHdrAViewFriend.setAttribute('href', '#');
-	vlineHTML.vHdrAViewFriend.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white mx-0 py-0 my-0');
+	vlineHTML.vHdrAViewFriend.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vHdrAViewFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
 	// <div class="row bg-success text-light" style="cursor: default;">
@@ -543,7 +606,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivAvatarViewFriend.appendChild(vlineHTML.vHdrImgViewFriend);
 	vlineHTML.vHdrImgViewFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgViewFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgViewFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgViewFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgViewFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
@@ -551,7 +614,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivRowViewFriend.appendChild(vlineHTML.vHdrDivViewFriend);
 	vlineHTML.vHdrDivViewFriend.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vHdrDivViewFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo;
+	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo;
 
 	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vHdrDivBtnViewFriend = window.document.createElement('div');
@@ -567,7 +630,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	// <i class="fa fa-eye text-dark">
 	vlineHTML.vHdrIFAViewFriend = window.document.createElement('i');
 	vlineHTML.vHdrBtnViewFriend.appendChild(vlineHTML.vHdrIFAViewFriend);
-	vlineHTML.vHdrIFAViewFriend.setAttribute('id', 'idHdrIFAViewFriend'+pRecommendableFriends.indexFriendToRecommend);
+	vlineHTML.vHdrIFAViewFriend.setAttribute('id', 'idHdrIFAViewFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrIFAViewFriend.setAttribute('class', 'fa fa-eye text-dark');
 
 
@@ -578,7 +641,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrADelFriend = window.document.createElement('a');
 	vDivDropDown.appendChild(vlineHTML.vHdrADelFriend);
 	vlineHTML.vHdrADelFriend.setAttribute('href', '#');
-	vlineHTML.vHdrADelFriend.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white mx-0 py-0 my-0');
+	vlineHTML.vHdrADelFriend.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vHdrADelFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
 	// <div class="row bg-danger text-light" style="cursor: default;">
@@ -597,7 +660,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivAvatarDelFriend.appendChild(vlineHTML.vHdrImgDelFriend);
 	vlineHTML.vHdrImgDelFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgDelFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgDelFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Ôter Vil-Coyote de mes amis
@@ -605,7 +668,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivDelFriend);
 	vlineHTML.vHdrDivDelFriend.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vHdrDivDelFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivDelFriend.innerHTML = ' Ôter '+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' de mes amis';
+	vlineHTML.vHdrDivDelFriend.innerHTML = ' Ôter '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo+' de mes amis';
 
 	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vHdrDivBtnDelFriend = window.document.createElement('div');
@@ -621,7 +684,7 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	// <i class="fa fa-user-times text-dark">
 	vlineHTML.vHdrIFADelFriend = window.document.createElement('i');
 	vlineHTML.vHdrBtnDelFriend.appendChild(vlineHTML.vHdrIFADelFriend);
-	vlineHTML.vHdrIFADelFriend.setAttribute('id', 'idHdrIFADelFriend'+pRecommendableFriends.indexFriendToRecommend);
+	vlineHTML.vHdrIFADelFriend.setAttribute('id', 'idHdrIFADelFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrIFADelFriend.setAttribute('class', 'fa fa-user-times text-dark');
 
 
@@ -632,17 +695,17 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrARecoFriend = window.document.createElement('a');
 	vDivDropDown.appendChild(vlineHTML.vHdrARecoFriend);
 	vlineHTML.vHdrARecoFriend.setAttribute('href', '#');
-	vlineHTML.vHdrARecoFriend.setAttribute('class', 'container list-group-item mx-0 py-0 my-0');
+	vlineHTML.vHdrARecoFriend.setAttribute('class', 'container list-group-item m-0 py-0');
 	vlineHTML.vHdrARecoFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
 	// <div class="row bg-info text-light" style="cursor: default;">
 	vlineHTML.vHdrDivRowRecoFriend = window.document.createElement('div');
 	vlineHTML.vHdrARecoFriend.appendChild(vlineHTML.vHdrDivRowRecoFriend);
-	vlineHTML.vHdrDivRowRecoFriend.setAttribute('id', 'idHdrDivRowRecoFriend'+pRecommendableFriends.indexFriendToRecommend);
+	vlineHTML.vHdrDivRowRecoFriend.setAttribute('id', 'idHdrDivRowRecoFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrDivRowRecoFriend.setAttribute('class', 'row bg-success text-light');
 	vlineHTML.vHdrDivRowRecoFriend.setAttribute('style', 'cursor: default;');
 
-	if (pRecommendableFriends.recommendableFriendsList.length > 0){
+	if (pFriend.recommendableFriendsList.length > 0){
 		vlineHTML.vHdrDivRowRecoFriend.setAttribute('class', 'row bg-success text-light');
 	} else {
 		vlineHTML.vHdrDivRowRecoFriend.setAttribute('class', 'row bg-primary text-light');
@@ -658,33 +721,33 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	vlineHTML.vHdrDivAvatarRecoFriend.appendChild(vlineHTML.vHdrImgRecoFriend);
 	vlineHTML.vHdrImgRecoFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgRecoFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgRecoFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
 	vlineHTML.vHdrDivRecoFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowRecoFriend.appendChild(vlineHTML.vHdrDivRecoFriend);
-	vlineHTML.vHdrDivRecoFriend.setAttribute('id', 'idHdrDivRecoFriend'+pRecommendableFriends.indexFriendToRecommend);
+	vlineHTML.vHdrDivRecoFriend.setAttribute('id', 'idHdrDivRecoFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrDivRecoFriend.setAttribute('class', 'col-10 align-self-center px-0');
 	vlineHTML.vHdrDivRecoFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
-	if (pRecommendableFriends.recommendableFriendsList.length > 0){
-		vlineHTML.vHdrDivRecoFriend.innerHTML = ' Recommander '+this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' à :';
+	if (pFriend.recommendableFriendsList.length > 0){
+		vlineHTML.vHdrDivRecoFriend.innerHTML = ' Recommander '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo+' à :';
 	} else {
-		vlineHTML.vHdrDivRecoFriend.innerHTML = this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo+' n\'a pas d\'ami à qui être recommandé';	
+		vlineHTML.vHdrDivRecoFriend.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo+' n\'a pas d\'ami à qui être recommandé';	
 	}
 
 	// <div id="idDivContain" style="max-height: 400px; overflow-y: auto"></div> 
 	vlineHTML.vDivContain = window.document.createElement('div');
 	vDivDropDown.appendChild(vlineHTML.vDivContain);
-	vlineHTML.vDivContain.setAttribute('id', 'idDivContain'+pRecommendableFriends.indexFriendToRecommend);
+	vlineHTML.vDivContain.setAttribute('id', 'idDivContain'+pFriend.indexFriendToRecommend);
 	vlineHTML.vDivContain.setAttribute('style', 'max-height: 400px; overflow-y: auto');
 
 	vDataToTransmit = 
 	{
-		friendEmail				: this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
+		friendEmail				: this.vMyFriendList[pFriend.indexFriendToRecommend].friendEmail,
 		actionBtn  				: vlineHTML.vHdrIFAViewFriend.id,
-		indexFriendToView : pRecommendableFriends.indexFriendToRecommend,
+		indexFriendToView : pFriend.indexFriendToRecommend,
 	}
 
 	vlineHTML.vHdrBtnViewFriend.addEventListener('mouseover', this.ChangeBtnTxtColOver);
@@ -697,8 +760,8 @@ MemberClient.prototype.preparePopupHeader = function(pRecommendableFriends){
 	{
 		myPseudo 						: this.member.pseudo,
 		myEmail 						: this.member.email,
-		friendPseudo				: this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendPseudo,
-		friendEmail					: this.vMyFriendList[pRecommendableFriends.indexFriendToRecommend].friendEmail,
+		friendPseudo				: this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo,
+		friendEmail					: this.vMyFriendList[pFriend.indexFriendToRecommend].friendEmail,
 		actionBtn  					: vlineHTML.vHdrIFADelFriend.id,
 	}
 
@@ -2090,7 +2153,7 @@ MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentI
 	vlineHTML.vACancelInvit = window.document.createElement('a');
 	vlineHTML.vDivDropDown.appendChild(vlineHTML.vACancelInvit);
 	vlineHTML.vACancelInvit.setAttribute('href', '#');
-	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white mx-0 py-0 my-0');
+	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vACancelInvit.setAttribute('style', 'border-bottom: 1px solid black;');
 
 	// <div class="row bg-danger text-light" style="cursor: default;">
