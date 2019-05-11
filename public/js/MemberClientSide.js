@@ -454,7 +454,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
-	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black;');
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black; visibility: hidden;');
 // 
 // 
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->
@@ -1022,10 +1022,6 @@ MemberClient.prototype.refreshMyFriendList = function(pFriendInfo){
 // - ceux qui n'ont pas déjà une recommandation par moi-même en cours
 // -----------------------------------------------------------------------------
 MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
-	
-	var vMyDropDown = document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend);
-	vMyDropDown.style.visibility = 'hidden';
-	
 	// Préparation de l'entête du menu Popup
 	var vDivContain = this.preparePopupHeader(pRecommendableFriends);
 
@@ -1057,7 +1053,8 @@ MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
 
-	vMyDropDown.style.visibility = 'visible';
+	// Affichage de la PopUp dès qu'ellle est entièrement constitué (pour éviter l'effat "Affichage en 2 passes")
+	document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
 };
 
 // --------------------------------------------------------------
