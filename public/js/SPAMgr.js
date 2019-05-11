@@ -667,7 +667,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Le serveur a envoyé une liste d'amis à qui je peux recommander mon ami
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){   
-		vMemberClient.displayRecommendableFriendList(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
+		vMemberClient.displayPopUpOfMyFriend(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
 	});
 
 	// --------------------------------------------------------------

@@ -501,9 +501,6 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 // -----------------------------------------------------------------------------
 MemberClient.prototype.preparePopupHeader = function(pFriend){
 
-console.log('preparePopupHeader - pFriend : ',pFriend)
-console.log('preparePopupHeader - this.vMyFriendList : ',this.vMyFriendList)
-
 	var vDivDropDown = document.getElementById('idMyDropDown'+pFriend.indexFriendToRecommend);
 	var vDataToTransmit = null;
 
@@ -1024,7 +1021,11 @@ MemberClient.prototype.refreshMyFriendList = function(pFriendInfo){
 // - L'ami vers qui je vais envoyer les recommandations
 // - ceux qui n'ont pas déjà une recommandation par moi-même en cours
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayRecommendableFriendList = function(pRecommendableFriends){
+MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
+	
+	var vMyDropDown = document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend);
+	vMyDropDown.style.visibility = 'hidden';
+	
 	// Préparation de l'entête du menu Popup
 	var vDivContain = this.preparePopupHeader(pRecommendableFriends);
 
@@ -1055,6 +1056,8 @@ MemberClient.prototype.displayRecommendableFriendList = function(pRecommendableF
 		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseout', this.ChangeBtnTxtColOut,false);
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
+
+	vMyDropDown.style.visibility = 'visible';
 };
 
 // --------------------------------------------------------------
