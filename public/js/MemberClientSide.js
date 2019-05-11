@@ -439,9 +439,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vLi = window.document.createElement('li');
 	pFriendInfo.vFriendUL.appendChild(vlineHTML.vLi);
 	vlineHTML.vLi.setAttribute('id', 'idMyFriendLi'+index);
-	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');	
-	vlineHTML.vLi.setAttribute('style', 'visibility: hidden;');
-
+	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
 
 	// <a id ="xxxx" href="#" class="btn-sm dropdown-toggle dropdown-toggle-split" style="padding-left: 0;padding-right: 0; color: white;" data-toggle="dropdown"></a> 
 	vlineHTML.vA = window.document.createElement('a');
@@ -451,12 +449,13 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
 	vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
 
+
 	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black;"></div> 
 	vlineHTML.vDivDropDown = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
-// vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black; visibility: hidden;');
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black; visibility: hidden;');
 // 
 // 
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->
@@ -485,6 +484,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 
 	// A l'ouverture du DropDownMenu, on créée dynamiquement tous ses sous-éléments (les amis-cibles des recommandations)dans le DOM
 	$('#'+vlineHTML.vLi.id).on('shown.bs.dropdown', () => {
+
 		this.searchFriendsNotAlreadyInvitWithTargetFriend(index, vlineHTML.vDivDropDown.id);
 	});
 	
@@ -1029,6 +1029,7 @@ MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
 
 	// Création dynamique des lignes HTML et création des EventListener pour activer les opération de recommandation d'ami
 	var vTargetFriendForRecommend = [];
+
 	pRecommendableFriends.recommendableFriendsList.forEach((item, index) => {
 		// Ajoute les éléments d'une ligne vide dans le tableau des éléments
 		vTargetFriendForRecommend.push(new AddTargetFriendsforRecommendLines(item, index, vDivContain, pRecommendableFriends.recommendedFriendPseudo));	
@@ -1055,9 +1056,8 @@ MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
 
-	// Affichage de la PopUp dès qu'ellle est entièrement constitué (pour éviter l'effat "Affichage en 2 passes")
-// document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
-	document.getElementById('vLi'+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
+	// Affichage de la PopUp dès qu'elle est entièrement constituée (pour éviter l'effat "Affichage en 2 passes")
+	document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
 };
 
 // --------------------------------------------------------------
@@ -1098,7 +1098,8 @@ MemberClient.prototype.sendRecommendation = function(event){
 }
 
 // -----------------------------------------------------------------------------
-// Cette fonction va demander au serveur de lui fournir une liste d'amis à qui je peux recommander mon ami
+// Cette fonction va demander au serveur de lui fournir une liste d'amis à qui 
+// je peux recommander mon ami
 // 
 // La recommandation ne peut fonctionner qu'à partir du moment où on a au moins 2 amis
 // En effet, pour recommander un ami "A" à un ami "B", il faut au minimum 2 amis.
