@@ -184,33 +184,60 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		});
 	};
 
-	// // ---------------------------------------------------------------------------------------------------------------------------
-	// // Lecture d'un ami pour récupération de ses infos de Patronyme et alimenter ma liste d'amis coté client
-	// // ---------------------------------------------------------------------------------------------------------------------------
-	// MemberServer.prototype.getFriendsInfo = function(pMyFriend){
-	// 	return new Promise((resolve, reject) => {
-	// 		vDBMgr.collectionMembers.find(
-	// 		{ 
-	// 			'email': pMyFriend, 
-	// 		}).toArray((error, documents) => {
-	// 			if (error) {
-	// 				console.log('-------------------------------------------------------------');
-	// 				console.log('checkLostPWDMailIsValid - pMyFriend : ',pMyFriend);
-	// 				console.log('checkLostPWDMailIsValid - Erreur de lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
-	// 				console.log('-------------------------------------------------------------');
-	// 				reject(error);
-	// 				throw error;
-	// 			} 
-				
-	// 			if (!documents.length){                                                         // Si mail non trouvé dans la BDD, on resoumet le formulaire
-	// 				return pWebSocketConnection.emit('retryLostPWDForm'); 
-	// 			} 
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Lecture d'un ami pour récupération de ses infos de Patronyme et alimenter ma liste d'amis coté client
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.getFriendInfos = function(pMyFriend){
+		return new Promise((resolve, reject) => {
+			vDBMgr.collectionMembers.find(
+			{ 
+				'email': pMyFriend.friendEmail, 
+			})
+			.limit(1)
+			.toArray((error, document) => {
+				if (error) {
+					console.log('-------------------------------------------------------------');
+					console.log('getFriendsInfo - pMyFriend : ',pMyFriend.friendEmail);
+					console.log('getFriendsInfo - Erreur de lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
+					console.log('-------------------------------------------------------------');
+					reject(error);
+					throw error;
+				} 
+				resolve(document[0]);
+			})
+		})
+	};
 
-	// 			resolve(documents);
-	// 		})
-	// 	})
-	// };
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Obtention des noms et prénom de chacun de mes amis
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.getMyFriendsInfos = async function(){
+			let myFriendsInfos = [];
 
+			for (const aFriendOfMine of this.member.amis) {
+				const document = await this.getFriendInfos(aFriendOfMine);
+
+				let friendsInfosLocal = 
+				{
+					pseudo 		: null, 	
+					email			: null,
+					firstName : null,
+					name			: null,
+					photo			: null,
+				}
+
+				friendsInfosLocal.pseudo 		= document.pseudo;
+				friendsInfosLocal.email 		= document.email;
+				friendsInfosLocal.firstName	= document.etatCivil.firstName;
+				friendsInfosLocal.name 			= document.etatCivil.name;
+				friendsInfosLocal.photo 		= document.etatCivil.photo;
+
+				myFriendsInfos.push(friendsInfosLocal);
+			};
+
+		return myFriendsInfos;
+	}
+	
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Vérification des données du visiteur (Pseudo + MDP) :
 	// - Si la combinaison Pseudo et MDP n'existe pas --> Rejet de la demande Login ('retryLoginForm')
@@ -247,20 +274,18 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 		this.addMemberToActiveMembers(myIndex, pSocketIo);                    					// Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
-		// // Pour chaque ami de ma liste d'amis, je vais chercher son Nom et son prenom
-		// this.member.amis.forEach((item) => {
-		// 	this.getFriendsInfo(item);	
-		// }).then (() => {	});
-
-		
+		// Pour chaque ami de ma liste d'amis, je vais chercher son Nom et son prenom
+		this.getMyFriendsInfos()
+		.then((myFriendsInfos) => {
 			let dataToTransmit = {
 				member 					: this.member,
 				welcomeMessage 	: 'Hello',
 				askingMembers 	: vAskingMembers,
+				myFriendsInfos	: myFriendsInfos, 
 			}
 
 			pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
-		// });
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1042,36 +1067,45 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		
 				let vFriendPseudo = this.splitFriendFromCombo(pSelectedInvit.friendPseudo);
 				pSelectedInvit.friendPseudo = vFriendPseudo;
-		
-				// Envoi au client de la demande d'affichage de la notification d'invitation acceptée
-				pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
-		
-				// Recherche du pseudo de mon nouvel ami dans le tableau des membres connectés car s'il est connecté, j'ajoute mon Avatar dans sa Carte "Liste d'Amis" en temps réel
-				myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
-		
-				// Si membre trouvé dans la table des membres actuellement connectés
-				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
-				if (myIndex !== -1){  																													
-					let vReversedRoles = {
-						myEmail 			: pSelectedInvit.friendEmail,
-						myPseudo			:	pSelectedInvit.friendPseudo,
-						myPhoto				: pSelectedInvit.friendPhoto,
-						friendEmail  	: pSelectedInvit.myEmail,
-						friendPseudo 	: pSelectedInvit.myPseudo,
-						friendPhoto 	: pSelectedInvit.myPhoto,
-						indexInvitation	: pSelectedInvit.indexInvitation,			 
-					}
-		
-					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReversedRoles);     
-				};
-		
-				this.sendEMail(
-					pSelectedInvit.friendEmail, 
-					'Collect\'Or - Acceptation de votre demande d\'ami', 
-					'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
-					'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
-					'<br /><br /><br /><i>Vil-Coyote Products</i>'
-				);
+
+				// Lecture des infos complémentaires de mon nouvel ami (Nom + prénom) pour alimenter ma liste d'amis coté client
+				this.getFriendInfos(pSelectedInvit)
+				.then((document) => {
+					pSelectedInvit.friendFirstName	= document.etatCivil.firstName;
+					pSelectedInvit.friendName 			= document.etatCivil.name;
+
+					// Envoi à moi-même de la demande d'affichage de la notification d'invitation acceptée
+					pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
+			
+					// Recherche du pseudo de mon nouvel ami dans le tableau des membres connectés car s'il est connecté, j'ajoute mon Avatar dans sa Carte "Liste d'Amis" en temps réel
+					myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
+			
+					// Si membre trouvé dans la table des membres actuellement connectés
+					// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+					if (myIndex !== -1){  																													
+						let vReversedRoles = {
+							myEmail 			: pSelectedInvit.friendEmail,
+							myPseudo			:	pSelectedInvit.friendPseudo,
+							myPhoto				: pSelectedInvit.friendPhoto,
+							friendEmail  	: pSelectedInvit.myEmail,
+							friendPseudo 	: pSelectedInvit.myPseudo,
+							friendPhoto 	: pSelectedInvit.myPhoto,
+							friendFirstName	: this.member.etatCivil.firstName,			// Ajout du complément des mes infos personnelles pour que mon nouvel Ami puisse les afficher
+							friendName 			: this.member.etatCivil.name,						//		""						""					""					""					""					""					""					""
+							indexInvitation	: pSelectedInvit.indexInvitation,			 
+						}
+			
+						pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReversedRoles);     
+					};
+			
+					this.sendEMail(
+						pSelectedInvit.friendEmail, 
+						'Collect\'Or - Acceptation de votre demande d\'ami', 
+						'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
+						'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
+						'<br /><br /><br /><i>Vil-Coyote Products</i>'
+					);
+				});
 			});
 		});
 	};
@@ -1152,15 +1186,14 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				// Envoi à moi-même de la MAJ de mon Nbre d'invitations
 				pWebSocketConnection.emit('updatePuceNbreInvitations',this.objectPopulation.members[myIndex].nbrWaitingInvit);     
 					
-				// Envoi au client de la demande d'affichage de la notification du refus de l'invitation
+				// Envoi à moi-même de la demande d'affichage de la notification du refus de l'invitation
 				pWebSocketConnection.emit('displayNotifInvitationRefused',pSelectedInvit); 	
-				
 				
 				// Recherche du pseudo du membre que je refuse dans le tableau des membres connectés car s'il est connecté, je supprime mon Avatar dans sa Carte "Invitations lancées" en temps réel
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
 		
 				// Si membre trouvé dans la table des membres actuellement connectés
-				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+				// Envoi à ce membre seul, de la demande de suppression de mon Avatar dans sa liste d'invitations envoyées
 				if (myIndex !== -1){  																													
 					let vReversedRoles = {
 						myEmail 			: pSelectedInvit.friendEmail,
@@ -1501,7 +1534,7 @@ console.log('------------------------------------------------------------------'
 			vMyFriend.myPseudo = pDataProfilMembre.pseudo;
 			vMyFriend.myPhoto = pPhoto;
 
-			this.updateAvatarInOneFriend(vMyFriend)								// Je MAJ mon avatar dans son record
+			this.updateAvatarInOneFriend(vMyFriend);								// Je MAJ mon avatar dans son record
 		});
 	};
 

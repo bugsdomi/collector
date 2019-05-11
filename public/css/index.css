@@ -15,7 +15,17 @@ body {
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-}
+    
+    /* font-family: Lato,"Helvetica Neue",Arial,Verdana,Tahoma,"Lucida Sans",FreeSans,"Lucida Sans Unicode","Luxi Sans",sans-serif; */
+    /* background: #e9eaed; */      /* DH- */
+    /* background: #012C01; */      /* DH- */
+      background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),
+                      url("../images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png"),
+                      url("../images/FondVert-60.png");          /* DH+ */
+      background-attachment: fixed;
+      overflow-x:hidden;
+  }
+  
 
 .cOpacity{
     /* background-color: rgba(1, 44, 1, 0.9); */

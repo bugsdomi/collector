@@ -16,9 +16,10 @@ Todo:
     - displayxxx
     - updateProfile
 
+    ☐ Ajouter une Popover ssur l'annulaation d'une invitation
     ☐ Changer les avatars dynamiquement chez mes amis ou futurs amis
     ☐ Voir Toastr
-    Piquer le style wyylde
+    ☐ Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
     ☐ Passer tous les champs a XS-4
@@ -33,76 +34,69 @@ Todo:
     ☐ Corriger Bug du calcul de l âge dans la fiche de renseignement
     ☐ Empêcher de mettre une date future dans la date de naissance
     ☐ Dans la fiche renseignements, si erreur sur MDP, mettre le message d erreur en gros et rouge
-    ☐ Rajouter une fonction pour cadrer l image dans l"AvatarToken"
     ☐ Voir s'il est possible d'eliminer la duplication des images téléchargées
     ☐ Mettre en place un cryptage des pseudo / MDP
     ☐ Ajouter les elements d installation (npm init, npm install etc dans le readme.md, et dans le DAT
     ☐ Gérer un journal de tous les évenements (connexion/deconnexion, creation de cpte, chgt de PWd, messages envoyé de qui vers qui, etc...)
-    ☐ Gérer les option  de menu de la NavBar du Profil
+    ☐ Gérer les option de menu de la NavBar du Profil en fonction du rôle ( Faire apparâitre l'option de menu "Administration" QUE pour les Admins)
     ☐ Gestion de la latence entre Heroku et mLab pour la gestion de l image de l avatar
-    ☐ A la création reussie d un compte, dans la fenetre d accueil, inciter le membre a remplir sa fiche de renseignements
     ☐ Dans index.html, harmoniser col-sm et col-md
     ☐ Ne pas attendre l'upload de l image de l avatar pour l afficher sur le client
     ☐ Reviser completement le coté Responsive de l'application
-    ☐ Rajouter les petites icones dess menus dans les entetes des fenetres a coté du titre pour rappeler la fonctionnalité
-    ☐ Dans la certe de présentation, si les champs ne sont pas remplis dans la fiche de renseignement, mettre "non renseigné"
     ☐ Voir pour unifier le cadre et la bordeure des modales sur le meme modele que la Carte "Presentation"
-    ☐ Enlever le coté "Deformé" des AvatarsToken
-    ☐ Faire apparâitre l'option de menu "Administration" QUE pour les Admins
-    ☐ Montrer un effet "Bouton bouton appuyé" sur les icones de demande d'amis, d'acceptation et de refus
+    ☐ Enlever le coté "Deformé" des AvatarsToken (Voir avec backgroundImage pour cadrer l image dans l"AvatarToken")
     ☐ Voir pourquoi la puce du Nbre d invits decale le menu suivant a son 1er affichage
-    ☐ Convertir les fonctions anonymes en fonctions fleches
     ☐ Passer les adresses email en minuscules
     ☐ changer les couleurs de menu déroulants (gris foncé et bleu quand sélectionné moche)
-☐ 
+    
     Mode Responsive :
     ☐ Les modales sont trop larges
     ☐ Pourquoi pas d'Opacité
     
     Dans le DAT :
-        ☐ Faire un schema Client - Serveur Heroku - mLab
-        ☐ Mettre la Charte des couleurs (Ecritures : FFD700, Menus + Headers : FFC107 (Text-warning) bordures : grey
-        ☐ Mettre une maquette de toutes le fenetres
-        ☐ Faire un plan du site
-        ☐ Mettre les feuilles volantes à la fin du CDC
-        
-        A la fin du Dev :
-        ☐ Virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//"
-        ☐ Virer les fichiers CSS, les outils et autres inutiles
-        ☐ Virer tous les id et les variables associées inutilisées
-        ☐ Ajouter "Non renseigné" aux champs vides de la caretde "Présentation"
-        ☐ Optimiser les procedures qui sont identiques ou se ressmblent tres fortement (Comme "acceptInvitation" et "refuseInvitation" dans "MemberServerSide"
-        
-        
-        
-        Rattrapé (A fusionner) :
-        ☐ Mettre un margin lateral sur les pils des preferences
-        ☐ Virer les contratintes de saisie du Pseudo (Initiale en majuscule, etc..)
-        ☐ En mode Mobile, modifier le stroke du nom de l avatar
-        ☐ En mode Mobile, modifier la largeur de la  modale de succes de connexion 
-        ☐ Revérifier tous les ecrans en mode mobile
-        ☐ Rajouter le cahier des charges dans le Header NavBar
-        ☐ Dans la fiche de renseignement, ajouter des check-box à chaque champ pour specifier si on veut rendre le contenu de ce champ dans la fiche "Profil"
-        ☐ Virer les variables inutilisées dans SPAM.js et dans index.html
-        ☐ Quand on clique sur photo ou pseudo du profil, ouvrir la fiche de renseignement
-        ☐ Gerer le bug de calcul de l age
-        ☐ Gérer le nombre de messages
-        ☐ Mettre Regex CodePostal numerique
-        ☐ Mettre en oeuvre cryptage des MDP vers serveur
-        ☐ Mettre des messages d erreur détaillées pour les Regex
-        ☐ Mieux gerer les Regex du mail
-        ☐ Vérifier (et mettre le cas échéant des RegEx) sur tous les champs
-        ☐ Gerer bordures rouges qui sont affichées par defaut sur les champs de saisie sous FF dès le lancement
-        ☐ Paramétrer tous les champs de saisie pour taille xs (col-xs-6)
-        ☐ Tester le type et la version du navigateur et envoyer un message si <= IE9 
-        ☐ Faire en sorte que les boutons des modales generiques soient selectionnés par défaut (qu on puisse les activer par [Enter] sans avoir a cliquer dessus)
-        ☐ Réduire la hauteur prise par les Msg d'alerte dans les fenetres modales génériques
-        ☐ Voir pour stopper proprement la BDD et le serveur ExpressJS
-        ☐ Gestion d'erreurs globalisée (try...catch)
-        ☐ Faire apparaitre les bordures de champs de saisie en erreur en rouge
-        ☐ Voir pour faire un journal des connexions / Deconnexions / Creations / Suppression / Chgt MDP
-        ☐ Passer les images du carroussel en mode "Slide"
-        ☐ Faire un template idéal qui utilise :
+    ☐ Faire un schema Client - Serveur Heroku - mLab
+    ☐ Mettre la Charte des couleurs (Ecritures : FFD700, Menus + Headers : FFC107 (Text-warning) bordures : grey
+    ☐ Mettre une maquette de toutes le fenetres
+    ☐ Faire un plan du site
+    ☐ Mettre les feuilles volantes à la fin du CDC
+    
+    A la fin du Dev :
+    ☐ Virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//"
+    ☐ Virer les fichiers CSS, les outils et autres inutiles
+    ☐ Virer tous les id et les variables associées inutilisées
+    ☐ Ajouter "Non renseigné" aux champs vides de la caretde "Présentation"
+    ☐ Optimiser les procedures qui sont identiques ou se ressmblent tres fortement (Comme "acceptInvitation" et "refuseInvitation" dans "MemberServerSide"
+    
+    
+    
+    Rattrapé (A fusionner) :
+    ✔ Mettre un margin lateral sur les pils des preferences @done(19-05-11 13:09)
+    ☐ Virer les contratintes de saisie du Pseudo (Initiale en majuscule, etc..)
+    ☐ En mode Mobile, modifier le stroke du nom de l avatar
+    ☐ En mode Mobile, modifier la largeur de la  modale de succes de connexion 
+    ☐ Revérifier tous les ecrans en mode mobile
+    ☐ Rajouter le cahier des charges dans le Header NavBar
+    ☐ Dans la fiche de renseignement, ajouter des check-box à chaque champ pour specifier si on veut rendre le contenu de ce champ dans la fiche "Profil"
+    ☐ Virer les variables inutilisées dans SPAM.js et dans index.html
+    ☐ Quand on clique sur photo ou pseudo du profil, ouvrir la fiche de renseignement
+    ☐ Gerer le bug de calcul de l age
+    ☐ Gérer le nombre de messages
+    ☐ Mettre Regex CodePostal numerique
+    ☐ Mettre en oeuvre cryptage des MDP vers serveur
+    ☐ Mettre des messages d erreur détaillées pour les Regex
+    ☐ Mieux gerer les Regex du mail
+    ☐ Vérifier (et mettre le cas échéant des RegEx) sur tous les champs
+    ☐ Gerer bordures rouges qui sont affichées par defaut sur les champs de saisie sous FF dès le lancement
+    ☐ Paramétrer tous les champs de saisie pour taille xs (col-xs-6)
+    ☐ Tester le type et la version du navigateur et envoyer un message si <= IE9 
+    ☐ Faire en sorte que les boutons des modales generiques soient selectionnés par défaut (qu on puisse les activer par [Enter] sans avoir a cliquer dessus)
+    ☐ Réduire la hauteur prise par les Msg d'alerte dans les fenetres modales génériques
+    ☐ Voir pour stopper proprement la BDD et le serveur ExpressJS
+    ☐ Gestion d'erreurs globalisée (try...catch)
+    ☐ Faire apparaitre les bordures de champs de saisie en erreur en rouge
+    ☐ Voir pour faire un journal des connexions / Deconnexions / Creations / Suppression / Chgt MDP
+    ☐ Passer les images du carroussel en mode "Slide"
+    ☐ Faire un template idéal qui utilise :
         - Promise
         - reject
         - Resolve
@@ -113,75 +107,80 @@ Todo:
         - async
         - await
         - ...
-        
-        Fiche Renseignements :
-        ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
-        ✔ sinon, afficher la fiche vierge @done(19-03-25 10:06)
-        ✔ A l envoi, stocker en BDD @done(19-03-25 10:06)
-        Cas particuliers :
-        ✔ Gestion de l'avatar par défaut par rapport au genre @done(19-03-25 10:07)
-        ✔ Gestion du chargement des photos @done(19-03-25 10:07)
-        ✔ Gesrion de l'âge @done(19-03-25 10:07)
-        ✔ Gestion des MDP @done(19-03-25 10:07)
-        ✔ Gestion de l'alerte sur MDP en erreur et/ou incohérents @done(19-03-25 10:07)
-        ✔ Gestion du focus sur le 1er champs @done(19-03-25 10:07)
-        ✔ Verifier que le nom de l appli est bien dans l onglet avec le FavIcon @done(19-03-26 10:16)
-        ✔ Dans la card "Présentation" rajouter le nom du département en clair a la suite du N° de departement @done(19-03-26 12:11)
-        ✔ Changer la couleur de texte des pills jaunes @done(19-04-02 15:55)
-        
-        
-        Gerer la lecture des champs au fur et a mesure de leur creation :
-        AddMemberInDatabase
-        visitorTryToLoginPromise
-        + les 2 structures Cote Client + Serveur
-        
-        
-        
-        
-        ✔ Gere le resolve Login KO (virer toto) @done(19-04-08 19:48)
-        ✔ Pwd 1 a-zA-Z0-9 @done(19-04-08 19:48)
-        ✔ Pwd 2-ee19 _-&#* @done(19-04-08 19:48)
-        ✔ Refactoriser l envoi de mails @done(19-04-08 19:48)
-        ✔ Gerer deconnexion : @done(19-04-08 19:48)
-        ✔ Suppression membre du tableau @done(19-04-08 19:48)
-        ✔ Nbre Membres en sessions @done(19-04-08 19:48)
-        ✔ Nbre de visiteurs @done(19-04-08 19:48)
-        ✔ Nbre d'Admins @done(19-04-08 19:48)
-        ✔ Afficher nom du membre lorsqu il est connecté @done(19-04-08 19:48)
-        ✔ Faire apparaître le menu profil et afficher le nom du membre lorsqu il est connecté @done(19-04-08 19:48)
-        ✔ Tester double-connexion (Interdire 2 connexions du meme membre) @done(19-04-08 19:48)
-        ✔ Coloriser le header des modales en rouge ou vert selon la nature du message positif ou négatif @done(19-04-08 19:48)
-        ✔ Personnaliser avec le nom du membre les fenêtres modales et les mailsMettre les accents  sur les Regex Nom-prenom @done(19-04-08 19:48)
-        ✔ Changer la couleur des lettres de l'option de menu "déconnexion" @done(19-04-08 19:48)
-        ✔ Pouquoi text RadioBouton est vert ? @done(19-04-08 19:48)
-        ✔ Afficher Nbre connexions / Nbre membres / nbre Admin @done(19-04-08 19:48)
-        ✔ Mettre des "fieldset" avec bordure sur l'ecran "Account" @done(19-04-08 19:48)
-        ✔ Ajouter option "Creation de compte" sur fenetre de login @done(19-04-08 19:48)
-        ✔ Rebrancher la BDD sur mLab @done(19-04-08 19:48)
-        ✔ Mettre les " ' "  sur les Regex Nom-prenom @done(19-04-08 19:48)
-        ✔ Voir pourquoi il y a du delai sur la deconnexion via heroku @done(19-04-08 19:48)
-        ✔ Pourquoi erreur WebSocket au lancement du client @done(19-04-08 19:48)
-        ✔ Voir pourquoi, parfois, quand je valide "Bienvenue", la fenetre "A propos s ouvre" (lorsque je clique sur le fond de la modale) @done(19-04-08 19:48)
-        ✔ Deporter sur MemberServer la deconnexion d 'un membre @done(19-04-08 19:48)
-        ✔ Inverser le sens de la deconnexion, c est le serveur qui demande au client de se deconnecter @done(19-04-08 19:48)
-        ✔ Gerer la taille de la photo de l avatar taille maxi limitée @done(19-04-08 19:48)
-        ✔ Rendre le libellé "Collect'Or" indépendant des images (ne l'afficher qu'une fois, au lieu de dupliquer son affichage sur chaque image) @done(19-04-08 19:48)
-        ✔ Cacher ou déactiver le menu du profil lorsqu on n est pas connecté @done(19-04-08 19:48)
-        ✔ Virer NavBar du profil si non connecté @done(19-04-08 19:48)
-        ✔ Changer le Z-index des chevrons du carroussel pour qu ils deviennent activales @done(19-04-08 19:48)
-        ✔ Changer le fond du Body avec ecran vert avec incrustations du logo @done(19-04-08 19:48)
-        ✔ Opacity --> On retire, car meme avec ça, l'opacité ne fonctionne pas sur les mobiles @done(19-04-09 10:16)
-        ✔ delete --> Pas besoin : "The garbage collector will take care of the object if it has no other references to it." @done(19-04-09 10:15)
-        ✔ Voir pourquoi le masque "MaskOn" est trop petit en mode responsive @done(19-04-10 09:57)
-        ✔ Pourquoi pas de mail de recommandation pour l'ami que je recommande @done(19-04-24 10:49)
-        ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les invitations et la MAJ sur les fichiers @done(19-04-24 10:50)
-        ✔ Regler la taille de la notification sur le Popup-Menu (qui est beaucoup trop grosse) et la centrer sur l image @done(19-04-25 20:11)
-        ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des membres friendables @done(19-04-26 18:11)
-        ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des amis recommandables @done(19-04-26 18:11)
-        ✔ Voir pourquoi notification reste allumée @done(19-04-29 11:25)
-        ✘ Voir pour améliorer l ergonomie des Pills de preferences @cancelled(19-05-06 17:44)
-        ✘ Voir pour supprimer photo de profil dans la fiche de renseignements et remettre un avatar par défaut. @cancelled(19-05-06 17:44)
-        ✔ Passer tous les CRUD en Promise (selon le format "processInvit") @done(19-05-06 17:45)
-        ✔ Ajouter des boutons sous les icones d'action des invitations @done(19-05-06 17:47)
     
-        
+    Fiche Renseignements :
+    ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
+    ✔ sinon, afficher la fiche vierge @done(19-03-25 10:06)
+    ✔ A l envoi, stocker en BDD @done(19-03-25 10:06)
+    Cas particuliers :
+    ✔ Gestion de l'avatar par défaut par rapport au genre @done(19-03-25 10:07)
+    ✔ Gestion du chargement des photos @done(19-03-25 10:07)
+    ✔ Gesrion de l'âge @done(19-03-25 10:07)
+    ✔ Gestion des MDP @done(19-03-25 10:07)
+    ✔ Gestion de l'alerte sur MDP en erreur et/ou incohérents @done(19-03-25 10:07)
+    ✔ Gestion du focus sur le 1er champs @done(19-03-25 10:07)
+    ✔ Verifier que le nom de l appli est bien dans l onglet avec le FavIcon @done(19-03-26 10:16)
+    ✔ Dans la card "Présentation" rajouter le nom du département en clair a la suite du N° de departement @done(19-03-26 12:11)
+    ✔ Changer la couleur de texte des pills jaunes @done(19-04-02 15:55)
+    
+    
+    Gerer la lecture des champs au fur et a mesure de leur creation :
+    AddMemberInDatabase
+    visitorTryToLoginPromise
+    + les 2 structures Cote Client + Serveur
+    
+    
+    
+    
+    ✔ Gere le resolve Login KO (virer toto) @done(19-04-08 19:48)
+    ✔ Pwd 1 a-zA-Z0-9 @done(19-04-08 19:48)
+    ✔ Pwd 2-ee19 _-&#* @done(19-04-08 19:48)
+    ✔ Refactoriser l envoi de mails @done(19-04-08 19:48)
+    ✔ Gerer deconnexion : @done(19-04-08 19:48)
+    ✔ Suppression membre du tableau @done(19-04-08 19:48)
+    ✔ Nbre Membres en sessions @done(19-04-08 19:48)
+    ✔ Nbre de visiteurs @done(19-04-08 19:48)
+    ✔ Nbre d'Admins @done(19-04-08 19:48)
+    ✔ Afficher nom du membre lorsqu il est connecté @done(19-04-08 19:48)
+    ✔ Faire apparaître le menu profil et afficher le nom du membre lorsqu il est connecté @done(19-04-08 19:48)
+    ✔ Tester double-connexion (Interdire 2 connexions du meme membre) @done(19-04-08 19:48)
+    ✔ Coloriser le header des modales en rouge ou vert selon la nature du message positif ou négatif @done(19-04-08 19:48)
+    ✔ Personnaliser avec le nom du membre les fenêtres modales et les mailsMettre les accents  sur les Regex Nom-prenom @done(19-04-08 19:48)
+    ✔ Changer la couleur des lettres de l'option de menu "déconnexion" @done(19-04-08 19:48)
+    ✔ Pouquoi text RadioBouton est vert ? @done(19-04-08 19:48)
+    ✔ Afficher Nbre connexions / Nbre membres / nbre Admin @done(19-04-08 19:48)
+    ✔ Mettre des "fieldset" avec bordure sur l'ecran "Account" @done(19-04-08 19:48)
+    ✔ Ajouter option "Creation de compte" sur fenetre de login @done(19-04-08 19:48)
+    ✔ Rebrancher la BDD sur mLab @done(19-04-08 19:48)
+    ✔ Mettre les " ' "  sur les Regex Nom-prenom @done(19-04-08 19:48)
+    ✔ Voir pourquoi il y a du delai sur la deconnexion via heroku @done(19-04-08 19:48)
+    ✔ Pourquoi erreur WebSocket au lancement du client @done(19-04-08 19:48)
+    ✔ Voir pourquoi, parfois, quand je valide "Bienvenue", la fenetre "A propos s ouvre" (lorsque je clique sur le fond de la modale) @done(19-04-08 19:48)
+    ✔ Deporter sur MemberServer la deconnexion d 'un membre @done(19-04-08 19:48)
+    ✔ Inverser le sens de la deconnexion, c est le serveur qui demande au client de se deconnecter @done(19-04-08 19:48)
+    ✔ Gerer la taille de la photo de l avatar taille maxi limitée @done(19-04-08 19:48)
+    ✔ Rendre le libellé "Collect'Or" indépendant des images (ne l'afficher qu'une fois, au lieu de dupliquer son affichage sur chaque image) @done(19-04-08 19:48)
+    ✔ Cacher ou déactiver le menu du profil lorsqu on n est pas connecté @done(19-04-08 19:48)
+    ✔ Virer NavBar du profil si non connecté @done(19-04-08 19:48)
+    ✔ Changer le Z-index des chevrons du carroussel pour qu ils deviennent activales @done(19-04-08 19:48)
+    ✔ Changer le fond du Body avec ecran vert avec incrustations du logo @done(19-04-08 19:48)
+    ✔ Opacity --> On retire, car meme avec ça, l'opacité ne fonctionne pas sur les mobiles @done(19-04-09 10:16)
+    ✔ delete --> Pas besoin : "The garbage collector will take care of the object if it has no other references to it." @done(19-04-09 10:15)
+    ✔ Voir pourquoi le masque "MaskOn" est trop petit en mode responsive @done(19-04-10 09:57)
+    ✔ Pourquoi pas de mail de recommandation pour l'ami que je recommande @done(19-04-24 10:49)
+    ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les invitations et la MAJ sur les fichiers @done(19-04-24 10:50)
+    ✔ Regler la taille de la notification sur le Popup-Menu (qui est beaucoup trop grosse) et la centrer sur l image @done(19-04-25 20:11)
+    ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des membres friendables @done(19-04-26 18:11)
+    ✔ gérer la notion "Nom Recommandé / Nom recommandeur" sur les selections de liste des amis recommandables @done(19-04-26 18:11)
+    ✔ Voir pourquoi notification reste allumée @done(19-04-29 11:25)
+    ✘ Voir pour améliorer l ergonomie des Pills de preferences @cancelled(19-05-06 17:44)
+    ✘ Voir pour supprimer photo de profil dans la fiche de renseignements et remettre un avatar par défaut. @cancelled(19-05-06 17:44)
+    ✔ Passer tous les CRUD en Promise (selon le format "processInvit") @done(19-05-06 17:45)
+    ✔ Ajouter des boutons sous les icones d'action des invitations @done(19-05-06 17:47)
+    ✔ A la création reussie d un compte, dans la fenetre d accueil, inciter le membre a remplir sa fiche de renseignements @done(19-05-11 13:05)
+    ✔ Rajouter les petites icones des menus dans les entetes des fenetres a coté du titre pour rappeler la fonctionnalité @done(19-05-11 13:05)
+    ✔ Dans la carte de présentation, si les champs ne sont pas remplis dans la fiche de renseignement, mettre "non renseigné" @done(19-05-11 13:06)
+    ✔ Montrer un effet "Bouton bouton appuyé" sur les icones de demande d'amis, d'acceptation et de refus @done(19-05-11 13:07)
+    ✔ Convertir les fonctions anonymes en fonctions fleches @done(19-05-11 13:07)
+    
+    

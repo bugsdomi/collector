@@ -5,16 +5,6 @@ html {
   min-height: 100%;
 }
 
-body{
-  /* font-family: Lato,"Helvetica Neue",Arial,Verdana,Tahoma,"Lucida Sans",FreeSans,"Lucida Sans Unicode","Luxi Sans",sans-serif; */
-  /* background: #e9eaed; */      /* DH- */
-  /* background: #012C01; */      /* DH- */
-    background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),
-                    url("../images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png"),
-                    url("../images/FondVert-60.png");          /* DH+ */
-    background-attachment: fixed;
-    overflow-x:hidden;
-}
 
 footer.footer {         /* Tous les "footer(1)" ayant la classe "footer(2)" */
   /* position: absolute;   */      /* DH- */

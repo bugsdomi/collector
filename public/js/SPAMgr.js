@@ -712,13 +712,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	// Affichage d'une Notification d'acceptation d'ami envoyée par 
 	// le serveur après les MAJ réussies de la BDD
-	// et ajout de son avaatar dans ma liste d'amis
+	// et ajout de son avatar dans ma liste d'amis
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationValided', function(pSelectedInvit){ 
 		var vDisplayNotifInvitationValidedData = {
 			modalMgrFriendListGroup : vModalMgrFriendListGroup,
 		}
-		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vInvitSentInfo, vDisplayNotifInvitationValidedData);
+		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
 	});	
 
 	// --------------------------------------------------------------
@@ -821,7 +821,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('welcomeMember', function(pDataTransmitted){   
 		vMemberClient.member = pDataTransmitted.member;    
-
+		var askingMembers = pDataTransmitted.askingMembers;
+		var myFriendsInfo = pDataTransmitted.myFriendsInfos;
+console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 		if (pDataTransmitted.welcomeMessage === 'Hello') {
 			vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  	// Affiche la fenêtre de bienvenue
 		} else {
@@ -833,7 +835,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		$('#idGenericModal').modal('show');                                           		// ouverture de la fenêtre modale de Félicitations
 
 		// Affichage de la page de profil avec les avatars, les amis, les invitations...
-		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, pDataTransmitted.askingMembers, vFriendInfo, vInvitSentInfo);			// Affichage de la page de profil
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, vFriendInfo, vInvitSentInfo, askingMembers, myFriendsInfo);			// Affichage de la page de profil
 	});
 
 	// --------------------------------------------------------------

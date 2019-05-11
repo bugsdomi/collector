@@ -121,7 +121,7 @@ MemberClient.prototype.initModalTextAbout = function(pModalTitle, pModalBodyText
 	pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
 	pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus.</p>';
 	pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
-	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions à laa Communauté.</p>';
+	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions à la Communauté.</p>';
 }
 
 // -----------------------------------------------------------------------------
@@ -229,8 +229,7 @@ MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pA
 
 	pContextInfo.vDropDownProfilMenu.style.display = 'block';			// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
 	
-	// Affiche le nom et la photo du membre dans la NavBarre d'entête
-
+	// Affiche le nom et la photo du membre dans la NavBar d'entête
 	pAvatarInfo.vImgAvatarDropDownMenu.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 	pAvatarInfo.vSpanAvatarDropDownMenu.innerHTML = this.member.pseudo;		
 
@@ -303,12 +302,13 @@ MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
 // - La page de profil :
 // 		- La carte de "Présentation"
 // 		- La carte des "Amis"
+// 		- La carte des invitations lancées (seulement s'il y en a)
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pProfileInfo, pAskingMembers, pFriendInfo, pInvitSentInfo){
+MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pProfileInfo, pFriendInfo, pInvitSentInfo, pAskingMembers, pMyFriendsInfo){
 	this.setMemberContext(pContextInfo, pAvatarInfo, pAskingMembers);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
 	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
 	this.displayPresentationCard(pProfileInfo);															// - Affiche les informations du profil dans la carte "Présentation"
-	this.displayFriendsCard(pFriendInfo);																		// - Affiche les amis dans la carte "Amis"
+	this.displayFriendsCard(pFriendInfo, pMyFriendsInfo);										// - Affiche les amis dans la carte "Amis"
 	this.displayInvitSentCard(pInvitSentInfo);															// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
 }
 
@@ -326,11 +326,19 @@ MemberClient.prototype.displayAvatar = function(pAvatarInfo){
 // Cette fonction affiche le contenu de la carte "Présentation" sur la page de profil
 // -----------------------------------------------------------------------------
 MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
-	pProfileInfo.vAboutPrenom.innerHTML = this.member.etatCivil.firstName;
+	
+	pProfileInfo.vAboutPrenom.innerHTML = this.member.etatCivil.firstName
+																				? this.member.etatCivil.firstName
+																				: 'Non renseigné';
+
 	pProfileInfo.vAboutAge.innerHTML = this.member.etatCivil.birthDate 
-																					? vToolBox.calculeAge(this.member.etatCivil.birthDate, false)
-																					: '';
-	pProfileInfo.vAboutVille.innerHTML = this.member.etatCivil.address.city;
+																		? vToolBox.calculeAge(this.member.etatCivil.birthDate, false)
+																		: 'Non renseigné';
+
+	pProfileInfo.vAboutVille.innerHTML = this.member.etatCivil.address.city
+																			? this.member.etatCivil.address.city
+																			: 'Non renseigné'; 
+	
 	pProfileInfo.vAboutDepartmentName.innerHTML = this.member.etatCivil.address.departmentName;
 
 	this.activeButtonOfSelectedCheckBoxReadOnly('prefGravures','idAboutPrefGravuresLabel');
@@ -375,19 +383,29 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la carte "Mes Amis" sur ma page de profil
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayFriendsCard = function(pFriendInfo){
+MemberClient.prototype.displayFriendsCard = function(pFriendInfo, pMyFriendsInfos){
 	var vMyFriend = 
 	{
 		friendEmail  	: null,
 		friendPseudo 	: null,
 		friendPhoto 	: null,
+		friendFirstName : null,
+		friendName 	: null,
 	}
 
 	this.member.amis.forEach((item) => {																					// Pour chacun de mes amis en BDD
 		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personne est un ami confirmé, je l'ajoute à ma liste
-			vMyFriend.friendEmail = item.friendEmail;
-			vMyFriend.friendPseudo = item.friendPseudo;
-			vMyFriend.friendPhoto = item.friendPhoto;
+
+console.log('displayFriendsCard - pMyFriendsInfos : ',pMyFriendsInfos)
+			var myIndex = this.searchObjectInArray(pMyFriendsInfos, 'pseudo', item.friendPseudo);
+console.log('displayFriendsCard - myIndex : ',myIndex)
+
+			vMyFriend.friendEmail 		= item.friendEmail;
+			vMyFriend.friendPseudo 		= item.friendPseudo;
+			vMyFriend.friendPhoto 		= item.friendPhoto;
+			vMyFriend.friendFirstName	= pMyFriendsInfos[myIndex].firstName;
+			vMyFriend.friendName 			= pMyFriendsInfos[myIndex].name;
+
 			this.addFriendIntoCard(vMyFriend, pFriendInfo);
 		}
 	});
@@ -404,6 +422,8 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 		friendEmail  	: pMyFriend.friendEmail,
 		friendPseudo 	: pMyFriend.friendPseudo,
 		friendPhoto 	: pMyFriend.friendPhoto,
+		friendFirstName : pMyFriend.friendFirstName,
+		friendName 		: pMyFriend.friendName,
 	}
 
 	this.vMyFriendList.push(vFriendLocal);
@@ -482,15 +502,22 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 // les amis à recommander
 // -----------------------------------------------------------------------------
 MemberClient.prototype.preparePopupHeader = function(pFriend){
+
+console.log('preparePopupHeader - pFriend : ',pFriend)
+console.log('preparePopupHeader - this.vMyFriendList : ',this.vMyFriendList)
+
 	var vDivDropDown = document.getElementById('idMyDropDown'+pFriend.indexFriendToRecommend);
 	var vDataToTransmit = null;
 
 	var vlineHTML = {						// Structure HTML générée pour chaque ligne de membre
-		vHdrDivMicroViewFriend 		: null,
-		vHdrDivRowMicroViewFriend:null,
-		vHdrDivAvatarMicroViewFriend: null,
-		vHdrImgMicroViewFriend	: null,
-		vHdrDivMicroViewFriend	: null,
+		vHdrDivFastView 				: null,
+		vHdrDivRowFastView			: null,
+		vHdrDivColFastView			:	null,
+		vHdrImgFastView	      	: null,
+		vHdrDivProfilFastView 	: null,
+		vHdrDivPseudoFastView 	: null,
+		vHdrDivFirstNameFastView: null,
+		vHdrDivNameFastView			: null,
 
 		vHdrAViewFriend					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-success">
 		vHdrDivRowViewFriend		: null,		//		<div class="row bg-success text-light" style="cursor: default;">
@@ -525,60 +552,66 @@ MemberClient.prototype.preparePopupHeader = function(pFriend){
 	// Micro-fiche d'un ami
 	// ----------------------------
 	// <a href="#" class="container list-group-item list-group-item-success">
-	vlineHTML.vHdrDivMicroViewFriend = window.document.createElement('div');
-	vDivDropDown.appendChild(vlineHTML.vHdrDivMicroViewFriend);
-	vlineHTML.vHdrDivMicroViewFriend.setAttribute('href', '#');
-	vlineHTML.vHdrDivMicroViewFriend.setAttribute('class', 'container list-group-item m-0 p-0');
-	vlineHTML.vHdrDivMicroViewFriend.setAttribute('style', 'border-bottom: 1px solid black;');
+	vlineHTML.vHdrDivFastView = window.document.createElement('div');
+	vDivDropDown.appendChild(vlineHTML.vHdrDivFastView);
+	vlineHTML.vHdrDivFastView.setAttribute('href', '#');
+	vlineHTML.vHdrDivFastView.setAttribute('class', 'container list-group-item m-0 p-0');
+	vlineHTML.vHdrDivFastView.setAttribute('style', 'border-bottom: 1px solid black;');
 
 	// <div class="row bg-success text-light" style="cursor: default;">
-	vlineHTML.vHdrDivRowMicroViewFriend = window.document.createElement('div');
-	vlineHTML.vHdrDivMicroViewFriend.appendChild(vlineHTML.vHdrDivRowMicroViewFriend);
-	vlineHTML.vHdrDivRowMicroViewFriend.setAttribute('class', 'row mx-0 list-group-item-warning');
-	vlineHTML.vHdrDivRowMicroViewFriend.setAttribute('style', 'cursor: default;');
+	vlineHTML.vHdrDivRowFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivFastView.appendChild(vlineHTML.vHdrDivRowFastView);
+	vlineHTML.vHdrDivRowFastView.setAttribute('class', 'row mx-0 list-group-item-warning');
+	vlineHTML.vHdrDivRowFastView.setAttribute('style', 'cursor: default;');
 
 	// <div class="row bg-success text-light" style="cursor: default;">
-	vlineHTML.vHdrDivColMicroViewFriend = window.document.createElement('div');
-	vlineHTML.vHdrDivRowMicroViewFriend.appendChild(vlineHTML.vHdrDivColMicroViewFriend);
-	vlineHTML.vHdrDivColMicroViewFriend.setAttribute('class', 'col-5 mx-0 px-0 withNoScaling');
+	vlineHTML.vHdrDivColFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivRowFastView.appendChild(vlineHTML.vHdrDivColFastView);
+	vlineHTML.vHdrDivColFastView.setAttribute('class', 'col-5 mx-0 px-0 withNoScaling');
 	
-	// <img id="idMicroViewFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
-	vlineHTML.vHdrImgMicroViewFriend = window.document.createElement('img');
-	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrImgMicroViewFriend);
-	vlineHTML.vHdrImgMicroViewFriend.setAttribute('class', 'm-1');
-	vlineHTML.vHdrImgMicroViewFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgMicroViewFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
-	vlineHTML.vHdrImgMicroViewFriend.setAttribute('style', 'width:110px; height: auto;');
+	// <img id="idFastViewImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
+	vlineHTML.vHdrImgFastView = window.document.createElement('img');
+	vlineHTML.vHdrDivColFastView.appendChild(vlineHTML.vHdrImgFastView);
+	vlineHTML.vHdrImgFastView.setAttribute('class', 'm-1');
+	vlineHTML.vHdrImgFastView.setAttribute('alt', 'Membre');
+	vlineHTML.vHdrImgFastView.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgFastView.setAttribute('style', 'width:110px; height: auto;');
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
-	vlineHTML.vHdrDivColMicroViewFriend = window.document.createElement('div');
-	vlineHTML.vHdrDivRowMicroViewFriend.appendChild(vlineHTML.vHdrDivColMicroViewFriend);
-	// vlineHTML.vHdrDivColMicroViewFriend.setAttribute('class', 'col px-0');
-	vlineHTML.vHdrDivColMicroViewFriend.setAttribute('class', 'col-7 d-flex align-items-start flex-column px-0');
-	vlineHTML.vHdrDivColMicroViewFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vHdrDivProfilFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivRowFastView.appendChild(vlineHTML.vHdrDivProfilFastView);
+	vlineHTML.vHdrDivProfilFastView.setAttribute('class', 'col-7 d-flex align-items-start flex-column px-0');
+	vlineHTML.vHdrDivProfilFastView.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
-	vlineHTML.vHdrDivMicroViewFriend = window.document.createElement('div');
-	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrDivMicroViewFriend);
-	vlineHTML.vHdrDivMicroViewFriend.setAttribute('class', 'align-self-center mb-auto p-0 font-size-120');
-	vlineHTML.vHdrDivMicroViewFriend.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo;
+	vlineHTML.vHdrDivPseudoFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivPseudoFastView);
+	vlineHTML.vHdrDivPseudoFastView.setAttribute('class', 'align-self-center mb-auto p-0 font-size-120');
+	vlineHTML.vHdrDivPseudoFastView.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo;
 
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
-	vlineHTML.vHdrDivMicroViewFriend1 = window.document.createElement('div');
-	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrDivMicroViewFriend1);
-	vlineHTML.vHdrDivMicroViewFriend1.setAttribute('class', 'mb-auto');
-	vlineHTML.vHdrDivMicroViewFriend1.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivMicroViewFriend1.innerHTML = 'Thomas';
+	vlineHTML.vHdrDivFirstNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivFirstNameFastView);
+	vlineHTML.vHdrDivFirstNameFastView.setAttribute('class', 'mb-auto');
+	vlineHTML.vHdrDivFirstNameFastView.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+
+	if (!this.vMyFriendList[pFriend.indexFriendToRecommend].friendFirstName){
+		vlineHTML.vHdrDivFirstNameFastView.innerHTML = 'Prénom non renseigné';
+	} else {
+		vlineHTML.vHdrDivFirstNameFastView.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendFirstName;
+	}
 
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
-	vlineHTML.vHdrDivMicroViewFriend2 = window.document.createElement('div');
-	vlineHTML.vHdrDivColMicroViewFriend.appendChild(vlineHTML.vHdrDivMicroViewFriend2);
-	vlineHTML.vHdrDivMicroViewFriend2.setAttribute('class', 'mb-auto');
-	vlineHTML.vHdrDivMicroViewFriend2.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivMicroViewFriend2.innerHTML = 'Rudrauf';
+	vlineHTML.vHdrDivNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivNameFastView);
+	vlineHTML.vHdrDivNameFastView.setAttribute('class', 'mb-auto');
+	vlineHTML.vHdrDivNameFastView.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
-
-
+	if (!this.vMyFriendList[pFriend.indexFriendToRecommend].friendName){
+		vlineHTML.vHdrDivNameFastView.innerHTML = 'Nom non renseigné';
+	} else {
+		vlineHTML.vHdrDivNameFastView.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendName;
+	}
 
 	// ----------------------------
 	// Voir le Profil d'un ami
@@ -658,11 +691,17 @@ MemberClient.prototype.preparePopupHeader = function(pFriend){
 	// <img id="idDelFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vHdrImgDelFriend = window.document.createElement('img');
 	vlineHTML.vHdrDivAvatarDelFriend.appendChild(vlineHTML.vHdrImgDelFriend);
+	vlineHTML.vHdrImgDelFriend.setAttribute('id', 'idHdrImgDelFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrImgDelFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgDelFriend.setAttribute('alt', 'Membre');
 	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
 	vlineHTML.vHdrImgDelFriend.setAttribute('style', 'width:32px; height: 32px;');
-	
+	vlineHTML.vHdrImgDelFriend.setAttribute('data-toggle', 'popover');
+	vlineHTML.vHdrImgDelFriend.setAttribute('data-placement', 'right');
+	vlineHTML.vHdrImgDelFriend.setAttribute('title', 'Suppression d\'un ami');
+	vlineHTML.vHdrImgDelFriend.setAttribute('data-content', 'Vous n\'êtes plus ami avec '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo);
+	vlineHTML.vHdrImgDelFriend.setAttribute('data-boundary', 'viewport');
+
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Ôter Vil-Coyote de mes amis
 	vlineHTML.vHdrDivDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivDelFriend);
@@ -893,6 +932,7 @@ MemberClient.prototype.deleteFriend = function(event){
 
 // -----------------------------------------------------------------------------
 // Suppression d'un Ami
+// - 1) Affichage d'une notification
 // - Suppression de mon ex-ami du tableau de mes amis
 // - Fermeture définitive de la PopUp Menu
 // - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
@@ -901,7 +941,19 @@ MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, 
 
 	var myIndex = this.searchObjectInArray(this.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
 	this.vMyFriendList.splice(myIndex, 1);   // Efface l'occurence de mon ami du tableau de mes amis
-	
+
+	pFriendToDelete.indexFriendToDelete = myIndex;				// Ajout à la volée d'une nouvelle propriété "index"
+	this.displayNotifFriendDeleted(pFriendToDelete, pFriendInfo);			// Affiche la notification de suppression d'ami avant la fermeture du PopUp Menu
+}
+
+// -----------------------------------------------------------------------------
+// Suppression d'un Ami
+// - Affichage d'une notification
+// - 2) Suppression de mon ex-ami du tableau de mes amis
+// - 3) Fermeture définitive de la PopUp Menu
+// - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
+// -----------------------------------------------------------------------------
+MemberClient.prototype.refreshMyFriendList = function(pFriendInfo){
 	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
 	// Suppression de tous les avatars affichés
 	var vElem = document.getElementById('idMyFriendLi'+0); // Je régénère ma liste d'amis pour recaler les indexes
@@ -919,6 +971,8 @@ MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, 
 			friendEmail  	: null,
 			friendPseudo 	: null,
 			friendPhoto 	: null,
+			friendFirstName : null,
+			friendName 	: null,
 		}
 
 		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
@@ -929,13 +983,29 @@ MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, 
 			vMyFriend.friendEmail = item.friendEmail;
 			vMyFriend.friendPseudo = item.friendPseudo;
 			vMyFriend.friendPhoto = item.friendPhoto;
+			vMyFriend.friendFirstName = item.friendFirstName;
+			vMyFriend.friendName = item.friendName;
 
 			this.addFriendIntoCard(vMyFriend, pFriendInfo);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
 		});
 	}
 }
 
+// --------------------------------------------------------------
+// Affichage d'une Notification de suppression d'ami demandée par moi
+// --------------------------------------------------------------
+MemberClient.prototype.displayNotifFriendDeleted = function(pFriendToDelete, pFriendInfo){
+	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
+	$('#'+idImg).popover('show');
 
+	setTimeout(function(){
+		$('#'+idImg).popover('hide')
+	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
+
+	setTimeout(() => {
+		this.refreshMyFriendList(pFriendInfo)
+	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
+};
 
 
 
@@ -1351,7 +1421,7 @@ MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){
 // Cette fonction simule le click des boutons de préférences a true pour refléter
 // le statut et la couleur correspondante des badges colorés :
 // - Elle coche ou decoche (de façon cachée) le bouton Check-box sous-jacent
-// - Elle ajoute ou retire laa classe "active" du label
+// - Elle ajoute ou retire la classe "active" du label
 // -----------------------------------------------------------------------------
 MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pPref, pPrefLabel){
 var myIdLabel = document.getElementById(pPrefLabel)
@@ -1728,11 +1798,11 @@ MemberClient.prototype.acceptInvitation = function(event){
 }
 
 // --------------------------------------------------------------
-// Affichage d'une Notification d'acceptation d'ami envoyée par 
-// le serveur après les MAJ réussies de la BDD
-// et ajout de l'avatar de mon nouvel ami dans ma liste d'amis
+// - Affichage d'une Notification d'acceptation d'ami envoyée par 
+// 	 le serveur après les MAJ réussies de la BDD
+// - Ajout de l'avatar de mon nouvel ami dans ma liste d'amis
 // --------------------------------------------------------------
-MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, pFriendInfo, pInvitSentInfo, pNotifInvitValidedData){
+MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, pFriendInfo, pNotifInvitValidedData){
 	var idImg = 'idImgInvitAvatarToken' + pSelectedInvit.indexInvitation;
 	var vImg = document.getElementById(idImg);
 
