@@ -396,9 +396,7 @@ MemberClient.prototype.displayFriendsCard = function(pFriendInfo, pMyFriendsInfo
 	this.member.amis.forEach((item) => {																					// Pour chacun de mes amis en BDD
 		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personne est un ami confirmé, je l'ajoute à ma liste
 
-console.log('displayFriendsCard - pMyFriendsInfos : ',pMyFriendsInfos)
 			var myIndex = this.searchObjectInArray(pMyFriendsInfos, 'pseudo', item.friendPseudo);
-console.log('displayFriendsCard - myIndex : ',myIndex)
 
 			vMyFriend.friendEmail 		= item.friendEmail;
 			vMyFriend.friendPseudo 		= item.friendPseudo;
@@ -946,6 +944,22 @@ MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, 
 	this.displayNotifFriendDeleted(pFriendToDelete, pFriendInfo);			// Affiche la notification de suppression d'ami avant la fermeture du PopUp Menu
 }
 
+// --------------------------------------------------------------
+// Affichage d'une Notification de suppression d'ami demandée par moi
+// --------------------------------------------------------------
+MemberClient.prototype.displayNotifFriendDeleted = function(pFriendToDelete, pFriendInfo){
+	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
+	$('#'+idImg).popover('show');
+
+	setTimeout(function(){
+		$('#'+idImg).popover('hide')
+	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
+
+	setTimeout(() => {
+		this.refreshMyFriendList(pFriendInfo)
+	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
+};
+
 // -----------------------------------------------------------------------------
 // Suppression d'un Ami
 // - Affichage d'une notification
@@ -990,23 +1004,6 @@ MemberClient.prototype.refreshMyFriendList = function(pFriendInfo){
 		});
 	}
 }
-
-// --------------------------------------------------------------
-// Affichage d'une Notification de suppression d'ami demandée par moi
-// --------------------------------------------------------------
-MemberClient.prototype.displayNotifFriendDeleted = function(pFriendToDelete, pFriendInfo){
-	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
-	$('#'+idImg).popover('show');
-
-	setTimeout(function(){
-		$('#'+idImg).popover('hide')
-	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
-
-	setTimeout(() => {
-		this.refreshMyFriendList(pFriendInfo)
-	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
-};
-
 
 
 
@@ -1717,16 +1714,55 @@ MemberClient.prototype.displayWaitingInvitation = function(pWaitingInvit, pDispl
 // Si plus d'invitation en attente, fermeture de la carte des invitations en attente
 // -----------------------------------------------------------------------------
 MemberClient.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete, pInvitSentInfo){
-	var myIndex = this.searchObjectInArray(this.vMyInvitSentList, 'friendPseudo', pInvitToDelete.friendPseudo);
 
+console.log('removeInvitSentFromMyInvitSentList - pInvitToDelete : ',pInvitToDelete)
+	var myIndex = this.searchObjectInArray(this.vMyInvitSentList, 'friendPseudo', pInvitToDelete.friendPseudo);
 	this.vMyInvitSentList.splice(myIndex, 1);   // Efface l'occurence de mon invitation du tableau de mes invitations en attente
 	
+	pInvitToDelete.indexInvitToDelete = myIndex;											// Ajout à la volée d'une nouvelle propriété "index"
+	this.displayNotifInvitDeleted(pInvitToDelete, pInvitSentInfo);			// Affiche la notification de suppression d'invitation avant la fermeture du PopUp Menu
+}
+
+// --------------------------------------------------------------
+// Affichage d'une Notification de suppression d'invitation envoyée
+// --------------------------------------------------------------
+MemberClient.prototype.displayNotifInvitDeleted = function(pInvitToDelete, pInvitSentInfo){
+
+console.log('displayNotifInvitDeleted - pInvitToDelete : ',pInvitToDelete)
+
+
+	var idImg = 'idImgCancelInvit' + pInvitToDelete.indexInvitToDelete;
+	$('#'+idImg).popover('show');
+
+console.log('displayNotifInvitDeleted - idImg : ',idImg)
+
+
+	setTimeout(function(){
+		$('#'+idImg).popover('hide')
+	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
+
+	setTimeout(() => {
+		this.refreshMyInvitList(pInvitSentInfo)
+	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
+};
+
+// -----------------------------------------------------------------------------
+// Suppression d'une Invitation
+// - Affichage d'une notification
+// - 2) Suppression de l'invitation du tableau de mes invitations
+// - 3) Fermeture définitive de la PopUp Menu
+// - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon invitation de ma liste d'invitations
+// -----------------------------------------------------------------------------
+MemberClient.prototype.refreshMyInvitList = function(pInvitSentInfo){
+
 	// Je régénère ma liste d'invitations pour recaler les indexes attachés à chaque invitation et utilisés pour les "Id" HTML:
 	// Suppression de tous les avatars affichés
 	var vElem = document.getElementById('idMyInvitSentLi'+0); // Je régénère ma liste d'invitations pour recaler les indexes
 
 	if (vElem){
 		var vParentNode = vElem.parentNode;
+
+	console.log('refreshMyInvitList - vElem : ',vElem)
 
 		// Effacement des tokens de toutes mes invitations
 		while (vParentNode.firstChild) {
@@ -2240,10 +2276,17 @@ MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentI
 	// <img id="idCancelInvitImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vImgCancelInvit = window.document.createElement('img');
 	vlineHTML.vDivAvatarCancelInvit.appendChild(vlineHTML.vImgCancelInvit);
+	vlineHTML.vImgCancelInvit .setAttribute('id', 'idImgCancelInvit'+index);
 	vlineHTML.vImgCancelInvit.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vImgCancelInvit.setAttribute('alt', 'Membre');
 	vlineHTML.vImgCancelInvit.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
 	vlineHTML.vImgCancelInvit.setAttribute('style', 'width:32px; height: 32px;');
+	vlineHTML.vImgCancelInvit.setAttribute('data-toggle', 'popover');
+	vlineHTML.vImgCancelInvit.setAttribute('data-placement', 'right');
+	vlineHTML.vImgCancelInvit.setAttribute('title', 'Suppression d\'une invitation');
+	vlineHTML.vImgCancelInvit.setAttribute('data-content', 'Vous supprimé l\'invitation envoyée à '+pMyInvitSent.friendPseudo);
+	vlineHTML.vImgCancelInvit.setAttribute('data-boundary', 'viewport');
+
 	
 	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Annuler l\'invit Vil-Coyote de mes amis
 	vlineHTML.vDivCancelInvit = window.document.createElement('div');
