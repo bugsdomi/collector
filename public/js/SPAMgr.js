@@ -127,6 +127,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vAvatarToken = document.getElementById('idAvatarToken');
 	var vAboutPrenom = document.getElementById('idAboutPrenom');
+	var vAboutNom = document.getElementById('idAboutNom');
 	var vAboutAge = document.getElementById('idAboutAge');
 	var vAboutVille = document.getElementById('idAboutVille');
 	var vAboutDepartmentName = document.getElementById('idAboutDepartmentName');
@@ -543,6 +544,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vProfileInfo = {
 		vAboutPrenom,
+		vAboutNom,
 		vAboutAge,
 		vAboutVille,
 		vAboutDepartmentName,

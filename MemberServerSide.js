@@ -224,13 +224,15 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					firstName : null,
 					name			: null,
 					photo			: null,
+					friendsOfMyFriend: [],
 				}
 
-				friendsInfosLocal.pseudo 		= document.pseudo;
-				friendsInfosLocal.email 		= document.email;
-				friendsInfosLocal.firstName	= document.etatCivil.firstName;
-				friendsInfosLocal.name 			= document.etatCivil.name;
-				friendsInfosLocal.photo 		= document.etatCivil.photo;
+				friendsInfosLocal.pseudo 						= document.pseudo;
+				friendsInfosLocal.email 						= document.email;
+				friendsInfosLocal.firstName					= document.etatCivil.firstName;
+				friendsInfosLocal.name 							= document.etatCivil.name;
+				friendsInfosLocal.photo 						= document.etatCivil.photo;
+				friendsInfosLocal.friendsOfMyFriend = document.amis;
 
 				myFriendsInfos.push(friendsInfosLocal);
 			};
@@ -274,18 +276,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 		this.addMemberToActiveMembers(myIndex, pSocketIo);                    					// Le visiteur est bien un membre, on l'ajoute à la liste des membres
 
-		// Pour chaque ami de ma liste d'amis, je vais chercher son Nom et son prenom
-		this.getMyFriendsInfos()
-		.then((myFriendsInfos) => {
-			let dataToTransmit = {
-				member 					: this.member,
-				welcomeMessage 	: 'Hello',
-				askingMembers 	: vAskingMembers,
-				myFriendsInfos	: myFriendsInfos, 
-			}
+		let dataToTransmit = {
+			member 					: this.member,
+			welcomeMessage 	: 'Hello',
+			askingMembers 	: vAskingMembers,
+		}
 
-			pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
-		});
+		pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1068,44 +1065,38 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				let vFriendPseudo = this.splitFriendFromCombo(pSelectedInvit.friendPseudo);
 				pSelectedInvit.friendPseudo = vFriendPseudo;
 
-				// Lecture des infos complémentaires de mon nouvel ami (Nom + prénom) pour alimenter ma liste d'amis coté client
-				this.getFriendInfos(pSelectedInvit)
-				.then((document) => {
-					pSelectedInvit.friendFirstName	= document.etatCivil.firstName;
-					pSelectedInvit.friendName 			= document.etatCivil.name;
-
-					// Envoi à moi-même de la demande d'affichage de la notification d'invitation acceptée
-					pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
-			
-					// Recherche du pseudo de mon nouvel ami dans le tableau des membres connectés car s'il est connecté, j'ajoute mon Avatar dans sa Carte "Liste d'Amis" en temps réel
-					myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
-			
-					// Si membre trouvé dans la table des membres actuellement connectés
-					// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
-					if (myIndex !== -1){  																													
-						let vReversedRoles = {
-							myEmail 			: pSelectedInvit.friendEmail,
-							myPseudo			:	pSelectedInvit.friendPseudo,
-							myPhoto				: pSelectedInvit.friendPhoto,
-							friendEmail  	: pSelectedInvit.myEmail,
-							friendPseudo 	: pSelectedInvit.myPseudo,
-							friendPhoto 	: pSelectedInvit.myPhoto,
-							friendFirstName	: this.member.etatCivil.firstName,			// Ajout du complément des mes infos personnelles pour que mon nouvel Ami puisse les afficher
-							friendName 			: this.member.etatCivil.name,						//		""						""					""					""					""					""					""					""
-							indexInvitation	: pSelectedInvit.indexInvitation,			 
-						}
-			
-						pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReversedRoles);     
-					};
-			
-					this.sendEMail(
-						pSelectedInvit.friendEmail, 
-						'Collect\'Or - Acceptation de votre demande d\'ami', 
-						'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
-						'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
-						'<br /><br /><br /><i>Vil-Coyote Products</i>'
-					);
-				});
+				// Envoi à moi-même de la demande d'affichage de la notification d'invitation acceptée
+				pWebSocketConnection.emit('displayNotifInvitationValided',pSelectedInvit); 	
+		
+				// Recherche du pseudo de mon nouvel ami dans le tableau des membres connectés car s'il est connecté, j'ajoute mon Avatar dans sa Carte "Liste d'Amis" en temps réel
+				myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
+		
+				// Si membre trouvé dans la table des membres actuellement connectés
+				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+				if (myIndex !== -1){  																													
+					let vReversedRoles = {
+						myEmail 					: pSelectedInvit.friendEmail,
+						myPseudo					:	pSelectedInvit.friendPseudo,
+						myPhoto						: pSelectedInvit.friendPhoto,
+						friendEmail  			: pSelectedInvit.myEmail,
+						friendPseudo 			: pSelectedInvit.myPseudo,
+						friendPhoto 			: pSelectedInvit.myPhoto,
+						friendFirstName		: this.member.etatCivil.firstName,			// Ajout du complément des mes infos personnelles pour que mon nouvel Ami puisse les afficher
+						friendName 				: this.member.etatCivil.name,						//		""						""					""					""					""					""					""					""
+						friendsOfMyFriend	: this.member.amis,
+						indexInvitation		: pSelectedInvit.indexInvitation,			 
+					}
+		
+					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReversedRoles);     
+				};
+		
+				this.sendEMail(
+					pSelectedInvit.friendEmail, 
+					'Collect\'Or - Acceptation de votre demande d\'ami', 
+					'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
+					'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
+					'<br /><br /><br /><i>Vil-Coyote Products</i>'
+				);
 			});
 		});
 	};
@@ -1340,6 +1331,7 @@ console.log('------------------------------------------------------------------'
 			})
 			.map(this.splitFriendFromCombo);																											// Nettoyage des combo "AmiRecommandé/AmiRecommandeur"
 
+			// Constitution de la liste des amis à qui on peut recommander mon ami
 			let vRecommendableFriendsList = pRecommendFriendsList.myFriendList.filter(this.filterFriendsRecommendable.bind(this, vRecommendedFriendCleanFriendsList, documents[0].pseudo)); 
 
 // Gardé pour Historique
@@ -1350,16 +1342,23 @@ console.log('------------------------------------------------------------------'
 // 	// Il n'y pas d'amis à qui on peut recommander mon ami ==> La liste est vide, on signale et abandonne 
 // 	return pWebSocketConnection.emit('emptyRecommendableFriendList',pRecommendFriendsList); 
 // } else {
-	
-				// Affichage des amis à qui on peut recommander mon ami
+
+			// Lecture des infos complémentaires de mon ami (Nom + prénom + liste de ses amis) pour alimenter ma liste d'amis coté client
+			this.getFriendInfos(pRecommendFriendsList)
+			.then((document) => {
 				vRecommendableFriends = {
-					recommendedFriendEmail 		: pRecommendFriendsList.friendEmail,
-					recommendedFriendPseudo 	: pRecommendFriendsList.friendPseudo,
-					recommendedFriendPhoto 		: pRecommendFriendsList.friendPhoto,
+					friendEmail 							: pRecommendFriendsList.friendEmail,
+					friendPseudo 							: pRecommendFriendsList.friendPseudo,
+					friendPhoto 							: pRecommendFriendsList.friendPhoto,
+					friendFirstName						: document.etatCivil.firstName,
+					friendName 								: document.etatCivil.name,
+					friendsOfMyFriend					: document.amis,
 					recommendableFriendsList 	:	vRecommendableFriendsList,
 					indexFriendToRecommend		: pRecommendFriendsList.indexFriendToRecommend,
 				}
+
 				return pWebSocketConnection.emit('displayRecommendableFriendList',vRecommendableFriends); 
+			});
 // }
 		});	
 	};

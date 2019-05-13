@@ -328,8 +328,12 @@ MemberClient.prototype.displayAvatar = function(pAvatarInfo){
 MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 	
 	pProfileInfo.vAboutPrenom.innerHTML = this.member.etatCivil.firstName
-																				? this.member.etatCivil.firstName
-																				: 'Non renseigné';
+																			? this.member.etatCivil.firstName
+																			: 'Non renseigné';
+
+	pProfileInfo.vAboutNom.innerHTML = this.member.etatCivil.name
+																		? this.member.etatCivil.name
+																		: 'Non renseigné';
 
 	pProfileInfo.vAboutAge.innerHTML = this.member.etatCivil.birthDate 
 																		? vToolBox.calculeAge(this.member.etatCivil.birthDate, false)
@@ -386,23 +390,16 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 MemberClient.prototype.displayFriendsCard = function(pFriendInfo, pMyFriendsInfos){
 	var vMyFriend = 
 	{
-		friendEmail  	: null,
-		friendPseudo 	: null,
-		friendPhoto 	: null,
-		friendFirstName : null,
-		friendName 	: null,
+		friendEmail  			: null,
+		friendPseudo 			: null,
+		friendPhoto 			: null,
 	}
 
 	this.member.amis.forEach((item) => {																					// Pour chacun de mes amis en BDD
 		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personne est un ami confirmé, je l'ajoute à ma liste
-
-			var myIndex = this.searchObjectInArray(pMyFriendsInfos, 'pseudo', item.friendPseudo);
-
-			vMyFriend.friendEmail 		= item.friendEmail;
-			vMyFriend.friendPseudo 		= item.friendPseudo;
-			vMyFriend.friendPhoto 		= item.friendPhoto;
-			vMyFriend.friendFirstName	= pMyFriendsInfos[myIndex].firstName;
-			vMyFriend.friendName 			= pMyFriendsInfos[myIndex].name;
+			vMyFriend.friendEmail 			= item.friendEmail;
+			vMyFriend.friendPseudo 			= item.friendPseudo;
+			vMyFriend.friendPhoto 			= item.friendPhoto;
 
 			this.addFriendIntoCard(vMyFriend, pFriendInfo);
 		}
@@ -417,31 +414,21 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 
 	var vFriendLocal = 
 	{
-		friendEmail  	: pMyFriend.friendEmail,
-		friendPseudo 	: pMyFriend.friendPseudo,
-		friendPhoto 	: pMyFriend.friendPhoto,
-		friendFirstName : pMyFriend.friendFirstName,
-		friendName 		: pMyFriend.friendName,
+		friendEmail  			: pMyFriend.friendEmail,
+		friendPseudo 			: pMyFriend.friendPseudo,
+		friendPhoto 			: pMyFriend.friendPhoto,
 	}
 
 	this.vMyFriendList.push(vFriendLocal);
 	var index = (this.vMyFriendList.length-1);
 
-	var vlineHTML = {						// Structure HTML générée pour chaque ligne de membre
-		Vli 						: null,		// <li class="friendList withScaling">
-		vA	 						: null,		// <a id ="xxxx" href="#">
-		vDivDropDown 		: null,		// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black; transform: translate3d(45px, 30px, 0px);"></div> 
-		vDivAvatar  		: null,		// <div class="containerAvatarToken text-center align-self-center">
-		vImg 			 			: null,		// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
-	};
-
-	// <li class="friendList withScaling dropdown dropright">
+	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
+	
 	vlineHTML.vLi = window.document.createElement('li');
 	pFriendInfo.vFriendUL.appendChild(vlineHTML.vLi);
 	vlineHTML.vLi.setAttribute('id', 'idMyFriendLi'+index);
 	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
 
-	// <a id ="xxxx" href="#" class="btn-sm dropdown-toggle dropdown-toggle-split" style="padding-left: 0;padding-right: 0; color: white;" data-toggle="dropdown"></a> 
 	vlineHTML.vA = window.document.createElement('a');
 	vlineHTML.vLi.appendChild(vlineHTML.vA);
 	vlineHTML.vA.setAttribute('href', '#');
@@ -449,8 +436,6 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
 	vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
 
-
-	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black;"></div> 
 	vlineHTML.vDivDropDown = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
@@ -461,12 +446,10 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->
 // 
 // 
-	// <div class="containerAvatarToken text-center align-self-center">
 	vlineHTML.vDivAvatar = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivAvatar);
 	vlineHTML.vDivAvatar.setAttribute('class', 'containerAvatarToken py-1 text-center align-self-center');
 
-	// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg"></img>
 	vlineHTML.vImg = window.document.createElement('img');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
 	vlineHTML.vImg.setAttribute('class', 'avatarToken');
@@ -484,7 +467,6 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 
 	// A l'ouverture du DropDownMenu, on créée dynamiquement tous ses sous-éléments (les amis-cibles des recommandations)dans le DOM
 	$('#'+vlineHTML.vLi.id).on('shown.bs.dropdown', () => {
-
 		this.searchFriendsNotAlreadyInvitWithTargetFriend(index, vlineHTML.vDivDropDown.id);
 	});
 	
@@ -505,238 +487,255 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 // -----------------------------------------------------------------------------
 MemberClient.prototype.preparePopupHeader = function(pFriend){
 
+console.log('preparePopupHeader - pFriend : ',pFriend)
+console.log('preparePopupHeader - vMyFriendList : ',this.vMyFriendList)
+
+
 	var vDivDropDown = document.getElementById('idMyDropDown'+pFriend.indexFriendToRecommend);
 	var vDataToTransmit = null;
-
-	var vlineHTML = {						// Structure HTML générée pour chaque ligne de membre
-		vHdrDivFastView 				: null,
-		vHdrDivRowFastView			: null,
-		vHdrDivColFastView			:	null,
-		vHdrImgFastView	      	: null,
-		vHdrDivProfilFastView 	: null,
-		vHdrDivPseudoFastView 	: null,
-		vHdrDivFirstNameFastView: null,
-		vHdrDivNameFastView			: null,
-
-		vHdrAViewFriend					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-success">
-		vHdrDivRowViewFriend		: null,		//		<div class="row bg-success text-light" style="cursor: default;">
-		vHdrDivAvatarViewFriend	: null,		// 			<div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
-		vHdrImgViewFriend				: null,		// 				<img id="idViewFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/xxx" style="width:32px; height: 32px;">
-		vHdrDivViewFriend				: null,		// 			<div class="col-7 align-self-center px-0" style="font-size: 0.8rem;"> Voir le profil de xxx
-		vHdrDivBtnViewFriend		: null,		// 			<div class="col-3 text-center align-self-center px-0">
-		vHdrBtnViewFriend				: null,		// 				<button type="button" class="btn btn-outline-dark btn-sm">
-		vHdrIFAViewFriend 			: null,		// 					<i class="fa fa-eye text-dark">
-
-		vHdrADelFriend					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-white">
-		vHdrDivRowDelFriend			: null,		//		<div class="row bg-success text-light" style="cursor: default;">
-		vHdrDivAvatarDelFriend	: null,		// 			<div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
-		vHdrImgDelFriend				: null,		// 				<img id="idDelFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/xxx" style="width:32px; height: 32px;">
-		vHdrDivDelFriend				: null,		// 			<div class="col-7 align-self-center px-0" style="font-size: 0.8rem;"> Voir le profil de xxx
-		vHdrDivBtnDelFriend			: null,		// 			<div class="col-3 text-center align-self-center px-0">
-		vHdrBtnDelFriend				: null,		// 				<button type="button" class="btn btn-outline-dark btn-sm">
-		vHdrIFADelFriend 				: null,		// 					<i class="fa fa-eye text-dark">
-
-		vHdrARecoFriend					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-white">
-		vHdrDivRowRecoFriend		: null,		//		<div class="row bg-success text-light" style="cursor: default;">
-		vHdrDivAvatarRecoFriend	: null,		// 			<div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
-		vHdrImgRecoFriend				: null,		// 				<img id="idRecoFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/xxx" style="width:32px; height: 32px;">
-		vHdrDivRecoFriend				: null,		// 			<div class="col-7 align-self-center px-0" style="font-size: 0.8rem;"> Voir le profil de xxx
-		vHdrDivBtnRecoFriend		: null,		// 			<div class="col-3 text-center align-self-center px-0">
-		vHdrBtnRecoFriend				: null,		// 				<button type="button" class="btn btn-outline-dark btn-sm">
-		vHdrIFARecoFriend 			: null,		// 					<i class="fa fa-eye text-dark">
-		vDivContain							: null,		// <div style="max-height: 400px; overflow-y: auto"> 
-	};
+	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
 	// ----------------------------
 	// Micro-fiche d'un ami
 	// ----------------------------
-	// <a href="#" class="container list-group-item list-group-item-success">
 	vlineHTML.vHdrDivFastView = window.document.createElement('div');
 	vDivDropDown.appendChild(vlineHTML.vHdrDivFastView);
 	vlineHTML.vHdrDivFastView.setAttribute('href', '#');
-	vlineHTML.vHdrDivFastView.setAttribute('class', 'container list-group-item m-0 p-0');
+	vlineHTML.vHdrDivFastView.setAttribute('class', 'container list-group-item m-0 p-0 list-group-item-warning');
 	vlineHTML.vHdrDivFastView.setAttribute('style', 'border-bottom: 1px solid black;');
 
-	// <div class="row bg-success text-light" style="cursor: default;">
 	vlineHTML.vHdrDivRowFastView = window.document.createElement('div');
 	vlineHTML.vHdrDivFastView.appendChild(vlineHTML.vHdrDivRowFastView);
-	vlineHTML.vHdrDivRowFastView.setAttribute('class', 'row mx-0 list-group-item-warning');
+	vlineHTML.vHdrDivRowFastView.setAttribute('class', 'row mx-0');
 	vlineHTML.vHdrDivRowFastView.setAttribute('style', 'cursor: default;');
 
-	// <div class="row bg-success text-light" style="cursor: default;">
 	vlineHTML.vHdrDivColFastView = window.document.createElement('div');
 	vlineHTML.vHdrDivRowFastView.appendChild(vlineHTML.vHdrDivColFastView);
-	vlineHTML.vHdrDivColFastView.setAttribute('class', 'col-5 mx-0 px-0 withNoScaling');
+	vlineHTML.vHdrDivColFastView.setAttribute('class', 'col-5 mx-0 px-0 withNoScaling align-self-center');
 	
-	// <img id="idFastViewImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vHdrImgFastView = window.document.createElement('img');
 	vlineHTML.vHdrDivColFastView.appendChild(vlineHTML.vHdrImgFastView);
 	vlineHTML.vHdrImgFastView.setAttribute('class', 'm-1');
 	vlineHTML.vHdrImgFastView.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgFastView.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgFastView.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
 	vlineHTML.vHdrImgFastView.setAttribute('style', 'width:110px; height: auto;');
 	
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
 	vlineHTML.vHdrDivProfilFastView = window.document.createElement('div');
 	vlineHTML.vHdrDivRowFastView.appendChild(vlineHTML.vHdrDivProfilFastView);
-	vlineHTML.vHdrDivProfilFastView.setAttribute('class', 'col-7 d-flex align-items-start flex-column px-0');
+// vlineHTML.vHdrDivProfilFastView.setAttribute('class', 'col-7 d-flex align-items-start flex-column mx-0 pl-0 pr-1');
+	vlineHTML.vHdrDivProfilFastView.setAttribute('class', 'col-7  text-center mx-0 px-0');
 	vlineHTML.vHdrDivProfilFastView.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
 	vlineHTML.vHdrDivPseudoFastView = window.document.createElement('div');
 	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivPseudoFastView);
-	vlineHTML.vHdrDivPseudoFastView.setAttribute('class', 'align-self-center mb-auto p-0 font-size-120');
-	vlineHTML.vHdrDivPseudoFastView.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo;
+	vlineHTML.vHdrDivPseudoFastView.setAttribute('class', 'p-0 mb-2 font-size-120');
+	vlineHTML.vHdrDivPseudoFastView.innerHTML = pFriend.friendPseudo;
 
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
-	vlineHTML.vHdrDivFirstNameFastView = window.document.createElement('div');
-	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivFirstNameFastView);
-	vlineHTML.vHdrDivFirstNameFastView.setAttribute('class', 'mb-auto');
-	vlineHTML.vHdrDivFirstNameFastView.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
-	if (!this.vMyFriendList[pFriend.indexFriendToRecommend].friendFirstName){
-		vlineHTML.vHdrDivFirstNameFastView.innerHTML = 'Prénom non renseigné';
+{/* <div class="row">
+	<div class="col-sm-4 text-dark">Prénom</div>
+	<div class="col-sm-8 font-weight-bold" id="idAboutPrenom">Bugs</div>
+</div> */}
+
+	vlineHTML.vHdrDivRowFirstNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivRowFirstNameFastView);
+	vlineHTML.vHdrDivRowFirstNameFastView.setAttribute('class', 'row mx-0 mb-2 px-0');
+
+	vlineHTML.vHdrDivColFirstNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivRowFirstNameFastView.appendChild(vlineHTML.vHdrDivColFirstNameFastView);
+	vlineHTML.vHdrDivColFirstNameFastView.setAttribute('class', 'col-sm-4 mx-0 px-0 text-left');
+	vlineHTML.vHdrDivColFirstNameFastView.setAttribute('style', 'font-size: 0.9rem; font-weight: normal;');
+	vlineHTML.vHdrDivColFirstNameFastView.innerHTML = 'Prénom :';
+
+	vlineHTML.vHdrDivColFirstNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivRowFirstNameFastView.appendChild(vlineHTML.vHdrDivColFirstNameFastView);
+	vlineHTML.vHdrDivColFirstNameFastView.setAttribute('class', 'col-sm-8 font-weight-bold text-left px-0');
+
+	if (!pFriend.friendFirstName){
+		vlineHTML.vHdrDivColFirstNameFastView.innerHTML = 'Non renseigné';
 	} else {
-		vlineHTML.vHdrDivFirstNameFastView.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendFirstName;
+		vlineHTML.vHdrDivColFirstNameFastView.innerHTML = pFriend.friendFirstName;
 	}
 
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
-	vlineHTML.vHdrDivNameFastView = window.document.createElement('div');
-	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivNameFastView);
-	vlineHTML.vHdrDivNameFastView.setAttribute('class', 'mb-auto');
-	vlineHTML.vHdrDivNameFastView.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vHdrDivRowNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivProfilFastView.appendChild(vlineHTML.vHdrDivRowNameFastView);
+	vlineHTML.vHdrDivRowNameFastView.setAttribute('class', 'row mx-0 mb-auto px-0');
 
-	if (!this.vMyFriendList[pFriend.indexFriendToRecommend].friendName){
-		vlineHTML.vHdrDivNameFastView.innerHTML = 'Nom non renseigné';
+	vlineHTML.vHdrDivColNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivRowNameFastView.appendChild(vlineHTML.vHdrDivColNameFastView);
+	vlineHTML.vHdrDivColNameFastView.setAttribute('class', 'col-sm-4 mx-0 px-0 text-left');
+	vlineHTML.vHdrDivColNameFastView.setAttribute('style', 'font-size: 0.9rem; font-weight: normal;');
+	vlineHTML.vHdrDivColNameFastView.innerHTML = 'Nom :';
+
+	vlineHTML.vHdrDivColNameFastView = window.document.createElement('div');
+	vlineHTML.vHdrDivRowNameFastView.appendChild(vlineHTML.vHdrDivColNameFastView);
+	vlineHTML.vHdrDivColNameFastView.setAttribute('class', 'col-sm-8 font-weight-bold text-left px-0');
+
+	if (!pFriend.friendName){
+		vlineHTML.vHdrDivColNameFastView.innerHTML = 'Non renseigné';
 	} else {
-		vlineHTML.vHdrDivNameFastView.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendName;
+		vlineHTML.vHdrDivColNameFastView.innerHTML = pFriend.friendName;
 	}
+
+	vlineHTML.vHdrDivBorderFriendsOfmyFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivFastView.appendChild(vlineHTML.vHdrDivBorderFriendsOfmyFriend);
+	vlineHTML.vHdrDivBorderFriendsOfmyFriend.setAttribute('class', 'rounded');
+	vlineHTML.vHdrDivBorderFriendsOfmyFriend.setAttribute('style', 'border-top: 1px black solid;');
+
+	vlineHTML.vHdrDivCardFriendsOfmyFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivBorderFriendsOfmyFriend.appendChild(vlineHTML.vHdrDivCardFriendsOfmyFriend);
+	vlineHTML.vHdrDivCardFriendsOfmyFriend.setAttribute('class', 'card border-warning');
+
+	vlineHTML.vHdrDivHeaderFriendsOfmyFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivCardFriendsOfmyFriend.appendChild(vlineHTML.vHdrDivHeaderFriendsOfmyFriend);
+	vlineHTML.vHdrDivHeaderFriendsOfmyFriend.setAttribute('class', 'card-header py-0 bg-warning');
+
+	vlineHTML.vHdrDivTitleFriendOfmyFriend = window.document.createElement('h5');
+	vlineHTML.vHdrDivHeaderFriendsOfmyFriend.appendChild(vlineHTML.vHdrDivTitleFriendOfmyFriend);
+	vlineHTML.vHdrDivTitleFriendOfmyFriend.setAttribute('class', 'card-title');
+	vlineHTML.vHdrDivTitleFriendOfmyFriend.setAttribute('style', 'color: black; font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vHdrDivTitleFriendOfmyFriend.innerHTML = 'Amis de ' + pFriend.friendPseudo;
+
+	vlineHTML.vHdrDivBodyFriendOfmyFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivCardFriendsOfmyFriend.appendChild(vlineHTML.vHdrDivBodyFriendOfmyFriend);
+	vlineHTML.vHdrDivBodyFriendOfmyFriend.setAttribute('class', 'card-body py-1');
+	vlineHTML.vHdrDivBodyFriendOfmyFriend.setAttribute('style', 'border: 1px black solid;');
+
+	vlineHTML.vHdrRowFriendListOfMyFriend = window.document.createElement('div');
+	vlineHTML.vHdrDivBodyFriendOfmyFriend.appendChild(vlineHTML.vHdrRowFriendListOfMyFriend);
+	vlineHTML.vHdrRowFriendListOfMyFriend.setAttribute('class', 'row');
+
+	vlineHTML.vHdrColFriendListOfMyFriend = window.document.createElement('div');
+	vlineHTML.vHdrRowFriendListOfMyFriend.appendChild(vlineHTML.vHdrColFriendListOfMyFriend);
+	vlineHTML.vHdrColFriendListOfMyFriend.setAttribute('class', 'col-md-12 px-0 text-dark');
+
+	pFriend.friendsOfMyFriend.forEach((item) => {
+		if (item.pendingFriendRequest === 0){																		// Je n'affiche que ses amis confirmés
+			vlineHTML.vHdrImgRecoFriend = window.document.createElement('img');
+			vlineHTML.vHdrColFriendListOfMyFriend.appendChild(vlineHTML.vHdrImgRecoFriend);
+			vlineHTML.vHdrImgRecoFriend.setAttribute('class', 'avatarToken m-1');
+			vlineHTML.vHdrImgRecoFriend.setAttribute('alt', 'Membre');
+			vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+item.friendPhoto);
+			vlineHTML.vHdrImgRecoFriend.setAttribute('style', 'width:32px; height: 32px;');	
+			vlineHTML.vHdrImgRecoFriend.setAttribute('data-toggle', 'tooltip');
+			vlineHTML.vHdrImgRecoFriend.setAttribute('data-placement', 'top');
+			vlineHTML.vHdrImgRecoFriend.setAttribute('data-title', item.friendPseudo);
+		}
+	});
+
+	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
+	this.InitPopOverAndToolTipAndDropDown();
+
 
 	// ----------------------------
 	// Voir le Profil d'un ami
 	// ----------------------------
-	// <a href="#" class="container list-group-item list-group-item-success">
 	vlineHTML.vHdrAViewFriend = window.document.createElement('a');
 	vDivDropDown.appendChild(vlineHTML.vHdrAViewFriend);
 	vlineHTML.vHdrAViewFriend.setAttribute('href', '#');
 	vlineHTML.vHdrAViewFriend.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vHdrAViewFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
-	// <div class="row bg-success text-light" style="cursor: default;">
 	vlineHTML.vHdrDivRowViewFriend = window.document.createElement('div');
 	vlineHTML.vHdrAViewFriend.appendChild(vlineHTML.vHdrDivRowViewFriend);
 	vlineHTML.vHdrDivRowViewFriend.setAttribute('class', 'row');
 	vlineHTML.vHdrDivRowViewFriend.setAttribute('style', 'cursor: default;');
 
-	// <div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
 	vlineHTML.vHdrDivAvatarViewFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowViewFriend.appendChild(vlineHTML.vHdrDivAvatarViewFriend);
 	vlineHTML.vHdrDivAvatarViewFriend.setAttribute('class', 'col-2 containerAvatarToken p-0 text-center withNoScaling');
 
-	// <img id="idViewFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vHdrImgViewFriend = window.document.createElement('img');
 	vlineHTML.vHdrDivAvatarViewFriend.appendChild(vlineHTML.vHdrImgViewFriend);
 	vlineHTML.vHdrImgViewFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgViewFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgViewFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgViewFriend.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
 	vlineHTML.vHdrImgViewFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
 	vlineHTML.vHdrDivViewFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowViewFriend.appendChild(vlineHTML.vHdrDivViewFriend);
 	vlineHTML.vHdrDivViewFriend.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vHdrDivViewFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo;
+	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+pFriend.friendPseudo;
 
-	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vHdrDivBtnViewFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowViewFriend.appendChild(vlineHTML.vHdrDivBtnViewFriend);
 	vlineHTML.vHdrDivBtnViewFriend.setAttribute('class', 'col-3 text-center align-self-center px-0');
 
-	// <button type="button" class="btn btn-outline-dark btn-sm">
 	vlineHTML.vHdrBtnViewFriend = window.document.createElement('button');
 	vlineHTML.vHdrDivBtnViewFriend.appendChild(vlineHTML.vHdrBtnViewFriend);
 	vlineHTML.vHdrBtnViewFriend.setAttribute('type', 'button');
 	vlineHTML.vHdrBtnViewFriend.setAttribute('class', 'btn btn-outline-success btn-sm');
 
-	// <i class="fa fa-eye text-dark">
 	vlineHTML.vHdrIFAViewFriend = window.document.createElement('i');
 	vlineHTML.vHdrBtnViewFriend.appendChild(vlineHTML.vHdrIFAViewFriend);
 	vlineHTML.vHdrIFAViewFriend.setAttribute('id', 'idHdrIFAViewFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrIFAViewFriend.setAttribute('class', 'fa fa-eye text-dark');
 
 
+
 	// ----------------------------
 	// Supprimer un ami
 	// ----------------------------
-	// <a href="#" class="container list-group-item list-group-item-danger">
 	vlineHTML.vHdrADelFriend = window.document.createElement('a');
 	vDivDropDown.appendChild(vlineHTML.vHdrADelFriend);
 	vlineHTML.vHdrADelFriend.setAttribute('href', '#');
 	vlineHTML.vHdrADelFriend.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vHdrADelFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
-	// <div class="row bg-danger text-light" style="cursor: default;">
 	vlineHTML.vHdrDivRowDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrADelFriend.appendChild(vlineHTML.vHdrDivRowDelFriend);
 	vlineHTML.vHdrDivRowDelFriend.setAttribute('class', 'row');
 	vlineHTML.vHdrDivRowDelFriend.setAttribute('style', 'cursor: default;');
 
-	// <div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
 	vlineHTML.vHdrDivAvatarDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivAvatarDelFriend);
 	vlineHTML.vHdrDivAvatarDelFriend.setAttribute('class', 'col-2 containerAvatarToken p-0 text-center withNoScaling');
 
-	// <img id="idDelFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vHdrImgDelFriend = window.document.createElement('img');
 	vlineHTML.vHdrDivAvatarDelFriend.appendChild(vlineHTML.vHdrImgDelFriend);
 	vlineHTML.vHdrImgDelFriend.setAttribute('id', 'idHdrImgDelFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrImgDelFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgDelFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
 	vlineHTML.vHdrImgDelFriend.setAttribute('style', 'width:32px; height: 32px;');
 	vlineHTML.vHdrImgDelFriend.setAttribute('data-toggle', 'popover');
 	vlineHTML.vHdrImgDelFriend.setAttribute('data-placement', 'right');
 	vlineHTML.vHdrImgDelFriend.setAttribute('title', 'Suppression d\'un ami');
-	vlineHTML.vHdrImgDelFriend.setAttribute('data-content', 'Vous n\'êtes plus ami avec '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo);
+	vlineHTML.vHdrImgDelFriend.setAttribute('data-content', 'Vous n\'êtes plus ami avec '+pFriend.friendPseudo);
 	vlineHTML.vHdrImgDelFriend.setAttribute('data-boundary', 'viewport');
 
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Ôter Vil-Coyote de mes amis
 	vlineHTML.vHdrDivDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivDelFriend);
 	vlineHTML.vHdrDivDelFriend.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vHdrDivDelFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
-	vlineHTML.vHdrDivDelFriend.innerHTML = ' Ôter '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo+' de mes amis';
+	vlineHTML.vHdrDivDelFriend.innerHTML = ' Supprimer '+pFriend.friendPseudo+' de mes amis';
 
-	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vHdrDivBtnDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivBtnDelFriend);
 	vlineHTML.vHdrDivBtnDelFriend.setAttribute('class', 'col-3 text-center align-self-center px-0');
 
-	// <button type="button" class="btn btn-outline-dark btn-sm">
 	vlineHTML.vHdrBtnDelFriend = window.document.createElement('button');
 	vlineHTML.vHdrDivBtnDelFriend.appendChild(vlineHTML.vHdrBtnDelFriend);
 	vlineHTML.vHdrBtnDelFriend.setAttribute('type', 'button');
 	vlineHTML.vHdrBtnDelFriend.setAttribute('class', 'btn btn-outline-danger btn-sm');
 
-	// <i class="fa fa-user-times text-dark">
 	vlineHTML.vHdrIFADelFriend = window.document.createElement('i');
 	vlineHTML.vHdrBtnDelFriend.appendChild(vlineHTML.vHdrIFADelFriend);
 	vlineHTML.vHdrIFADelFriend.setAttribute('id', 'idHdrIFADelFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrIFADelFriend.setAttribute('class', 'fa fa-user-times text-dark');
 
 
+
 	// ----------------------------
 	// Recommander un ami
 	// ----------------------------
-	// <a href="#" class="container list-group-item list-group-item-info">
 	vlineHTML.vHdrARecoFriend = window.document.createElement('a');
 	vDivDropDown.appendChild(vlineHTML.vHdrARecoFriend);
 	vlineHTML.vHdrARecoFriend.setAttribute('href', '#');
 	vlineHTML.vHdrARecoFriend.setAttribute('class', 'container list-group-item m-0 py-0');
 	vlineHTML.vHdrARecoFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
-	// <div class="row bg-info text-light" style="cursor: default;">
 	vlineHTML.vHdrDivRowRecoFriend = window.document.createElement('div');
 	vlineHTML.vHdrARecoFriend.appendChild(vlineHTML.vHdrDivRowRecoFriend);
 	vlineHTML.vHdrDivRowRecoFriend.setAttribute('id', 'idHdrDivRowRecoFriend'+pFriend.indexFriendToRecommend);
@@ -749,20 +748,17 @@ MemberClient.prototype.preparePopupHeader = function(pFriend){
 		vlineHTML.vHdrDivRowRecoFriend.setAttribute('class', 'row bg-primary text-light');
 	}
 
-	// <div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
 	vlineHTML.vHdrDivAvatarRecoFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowRecoFriend.appendChild(vlineHTML.vHdrDivAvatarRecoFriend);
 	vlineHTML.vHdrDivAvatarRecoFriend.setAttribute('class', 'col-2 containerAvatarToken p-0 text-center withNoScaling');
 
-	// <img id="idRecoFriendImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vHdrImgRecoFriend = window.document.createElement('img');
 	vlineHTML.vHdrDivAvatarRecoFriend.appendChild(vlineHTML.vHdrImgRecoFriend);
 	vlineHTML.vHdrImgRecoFriend.setAttribute('class', 'avatarToken m-1');
 	vlineHTML.vHdrImgRecoFriend.setAttribute('alt', 'Membre');
-	vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPhoto);
+	vlineHTML.vHdrImgRecoFriend.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
 	vlineHTML.vHdrImgRecoFriend.setAttribute('style', 'width:32px; height: 32px;');
 	
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Voir le profil de Vil-Coyote
 	vlineHTML.vHdrDivRecoFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowRecoFriend.appendChild(vlineHTML.vHdrDivRecoFriend);
 	vlineHTML.vHdrDivRecoFriend.setAttribute('id', 'idHdrDivRecoFriend'+pFriend.indexFriendToRecommend);
@@ -770,12 +766,11 @@ MemberClient.prototype.preparePopupHeader = function(pFriend){
 	vlineHTML.vHdrDivRecoFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
 	if (pFriend.recommendableFriendsList.length > 0){
-		vlineHTML.vHdrDivRecoFriend.innerHTML = ' Recommander '+this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo+' à :';
+		vlineHTML.vHdrDivRecoFriend.innerHTML = ' Recommander '+pFriend.friendPseudo+' à :';
 	} else {
-		vlineHTML.vHdrDivRecoFriend.innerHTML = this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo+' n\'a pas d\'ami à qui être recommandé';	
+		vlineHTML.vHdrDivRecoFriend.innerHTML = pFriend.friendPseudo+' n\'a pas d\'ami à qui être recommandé';	
 	}
 
-	// <div id="idDivContain" style="max-height: 400px; overflow-y: auto"></div> 
 	vlineHTML.vDivContain = window.document.createElement('div');
 	vDivDropDown.appendChild(vlineHTML.vDivContain);
 	vlineHTML.vDivContain.setAttribute('id', 'idDivContain'+pFriend.indexFriendToRecommend);
@@ -798,8 +793,8 @@ MemberClient.prototype.preparePopupHeader = function(pFriend){
 	{
 		myPseudo 						: this.member.pseudo,
 		myEmail 						: this.member.email,
-		friendPseudo				: this.vMyFriendList[pFriend.indexFriendToRecommend].friendPseudo,
-		friendEmail					: this.vMyFriendList[pFriend.indexFriendToRecommend].friendEmail,
+		friendPseudo				: pFriend.friendPseudo,
+		friendEmail					: pFriend.friendEmail,
 		actionBtn  					: vlineHTML.vHdrIFADelFriend.id,
 	}
 
@@ -937,7 +932,6 @@ MemberClient.prototype.deleteFriend = function(event){
 // - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
 // -----------------------------------------------------------------------------
 MemberClient.prototype.deleteFriendFromMyFriendList = function(pFriendToDelete, pFriendInfo){
-
 	var myIndex = this.searchObjectInArray(this.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
 	this.vMyFriendList.splice(myIndex, 1);   // Efface l'occurence de mon ami du tableau de mes amis
 
@@ -983,11 +977,9 @@ MemberClient.prototype.refreshMyFriendList = function(pFriendInfo){
 
 		var vMyFriend = 
 		{
-			friendEmail  	: null,
-			friendPseudo 	: null,
-			friendPhoto 	: null,
-			friendFirstName : null,
-			friendName 	: null,
+			friendEmail  			: null,
+			friendPseudo 			: null,
+			friendPhoto 			: null,
 		}
 
 		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
@@ -995,11 +987,9 @@ MemberClient.prototype.refreshMyFriendList = function(pFriendInfo){
 
 		// Recréation des avatars de mes amis dans ma carte d'amis
 		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
-			vMyFriend.friendEmail = item.friendEmail;
-			vMyFriend.friendPseudo = item.friendPseudo;
-			vMyFriend.friendPhoto = item.friendPhoto;
-			vMyFriend.friendFirstName = item.friendFirstName;
-			vMyFriend.friendName = item.friendName;
+			vMyFriend.friendEmail 			= item.friendEmail;
+			vMyFriend.friendPseudo 			= item.friendPseudo;
+			vMyFriend.friendPhoto 			= item.friendPhoto;
 
 			this.addFriendIntoCard(vMyFriend, pFriendInfo);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
 		});
@@ -1037,14 +1027,17 @@ MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
 		vTargetFriendForRecommend.push(new AddTargetFriendsforRecommendLines(item, index, vDivContain, pRecommendableFriends.recommendedFriendPseudo));	
 		
 		var vDataToTransmit = {
-			member										: this.member,
-			recommendedFriendEmail 		: pRecommendableFriends.recommendedFriendEmail,
-			recommendedFriendPseudo 	: pRecommendableFriends.recommendedFriendPseudo,
-			recommendedFriendPhoto 		: pRecommendableFriends.recommendedFriendPhoto,
-			indexFriendToRecommend		: pRecommendableFriends.indexFriendToRecommend,
-			indexTargetFriend					: index,
-			dataToTransmit  					: vTargetFriendForRecommend[index],
-			actionBtn									: vTargetFriendForRecommend[index].lineHTML.vIFA.id,
+			member									: this.member,
+			friendEmail 						: pRecommendableFriends.friendEmail,
+			friendPseudo 						: pRecommendableFriends.recommendedFriendPseudo,
+			friendPhoto 						: pRecommendableFriends.friendPhoto,
+			friendFirstName					: pRecommendableFriends.friendFirstName,
+			friendName 							: pRecommendableFriends.friendName,
+			friendsOfMyFriend				: pRecommendableFriends.friendsOfMyFriend,
+			indexFriendToRecommend	: pRecommendableFriends.indexFriendToRecommend,
+			indexTargetFriend				: index,
+			dataToTransmit  				: vTargetFriendForRecommend[index],
+			actionBtn								: vTargetFriendForRecommend[index].lineHTML.vIFA.id,
 		}
 
 		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('click', this.sendRecommendation,false);
@@ -1058,7 +1051,7 @@ MemberClient.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
 
-	// Affichage de la PopUp dès qu'elle est entièrement constituée (pour éviter l'effat "Affichage en 2 passes")
+	// Affichage de la PopUp dès qu'elle est entièrement constituée (pour éviter l'effat "Affichage en 2 steps")
 	document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
 };
 
@@ -1111,7 +1104,7 @@ MemberClient.prototype.sendRecommendation = function(event){
 // - L'ami vers qui je vais envoyer les recommandations
 // - ceux qui n'ont pas déjà une recommandation par moi-même en cours
 // -----------------------------------------------------------------------------
-MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pIndex, pDropDownMenuId){
+MemberClient.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pIndex){
 	vRecommendFriendsList = {
 		friendEmail 						: this.vMyFriendList[pIndex].friendEmail,
 		friendPseudo 						: this.vMyFriendList[pIndex].friendPseudo,
@@ -1720,9 +1713,7 @@ MemberClient.prototype.displayWaitingInvitation = function(pWaitingInvit, pDispl
 // Si plus d'invitation en attente, fermeture de la carte des invitations en attente
 // -----------------------------------------------------------------------------
 MemberClient.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete, pInvitSentInfo){
-
-console.log('removeInvitSentFromMyInvitSentList - pInvitToDelete : ',pInvitToDelete)
-	var myIndex = this.searchObjectInArray(this.vMyInvitSentList, 'friendPseudo', pInvitToDelete.friendPseudo);
+  var myIndex = this.searchObjectInArray(this.vMyInvitSentList, 'friendPseudo', pInvitToDelete.friendPseudo);
 	this.vMyInvitSentList.splice(myIndex, 1);   // Efface l'occurence de mon invitation du tableau de mes invitations en attente
 	
 	pInvitToDelete.indexInvitToDelete = myIndex;											// Ajout à la volée d'une nouvelle propriété "index"
@@ -1733,15 +1724,8 @@ console.log('removeInvitSentFromMyInvitSentList - pInvitToDelete : ',pInvitToDel
 // Affichage d'une Notification de suppression d'invitation envoyée
 // --------------------------------------------------------------
 MemberClient.prototype.displayNotifInvitDeleted = function(pInvitToDelete, pInvitSentInfo){
-
-console.log('displayNotifInvitDeleted - pInvitToDelete : ',pInvitToDelete)
-
-
 	var idImg = 'idImgCancelInvit' + pInvitToDelete.indexInvitToDelete;
 	$('#'+idImg).popover('show');
-
-console.log('displayNotifInvitDeleted - idImg : ',idImg)
-
 
 	setTimeout(function(){
 		$('#'+idImg).popover('hide')
@@ -1767,8 +1751,6 @@ MemberClient.prototype.refreshMyInvitList = function(pInvitSentInfo){
 
 	if (vElem){
 		var vParentNode = vElem.parentNode;
-
-	console.log('refreshMyInvitList - vElem : ',vElem)
 
 		// Effacement des tokens de toutes mes invitations
 		while (vParentNode.firstChild) {
@@ -2221,29 +2203,13 @@ MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentI
 	this.vMyInvitSentList.push(vInvitSentLocal);
 	var index = (this.vMyInvitSentList.length-1);
 
-	var vlineHTML = {									// Structure HTML générée pour chaque ligne de membre
-		Vli 									: null,		// <li class="friendList withScaling">
-		vA	 									: null,		// <a id ="xxxx" href="#">
-		vDivDropDown 					: null,		// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black; transform: translate3d(45px, 30px, 0px);"></div> 
-		vACancelInvit					: null,		//	<a href="#" class="container list-group-item list-group-item-action list-group-item-white">
-		vDivRowCancelInvit		: null,		//		<div class="row bg-success text-light" style="cursor: default;">
-		vDivAvatarCancelInvit	: null,		// 			<div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
-		vImgCancelInvit				: null,		// 				<img id="idCancelInvitImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/xxx" style="width:32px; height: 32px;">
-		vDivCancelInvit				: null,		// 			<div class="col-7 align-self-center px-0" style="font-size: 0.8rem;"> Voir le profil de xxx
-		vDivBtnCancelInvit		: null,		// 			<div class="col-3 text-center align-self-center px-0">
-		vBtnCancelInvit				: null,		// 				<button type="button" class="btn btn-outline-dark btn-sm">
-		vIFACancelInvit 			: null,		// 					<i class="fa fa-eye text-dark">
-		vDivAvatar  					: null,		// <div class="containerAvatarToken text-center align-self-center">
-		vImg 			 						: null,		// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg">
-	};
+	var vlineHTML = {};									// Structure HTML générée pour chaque ligne de membre
 
-	// <li class="friendList withScaling dropdown dropright">
 	vlineHTML.vLi = window.document.createElement('li');
 	pInvitSentInfo.vInvitSentUL.appendChild(vlineHTML.vLi);
 	vlineHTML.vLi.setAttribute('id', 'idMyInvitSentLi'+index);
 	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
 
-	// <a id ="xxxx" href="#" class="btn-sm dropdown-toggle dropdown-toggle-split" style="padding-left: 0;padding-right: 0; color: white;" data-toggle="dropdown"></a> 
 	vlineHTML.vA = window.document.createElement('a');
 	vlineHTML.vLi.appendChild(vlineHTML.vA);
 	vlineHTML.vA.setAttribute('href', '#');
@@ -2251,35 +2217,32 @@ MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentI
 	vlineHTML.vA.setAttribute('class', 'btn-sm dropdown-toggle dropdown-toggle-split');
 	vlineHTML.vA.setAttribute('data-toggle', 'dropdown');
 
-	// <div class="dropdown-menu py-0" style="width: 150px; border: 1px solid black;"></div> 
 	vlineHTML.vDivDropDown = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyInvitSentDropDown'+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
 	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black;');
 
+
+
 	// ----------------------------
 	// Annuler une invitation lancée
 	// ----------------------------
-	// <a href="#" class="container list-group-item list-group-item-danger">
 	vlineHTML.vACancelInvit = window.document.createElement('a');
 	vlineHTML.vDivDropDown.appendChild(vlineHTML.vACancelInvit);
 	vlineHTML.vACancelInvit.setAttribute('href', '#');
 	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vACancelInvit.setAttribute('style', 'border-bottom: 1px solid black;');
 
-	// <div class="row bg-danger text-light" style="cursor: default;">
 	vlineHTML.vDivRowCancelInvit = window.document.createElement('div');
 	vlineHTML.vACancelInvit.appendChild(vlineHTML.vDivRowCancelInvit);
 	vlineHTML.vDivRowCancelInvit.setAttribute('class', 'row');
 	vlineHTML.vDivRowCancelInvit.setAttribute('style', 'cursor: default;');
 
-	// <div class="col-2 containerAvatarToken p-0 text-center withNoScaling">
 	vlineHTML.vDivAvatarCancelInvit = window.document.createElement('div');
 	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivAvatarCancelInvit);
 	vlineHTML.vDivAvatarCancelInvit.setAttribute('class', 'col-2 containerAvatarToken p-0 text-center withNoScaling');
 
-	// <img id="idCancelInvitImg5" class="avatarToken m-1" alt="Membre" src="static/images/members/Vil-Coyote - remonté.jpg" style="width:32px; height: 32px;">
 	vlineHTML.vImgCancelInvit = window.document.createElement('img');
 	vlineHTML.vDivAvatarCancelInvit.appendChild(vlineHTML.vImgCancelInvit);
 	vlineHTML.vImgCancelInvit .setAttribute('id', 'idImgCancelInvit'+index);
@@ -2293,37 +2256,30 @@ MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentI
 	vlineHTML.vImgCancelInvit.setAttribute('data-content', 'Vous supprimé l\'invitation envoyée à '+pMyInvitSent.friendPseudo);
 	vlineHTML.vImgCancelInvit.setAttribute('data-boundary', 'viewport');
 
-	
-	// <div class="col-7 align-self-center px-0" style="font-size: 0.9rem; font-weight:bold;"> Annuler l\'invit Vil-Coyote de mes amis
 	vlineHTML.vDivCancelInvit = window.document.createElement('div');
 	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivCancelInvit);
 	vlineHTML.vDivCancelInvit.setAttribute('class', 'col-7 align-self-center px-0');
 	vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 	vlineHTML.vDivCancelInvit.innerHTML = ' Annuler l\'invit de '+pMyInvitSent.friendPseudo;
 
-	// <div class="col-3 text-center align-self-center px-0">
 	vlineHTML.vDivBtnCancelInvit = window.document.createElement('div');
 	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivBtnCancelInvit);
 	vlineHTML.vDivBtnCancelInvit.setAttribute('class', 'col-3 text-center align-self-center px-0');
 
-	// <button type="button" class="btn btn-outline-dark btn-sm">
 	vlineHTML.vBtnCancelInvit = window.document.createElement('button');
 	vlineHTML.vDivBtnCancelInvit.appendChild(vlineHTML.vBtnCancelInvit);
 	vlineHTML.vBtnCancelInvit.setAttribute('type', 'button');
 	vlineHTML.vBtnCancelInvit.setAttribute('class', 'btn btn-outline-danger btn-sm');
 
-	// <i class="fa fa-user-times text-dark">
 	vlineHTML.vIFACancelInvit = window.document.createElement('i');
 	vlineHTML.vBtnCancelInvit.appendChild(vlineHTML.vIFACancelInvit);
 	vlineHTML.vIFACancelInvit.setAttribute('id', 'idIFACancelInvit'+index);
 	vlineHTML.vIFACancelInvit.setAttribute('class', 'fa fa-envelope text-dark');
 
-	// <div class="containerAvatarToken text-center align-self-center">
 	vlineHTML.vDivAvatar = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivAvatar);
 	vlineHTML.vDivAvatar.setAttribute('class', 'containerAvatarToken py-1 text-center align-self-center');
 
-	// <img id="idAvatarToken" class="avatarToken" alt="Membre" src="static/images/members/xxx.jpg"></img>
 	vlineHTML.vImg = window.document.createElement('img');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
 	vlineHTML.vImg.setAttribute('class', 'avatarToken');
