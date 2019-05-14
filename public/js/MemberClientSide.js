@@ -476,7 +476,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	$('#'+vlineHTML.vLi.id).on('hidden.bs.dropdown', () => {
 		vlineHTML.vDivDropDown.style.visibility = 'hidden';			// Pour cacher la PopUp et eviter d'avoir l'affichage en 2 steps (cadre plat, puis contenu) à la réouverture
 		this.removeLinesOfDropDownMenu(vlineHTML.vDivDropDown);
-		this.removeFriendFromMyFriendList();
+		// this.removeFriendFromMyFriendList();
 	});
 
 	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
