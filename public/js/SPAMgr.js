@@ -641,7 +641,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// de ma carte "Liste d'amis"
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
-		vMemberClient.deleteFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+		vMemberClient.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -650,7 +650,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Même procédure que ci-dessus, sauf que les rôles sont inversés
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
-		vMemberClient.deleteFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+		vMemberClient.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
