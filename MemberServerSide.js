@@ -1254,23 +1254,18 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Annulation d'une invitatiion
-	// Suppression du membre dans ma propre liste d'amis
-	// Suppression de moi-même dans la liste d'amis du mmebre qui avait été invité
+	// Suppression du membre dans ma propre liste d'amis potentiels
+	// Suppression de moi-même dans la liste d'amis du membre qui avait été invité
 	// Envoi d'une Notification d'opération effectuée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.cancelInvitation = function(pcancelInvitSent, pWebSocketConnection, pSocketIo){
-
-console.log('------------------------------------------------------------------')
-console.log('cancelInvitation - pcancelInvitSent : ',pcancelInvitSent)
-console.log('------------------------------------------------------------------')
-
 		this.deleteFriendIntoMyFriendList(pcancelInvitSent)
 		.then(() => {
 			this.deleteMeIntoFriendList(pcancelInvitSent)
 			.then(() => {
 
 				// Envoi à moi-même de la demande de suppression de l'Avatar de l'ami qui avait reçu l'invitation
-				pWebSocketConnection.emit('deleteInvitedMemberFromMyInvitSentList',pcancelInvitSent);     
+				pWebSocketConnection.emit('cancelInvitedMemberFromMyInvitSentList',pcancelInvitSent);     
 
 				// Recherche du pseudo de mon ex-ami dans le tableau des membres connectés car s'il est connecté, je déduis 1 de son nombre d'invitations reçues à traiter
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pcancelInvitSent.friendPseudo);
@@ -1361,6 +1356,27 @@ console.log('------------------------------------------------------------------'
 			});
 // }
 		});	
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Dans le cadre des recommandations, vérification que chacun de mes amis n'est pas déja en process d'invitation avec l'ami que je recommande
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.getFriendsOfMember = function(pFriendsOfMember, pWebSocketConnection){
+		// Lecture des infos du membre (Nom + prénom + liste de ses amis) pour alimenter sa liste d'amis coté client
+		this.getFriendInfos(pFriendsOfMember)
+		.then((document) => {
+			vFriendsOfMember = {
+				friendEmail 				: document.email,
+				friendPseudo 				: document.pseudo,
+				friendPhoto 				: document.etatCivil.photo,
+				friendFirstName			: document.etatCivil.firstName,
+				friendName 					: document.etatCivil.name,
+				friendsOfMyFriend		: document.amis,
+				indexMemberSelected	: pFriendsOfMember.indexMemberSelected,
+			}
+
+			return pWebSocketConnection.emit('displayFriendListOfMember',vFriendsOfMember); 
+		});
 	};
 
   // ---------------------------------------------------------------------------------------------------------------------------
@@ -1639,15 +1655,6 @@ console.log('------------------------------------------------------------------'
 		role						: 0,
 		nbrWaitingInvit : 0,
 	}
-
-	console.log('--------------------------------------------------------------------------------------------------------------------');
-	console.log('initVisiteur 0 : Nbre de visiteurs : ', this.objectPopulation.nbrConnections);
-	console.log('initVisiteur 0 : Nbre de membres : ',this.objectPopulation.nbrMembersInSession);
-	console.log('initVisiteur 0 : Nbre d\'Admin : ',this.objectPopulation.nbrAdminsInSessions);
-	console.log('--------------------------------------------------------------------------------------------------------------------');
-	console.log('initVisiteur 0 : objectPopulation.members.length : ',this.objectPopulation.members.length);
-	console.log('initVisiteur 0 : objectPopulation.members : ',this.objectPopulation.members);
-	console.log('--------------------------------------------------------------------------------------------------------------------');
 
 	this.objectPopulation.members.push(memberLocal);
 	this.objectPopulation.nbrConnections++;             // Nombre de visiteurs incluant les [membres + Admins]

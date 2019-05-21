@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vToolBox = new ToolBox();
 	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 	
-	vMemberClient.InitPopOverAndToolTipAndDropDown();
+	vToolBox.InitPopOverAndToolTipAndDropDown();
 		// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal (Header Menu)
@@ -629,11 +629,36 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ******************************************************************************************************************************
 	
 	// --------------------------------------------------------------
+	// Le serveur a renvoyé une liste d'amis pour le membre clické sur la micro-fiche
+	// On ouvre une nouvelle micro-fiche pour ce membre
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayFriendListOfMember', function(pFriendsOfMember){
+
+console.log('displayFriendListOfMember - pFriendsOfMember : ',pFriendsOfMember)
+
+		// var vDropDownParent = document.getElementById('idFriendsOfMembersLi'+pFriendsOfMember.indexMemberSelected);
+		var vDropDownParent = document.getElementById('idvHdrDivFastView');
+console.log('displayFriendListOfMember - vDropDownParent : ',vDropDownParent)	
+
+		new MicroFicheMember(pFriendsOfMember, vDropDownParent).displayMicroFicheMember();
+	}); 
+
+	// --------------------------------------------------------------
+	// Le serveur a supprimé le membre à qui j'avais envoyé une 
+	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
+	// --------------------------------------------------------------
+	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
+		pcancelInvitSent.indexInvitToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
+		vMemberClient.removeInvitSentFromMyInvitSentList(pcancelInvitSent, vInvitSentInfo);
+	});
+
+	// --------------------------------------------------------------
 	// Le serveur a supprimé le membre à qui j'avais envoyé une 
 	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
-		vMemberClient.removeInvitSentFromMyInvitSentList(pcancelInvitSent, vInvitSentInfo);
+		pcancelInvitSent.indexInvitToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
+		vMemberClient.refreshMyInvitList(pcancelInvitSent, vInvitSentInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -641,6 +666,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// de ma carte "Liste d'amis"
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
+		pFriendToDelete.indexFriendToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
 		vMemberClient.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
 	});
 
@@ -650,7 +676,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Même procédure que ci-dessus, sauf que les rôles sont inversés
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
-		vMemberClient.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+		pFriendToDelete.indexFriendToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
+		vMemberClient.refreshMyFriendList(pFriendToDelete, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -668,7 +695,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	// Le serveur a envoyé une liste d'amis à qui je peux recommander mon ami
 	// --------------------------------------------------------------
-	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){   
+	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){  
+		
+console.log('displayRecommendableFriendList - pRecommendableFriends : ',pRecommendableFriends)
 		vMemberClient.displayPopUpOfMyFriend(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
 	});
 
@@ -704,11 +733,17 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 	// --------------------------------------------------------------
-	// Ajout de mon Avatar sur la liste de mon nouvel ami
+	// Suppression de l'invitation que j avais lancée à mon nouvel ami
+	// et ajout de mon Avatar sur la liste de mon nouvel ami
 	// --------------------------------------------------------------
 	webSocketConnection.on('addFriendIntoHisList', function(pMyFriend){ 
+		pMyFriend.indexInvitToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pMyFriend.friendPseudo);
+
+		// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
+		vMemberClient.refreshMyInvitList(pMyFriend, vInvitSentInfo);		
+
+		// Ajout de l'avatar sujet de l'invitation dans ma liste d'amis
 		vMemberClient.addFriendIntoCard(pMyFriend, vFriendInfo);
-		vMemberClient.removeInvitSentFromMyInvitSentList(pMyFriend, vInvitSentInfo);		// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
 	});
 
 	// --------------------------------------------------------------
@@ -825,6 +860,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vMemberClient.member = pDataTransmitted.member;    
 		var askingMembers = pDataTransmitted.askingMembers;
 		var myFriendsInfo = pDataTransmitted.myFriendsInfos;
+
 console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 		if (pDataTransmitted.welcomeMessage === 'Hello') {
 			vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  	// Affiche la fenêtre de bienvenue

@@ -80,7 +80,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           |   Cr&eacute;er un compte
       li.nav-item.mx-1.dropdown
         a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-          img#idImgAvatarDropDownMenu.avatarToken.ml-1.my-1(alt='Membre')
+          img#idImgAvatarDropDownMenu.avatarToken.tokenSize50.ml-1.my-1(alt='Membre')
           span#idSpanAvatarDropDownMenu
           // <i class="fa fa-user"></i>
         .dropdown-menu(aria-labelledby='templates-dropdown')
@@ -185,7 +185,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             // ******************************************************************************
             .card-header.bg-warning.border-bottom.border-warning
               .containerAvatarToken
-                img#idAvatarToken.avatarToken(alt='Avatar' src='')
+                img#idAvatarToken.avatarToken.tokenSize50(alt='Avatar' src='')
               h5.card-title Pr&eacute;sentation
             // ******************************************************************************
             // Corps de la carte "Présentation"
@@ -326,7 +326,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             .card-body(style='border: 1px black solid;')
               .row
                 .col-md-12.px-0.text-dark
-                  ul#idFriendUL.p-0.m-0(style='list-style: none;')
+                  div#idFriendUL.p-0.m-0(style='list-style: none;')
           // ******************************************************************************
           // Carte "Invitations lancées"
           // ******************************************************************************
@@ -1117,6 +1117,7 @@ script(src='static/js/toolBox.js')
 script(src='static/js/variables.js')
 script(src='static/js/SPAMgr.js')
 script(src='static/js/MemberClientSide.js')
+script(src='static/js/MicroFicheMember.js')
 script(src='siofu/client.js')
 // XXXXX A virer "custom.js"
 script(src='static/js/custom.js')

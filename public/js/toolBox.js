@@ -255,3 +255,20 @@ ToolBox.prototype.splitFriendFromCombo = function(pFriendCombo){
 	}
 	return vFriendPseudo;
 }
+// -----------------------------------------------------------------------------
+//  Cette fonction initialise les popOver, toolTip et DropDown Menus de Bootstrap
+// -----------------------------------------------------------------------------
+ToolBox.prototype.InitPopOverAndToolTipAndDropDown = function(){
+	$(function () {
+		$('[data-toggle="popover"]').popover();			// Activation des PopOver de Bootstrap (pour les Notifications)
+	});
+
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();			// Activation des ToolTips de Bootstrap	(Pour les noms de mes amis)
+	});
+
+	$(function () {
+		$('[data-toggle="dropdown"]').dropdown();		// Activation des DropDown de Bootstrap	(Pour les PopUp de recommandation)
+	});
+}
+

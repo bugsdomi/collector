@@ -153,6 +153,13 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	webSocketConnection.on('deleteFriendOfMine', function(pFriendToDelete){
 		vMemberServer.deleteFriendOfMine(pFriendToDelete, webSocketConnection, socketIo);
 	});   				
+
+		// On a reçu une demande de liste d'amis
+		webSocketConnection.on('getFriendsOfMember', function(pFriendsOfMember){
+			vMemberServer.getFriendsOfMember(pFriendsOfMember, webSocketConnection);
+		});   				
+		
+	
 	
 	// ------------------------------------
 	// Gestion des recommandations
