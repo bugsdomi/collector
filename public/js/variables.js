@@ -10,6 +10,7 @@
 // var vLoginForm;                     // Instance du formulaire de saisie du Login
 var vToolBox;                       // Instance de la Boîte à outils
 var webSocketConnection;            // Variable pour la connexion WebSocket
+var cstDelayClosingMicroFiche = 10000;  // Délai en msec avant la fermeture des Micro-Fiches
 var cstDelayClosingPopover = 3000;  // Délai en msec avant la fermeture des notifications diverses
 var cstDelayToggleModal = 300;      // Délai nécessaire pour réouvrir des modales 
 var cstAmiConfirme    = 0; 				  // Statut pour un ami confirmé

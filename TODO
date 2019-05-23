@@ -16,14 +16,13 @@ Todo:
     - displayxxx
     - updateProfile
 
-    ☐ Ajouter une Popover ssur l'annulaation d'une invitation
+    ☐ Ajouter la version du produit en bas a droite de l'écran
     ☐ Changer les avatars dynamiquement chez mes amis ou futurs amis
     ☐ Voir Toastr
     ☐ Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
     ☐ Passer tous les champs a XS-4
-    ☐ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher
     
     ☐ Gerer le nombre de messages :
         ☐ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire
@@ -71,7 +70,7 @@ Todo:
     
     Rattrapé (A fusionner) :
     ✔ Mettre un margin lateral sur les pils des preferences @done(19-05-11 13:09)
-    ☐ Virer les contratintes de saisie du Pseudo (Initiale en majuscule, etc..)
+    ☐ Virer les contraintes de saisie du Pseudo (Initiale en majuscule, etc..)
     ☐ En mode Mobile, modifier le stroke du nom de l avatar
     ☐ En mode Mobile, modifier la largeur de la  modale de succes de connexion 
     ☐ Revérifier tous les ecrans en mode mobile
@@ -182,5 +181,7 @@ Todo:
     ✔ Dans la carte de présentation, si les champs ne sont pas remplis dans la fiche de renseignement, mettre "non renseigné" @done(19-05-11 13:06)
     ✔ Montrer un effet "Bouton bouton appuyé" sur les icones de demande d'amis, d'acceptation et de refus @done(19-05-11 13:07)
     ✔ Convertir les fonctions anonymes en fonctions fleches @done(19-05-11 13:07)
+    ✔ Ajouter une Popover ssur l'annulation d'une invitation @done(19-05-22 09:09)
+    ✘ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher @cancelled(19-05-22 09:10)
     
     

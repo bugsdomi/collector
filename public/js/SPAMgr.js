@@ -132,11 +132,23 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAboutVille = document.getElementById('idAboutVille');
 	var vAboutDepartmentName = document.getElementById('idAboutDepartmentName');
 	var vAboutPresentation = document.getElementById('idAboutPresentation');
-	
 
 	// -------------------------------------------------------------------------
 	// Eléments de la carte des amis du membre sur son profil
 	// -------------------------------------------------------------------------
+	var vFilteredFriends = document.getElementById('idFilteredFriends');
+
+	vFilteredFriends.addEventListener('keyup', function(){
+		vMemberClient.filterFriends(vFilteredFriends.value.toUpperCase())
+	});
+
+	var vClearFriendsFilter = document.getElementById('idClearFriendsFilter');
+
+	vClearFriendsFilter.addEventListener('click', function(){
+		vFilteredFriends.value = '';
+		vMemberClient.filterFriends(vFilteredFriends.value.toUpperCase())
+	});
+
 	var vFriendUL = document.getElementById('idFriendUL');
 	
 	// -------------------------------------------------------------------------
@@ -559,6 +571,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vGenericModalHeader,
 		vGenericModalTitle,
 		vGenericModalBodyText,
+		vClearFriendsFilter,
 		vFriendUL,
 	}
 
@@ -633,13 +646,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// On ouvre une nouvelle micro-fiche pour ce membre
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayFriendListOfMember', function(pFriendsOfMember){
-
-console.log('displayFriendListOfMember - pFriendsOfMember : ',pFriendsOfMember)
-
-		// var vDropDownParent = document.getElementById('idFriendsOfMembersLi'+pFriendsOfMember.indexMemberSelected);
-		var vDropDownParent = document.getElementById('idvHdrDivFastView');
-console.log('displayFriendListOfMember - vDropDownParent : ',vDropDownParent)	
-
+		var vDropDownParent = document.getElementById('idDivMicroFiche0');
 		new MicroFicheMember(pFriendsOfMember, vDropDownParent).displayMicroFicheMember();
 	}); 
 
@@ -696,8 +703,6 @@ console.log('displayFriendListOfMember - vDropDownParent : ',vDropDownParent)
 	// Le serveur a envoyé une liste d'amis à qui je peux recommander mon ami
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){  
-		
-console.log('displayRecommendableFriendList - pRecommendableFriends : ',pRecommendableFriends)
 		vMemberClient.displayPopUpOfMyFriend(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
 	});
 
@@ -792,6 +797,8 @@ console.log('displayRecommendableFriendList - pRecommendableFriends : ',pRecomme
 			modalMgrFriendExitBtn 	: vModalMgrFriendExitBtn,
 			modalMgrFriendListGroup : vModalMgrFriendListGroup,
 		}
+
+console.log('displayPotentialFriends - pMembersFriendables : ',pMembersFriendables)
 		vMemberClient.displayPotentialFriends(pMembersFriendables, vDisplayPotentialfriendData);
 	});
 

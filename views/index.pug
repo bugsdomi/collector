@@ -82,7 +82,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a#idDropDownProfilMenu.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
           img#idImgAvatarDropDownMenu.avatarToken.tokenSize50.ml-1.my-1(alt='Membre')
           span#idSpanAvatarDropDownMenu
-          // <i class="fa fa-user"></i>
         .dropdown-menu(aria-labelledby='templates-dropdown')
           a#idAccount.dropdown-item(href='#idModalAccount' data-toggle='modal' data-target='#idModalAccount')
             i.fa.fa-id-card-o
@@ -159,6 +158,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                       i.fa.fa-fw.fa-user-plus
                       |  Ajouter des amis
                   li
+                    a#idSearchMember(href='#')
+                      i.fa.fa-fw.fa-search
+                      |  Rechercher des membres
+                  li
                     a#idInvitations(href='#')
                       i.fa.fa-fw.fa-users
                       |  Invitations re&ccedil;ues 
@@ -185,7 +188,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             // ******************************************************************************
             .card-header.bg-warning.border-bottom.border-warning
               .containerAvatarToken
-                img#idAvatarToken.avatarToken.tokenSize50(alt='Avatar' src='')
+                img#idAvatarToken.avatarToken.tokenSize50.ml-0(alt='Avatar' src='')
               h5.card-title Pr&eacute;sentation
             // ******************************************************************************
             // Corps de la carte "Présentation"
@@ -319,14 +322,24 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             // Entête de la carte "Amis"
             // ******************************************************************************
             .card-header.bg-warning.border-bottom.border-warning
-              h5.card-title Amis
+              .container
+                .row
+                  h5.col-2.px-0.my-0.align-self-center Amis
+                  .col-10.px-0
+                    .input-group.input-group-sm.border.rounded
+                      .input-group-prepend
+                        span.input-group-text
+                          i.fa.fa-fw.fa-filter
+                      input#idFilteredFriends.form-control(type='text' placeholder='Filtrer des amis')
+                      .input-group-btn
+                        button#idClearFriendsFilter.btn.btn-sm(type='button') X
             // ******************************************************************************
             // Corps de la carte "Amis"
             // ******************************************************************************
             .card-body(style='border: 1px black solid;')
               .row
                 .col-md-12.px-0.text-dark
-                  div#idFriendUL.p-0.m-0(style='list-style: none;')
+                  ul#idFriendUL.p-0.m-0(style='list-style: none;')
           // ******************************************************************************
           // Carte "Invitations lancées"
           // ******************************************************************************
@@ -335,7 +348,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             // Entête de la carte "Invitations lancées"
             // ******************************************************************************
             .card-header.bg-warning.border-bottom.border-warning
-              h5.card-title Invitations envoy&eacute;es aux membres suivants 
+              h5.card-title.mx-0 Invitations envoy&eacute;es aux membres suivants 
             // ******************************************************************************
             // Corps de la carte "Invitations lancées"
             // ******************************************************************************

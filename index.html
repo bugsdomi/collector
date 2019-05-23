@@ -99,7 +99,6 @@
 				<li class="nav-item mx-1 dropdown">
 					<a class="nav-link dropdown-toggle" id="idDropDownProfilMenu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<img id="idImgAvatarDropDownMenu" class="avatarToken tokenSize50 ml-1 my-1" alt="Membre"><span id="idSpanAvatarDropDownMenu"></span>
-<!-- <i class="fa fa-user"></i>  -->
 					</a>
 					<div class="dropdown-menu" aria-labelledby="templates-dropdown">
 						<a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount"><i class="fa fa-id-card-o"></i> Renseignements</a>
@@ -182,6 +181,7 @@
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
 										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
+										<li><a id="idSearchMember" href="#"><i class="fa fa-fw fa-search"></i> Rechercher des membres</li>
 										<li><a id="idInvitations" href="#"><i class="fa fa-fw fa-users"></i> Invitations reçues <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
 									</ul>
@@ -213,7 +213,7 @@
 						<!-- ****************************************************************************** -->
 						<div class="card-header bg-warning border-bottom border-warning">
 							<div class="containerAvatarToken">
-								<img id="idAvatarToken" class="avatarToken tokenSize50" alt="Avatar" src="">
+								<img id="idAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="">
 							</div>
 							<h5 class="card-title">Présentation</h5>
 						</div>
@@ -369,7 +369,22 @@
 						<!--                      Entête de la carte "Amis"                         -->
 						<!-- ****************************************************************************** -->
 						<div class="card-header bg-warning border-bottom border-warning">
-							<h5 class="card-title">Amis</h5>
+							<div class="container">
+								<div class="row">
+									<h5 class="col-2 px-0 my-0 align-self-center">Amis</h5>
+									<div class="col-10 px-0">
+										<div class="input-group input-group-sm border rounded">
+											<div class="input-group-prepend">
+												<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
+											</div>
+											<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
+											<div class="input-group-btn">
+												<button class="btn btn-sm" id="idClearFriendsFilter" type="button">X</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<!-- ****************************************************************************** -->
@@ -394,7 +409,7 @@
 						<!--                      Entête de la carte "Invitations lancées"                         -->
 						<!-- ****************************************************************************** -->
 						<div class="card-header bg-warning border-bottom border-warning">
-							<h5 class="card-title">Invitations envoyées aux membres suivants </h5>
+							<h5 class="card-title mx-0">Invitations envoyées aux membres suivants </h5>
 						</div>
 
 						<!-- ****************************************************************************** -->

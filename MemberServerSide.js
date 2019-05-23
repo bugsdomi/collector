@@ -1372,7 +1372,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				friendFirstName			: document.etatCivil.firstName,
 				friendName 					: document.etatCivil.name,
 				friendsOfMyFriend		: document.amis,
-				indexMemberSelected	: pFriendsOfMember.indexMemberSelected,
 			}
 
 			return pWebSocketConnection.emit('displayFriendListOfMember',vFriendsOfMember); 
@@ -1646,28 +1645,28 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.initVisiteur = function(pWebSocketConnection, pSocketIo){
 
-	let memberLocal = 
-	{
-		idSocket  			: pWebSocketConnection.id,
-		isMember  			: false,
-		email     			: '',
-		pseudo    			: '',
-		role						: 0,
-		nbrWaitingInvit : 0,
-	}
+		let memberLocal = 
+		{
+			idSocket  			: pWebSocketConnection.id,
+			isMember  			: false,
+			email     			: '',
+			pseudo    			: '',
+			role						: 0,
+			nbrWaitingInvit : 0,
+		}
 
-	this.objectPopulation.members.push(memberLocal);
-	this.objectPopulation.nbrConnections++;             // Nombre de visiteurs incluant les [membres + Admins]
-	this.UpdateDisplayPopulation(pSocketIo);
+		this.objectPopulation.members.push(memberLocal);
+		this.objectPopulation.nbrConnections++;             // Nombre de visiteurs incluant les [membres + Admins]
+		this.UpdateDisplayPopulation(pSocketIo);
 
-	console.log('--------------------------------------------------------------------------------------------------------------------');
-	console.log('initVisiteur 1 : Nbre de visiteurs : ', this.objectPopulation.nbrConnections);
-	console.log('initVisiteur 1 : Nbre de membres : ',this.objectPopulation.nbrMembersInSession);
-	console.log('initVisiteur 1 : Nbre d\'Admin : ',this.objectPopulation.nbrAdminsInSessions);
-	console.log('--------------------------------------------------------------------------------------------------------------------');
-	console.log('initVisiteur 1 : objectPopulation.members.length : ',this.objectPopulation.members.length);
-	console.log('initVisiteur 1 : objectPopulation.members : ',this.objectPopulation.members);
-	console.log('--------------------------------------------------------------------------------------------------------------------');
+		console.log('--------------------------------------------------------------------------------------------------------------------');
+		console.log('initVisiteur 1 : Nbre de visiteurs : ', this.objectPopulation.nbrConnections);
+		console.log('initVisiteur 1 : Nbre de membres : ',this.objectPopulation.nbrMembersInSession);
+		console.log('initVisiteur 1 : Nbre d\'Admin : ',this.objectPopulation.nbrAdminsInSessions);
+		console.log('--------------------------------------------------------------------------------------------------------------------');
+		console.log('initVisiteur 1 : objectPopulation.members.length : ',this.objectPopulation.members.length);
+		console.log('initVisiteur 1 : objectPopulation.members : ',this.objectPopulation.members);
+		console.log('--------------------------------------------------------------------------------------------------------------------');
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------

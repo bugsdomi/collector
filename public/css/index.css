@@ -19,13 +19,13 @@ body {
     /* font-family: Lato,"Helvetica Neue",Arial,Verdana,Tahoma,"Lucida Sans",FreeSans,"Lucida Sans Unicode","Luxi Sans",sans-serif; */
     /* background: #e9eaed; */      /* DH- */
     /* background: #012C01; */      /* DH- */
-      background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),
-                      url("../images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png"),
-                      url("../images/FondVert-60.png");          /* DH+ */
-      background-attachment: fixed;
-      overflow-x:hidden;
-  }
-  
+    background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),
+                        url("../images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png"),
+                        url("../images/FondVert-60.png");          /* DH+ */
+    background-attachment: fixed;
+    overflow-x:hidden;
+}
+
 
 .cOpacity{
     /* background-color: rgba(1, 44, 1, 0.9); */
@@ -446,4 +446,23 @@ body {
 /* ************************************ */
 a, a:hover {
     text-decoration: none;
+}
+
+
+/* ******************************************* */
+/* Animation du bouton "Clear Friends Filter"  */ 
+/* ******************************************* */
+#idClearFriendsFilter:hover{
+    color: #222;
+    background: linear-gradient(rgb(230,159,42),rgb(252,141,50));
+    filter: brightness(110%)
+}
+
+#idClearFriendsFilter:active{
+    color: #000;
+    background: linear-gradient(rgb(230,159,42),rgb(252,141,50));
+    filter: brightness(110%);
+    box-shadow: 1px 1px 10px black inset, 
+                0 1px 0 rgba( 255, 255, 255, 0.4);
+    /* margin: 1% 9%; */
 }

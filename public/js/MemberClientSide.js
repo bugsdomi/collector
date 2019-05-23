@@ -365,10 +365,18 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 	pProfileInfo.vAboutPresentation.value = this.member.presentation;
 }
 
-
-
-
-
+// -----------------------------------------------------------------------------
+// Gestion de la liste des amis
+// -----------------------------------------------------------------------------
+MemberClient.prototype.filterFriends = function(pFilteredFriends){
+	this.vMyFriendList.forEach((item, index) => {
+		if (item.friendPseudo.toUpperCase().startsWith(pFilteredFriends)){
+			document.getElementById('idMyFriendLi'+index).classList.remove('d-none')
+		} else {
+			document.getElementById('idMyFriendLi'+index).classList.add('d-none')
+		}
+	});
+}
 
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la carte "Mes Amis" sur ma page de profil
@@ -426,7 +434,7 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
-	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black; visibility: hidden;');
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden;');
 // 
 // 
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->
@@ -898,9 +906,6 @@ MemberClient.prototype.sendRecommendation = function(event){
 	event.target.datas.dataToTransmit.lineHTML.vBtn.removeEventListener('mouseover', this.ChangeBtnTxtColOver,false);
 	event.target.datas.dataToTransmit.lineHTML.vBtn.removeEventListener('mouseout', this.ChangeBtnTxtColOut,false);
 
-console.log('sendRecommendation - event : ',event)
-
-
 	var vFriendToAdd = {
 		myEmail 						:	event.target.datas.member.email,
 		myPseudo						:	event.target.datas.member.pseudo,										    // C'est moi qui recommande l'ami 'FriendPseudo'
@@ -914,8 +919,6 @@ console.log('sendRecommendation - event : ',event)
 		indexFriendToRecommend	: event.target.datas.indexFriendToRecommend,
 		indexTargetFriend 			: event.target.datas.indexTargetFriend,
 	}
-
-console.log('sendRecommendation - vFriendToAdd : ',vFriendToAdd)
 
 	webSocketConnection.emit('recommendationSent', vFriendToAdd);  
 }
