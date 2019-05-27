@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  <!-- Nécessaire pour le coté "Responsive"-->
-		<meta name="description" content="Réseau social des Collectionneurs de sujet d'Histoire Militaire">
+		<meta name="description" content="Réseau social des Collectionneurs de sujets d'Histoire Militaire">
 		<meta name="author" content="kingstudio.ro">
 		
 		<!-- Favicon -->
@@ -181,7 +181,6 @@
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
 										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
-										<li><a id="idSearchMember" href="#"><i class="fa fa-fw fa-search"></i> Rechercher des membres</li>
 										<li><a id="idInvitations" href="#"><i class="fa fa-fw fa-users"></i> Invitations reçues <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
 									</ul>
@@ -378,8 +377,11 @@
 												<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
 											</div>
 											<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
-											<div class="input-group-btn">
-												<button class="btn btn-sm" id="idClearFriendsFilter" type="button">X</button>
+<!-- <div class="input-group-btn"> -->
+											<div class="input-group-append">
+												<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
+													<i class="fa fa-fw fa-times"></i>
+												</button>
 											</div>
 										</div>
 									</div>
@@ -1402,10 +1404,10 @@
 	<!--                     Fenêtre Modale d'ajout d'amis                         -->
 	<!-- ************************************************************************* -->
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idModalMgrFriendTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
+		<div id="idModalMgrFriendDialog" class="modal-dialog modal-dialog-centered" role="document" >
 			<div class="modal-content">
 				<div class="modal-header" id="idModalMgrFriendHeader">
-					<button  id="idModalMgrFriendExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					<button id="idModalMgrFriendExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
 					<div class="container px-0" id="idModalMgrFriendTitle">

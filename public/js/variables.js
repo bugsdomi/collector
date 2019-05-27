@@ -18,5 +18,8 @@ var cstInvitEncours   = 1;				  // Invitation pour devenir ami lancée							(Aj
 var cstAttenteConfirm = 2; 			    // Attente d'acceptation d'une invitation lancée	(Ajouté à la liste du membre receveur)
 var cstInvitation     = 0; 			    // Demande d'invitation classique
 var cstRecommendation = 1; 			    // Recommandation d'un Ami "B", recommandé par moi "A" vers un ami à moi "C"
+var cstWithoutNewModal 	= false;	  // Dans le cadre de l'affichage filtré des membres, la modale étant deja affichée, on veut pas en ouvrir une seconde
+var cstWithNewModal 		= true;		  // Dans le cadre de l'affichage non filtré des membres, la modale n'étant pas encore affichée, on veut pas en ouvrir une
+
 
 

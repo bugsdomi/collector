@@ -120,9 +120,14 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// Gestion des amis
 	// ------------------------------------
 	// On a reçu une demande de la liste d'ajout d'amis 
-	webSocketConnection.on('askAddFriend', function(pMyPseudo){
-		vMemberServer.askAddFriend(pMyPseudo, webSocketConnection);
+	webSocketConnection.on('askAddFriend', function(pDataToTransmit){
+		vMemberServer.askAddFriend(pDataToTransmit, webSocketConnection);
 	});   						
+
+	// On a reçu une demande de liste de membres filtrés
+	webSocketConnection.on('searchFilteredMembers', function(pSearchMembersParams){
+		vMemberServer.searchFilteredMembers(pSearchMembersParams, webSocketConnection);
+	});   				
 
 	// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
 	webSocketConnection.on('invitationSent', function(pFriendToAdd){
@@ -158,9 +163,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		webSocketConnection.on('getFriendsOfMember', function(pFriendsOfMember){
 			vMemberServer.getFriendsOfMember(pFriendsOfMember, webSocketConnection);
 		});   				
-		
-	
-	
+
 	// ------------------------------------
 	// Gestion des recommandations
 	// ------------------------------------

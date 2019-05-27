@@ -60,7 +60,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(){
 
 	vlineHTML.vDivCol = window.document.createElement('div');
 	vlineHTML.vDivRow.appendChild(vlineHTML.vDivCol);
-	vlineHTML.vDivCol.setAttribute('class', 'col-5 mx-0 px-0 withNoScaling align-self-center');
+	vlineHTML.vDivCol.setAttribute('class', 'col-4 mx-0 px-0 withNoScaling align-self-center');
 	
 	vlineHTML.vImg = window.document.createElement('img');
 	vlineHTML.vDivCol.appendChild(vlineHTML.vImg);
@@ -71,7 +71,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(){
 	
 	vlineHTML.vDivProfil = window.document.createElement('div');
 	vlineHTML.vDivRow.appendChild(vlineHTML.vDivProfil);
-	vlineHTML.vDivProfil.setAttribute('class', 'col-7  text-center mx-0 px-0');
+	vlineHTML.vDivProfil.setAttribute('class', 'col-8 text-center mx-0 px-0');
 	vlineHTML.vDivProfil.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 
 	vlineHTML.vDivPseudo = window.document.createElement('div');

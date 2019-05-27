@@ -21,16 +21,18 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const cstSuperAdmin = 1;  // Statut du Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
-const cstAdmin = 2;       // Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
-const cstMembre = 4;      // Membre standard qui ne peut qu'utiliser la partie publique de l'application 
+const cstAdmin = 2;       					// Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
+const cstMembre = 4;      					// Membre standard qui ne peut qu'utiliser la partie publique de l'application 
 const cstMailFrom = 'collector@vcp.com';    // Adresse "From" du mail
 const constFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'    // Caractères autorisés pour le 1er caractère du PWD
 const constNextCharString = constFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
-const cstLostPWD = 0;     // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par une déclaration de MDP perdu
-const cstChangedPWD = 1;  // Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par le mebre dans sa fiche de renseignement
-const cstAmiConfirme  = 0; 				// Statut pour un ami confirmé
-const cstInvitEncours = 1;				// Invitation pour devenir ami lancée							(Ajouté à la liste du membre demandeur)
-const cstAttenteConfirm = 2; 			// Attente d'acceptation d'une invitation lancée	(Ajouté à la liste du membre receveur)
+const cstLostPWD = 0;     					// Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par une déclaration de MDP perdu
+const cstChangedPWD = 1;  					// Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par le mebre dans sa fiche de renseignement
+const cstAmiConfirme  = 0; 					// Statut pour un ami confirmé
+const cstInvitEncours = 1;					// Invitation pour devenir ami lancée							(Ajouté à la liste du membre demandeur)
+const cstAttenteConfirm = 2; 				// Attente d'acceptation d'une invitation lancée	(Ajouté à la liste du membre receveur)
+const cstWithoutNewModal 	= false;	// Dans le cadre de l'affichage filtré des membres, la modale étant deja affichée, on veut pas en ouvrir une seconde
+const cstWithNewModal 		= true;		// Dans le cadre de l'affichage non filtré des membres, la modale n'étant pas encore affichée, on veut pas en ouvrir une
 
 module.exports = function MemberServer(){ // Fonction constructeur exportée
 	this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
@@ -779,13 +781,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
-	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
+	// Lecture de tous les membres de la BDD
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo){
+// MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo){
+	MemberServer.prototype.selectMembersToBeFriends = function(){
 		return new Promise((resolve, reject) => {
 
-			pMyPseudo = this.splitFriendFromCombo(pMyPseudo);
+// pMyPseudo = this.splitFriendFromCombo(pMyPseudo);
 
 			vDBMgr.collectionMembers.find(                                                   
 				{},
@@ -812,25 +814,77 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
 	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.filtersMembersFriendables = function(documents, pMyPseudo, pWebSocketConnection){
+	MemberServer.prototype.filtersMembersFriendables = function(documents, pMyPseudo, pWebSocketConnection, pWithNewModal){
 		// Note : Le Bind permet de passer des paramêtres supplementaires à ceux d'origine du Filter
 		let vMembersFriendables = documents.filter(this.filterMembersToBeFriends.bind(this, pMyPseudo)); 
 
-		if (vMembersFriendables.length === 0){
-			pWebSocketConnection.emit('emptyPotentialFriends'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
+
+		if (pWithNewModal){
+			if (vMembersFriendables.length === 0){
+				pWebSocketConnection.emit('emptyPotentialFriends'); 			// Il n'y pas de membres pouvant devenir amis ==> La liste est vide, on signale et abandonne 
+			} else {
+				pWebSocketConnection.emit('displayPotentialFriends',vMembersFriendables); // Affichage des membres pouvant devenir amis
+			};
 		} else {
-			pWebSocketConnection.emit('displayPotentialFriends',vMembersFriendables); // Affichage des membres pouvant devenir amis
-		};
+			pWebSocketConnection.emit('displayFilteredPotentialFriends',vMembersFriendables); // Affichage des membres pouvant devenir amis
+		}
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
 	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.askAddFriend = function(pMyPseudo, pWebSocketConnection){
-		this.selectMembersToBeFriends(pMyPseudo, pWebSocketConnection)
+	MemberServer.prototype.askAddFriend = function(pDataToTransmit, pWebSocketConnection){
+		this.selectMembersToBeFriends()
 		.then((documents) => {
-			this.filtersMembersFriendables(documents, pMyPseudo, pWebSocketConnection);
+			this.filtersMembersFriendables(documents, pDataToTransmit.myPseudo, pWebSocketConnection, pDataToTransmit.withNewModal);
+		});
+	};
+
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Lecture de tous les membres de la BDD
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.getFilteredMembers = function(pSearchMemberParam){
+		return new Promise((resolve, reject) => {
+
+			vDBMgr.collectionMembers.find(   
+				{ 
+					$text: 	{ $search : pSearchMemberParam,                         
+										$caseSensitive: false, 
+										$diacriticSensitive	: false 
+									} 
+				},
+				{
+					"pseudo" : 1, 
+					"etatCivil.firstName" : 1, 
+					"etatCivil.name" : 1, 
+					"etatCivil.photo" : 1, 
+					"_id" : 0
+				})
+			.toArray((error, documents) => {
+				if (error){
+					console.log('-------------------------------------------------------------');
+					console.log('getFilteredMembers - Erreur de Lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
+					console.log('getFilteredMembers - Pas de clé --> Normal : ');
+					console.log('-------------------------------------------------------------');
+					reject(error);
+					throw error;
+				} 
+				resolve(documents)
+			})
+		});
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
+	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
+	// + Filtrage en fonction des valeurs saisies dans "pseudo" + "Prénom" + "Nom"
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.searchFilteredMembers = function(pSearchMembersParams, pWebSocketConnection){
+		this.getFilteredMembers(pSearchMembersParams.searchMemberParams)
+		.then((documents) => {
+			this.filtersMembersFriendables(documents, pSearchMembersParams.myPseudo, pWebSocketConnection, cstWithoutNewModal);
 		});
 	};
 

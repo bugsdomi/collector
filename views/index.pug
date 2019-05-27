@@ -6,7 +6,7 @@ head
   meta(http-equiv='content-type' content='text/html;charset=UTF-8')
   meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
   // Nécessaire pour le coté "Responsive"
-  meta(name='description' content="Réseau social des Collectionneurs de sujet d'Histoire Militaire")
+  meta(name='description' content="Réseau social des Collectionneurs de sujets d'Histoire Militaire")
   meta(name='author' content='kingstudio.ro')
   // Favicon
   link(rel='icon' href='static/images/favicon.png')
@@ -157,10 +157,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                     a#idAddFriend(href='#')
                       i.fa.fa-fw.fa-user-plus
                       |  Ajouter des amis
-                  li
-                    a#idSearchMember(href='#')
-                      i.fa.fa-fw.fa-search
-                      |  Rechercher des membres
                   li
                     a#idInvitations(href='#')
                       i.fa.fa-fw.fa-users
@@ -331,8 +327,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                         span.input-group-text
                           i.fa.fa-fw.fa-filter
                       input#idFilteredFriends.form-control(type='text' placeholder='Filtrer des amis')
-                      .input-group-btn
-                        button#idClearFriendsFilter.btn.btn-sm(type='button') X
+                      // <div class="input-group-btn">
+                      .input-group-append
+                        button#idClearFriendsFilter.btn.btn-sm.border.pushBtnFilters(type='button')
+                          i.fa.fa-fw.fa-times
             // ******************************************************************************
             // Corps de la carte "Amis"
             // ******************************************************************************
@@ -1110,7 +1108,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale d'ajout d'amis
 // *************************************************************************
 #idModalMgrFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalMgrFriendTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document')
+  #idModalMgrFriendDialog.modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalMgrFriendHeader.modal-header
         button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;

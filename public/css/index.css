@@ -217,6 +217,13 @@ body {
     margin: 0 auto;
 } */
 
+/* ******************************* */
+/*          Form MgrFriends           */
+/* ******************************* */
+.form-MgrFriends {
+    max-width: 30vw;
+}
+
 
 
 /* ******************************* */
@@ -450,19 +457,33 @@ a, a:hover {
 
 
 /* ******************************************* */
-/* Animation du bouton "Clear Friends Filter"  */ 
+/* Animation des boutons "Clear Filter"        */ 
 /* ******************************************* */
-#idClearFriendsFilter:hover{
+.pushBtnFilters:hover{
     color: #222;
     background: linear-gradient(rgb(230,159,42),rgb(252,141,50));
     filter: brightness(110%)
 }
 
-#idClearFriendsFilter:active{
+.pushBtnFilters:active{
     color: #000;
     background: linear-gradient(rgb(230,159,42),rgb(252,141,50));
     filter: brightness(110%);
     box-shadow: 1px 1px 10px black inset, 
                 0 1px 0 rgba( 255, 255, 255, 0.4);
     /* margin: 1% 9%; */
+}
+
+/* ******************************************* */
+/* Couleurs lignes zonées des modales          */ 
+/* ******************************************* */
+.zonedLines:nth-child(even) {
+    color: #856404;
+    background-color: #ffeeba;
+}
+
+.zonedLines:nth-child(odd) {
+    color: #1b1e21;
+    /* background-color: #c6c8ca; */
+    background-color: #e0e0e0;
 }
