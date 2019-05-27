@@ -271,4 +271,24 @@ ToolBox.prototype.InitPopOverAndToolTipAndDropDown = function(){
 		$('[data-toggle="dropdown"]').dropdown();		// Activation des DropDown de Bootstrap	(Pour les PopUp de recommandation)
 	});
 }
+// -----------------------------------------------------------------------------
+//  Cette fonction formatte al date en JJ/MM/AA
+// -----------------------------------------------------------------------------
+ToolBox.prototype.setFormatDateJJMMAAA  = function(pDate){
+	var myDate 	= new Date(pDate);
 
+	var day 	= myDate.getDate();
+	var month  	= myDate.getMonth() + 1; 	// Janvier commence à 0
+	var year 	= myDate.getFullYear();
+
+	if(day<10){
+		day='0'+day;
+	} 
+
+	if (month < 10  )  {
+		month = '0' + month; 
+	}   
+
+	var myDate = day + '/' + month+ '/' + year;
+	return myDate
+};

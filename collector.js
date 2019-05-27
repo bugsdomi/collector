@@ -124,6 +124,16 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		vMemberServer.askAddFriend(pDataToTransmit, webSocketConnection);
 	});   						
 
+	// On a reçu une demande de liste d'amis potentiels filtrés
+	webSocketConnection.on('searchFilteredPotentialFriends', function(pSearchMembersParams){
+		vMemberServer.searchFilteredPotentialFriends(pSearchMembersParams, webSocketConnection);
+	});   				
+
+	// On a reçu une demande de la liste des membres
+	webSocketConnection.on('askMemberList', function(pDataToTransmit){
+		vMemberServer.askMemberList(pDataToTransmit, webSocketConnection);
+	});   						
+
 	// On a reçu une demande de liste de membres filtrés
 	webSocketConnection.on('searchFilteredMembers', function(pSearchMembersParams){
 		vMemberServer.searchFilteredMembers(pSearchMembersParams, webSocketConnection);

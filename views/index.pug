@@ -97,12 +97,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
         a#idAbout.nav-link.mb-3(href='#idGenericModal' data-toggle='modal' data-target='#idGenericModal')
           i.fa.fa-bell
           |  A propos
-//
-  <i class="fa fa-bar-chart"></i>
-  <i class="fa fa-cogs"></i>
-  <i class="fa fa-shield"></i>
-  <i class="fa fa-sliders"></i>
-  <i class="fa fa-map-signs"></i>
 // *************************************************************************
 // Carroussel de fond d'écran
 // *************************************************************************
@@ -157,6 +151,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                     a#idAddFriend(href='#')
                       i.fa.fa-fw.fa-user-plus
                       |  Ajouter des amis
+                  li
+                    a#idMemberList(href='#')
+                      i.fa.fa-fw.fa-search
+                      |  Rechercher des membres
                   li
                     a#idInvitations(href='#')
                       i.fa.fa-fw.fa-users
@@ -1115,6 +1113,17 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
       .modal-body
         #idModalMgrFriendTitle.container.px-0
           #idModalMgrFriendListGroup.list-group
+// *************************************************************************
+// Fenêtre Modale des membres
+// *************************************************************************
+#idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalMemberListTitle' aria-hidden='true')
+  #idModalMemberListDialog.modal-dialog.modal-dialog-centered(role='document' style='max-width: 700px;')
+    .modal-content
+      #idModalMemberListHeader.modal-header
+        button#idModalMemberListExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      .modal-body
+        #idModalMemberListTitle.container.px-0
+          #idModalMemberListGroup.list-group
 // *************************************************************************
 // Vérification Javascript activé + chargement des librairies
 // *************************************************************************

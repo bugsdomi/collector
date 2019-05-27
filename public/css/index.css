@@ -369,10 +369,17 @@ body {
 
 /* ********************************** */
 /* Change la taille des caractères    */
-/* a 1.25rem pour un usage général    */
+/* a 1.20rem pour un usage général    */
 /* ********************************** */
 .font-size-120{
     font-size: 1.2rem;
+}
+/* ********************************** */
+/* Change la taille des caractères    */
+/* a 0.8rem pour un usage général    */
+/* ********************************** */
+.font-size-80{
+    font-size: 0.8rem;
 }
 
 /* ********************************** */

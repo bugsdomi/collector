@@ -1746,6 +1746,256 @@ MemberClient.prototype.deleteLineInvitProcessed = function(pSelectedInvit, pModa
 
 
 // --------------------------------------------------------------
+// 				Gestion des membres
+// --------------------------------------------------------------
+
+// --------------------------------------------------------------
+// Cette fonction alimente un objet avec des créations dans le DOM 
+// des lignes HTML pour chaque membre créé dans Collect'Or
+// --------------------------------------------------------------
+function AddMemberListLines(item, index, modalMemberListGroup){
+	this.lineHTML = {};						// Structure HTML générée pour chaque ligne de membre
+
+	this.friend = item;
+	this.index = index;
+
+	this.lineHTML.vA = window.document.createElement('a');
+	modalMemberListGroup.appendChild(this.lineHTML.vA);
+	this.lineHTML.vA.setAttribute('id', 'idAddFriendAnchor'+index);
+	this.lineHTML.vA.setAttribute('href', '#');
+	this.lineHTML.vA.setAttribute('class', 'zonedLines border list-group-item list-group-item-action list-group-item-white');
+	
+	this.lineHTML.vDivRow = window.document.createElement('div');
+	this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
+	this.lineHTML.vDivRow.setAttribute('class', 'row');
+	this.lineHTML.vDivRow.setAttribute('style', 'cursor: default;');
+
+	this.lineHTML.vDivAvatar = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivAvatar);
+	this.lineHTML.vDivAvatar.setAttribute('class', 'col-2 containerAvatarToken py-1 px-0 text-center align-self-center');
+
+	this.lineHTML.vImg = window.document.createElement('img');
+	this.lineHTML.vDivAvatar.appendChild(this.lineHTML.vImg);
+	this.lineHTML.vImg.setAttribute('class', 'avatarToken tokenSize50 mx-0');
+	this.lineHTML.vImg.setAttribute('id', 'idImgPotentialFriends'+index);
+	this.lineHTML.vImg.setAttribute('alt', 'Membre pouvant devenir ami');
+	this.lineHTML.vImg.setAttribute('src', 'static/images/members/' + item.etatCivil.photo);
+
+	this.lineHTML.vDivPseudo = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+	this.lineHTML.vDivPseudo.setAttribute('class', 'col-3 px-0 text-center align-self-center font-size-120');
+	this.lineHTML.vDivPseudo.innerHTML = item.pseudo;
+
+	this.lineHTML.vDivPseudo = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+	this.lineHTML.vDivPseudo.setAttribute('class', 'col-2 px-0 text-center align-self-center font-size-120');
+	this.lineHTML.vDivPseudo.innerHTML = item.etatCivil.firstName;
+
+	this.lineHTML.vDivPseudo = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+	this.lineHTML.vDivPseudo.setAttribute('class', 'col-2 px-0 text-center align-self-center font-size-120');
+	this.lineHTML.vDivPseudo.innerHTML = item.etatCivil.name;
+
+	this.lineHTML.vDivPseudo = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
+	this.lineHTML.vDivPseudo.setAttribute('class', 'col-3 px-0 text-center align-self-center font-size-80');
+	this.lineHTML.vDivPseudo.innerHTML = 'Inscrit le ' + vToolBox.setFormatDateJJMMAAA(item.dateCreation);
+}
+
+// --------------------------------------------------------------
+// Affichage des champs de saisie nécessaires pour la recherche 
+// des membres (Pseudo et/ou Prénom et/ou nom)
+// --------------------------------------------------------------
+MemberClient.prototype.displaySearchMembersFilter = function(pDisplayPotentialfriendData){  
+	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
+
+	lineHTML.vSearchContainer = window.document.createElement('div');
+	var parentDiv2 = pDisplayPotentialfriendData.modalMemberListGroup.parentNode;
+	parentDiv2.insertBefore(lineHTML.vSearchContainer, pDisplayPotentialfriendData.modalMemberListGroup);
+	lineHTML.vSearchContainer.setAttribute('id', 'idSearchMembersFields');
+	lineHTML.vSearchContainer.setAttribute('class', 'container mb-2');
+
+	lineHTML.vSearchRow = window.document.createElement('div');
+	lineHTML.vSearchContainer.appendChild(lineHTML.vSearchRow);
+	lineHTML.vSearchRow.setAttribute('class', 'row');
+
+	lineHTML.vFieldSearch = window.document.createElement('div');
+	lineHTML.vSearchRow.appendChild(lineHTML.vFieldSearch);
+	lineHTML.vFieldSearch.setAttribute('class', 'col-12 px-0');
+
+	lineHTML.vGroupSearchMembers = window.document.createElement('div');
+	lineHTML.vFieldSearch.appendChild(lineHTML.vGroupSearchMembers);
+	lineHTML.vGroupSearchMembers.setAttribute('class', 'input-group input-group-sm border rounded');
+
+	lineHTML.vInputPseudo = window.document.createElement('input');
+	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputPseudo);
+	lineHTML.vInputPseudo.setAttribute('id', 'idSearchPseudo');
+	lineHTML.vInputPseudo.setAttribute('class', 'form-control');
+	lineHTML.vInputPseudo.setAttribute('type', 'text');
+	lineHTML.vInputPseudo.setAttribute('placeholder', 'Pseudo');
+
+	lineHTML.vInputFirstName = window.document.createElement('input');
+	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputFirstName);
+	lineHTML.vInputFirstName.setAttribute('id', 'idSearchFirstName');
+	lineHTML.vInputFirstName.setAttribute('class', 'form-control');
+	lineHTML.vInputFirstName.setAttribute('type', 'text');
+	lineHTML.vInputFirstName.setAttribute('placeholder', 'Prénom');
+
+	lineHTML.vInputName = window.document.createElement('input');
+	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputName);
+	lineHTML.vInputName.setAttribute('id', 'idSearchName');
+	lineHTML.vInputName.setAttribute('class', 'form-control');
+	lineHTML.vInputName.setAttribute('type', 'text');
+	lineHTML.vInputName.setAttribute('placeholder', 'Nom');
+
+	lineHTML.vClearSearch = window.document.createElement('div');
+	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vClearSearch);
+	lineHTML.vClearSearch.setAttribute('class', 'input-group-append');
+
+	lineHTML.vBtnClearSearch = window.document.createElement('button');
+	lineHTML.vClearSearch.appendChild(lineHTML.vBtnClearSearch);
+	lineHTML.vBtnClearSearch.setAttribute('id', 'idClearSearchMembers');
+	lineHTML.vBtnClearSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+
+	lineHTML.vIIconClearSearch = window.document.createElement('i');
+	lineHTML.vBtnClearSearch.appendChild(lineHTML.vIIconClearSearch);
+	lineHTML.vIIconClearSearch.setAttribute('class', 'fa fa-fw fa-times');
+
+	lineHTML.vBtnRunSearch = window.document.createElement('button');
+	lineHTML.vClearSearch.appendChild(lineHTML.vBtnRunSearch);
+	lineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearchMembers');
+	lineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+
+	lineHTML.vIIconRunSearch = window.document.createElement('i');
+	lineHTML.vBtnRunSearch.appendChild(lineHTML.vIIconRunSearch);
+	lineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
+
+	vDataToTransmit = {
+		myPseudo : this.member.pseudo,
+	}
+
+	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredMembers);
+	lineHTML.vBtnRunSearch.datas = vDataToTransmit;
+	lineHTML.vIIconRunSearch.datas = vDataToTransmit;
+
+	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullMemberList);
+	lineHTML.vBtnClearSearch.datas = vDataToTransmit;
+	lineHTML.vIIconClearSearch.datas = vDataToTransmit;
+}
+
+// --------------------------------------------------------------
+// On a clické sur la RAZ du filtre sur Pseudo et/ou prénom et/ou nom,
+// on restaure l'affichage standard des membres
+// --------------------------------------------------------------
+MemberClient.prototype.restoreFullMemberList = function(event){   
+	document.getElementById('idSearchPseudo').value = '',
+	document.getElementById('idSearchFirstName').value = '';
+	document.getElementById('idSearchName').value = '';
+
+	var vDataToTransmit = {
+		withNewModal	: cstWithoutNewModal,
+	}
+	webSocketConnection.emit('askMemberList', vDataToTransmit);  
+}
+
+// --------------------------------------------------------------
+// Demande d'affichage des membres filtrés 
+// sur Pseudo et/ou prénom et/ou nom 
+// --------------------------------------------------------------
+MemberClient.prototype.searchFilteredMembers = function(event){  
+	var vSearchMembersParams	= document.getElementById('idSearchPseudo').value + ' '
+														+ document.getElementById('idSearchFirstName').value + ' '
+														+ document.getElementById('idSearchName').value;
+
+	if (vSearchMembersParams.length > 2){ 							// "2" pour tenir compte des 2 espaces inclus entre les hamps de filtrage
+		vDataToTransmit = 
+		{
+			withNewModal	: cstWithoutNewModal,
+			searchMemberParams 	: vSearchMembersParams,
+		}
+
+		webSocketConnection.emit('searchFilteredMembers',vDataToTransmit);  
+	}
+}
+
+// --------------------------------------------------------------
+// Affichage du Header de la modale de la liste des membres
+// --------------------------------------------------------------
+MemberClient.prototype.displayHeaderMemberList = function(pDisplayMembersModalData){   
+	// Préparation et ouverture de la fenêtre modale de sélection des membres 
+	this.InitHeaderColor('bg-warning', pDisplayMembersModalData.modalMemberListHeader);
+	document.getElementById('idModalMemberListDialog').classList.add('form-MgrFriends');
+
+	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
+
+	lineHTML.vH5 = window.document.createElement('h5');
+	var parentDiv1 = pDisplayMembersModalData.modalMemberListExitBtn.parentNode;
+	parentDiv1.insertBefore(lineHTML.vH5, pDisplayMembersModalData.modalMemberListExitBtn);
+	lineHTML.vH5.setAttribute('class', 'modal-title');
+	lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-th-list"></i>'+' Liste des membres déclarés';
+	
+	lineHTML.vH6 = window.document.createElement('h6');
+	var parentDiv2 = pDisplayMembersModalData.modalMemberListGroup.parentNode;
+	parentDiv2.insertBefore(lineHTML.vH6, pDisplayMembersModalData.modalMemberListGroup);
+	lineHTML.vH6.setAttribute('class', 'text-center');
+	lineHTML.vH6.innerHTML = 'Liste de tous les membres déclarés dans \'Collect\'Or\'';
+}
+
+// --------------------------------------------------------------
+// Affichage des lignes des amis potentiel pour l'ajout d'amis
+// --------------------------------------------------------------
+MemberClient.prototype.displayMembersLines = function(pMembers, pDisplayMembersModalData){ 
+	// Création dynamique des lignes HTML 
+	var vMembers = [];
+
+	pMembers.forEach((item, index) => {
+		vMembers.push(new AddMemberListLines(item, index, pDisplayMembersModalData.modalMemberListGroup));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+	});
+}
+
+// --------------------------------------------------------------
+// On a reçu une liste de membres pouvant devenir amis
+// Ajout dynamique des membres dans le DOM sur la modale
+// de sélection des membres pour devenir amis
+// --------------------------------------------------------------
+MemberClient.prototype.displayMembers = function(pMembers, pDisplayMembersModalData){   
+	this.displayHeaderMemberList(pDisplayMembersModalData);
+
+	// Affiche les champs de recherche des membres (Pseudo et/ou Prénom et/ou Nom)
+	this.displaySearchMembersFilter(pDisplayMembersModalData);		
+
+	// Affiche les lignes des amis potentiels
+	this.displayMembersLines(pMembers, pDisplayMembersModalData)
+
+	$('#idModalMemberList').modal('show');     // Ouverture de la modale                                     
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------------------
 // 				Gestion des demandes d'amis
 // --------------------------------------------------------------
 
@@ -1823,7 +2073,7 @@ function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
 // Affichage des champs de saisie nécessaires pour la recherche 
 // des membres (Pseudo et/ou Prénom et/ou nom)
 // --------------------------------------------------------------
-MemberClient.prototype.displaySearchMembersFilter = function(pDisplayPotentialfriendData){  
+MemberClient.prototype.displaySearchPotentialFriendsFilter = function(pDisplayPotentialfriendData){  
 	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
 
 	lineHTML.vSearchContainer = window.document.createElement('div');
@@ -1891,11 +2141,11 @@ MemberClient.prototype.displaySearchMembersFilter = function(pDisplayPotentialfr
 		myPseudo : this.member.pseudo,
 	}
 
-	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredMembers);
+	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredPotentialFriends);
 	lineHTML.vBtnRunSearch.datas = vDataToTransmit;
 	lineHTML.vIIconRunSearch.datas = vDataToTransmit;
 
-	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreAddFriend);
+	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullAddFriend);
 	lineHTML.vBtnClearSearch.datas = vDataToTransmit;
 	lineHTML.vIIconClearSearch.datas = vDataToTransmit;
 }
@@ -1904,9 +2154,7 @@ MemberClient.prototype.displaySearchMembersFilter = function(pDisplayPotentialfr
 // On a clické sur la RAZ du filtre sur Pseudo et/ou prénom et/ou nom,
 // on restaure l'affichage standard des membres pouvant devenir amis
 // --------------------------------------------------------------
-MemberClient.prototype.restoreAddFriend = function(event){   
-
-console.log('restoreAddFriend - event : ',event)
+MemberClient.prototype.restoreFullAddFriend = function(event){   
 	document.getElementById('idSearchPseudo').value = '',
 	document.getElementById('idSearchFirstName').value = '';
 	document.getElementById('idSearchName').value = '';
@@ -1923,10 +2171,7 @@ console.log('restoreAddFriend - event : ',event)
 // Demande d'affichage des membres potentiellement amis filtrés 
 // sur Pseudo et/ou prénom et/ou nom 
 // --------------------------------------------------------------
-MemberClient.prototype.searchFilteredMembers = function(event){  
-	
-console.log('searchFilteredMembers - event : ',event)
-
+MemberClient.prototype.searchFilteredPotentialFriends = function(event){  
 	var vSearchMembersParams	= document.getElementById('idSearchPseudo').value + ' '
 														+ document.getElementById('idSearchFirstName').value + ' '
 														+ document.getElementById('idSearchName').value;
@@ -1937,22 +2182,16 @@ console.log('searchFilteredMembers - event : ',event)
 			myPseudo						: event.target.datas.myPseudo,
 			searchMemberParams 	: vSearchMembersParams,
 		}
-		webSocketConnection.emit('searchFilteredMembers',vDataToTransmit);  
+		webSocketConnection.emit('searchFilteredPotentialFriends',vDataToTransmit);  
 	}
 }
-
-
-
-
-
-
 
 // --------------------------------------------------------------
 // Affichage du Header de la modale d'ajout d'amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayHeaderPotentialFriends = function(pDisplayPotentialfriendData){   
 
-	// Préparation et ouverture de la fenêtre modale de sélection des membres puvant devenir amis
+	// Préparation et ouverture de la fenêtre modale de sélection des membres pouvant devenir amis
 	this.InitHeaderColor('bg-warning', pDisplayPotentialfriendData.modalMgrFriendHeader);
 	document.getElementById('idModalMgrFriendDialog').classList.add('form-MgrFriends');
 
@@ -1974,7 +2213,7 @@ MemberClient.prototype.displayHeaderPotentialFriends = function(pDisplayPotentia
 }
 
 // --------------------------------------------------------------
-// Affichage du Header de la modale d'ajout d'amis
+// Affichage des lignes des amis potentiel pour l'ajout d'amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayPotentialFriendsLines = function(pMembersFriendables, pDisplayPotentialfriendData){ 
 	
@@ -2013,7 +2252,7 @@ MemberClient.prototype.displayPotentialFriends = function(pMembersFriendables, p
 	this.displayHeaderPotentialFriends(pDisplayPotentialfriendData);
 
 	// Affiche les champs de recherche des membres (Pseudo et/ou Prénom et/ou Nom)
-	this.displaySearchMembersFilter(pDisplayPotentialfriendData);		
+	this.displaySearchPotentialFriendsFilter(pDisplayPotentialfriendData);		
 
 	// Affiche les lignes des amis potentiels
 	this.displayPotentialFriendsLines(pMembersFriendables, pDisplayPotentialfriendData)

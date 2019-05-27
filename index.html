@@ -114,11 +114,7 @@
 			</ul>
 		</div>
 	</nav>
-	<!-- <i class="fa fa-bar-chart"></i>
-	<i class="fa fa-cogs"></i>
-	<i class="fa fa-shield"></i>
-	<i class="fa fa-sliders"></i>
-	<i class="fa fa-map-signs"></i> -->
+
 	<!-- ************************************************************************* -->
 	<!--                         Carroussel de fond d'écran                        -->
 	<!-- ************************************************************************* -->
@@ -181,6 +177,7 @@
 									<ul class="cover-nav" id="idProfileNavBar">
 										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
 										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
+										<li><a id="idMemberList" href="#"><i class="fa fa-fw fa-search"></i> Rechercher des membres</a></li>
 										<li><a id="idInvitations" href="#"><i class="fa fa-fw fa-users"></i> Invitations reçues <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
 										<li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li>
 									</ul>
@@ -1412,6 +1409,25 @@
 				<div class="modal-body">
 					<div class="container px-0" id="idModalMgrFriendTitle">
 						<div class="list-group" id="idModalMgrFriendListGroup">
+						</div>
+					</div>
+				</div>			
+			</div>			
+		</div>	
+	</div>		
+
+	<!-- ************************************************************************* -->
+	<!--                     Fenêtre Modale des membres                            -->
+	<!-- ************************************************************************* -->
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idModalMemberListTitle" aria-hidden="true">
+		<div id="idModalMemberListDialog" class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header" id="idModalMemberListHeader">
+					<button id="idModalMemberListExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="container px-0" id="idModalMemberListTitle">
+						<div class="list-group" id="idModalMemberListGroup">
 						</div>
 					</div>
 				</div>			

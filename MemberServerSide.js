@@ -165,10 +165,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.findVisitorBecomeMember = (pVisiteurLoginData) => {
 		return new Promise((resolve, reject) => {
 			vDBMgr.collectionMembers.find(
-				{ 
-						'pseudo': pVisiteurLoginData.pseudo, 
-						'password': pVisiteurLoginData.password, 
-				})
+			{ 
+				'pseudo': pVisiteurLoginData.pseudo, 
+				'password': pVisiteurLoginData.password, 
+			})
 			.limit(1)
 			.toArray((error, documents) => {
 				if (error) {
@@ -366,7 +366,9 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			vDBMgr.collectionMembers.find(
 			{ 
 				'email': pLostPWDEmail, 
-			}).toArray((error, documents) => {
+			})
+			.limit(1)
+			.toArray((error, documents) => {
 				if (error) {
 					console.log('-------------------------------------------------------------');
 					console.log('checkLostPWDMailIsValid - pLostPWDEmail : ',pLostPWDEmail);
@@ -560,7 +562,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.checkVisitorSignInPseudoIsValid = function(pVisiteurSignInData, pWebSocketConnection){
 		return new Promise((resolve, reject) => {
 
-			// Le mail n a pas été trouvé (donc O), on vérifie maintenant la non-existence du Pseudo
+			// Le mail n a pas été trouvé (donc OK), on vérifie maintenant la non-existence du Pseudo
 			vDBMgr.collectionMembers.find(                  
 			{ 
 				'pseudo': pVisiteurSignInData.pseudo, 
@@ -608,7 +610,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			}
 
 			let myLocalDate = new Date();
-			myLocalDate += myLocalDate.getTimezoneOffset(); // Timestamp de la création du record en tenant compte du décalage horaire
+// myLocalDate += myLocalDate.getTimezoneOffset(); // Timestamp de la création du record en tenant compte du décalage horaire
 
 			let memberLocal = 
 			{
@@ -783,11 +785,8 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les membres de la BDD
 	// ---------------------------------------------------------------------------------------------------------------------------
-// MemberServer.prototype.selectMembersToBeFriends = function(pMyPseudo){
-	MemberServer.prototype.selectMembersToBeFriends = function(){
+	MemberServer.prototype.getMembers = function(){
 		return new Promise((resolve, reject) => {
-
-// pMyPseudo = this.splitFriendFromCombo(pMyPseudo);
 
 			vDBMgr.collectionMembers.find(                                                   
 				{},
@@ -796,11 +795,12 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					"etatCivil.photo" : 1, 
 					"_id" : 0
 				})
+			.sort({"pseudo":1})
 			.toArray((error, documents) => {
 				if (error){
 					console.log('-------------------------------------------------------------');
-					console.log('selectMembersToBeFriends - Erreur de Lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
-					console.log('selectMembersToBeFriends - Pas de clé --> Normal : ');
+					console.log('getMembers - Erreur de Lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
+					console.log('getMembers - Pas de clé --> Normal : ');
 					console.log('-------------------------------------------------------------');
 					reject(error);
 					throw error;
@@ -811,7 +811,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Lecture de tous les membres de la BDD, puis filtrage pour ne garder que les membres pouvant devenir "Amis" en fonction des règles édictées dans le CDC
+	// Filtrage des membres pour ne garder que ceux pouvant devenir "Amis" en fonction des règles édictées dans le CDC
 	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.filtersMembersFriendables = function(documents, pMyPseudo, pWebSocketConnection, pWithNewModal){
@@ -835,7 +835,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.askAddFriend = function(pDataToTransmit, pWebSocketConnection){
-		this.selectMembersToBeFriends()
+		this.getMembers()
 		.then((documents) => {
 			this.filtersMembersFriendables(documents, pDataToTransmit.myPseudo, pWebSocketConnection, pDataToTransmit.withNewModal);
 		});
@@ -843,7 +843,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Lecture de tous les membres de la BDD
+	// Lecture de tous les membres de la BDD sur la base des critères Pseudo + prénom + nom choisis par le user
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.getFilteredMembers = function(pSearchMemberParam){
 		return new Promise((resolve, reject) => {
@@ -862,6 +862,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					"etatCivil.photo" : 1, 
 					"_id" : 0
 				})
+			.sort({"pseudo":1})
 			.toArray((error, documents) => {
 				if (error){
 					console.log('-------------------------------------------------------------');
@@ -881,10 +882,35 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// --> On va filtrer dans la BDD les membres qui pourraient devenir amis (Rejet de moi-même en tant qu'ami, et des membres déjà amis ou demande en cours)
 	// + Filtrage en fonction des valeurs saisies dans "pseudo" + "Prénom" + "Nom"
 	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.searchFilteredPotentialFriends = function(pSearchMembersParams, pWebSocketConnection){
+		this.getFilteredMembers(pSearchMembersParams.searchMemberParams)
+		.then((documents) => {
+			this.filtersMembersFriendables(documents, pSearchMembersParams.myPseudo, pWebSocketConnection, pSearchMembersParams.withNewModal);
+		});
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Lecture de tous les membres de la BDD, 
+	// + Filtrage en fonction des valeurs saisies dans "pseudo" + "Prénom" + "Nom"
+	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.searchFilteredMembers = function(pSearchMembersParams, pWebSocketConnection){
 		this.getFilteredMembers(pSearchMembersParams.searchMemberParams)
 		.then((documents) => {
-			this.filtersMembersFriendables(documents, pSearchMembersParams.myPseudo, pWebSocketConnection, cstWithoutNewModal);
+				pWebSocketConnection.emit('displayFilteredMembers',documents); // Affichage des membres pouvant devenir amis
+		});
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Lecture de tous les membres de la BDD, brut, sans aucun filtrage
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.askMemberList = function(pDataToTransmit, pWebSocketConnection){
+		this.getMembers()
+		.then((documents) => {
+			if (pDataToTransmit.withNewModal){
+				pWebSocketConnection.emit('displayMembers',documents); // Affichage des membres 
+			} else {
+				pWebSocketConnection.emit('displayFilteredMembers',documents); // Affichage des membres pouvant devenir amis
+			}
 		});
 	};
 
@@ -1000,6 +1026,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				"amis" : 1, 
 				"_id" : 0
 			})
+			.limit(1)
 			.toArray((error, documents) => {
 				if (error){
 					console.log('-------------------------------------------------------------');

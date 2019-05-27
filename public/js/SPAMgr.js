@@ -89,18 +89,25 @@ window.addEventListener('DOMContentLoaded', function(){
 // -------------------------------------------------------------------------
 	var vProfileNavBar = document.getElementById('idProfileNavBar');			// Menu du profil
 	var vAddFriend = document.getElementById('idAddFriend');							// Bouton "Ajouter des amis"
+	var vMemberList = document.getElementById('idMemberList');							// Bouton "Ajouter des amis"
 	var vInvitations = document.getElementById('idInvitations');					// Bouton "Valider des amis"
 	var vNbrWaitingInvit = document.getElementById('idNbrWaitingInvit');	// Puce "Nbre d'invit en attentes"
 
 	vAddFriend.addEventListener('click', function(){											// Ouvre la fenêtre d'ajout d'amis
 	// Demande au serveur d'afficher les membres (filtrés) pour les présenter dans une liste d'amis potentiels
-
 		var vDataToTransmit = {
 			myPseudo 			: vMemberClient.member.pseudo,
 			withNewModal	: cstWithNewModal,
 		}
-
 		webSocketConnection.emit('askAddFriend', vDataToTransmit);  
+	});
+
+	vMemberList.addEventListener('click', function(){											// Ouvre la fenêtre d'ajout d'amis
+	// Demande au serveur d'afficher tous les membres (non filtrés) pour les présenter dans une liste 
+		var vDataToTransmit = {
+			withNewModal : cstWithNewModal,
+		}
+		webSocketConnection.emit('askMemberList', vDataToTransmit);  
 	});
 
 	vInvitations.addEventListener('click', function(){											// Ouvre la fenêtre de validation des amis
@@ -504,7 +511,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vModalMgrFriend = document.getElementById('idModalMgrFriend');
 	var vModalMgrFriendDialog = document.getElementById('idModalMgrFriendDialog');
 	var vModalMgrFriendHeader = document.getElementById('idModalMgrFriendHeader');
-	var vModalMgrFriendHeader = document.getElementById('idModalMgrFriendHeader');
 	var vModalMgrFriendExitBtn = document.getElementById('idModalMgrFriendExitBtn');
 	var vModalMgrFriendTitle = document.getElementById('idModalMgrFriendTitle');
 	var vModalMgrFriendListGroup = document.getElementById('idModalMgrFriendListGroup');
@@ -530,6 +536,54 @@ window.addEventListener('DOMContentLoaded', function(){
 			vModalMgrFriendListGroup.removeChild(vModalMgrFriendListGroup.firstChild);
 		}
 	})
+
+	// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	// Eléments des champs de saisie de la Modale de listage des membres
+	// -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	var vModalMemberList = document.getElementById('idModalMemberList');
+	var vModalMemberListDialog = document.getElementById('idModalMemberListDialog');
+	var vModalMemberListHeader = document.getElementById('idModalMemberListHeader');
+	var vModalMemberListExitBtn = document.getElementById('idModalMemberListExitBtn');
+	var vModalMemberListTitle = document.getElementById('idModalMemberListTitle');
+	var vModalMemberListGroup = document.getElementById('idModalMemberListGroup');
+
+	// Suppression de tous les éléments de la liste des membres pouvant devenir ami à la fermeture de la modale
+	$('#idModalMemberList').on('hidden.bs.modal', () => {
+		vModalMgrFriendDialog.classList.remove('form-MgrFriends');
+
+		vModalMemberListHeader.removeChild(vModalMemberListHeader.firstChild);
+		vModalMemberListTitle.removeChild(vModalMemberListTitle.firstChild);
+
+		// Suppression des champs de filtrage
+		var vSearchMembersFields = document.getElementById('idSearchMembersFields');
+		if (vSearchMembersFields){
+			while (vSearchMembersFields.firstChild) {
+				vSearchMembersFields.removeChild(vSearchMembersFields.firstChild);
+			}
+			vSearchMembersFields.parentNode.removeChild(vSearchMembersFields);
+		}
+
+		// Suppression des lignes des membres
+		while (vModalMemberListGroup.firstChild) {
+			vModalMemberListGroup.removeChild(vModalMemberListGroup.firstChild);
+		}
+	})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	// ****************************************************************************************************************************** 
@@ -659,27 +713,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
 	
-	// --------------------------------------------------------------
-	// On a reçu une liste de membres pouvant devenir amis
-	// Ajout dynamique des membres dans le DOM sur la modale
-	// de sélection des membres pour devenir amis
-	// --------------------------------------------------------------
-	webSocketConnection.on('displayFilteredPotentialFriends', function(pMembersFriendables){  
-
-		// Suppression des lignes d'amis potentiels pour pouvoir afficher les amis potentiels filtrés
-		while (vModalMgrFriendListGroup.firstChild) {
-			vModalMgrFriendListGroup.removeChild(vModalMgrFriendListGroup.firstChild);
-		}
-
-		var vDisplayPotentialfriendData = {
-			modalMgrFriendHeader 		: vModalMgrFriendHeader,
-			modalMgrFriendExitBtn 	: vModalMgrFriendExitBtn,
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
-		}
-
-		vMemberClient.displayPotentialFriendsLines(pMembersFriendables, vDisplayPotentialfriendData)
-	});
-
 	// --------------------------------------------------------------
 	// Le serveur a renvoyé une liste d'amis pour le membre clické sur la micro-fiche
 	// On ouvre une nouvelle micro-fiche pour ce membre
@@ -838,6 +871,62 @@ window.addEventListener('DOMContentLoaded', function(){
 		}
 
 		vMemberClient.displayPotentialFriends(pMembersFriendables, vDisplayPotentialfriendData);
+	});
+
+	// --------------------------------------------------------------
+	// On a reçu une liste de membres pouvant devenir amis
+	// Ajout dynamique des membres dans le DOM sur la modale
+	// de sélection des membres pour devenir amis
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayFilteredPotentialFriends', function(pMembersFriendables){  
+
+		// Suppression des lignes d'amis potentiels pour pouvoir afficher les amis potentiels filtrés
+		while (vModalMgrFriendListGroup.firstChild) {
+			vModalMgrFriendListGroup.removeChild(vModalMgrFriendListGroup.firstChild);
+		}
+
+		var vDisplayPotentialfriendData = {
+			modalMgrFriendHeader 		: vModalMgrFriendHeader,
+			modalMgrFriendExitBtn 	: vModalMgrFriendExitBtn,
+			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+		}
+
+		vMemberClient.displayPotentialFriendsLines(pMembersFriendables, vDisplayPotentialfriendData)
+	});
+
+	// --------------------------------------------------------------
+	// On a reçu une liste de membres pouvant devenir amis
+	// Ajout dynamique des membres dans le DOM sur la modale
+	// de sélection des membres pour devenir amis
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayMembers', function(pMembers){  
+		var vDisplayMembersModalData = {
+			modalMemberListHeader 	: vModalMemberListHeader,
+			modalMemberListExitBtn	: vModalMemberListExitBtn,
+			modalMemberListGroup 		: vModalMemberListGroup,
+		}
+
+		vMemberClient.displayMembers(pMembers, vDisplayMembersModalData);
+	});
+
+	// --------------------------------------------------------------
+	// On a reçu une liste de membres filtrés
+	// Ajout dynamique des membres dans le DOM sur la modale
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayFilteredMembers', function(pMembers){  
+
+		// Suppression des lignes de membres pour pouvoir afficher les membres filtrés
+		while (vModalMemberListGroup.firstChild) {
+			vModalMemberListGroup.removeChild(vModalMemberListGroup.firstChild);
+		}
+
+		var vDisplayMembersModalData = {
+			modalMemberListHeader 	: vModalMemberListHeader,
+			modalMemberListExitBtn	: vModalMemberListExitBtn,
+			modalMemberListGroup 		: vModalMemberListGroup,
+		}
+
+		vMemberClient.displayMembersLines(pMembers, vDisplayMembersModalData);
 	});
 
 	// --------------------------------------------------------------
