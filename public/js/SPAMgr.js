@@ -54,7 +54,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	vToolBox = new ToolBox();
 	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
-	
+	vAccountModal = new AccountModal(vMemberClient);				// Instanciation de la méga-modale de saisie des infos personnelles;
+
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 		// -------------------------------------------------------------------------
 	// 
@@ -191,7 +192,12 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vGenericModalBtn = document.getElementById('idGenericModalBtn');
 	
 	vAbout.addEventListener('click', function(){
-		vMemberClient.InitHeaderColor('bg-warning', vGenericModalHeader);
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-warning',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		vMemberClient.initModalTextAbout(vGenericModalTitle, vGenericModalBodyText);                     
 	});
 
@@ -212,7 +218,13 @@ window.addEventListener('DOMContentLoaded', function(){
 		vLoginForm.idLoginPseudo.value = '';                                 
 		vLoginForm.idLoginPassword.value = '';
 		vLoginAlertMsg.style.visibility = 'hidden';  
-		vMemberClient.InitHeaderColor('bg-warning', vModalLoginHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-warning',
+			modalHeader : vModalLoginHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 	});
 
 	// -------------------------------------------------------------------------
@@ -260,7 +272,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	vLostPWD.addEventListener('click', function(){
 		vLostPWDForm.idLostPWDEmail.value = '';
 		vLostPWDAlertMsg.style.visibility = 'hidden';                       // Cache du message d'alerte de saisie d'email erroné
-		vMemberClient.InitHeaderColor('bg-warning', vModalLostPWDHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-warning',
+			modalHeader : vModalLostPWDHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		$('#idModalLogin').modal('hide');                                 // Fermeture de la fenêtre modale de Login
 		$('#idModalLostPWD').modal('show');                               // Ouverture de la fenêtre modale de gestion de PWD perdu
 	});
@@ -407,17 +425,18 @@ window.addEventListener('DOMContentLoaded', function(){
 	// les datas provenant de la BDD
 	// -------------------------------------------------------------------------
 	vAccount.addEventListener('click', function(){
-		vMemberClient.initModalAccount(vAccountParams);
+		vAccountModal.initModalAccount(vAccountParams);
+		
 	});
 
 	// -------------------------------------------------------------------------
 	// MAJ en temps réel du champ age dès qu'il y a une modification de la date de naissance
 	// -------------------------------------------------------------------------
 	vAccountBirthDate.addEventListener('click', function(){
-		vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
+		vAccountModal.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
 	});          
 	vAccountBirthDate.addEventListener('input', function(){
-		vMemberClient.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
+		vAccountModal.updateFieldAge(vAccountForm.idAccountBirthDate.value, vAccountForm);
 	});          
 	
 	// -------------------------------------------------------------------------
@@ -425,13 +444,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// en fonction de la sélection du sexe
 	// -------------------------------------------------------------------------
 	vAccountSexNone.addEventListener('click', function(){
-		vMemberClient.updateAvatar(0, vAccountPhotoImg);
+		vAccountModal.updateAvatar(0, vAccountPhotoImg);
 	});          
 	vAccountSexMale.addEventListener('click', function(){
-		vMemberClient.updateAvatar(1, vAccountPhotoImg);
+		vAccountModal.updateAvatar(1, vAccountPhotoImg);
 	});          
 	vAccountSexFemale.addEventListener('click', function(){
-		vMemberClient.updateAvatar(2, vAccountPhotoImg);
+		vAccountModal.updateAvatar(2, vAccountPhotoImg);
 	});              
 
 	// -------------------------------------------------------------------------
@@ -461,14 +480,28 @@ window.addEventListener('DOMContentLoaded', function(){
 			if (vAccountForm.idAccountCurrentPassword.value === vMemberClient.member.password){
 				vAccountAlertMsg.innerHTML='';
 				vAccountAlertMsg.style.visibility = 'hidden';  
-				vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
+
+				var vModalHeaderColorParams = 
+				{
+					activeColor : 'bg-warning',
+					modalHeader : vModalAccountHeader,
+				}
+				new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+		
 				vAccountPassword.removeAttribute('disabled');
 				vAccountConfirmPassword.removeAttribute('disabled');
 				vAccountPassword.focus();
 			} else {
 				vAccountAlertMsg.innerHTML='Mot de passe actuel erroné';                // Affichage du message d'alerte de MDP actuel erroné
-				vAccountAlertMsg.style.visibility = 'visible';                                 
-				vMemberClient.InitHeaderColor('bg-danger', vModalAccountHeader);
+				vAccountAlertMsg.style.visibility = 'visible';    
+				
+				var vModalHeaderColorParams = 
+				{
+					activeColor : 'bg-danger',
+					modalHeader : vModalAccountHeader,
+				}
+				new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+				
 				vAccountPassword.setAttribute('disabled','true');
 				vAccountConfirmPassword.setAttribute('disabled','true');
 				vAccountPassword.focus();
@@ -477,7 +510,14 @@ window.addEventListener('DOMContentLoaded', function(){
 			vMemberClient.newPasswordKO = false;
 			vAccountAlertMsg.innerHTML='';
 			vAccountAlertMsg.style.visibility = 'hidden';  
-			vMemberClient.InitHeaderColor('bg-warning', vModalAccountHeader);
+
+			var vModalHeaderColorParams = 
+			{
+				activeColor : 'bg-warning',
+				modalHeader : vModalAccountHeader,
+			}
+			new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+
 			vAccountPassword.setAttribute('disabled','true');
 			vAccountConfirmPassword.setAttribute('disabled','true');
 			vAccountPassword.focus();
@@ -499,7 +539,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 		vAccountForm.addEventListener('submit', function (event){ 
 			event.preventDefault();
-			vMemberClient.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
+			vAccountModal.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
 		});
 
 
@@ -523,7 +563,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vModalMgrFriendTitle.removeChild(vModalMgrFriendTitle.firstChild);
 
 		// Suppression des champs de filtrage
-		var vSearchMembersFields = document.getElementById('idSearchMembersFields');
+		var vSearchMembersFields = document.getElementById('idFilterFields');
 		if (vSearchMembersFields){
 			while (vSearchMembersFields.firstChild) {
 				vSearchMembersFields.removeChild(vSearchMembersFields.firstChild);
@@ -557,7 +597,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vModalMemberListTitle.removeChild(vModalMemberListTitle.firstChild);
 
 		// Suppression des champs de filtrage
-		var vSearchMembersFields = document.getElementById('idSearchMembersFields');
+		var vSearchMembersFields = document.getElementById('idFilterFields');
 		if (vSearchMembersFields){
 			while (vSearchMembersFields.firstChild) {
 				vSearchMembersFields.removeChild(vSearchMembersFields.firstChild);
@@ -763,11 +803,15 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Le serveur n'a pas trouvé d'amis à qui envoyer la recommendation de mon ami --> Message d'erreur
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyRecommendableFriendList', function(pRecommendFriendsList){   
-
 		vMemberClient.initModalNoFriendToRecommend(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
-		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
-		$('#idGenericModal').modal('show');      																		// ouverture de la fenêtre modale de message d'erreur
 
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+		$('#idGenericModal').modal('show');      																		// ouverture de la fenêtre modale de message d'erreur
 		$('#'+pRecommendFriendsList.myDropDownMenuId).dropdown('toggle');						// Fermeture de la DropDown d'amis à recommander puisque vide
 	});
 
@@ -791,7 +835,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyWaitingInvitation', function(){   
 		vMemberClient.initModalEmptyWaitingInvit(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
-		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
 
@@ -801,9 +851,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayWaitingInvitation', function(pWaitingInvit){   
 		var vDisplayWaitingInvitationData = {
-			modalMgrFriendHeader 		: vModalMgrFriendHeader,
-			modalMgrFriendExitBtn 	: vModalMgrFriendExitBtn ,
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+			modalHeader 		: vModalMgrFriendHeader,
+			modalExitBtn 		: vModalMgrFriendExitBtn ,
+			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
 		vMemberClient.displayWaitingInvitation(pWaitingInvit, vDisplayWaitingInvitationData)
@@ -830,7 +880,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationValided', function(pSelectedInvit){ 
 		var vDisplayNotifInvitationValidedData = {
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+			modalListGroup : vModalMgrFriendListGroup,
 		}
 		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
 	});	
@@ -841,7 +891,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationRefused', function(pSelectedInvit){   
 		var vDisplayNotifInvitationRefusedData = {
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+			modalListGroup : vModalMgrFriendListGroup,
 		}
 		vMemberClient.displayNotifInvitationRefused(pSelectedInvit, vDisplayNotifInvitationRefusedData);
 	});
@@ -854,7 +904,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('emptyPotentialFriends', function(){   
 		vMemberClient.initModalEmptyFriendList(vGenericModalTitle, vGenericModalBodyText);  // Affiche la fenêtre générique
-		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		$('#idGenericModal').modal('show');                                           // ouverture de la fenêtre modale de message d'erreur
 	});
 
@@ -865,9 +921,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayPotentialFriends', function(pMembersFriendables){  
 		var vDisplayPotentialfriendData = {
-			modalMgrFriendHeader 		: vModalMgrFriendHeader,
-			modalMgrFriendExitBtn 	: vModalMgrFriendExitBtn,
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+			modalHeader 		: vModalMgrFriendHeader,
+			modalExitBtn 		: vModalMgrFriendExitBtn,
+			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
 		vMemberClient.displayPotentialFriends(pMembersFriendables, vDisplayPotentialfriendData);
@@ -886,9 +942,9 @@ window.addEventListener('DOMContentLoaded', function(){
 		}
 
 		var vDisplayPotentialfriendData = {
-			modalMgrFriendHeader 		: vModalMgrFriendHeader,
-			modalMgrFriendExitBtn 	: vModalMgrFriendExitBtn,
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+			modalHeader 		: vModalMgrFriendHeader,
+			modalExitBtn 		: vModalMgrFriendExitBtn,
+			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
 		vMemberClient.displayPotentialFriendsLines(pMembersFriendables, vDisplayPotentialfriendData)
@@ -901,9 +957,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayMembers', function(pMembers){  
 		var vDisplayMembersModalData = {
-			modalMemberListHeader 	: vModalMemberListHeader,
-			modalMemberListExitBtn	: vModalMemberListExitBtn,
-			modalMemberListGroup 		: vModalMemberListGroup,
+			modalHeader 		: vModalMemberListHeader,
+			modalExitBtn		: vModalMemberListExitBtn,
+			modalListGroup 	: vModalMemberListGroup,
 		}
 
 		vMemberClient.displayMembers(pMembers, vDisplayMembersModalData);
@@ -921,9 +977,9 @@ window.addEventListener('DOMContentLoaded', function(){
 		}
 
 		var vDisplayMembersModalData = {
-			modalMemberListHeader 	: vModalMemberListHeader,
-			modalMemberListExitBtn	: vModalMemberListExitBtn,
-			modalMemberListGroup 		: vModalMemberListGroup,
+			modalHeader 		: vModalMemberListHeader,
+			modalExitBtn		: vModalMemberListExitBtn,
+			modalListGroup 	: vModalMemberListGroup,
 		}
 
 		vMemberClient.displayMembersLines(pMembers, vDisplayMembersModalData);
@@ -935,7 +991,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifInvitationSent', function(pFriendToAdd){  
 		var vDisplayNotifInvitationSentData = {
-			modalMgrFriendListGroup : vModalMgrFriendListGroup,
+			modalListGroup : vModalMgrFriendListGroup,
 		}
 		vMemberClient.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData, vInvitSentInfo);
 	});
@@ -954,7 +1010,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('retryLostPWDForm', function(){   
 		vLostPWDAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de saisie d'email erroné
-		vMemberClient.InitHeaderColor('bg-danger', vModalLostPWDHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vModalLostPWDHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		setTimeout(function(){$('#idModalLostPWD').modal('show')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
@@ -964,7 +1026,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('retryLoginForm', function(){   
 		vLoginAlertMsg.style.visibility = 'visible';                                 // Affichage du message d'alerte de connexion erronée
-		vMemberClient.InitHeaderColor('bg-danger', vModalLoginHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vModalLoginHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		setTimeout(function(){$('#idModalLogin').modal('show')},cstDelayToggleModal);              // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
@@ -974,7 +1042,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('retrySignInForm', function(){   
 		vSignInAlertMsg.style.visibility = 'visible';                               // Affichage du message d'alerte de connexion erronée
-		vMemberClient.InitHeaderColor('bg-danger', vModalSignInHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vModalSignInHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		setTimeout(function(){$('#idModalSignIn').modal('show')},cstDelayToggleModal);            // Obligation de temporiser la réouverture sinon ça ne marche pas
 	});
 
@@ -1003,7 +1077,13 @@ console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 				vMemberClient.initModalWelcomeText(vGenericModalTitle, vGenericModalBodyText); 	// Affiche la fenêtre de bienvenue pour un nouveau membre
 			}
 		}
-		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-success',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		$('#idGenericModal').modal('show');                                           		// ouverture de la fenêtre modale de Félicitations
 
 		// Affichage de la page de profil avec les avatars, les amis, les invitations...
@@ -1020,7 +1100,13 @@ console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 		var cstLostPWD = 0;     // Constante qui désigne que le Chgt de MDP a été provoqué par une déclaration de MDP perdu, sinon, c'est qu'il a été changé par le membre
 		vMemberClient.member.oldPassword ='';
 
-		vMemberClient.InitHeaderColor('bg-success', vGenericModalHeader);
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-success',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+
 		if (pTypeChgtPWD === cstLostPWD){
 			vMemberClient.initModalLostPWDText(vGenericModalTitle, vGenericModalBodyText);               // Affiche la fenêtre de notification pour MDP perdu
 		} else {
@@ -1035,7 +1121,13 @@ console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 	// --------------------------------------------------------------
 	webSocketConnection.on('memberAlreadyConnected', function(pMember){ 
 		vMemberClient.initModalAlreadyConnectedText(vGenericModalTitle, vGenericModalBodyText);     // Affiche la fenêtre de bienvenue
-		vMemberClient.InitHeaderColor('bg-danger', vGenericModalHeader);
+
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 		$('#idGenericModal').modal('show');                                                       // ouverture de la fenêtre modale de notification de rejet
 	});    
 

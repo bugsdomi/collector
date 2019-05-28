@@ -9,6 +9,7 @@
 // --------------------------------------------------------------
 // var vLoginForm;                     // Instance du formulaire de saisie du Login
 var vToolBox;                       // Instance de la Boîte à outils
+var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var webSocketConnection;            // Variable pour la connexion WebSocket
 var cstDelayClosingMicroFiche = 10000;  // Délai en msec avant la fermeture des Micro-Fiches
 var cstDelayClosingPopover = 3000;  // Délai en msec avant la fermeture des notifications diverses

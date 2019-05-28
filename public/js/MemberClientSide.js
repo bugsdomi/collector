@@ -247,37 +247,6 @@ MemberClient.prototype.unsetMemberContext = function(){
 	// Fermeture du socket
 	webSocketConnection.close();
 }
-// -----------------------------------------------------------------------------
-// Cette fonction gère les couleurs de fond et de texte des Header des modales
-// -----------------------------------------------------------------------------
-MemberClient.prototype.InitHeaderColor = function(pACtiveColor, pHeader){
-	if (pACtiveColor === "bg-warning"){
-		pHeader.classList.remove('bg-danger');
-		pHeader.classList.remove('bg-success');
-		pHeader.classList.remove('text-warning');
-		pHeader.classList.add('bg-warning');    	    
-		pHeader.classList.add('text-dark');
-		return
-	}
-
-	if (pACtiveColor === 'bg-danger'){
-		pHeader.classList.remove('bg-success');
-		pHeader.classList.remove('bg-warning');                  
-		pHeader.classList.remove('text-dark');
-		pHeader.classList.add('bg-danger');
-		pHeader.classList.add('text-warning');
-		return
-	}
-	
-	if (pACtiveColor === 'bg-success'){
-		pHeader.classList.remove('bg-danger');
-		pHeader.classList.remove('bg-warning');                  
-		pHeader.classList.remove('text-dark');
-		pHeader.classList.add('bg-success');
-		pHeader.classList.add('text-warning');
-		return
-	}
-}
 
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la page de profil complète :
@@ -329,36 +298,36 @@ MemberClient.prototype.displayPresentationCard = function(pProfileInfo){
 	
 	pProfileInfo.vAboutDepartmentName.innerHTML = this.member.etatCivil.address.departmentName;
 
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefGravures','idAboutPrefGravuresLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefLivres','idAboutPrefLivresLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFilms','idAboutPrefFilmsLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefJeux','idAboutPrefJeuxLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefMaquettes','idAboutPrefMaquettesLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFigurines','idAboutPrefFigurinesLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefBlindes','idAboutPrefBlindesLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAvions','idAboutPrefAvionsLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefBateaux','idAboutPrefBateauxLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefDioramas','idAboutPrefDioramasLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefPrehistoire','idAboutPrefPrehistoireLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAntiquite','idAboutPrefAntiquiteLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefMoyenAge','idAboutPrefMoyenAgeLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefRenaissance','idAboutPrefRenaissanceLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefDentelles','idAboutPrefDentellesLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAncienRegime','idAboutPrefAncienRegimeLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefRevolution','idAboutPrefRevolutionLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('pref1erEmpire','idAboutPref1erEmpireLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('pref2ndEmpire','idAboutPref2ndEmpireLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefSecession','idAboutPrefSecessionLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFarWest','idAboutPrefFarWestLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW1','idAboutPrefWW1Label');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW2','idAboutPrefWW2Label');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefContemporain','idAboutPrefContemporainLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFuturiste','idAboutPrefFuturisteLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFantastique','idAboutPrefFantastiqueLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefHFrancaise','idAboutPrefHFrancaiseLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefHAmericaine','idAboutPrefHAmericaineLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefHInternationale','idAboutPrefHInternationaleLabel');
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAutre','idAboutPrefAutreLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefGravures','idAboutPrefGravuresLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefLivres','idAboutPrefLivresLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefFilms','idAboutPrefFilmsLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefJeux','idAboutPrefJeuxLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefMaquettes','idAboutPrefMaquettesLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefFigurines','idAboutPrefFigurinesLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefBlindes','idAboutPrefBlindesLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefAvions','idAboutPrefAvionsLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefBateaux','idAboutPrefBateauxLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefDioramas','idAboutPrefDioramasLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefPrehistoire','idAboutPrefPrehistoireLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefAntiquite','idAboutPrefAntiquiteLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefMoyenAge','idAboutPrefMoyenAgeLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefRenaissance','idAboutPrefRenaissanceLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefDentelles','idAboutPrefDentellesLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefAncienRegime','idAboutPrefAncienRegimeLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefRevolution','idAboutPrefRevolutionLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('pref1erEmpire','idAboutPref1erEmpireLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('pref2ndEmpire','idAboutPref2ndEmpireLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefSecession','idAboutPrefSecessionLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefFarWest','idAboutPrefFarWestLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefWW1','idAboutPrefWW1Label');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefWW2','idAboutPrefWW2Label');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefContemporain','idAboutPrefContemporainLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefFuturiste','idAboutPrefFuturisteLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefFantastique','idAboutPrefFantastiqueLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefHFrancaise','idAboutPrefHFrancaiseLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefHAmericaine','idAboutPrefHAmericaineLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefHInternationale','idAboutPrefHInternationaleLabel');
+	vAccountModal.activeButtonOfSelectedCheckBoxReadOnly('prefAutre','idAboutPrefAutreLabel');
 
 	pProfileInfo.vAboutPresentation.value = this.member.presentation;
 }
@@ -433,7 +402,9 @@ MemberClient.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
 	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
-	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden;');
+
+	// Z-Index pour ne pas cacher la partie basse de la Micro-fiche avec la barre de bas d'écran
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden; z-index: 1035;'); 
 // 
 // 
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->
@@ -1042,322 +1013,15 @@ MemberClient.prototype.initModalSignIn = function(pSignInParameters){
 	pSignInParameters.vSignInForm.idSignInPseudo.value = '';                              
 	pSignInParameters.vSignInForm.idSignInPassword.value = '';
 	pSignInParameters.vSignInForm.idSignInConfirmPassword.value = '';
-	pSignInParameters.vSignInAlertMsg.style.visibility = 'hidden';                          
-	this.InitHeaderColor('bg-warning', pSignInParameters.vModalSignInHeader);
-}
-
-// -----------------------------------------------------------------------------
-// Cette fonction initialise la modale de saisie de renseignements (Compte) 
-// avec les valeurs récupérées dans la BDD, (et pouvant être vierges)
-// -----------------------------------------------------------------------------
-MemberClient.prototype.initModalAccount = function(pAccountParameters){
-	pAccountParameters.vAccountForm.idAccountEmail.value  = this.member.email;                                
-	pAccountParameters.vAccountForm.idAccountPseudo.value = this.member.pseudo;     
-
-	pAccountParameters.vAccountPhotoImg.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
-	pAccountParameters.vAccountForm.idAccountFirstName.value = this.member.etatCivil.firstName;     
-	pAccountParameters.vAccountForm.idAccountName.value = this.member.etatCivil.name;     
-	pAccountParameters.vAccountForm.idAccountBirthDate.value = this.member.etatCivil.birthDate;     
-
-	if (this.member.etatCivil.birthDate){
-		this.updateFieldAge(this.member.etatCivil.birthDate, pAccountParameters.vAccountForm);
-		} else {
-		pAccountParameters.vAccountForm.idAccountAge.value = '';
-	}
-
-	var selectedSex = this.inputBtnRadioSex();
-	this.updateAvatar(selectedSex, pAccountParameters.vAccountPhotoImg);
-
-	pAccountParameters.vAccountForm.idAccountStreet.value      = this.member.etatCivil.address.street;    
-	pAccountParameters.vAccountForm.idAccountCity.value        = this.member.etatCivil.address.city;      
-	pAccountParameters.vAccountForm.idAccountZipCode.value     = this.member.etatCivil.address.zipCode;   
-	pAccountParameters.vAccountForm.idAccountDepartment.value  = this.member.etatCivil.address.department;
-
-	pAccountParameters.vAccountPrefGravures.checked        = this.member.preferences['prefGravures'];      
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefGravures, 'idAccountPrefGravuresLabel');
-
-	pAccountParameters.vAccountPrefLivres.checked          = this.member.preferences['prefLivres'];    
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefLivres, 'idAccountPrefLivresLabel');
-
-	pAccountParameters.vAccountPrefFilms.checked           = this.member.preferences['prefFilms']; 
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFilms, 'idAccountPrefFilmsLabel');
+	pSignInParameters.vSignInAlertMsg.style.visibility = 'hidden';       
 	
-	pAccountParameters.vAccountPrefJeux.checked            = this.member.preferences['prefJeux'];            
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefJeux, 'idAccountPrefJeuxLabel');
-
-	pAccountParameters.vAccountPrefMaquettes.checked       = this.member.preferences['prefMaquettes'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefMaquettes, 'idAccountPrefMaquettesLabel');
-	
-	pAccountParameters.vAccountPrefFigurines.checked       = this.member.preferences['prefFigurines'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFigurines, 'idAccountPrefFigurinesLabel');
-
-	pAccountParameters.vAccountPrefBlindes.checked         = this.member.preferences['prefBlindes'];      
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefBlindes, 'idAccountPrefBlindesLabel');
-	
-	pAccountParameters.vAccountPrefAvions.checked          = this.member.preferences['prefAvions'];          
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAvions, 'idAccountPrefAvionsLabel');
-
-	pAccountParameters.vAccountPrefBateaux.checked         = this.member.preferences['prefBateaux'];         
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefBateaux, 'idAccountPrefBateauxLabel');
-
-	pAccountParameters.vAccountPrefDioramas.checked        = this.member.preferences['prefDioramas'];        
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefDioramas, 'idAccountPrefDioramasLabel');
-
-	pAccountParameters.vAccountPrefPrehistoire.checked     = this.member.preferences['prefPrehistoire'];     
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefPrehistoire, 'idAccountPrefPrehistoireLabel');
-
-	pAccountParameters.vAccountPrefAntiquite.checked       = this.member.preferences['prefAntiquite'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAntiquite, 'idAccountPrefAntiquiteLabel');
-
-	pAccountParameters.vAccountPrefMoyenAge.checked        = this.member.preferences['prefMoyenAge'];        
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefMoyenAge, 'idAccountPrefMoyenAgeLabel');
-
-	pAccountParameters.vAccountPrefRenaissance.checked     = this.member.preferences['prefRenaissance'];     
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefRenaissance, 'idAccountPrefRenaissanceLabel');
-
-	pAccountParameters.vAccountPrefDentelles.checked       = this.member.preferences['prefDentelles'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefDentelles, 'idAccountPrefDentellesLabel');
-	
-	pAccountParameters.vAccountPrefAncienRegime.checked    = this.member.preferences['prefAncienRegime'];    
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAncienRegime, 'idAccountPrefAncienRegimeLabel');
-
-	pAccountParameters.vAccountPrefRevolution.checked      = this.member.preferences['prefRevolution'];      
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefRevolution, 'idAccountPrefRevolutionLabel');
-
-	pAccountParameters.vAccountPref1erEmpire.checked       = this.member.preferences['pref1erEmpire'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPref1erEmpire, 'idAccountPref1erEmpireLabel');
-
-	pAccountParameters.vAccountPref2ndEmpire.checked       = this.member.preferences['pref2ndEmpire'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPref2ndEmpire, 'idAccountPref2ndEmpireLabel');
-
-	pAccountParameters.vAccountPrefSecession.checked       = this.member.preferences['prefSecession'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefSecession, 'idAccountPrefSecessionLabel');
-
-	pAccountParameters.vAccountPrefFarWest.checked         = this.member.preferences['prefFarWest'];         
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFarWest, 'idAccountPrefFarWestLabel');
-
-	pAccountParameters.vAccountPrefWW1.checked             = this.member.preferences['prefWW1'];             
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefWW1, 'idAccountPrefWW1Label');
-
-	pAccountParameters.vAccountPrefWW2.checked             = this.member.preferences['prefWW2'];             
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefWW2, 'idAccountPrefWW2Label');
-
-	pAccountParameters.vAccountPrefContemporain.checked    = this.member.preferences['prefContemporain'];    
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefContemporain, 'idAccountPrefContemporainLabel');
-
-	pAccountParameters.vAccountPrefFuturiste.checked       = this.member.preferences['prefFuturiste'];       
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFuturiste, 'idAccountPrefFuturisteLabel');
-
-	pAccountParameters.vAccountPrefFantastique.checked     = this.member.preferences['prefFantastique'];     
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefFantastique, 'idAccountPrefFantastiqueLabel');
-
-	pAccountParameters.vAccountPrefHFrancaise.checked      = this.member.preferences['prefHFrancaise'];      
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefHFrancaise, 'idAccountPrefHFrancaiseLabel');
-
-	pAccountParameters.vAccountPrefHAmericaine.checked     = this.member.preferences['prefHAmericaine'];     
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefHAmericaine, 'idAccountPrefHAmericaineLabel');
-
-	pAccountParameters.vAccountPrefHInternationale.checked = this.member.preferences['prefHInternationale']; 
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefHInternationale, 'idAccountPrefHInternationaleLabel');
-
-	pAccountParameters.vAccountPrefAutre.checked           = this.member.preferences['prefAutre'];           
-	this.activeButtonOfSelectedCheckBox(pAccountParameters.vAccountPrefAutre, 'idAccountPrefAutreLabel');
-
-	pAccountParameters.vAccountForm.idAccountPresentation.value = this.member.presentation;
-
-	this.newPasswordKO = false;
-	pAccountParameters.vAccountForm.idAccountCurrentPassword.value = '';
-	pAccountParameters.vAccountForm.idAccountPassword.value = '';
-	pAccountParameters.vAccountForm.idAccountConfirmPassword.value = '';
-
-	pAccountParameters.vAccountPassword.setAttribute('disabled', 'true');
-	pAccountParameters.vAccountConfirmPassword.setAttribute('disabled', 'true');
-
-	pAccountParameters.vAccountAlertMsg.style.visibility = 'hidden';                          
-	this.InitHeaderColor('bg-warning', pAccountParameters.vModalAccountHeader);
-}
-
-// -----------------------------------------------------------------------------
-// Cette fonction calcule et MAJ le champ "Age" de la fenêtre de saisie des renseignements
-// -----------------------------------------------------------------------------
-MemberClient.prototype.updateFieldAge = function(pBirthDate, pAccountForm){ 
-	if (pBirthDate){
-		pAccountForm.idAccountAge.value = vToolBox.calculeAge(pBirthDate, false);
-	} else {
-		pAccountForm.idAccountAge.value ='';
+	var vModalHeaderColorParams = 
+	{
+		activeColor : 'bg-warning',
+		modalHeader : pSignInParameters.vModalSignInHeader,
 	}
+	new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 }
-
-// -----------------------------------------------------------------------------
-// Cette fonction récupère la sélection du Sexe à travers les boutons-radio
-// -----------------------------------------------------------------------------
-MemberClient.prototype.outputBtnRadioSex = function(){ 
-	var i=0;
-	var found=false
-
-	while (i < document.forms.idAccountForm.accountSexe.length && !found){
-		if (document.forms.idAccountForm.accountSexe[i].checked===true){ 
-			found = true;
-		} else {
-			i++
-		}
-	} 
-	return i;
-}
-
-// -----------------------------------------------------------------------------
-// Cette fonction initialise le bouton-radio du Sexe approprié
-// -----------------------------------------------------------------------------
-MemberClient.prototype.inputBtnRadioSex = function(){ 
-	var selectedSex;
-
-	for (var i=0; i < document.forms.idAccountForm.accountSexe.length; i++) {
-		if (this.member.etatCivil.sex === i){
-				
-			document.forms.idAccountForm.accountSexe[i].checked = true;
-			selectedSex = i;
-		} else { 
-			document.forms.idAccountForm.accountSexe[i].checked = false;
-		}
-	} 
-	return selectedSex;
-}   
-
-// -----------------------------------------------------------------------------
-// Cette fonction met à jour l'avatar (si aucune photo n a été chargée), avec une 
-// silhouette Profil par défaut, en concordance avec la sélection du sexe
-// 
-// Si pas de photo, initialiser avec l avatar correspondant au sexe
-// et le faire vivre a chaque changement de sexe
-// Sinon, ignorer les changements de sexe
-// -----------------------------------------------------------------------------
-MemberClient.prototype.updateAvatar = function(pSelectedSex, pAccountPhotoImg){ 
-	var myPhoto = pAccountPhotoImg.getAttribute('src').split('static/images/members/')[1];
-
-	if (myPhoto){
-		if (myPhoto.startsWith('default-avatar-')){
-			switch (pSelectedSex){
-				case 0 :
-					pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-inconnu.png');
-					break;
-				case 1 :
-					pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-male.png');
-					break;
-				case 2 :
-					pAccountPhotoImg.setAttribute('src', 'static/images/members/default-avatar-female.png');
-					break;
-			}
-		} 
-	}
-}
-
-// -----------------------------------------------------------------------------
-// Cette fonction simule le click des boutons de préférences a true pour refléter
-// le statut et la couleur correspondante des badges colorés :
-// - Elle coche ou decoche (de façon cachée) le bouton Check-box sous-jacent
-// - Elle ajoute ou retire la classe "active" du label
-// -----------------------------------------------------------------------------
-MemberClient.prototype.activeButtonOfSelectedCheckBox = function(pPref, pPrefLabel){
-var myIdLabel = document.getElementById(pPrefLabel)
-	pPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
-}
-
-// -----------------------------------------------------------------------------
-// Cette fonction simule le click des boutons de préférences a true pour refléter
-// le statut et la couleur correspondante des badges colorés
-// - Elle ajoute ou retire la classe "active" du label
-// - Comme cette fonction est "Read-Only", on ne change pas le statut réel des check-box sous-jacents
-// -----------------------------------------------------------------------------
-MemberClient.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel){
-	this.member.preferences[pIndex] ? document.getElementById(pPrefLabel).classList.add('active')
-																	: document.getElementById(pPrefLabel).classList.remove('active')
-}
-
-	// -------------------------------------------------------------------------
-	// Validation Fiche "Renseignements"
-	// Envoi des infos de la fiche renseignement du visiteur au serveur pour 
-	// stockage en BDD
-	// Si une demande de chgt de MDP a été demandée et qu'elle s'est mal déroulée, 
-	// on ne valide pas la fiche
-	// Sinon on MAJ la fiche de renseignements en BDD
-	// De plus, s'il y a eu une demande changement dde MDP, on MAJ la BDD en conséquence
-	// et on demande au serveur d'envoyer un mail de notification de MDP
-	// -------------------------------------------------------------------------
-MemberClient.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pProfileInfo){
-	var cstWaitForUpladToDisplayAvatar = false;
-
-	if (!this.newPasswordKO){
-		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisie dans l explorateur windows
-			this.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
-			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                           // Alors on la transfère vers le serveur 
-			cstWaitForUpladToDisplayAvatar = true;
-		} else {
-			this.member.etatCivil.photo = pAccountParams.vAccountPhotoImg.getAttribute('src').split('static/images/members/')[1]; 
-		}
-
-		this.member.etatCivil.firstName = pAccountParams.vAccountForm.idAccountFirstName.value;
-		this.member.etatCivil.name      = pAccountParams.vAccountForm.idAccountName.value;
-		this.member.etatCivil.birthDate = pAccountParams.vAccountForm.idAccountBirthDate.value;                ;
-		this.member.etatCivil.sex       = this.outputBtnRadioSex();
-
-		this.member.etatCivil.address.street       	 = pAccountParams.vAccountForm.idAccountStreet.value;
-		this.member.etatCivil.address.city         	 = pAccountParams.vAccountForm.idAccountCity.value;
-		this.member.etatCivil.address.zipCode      	 = pAccountParams.vAccountForm.idAccountZipCode.value;
-		this.member.etatCivil.address.department   	 = pAccountParams.vAccountForm.idAccountDepartment.value;
-
-		this.member.etatCivil.address.departmentName = pAccountParams.vAccountDepartment[pAccountParams.vAccountDepartment.selectedIndex].text;
-
-		this.member.preferences['prefGravures']        = pAccountParams.vAccountPrefGravures.checked;
-		this.member.preferences['prefLivres']          = pAccountParams.vAccountPrefLivres.checked;
-		this.member.preferences['prefFilms']           = pAccountParams.vAccountPrefFilms.checked;
-		this.member.preferences['prefJeux']            = pAccountParams.vAccountPrefJeux.checked;
-		this.member.preferences['prefMaquettes']       = pAccountParams.vAccountPrefMaquettes.checked;
-		this.member.preferences['prefFigurines']       = pAccountParams.vAccountPrefFigurines.checked;
-		this.member.preferences['prefBlindes']         = pAccountParams.vAccountPrefBlindes.checked;
-		this.member.preferences['prefAvions']          = pAccountParams.vAccountPrefAvions.checked;
-		this.member.preferences['prefBateaux']         = pAccountParams.vAccountPrefBateaux.checked;
-		this.member.preferences['prefDioramas']        = pAccountParams.vAccountPrefDioramas.checked;
-		this.member.preferences['prefPrehistoire']     = pAccountParams.vAccountPrefPrehistoire.checked;
-		this.member.preferences['prefAntiquite']       = pAccountParams.vAccountPrefAntiquite.checked;
-		this.member.preferences['prefMoyenAge']        = pAccountParams.vAccountPrefMoyenAge.checked;
-		this.member.preferences['prefRenaissance']     = pAccountParams.vAccountPrefRenaissance.checked;
-		this.member.preferences['prefDentelles']       = pAccountParams.vAccountPrefDentelles.checked;
-		this.member.preferences['prefAncienRegime']    = pAccountParams.vAccountPrefAncienRegime.checked;
-		this.member.preferences['prefRevolution']      = pAccountParams.vAccountPrefRevolution.checked;
-		this.member.preferences['pref1erEmpire']       = pAccountParams.vAccountPref1erEmpire.checked;
-		this.member.preferences['pref2ndEmpire']       = pAccountParams.vAccountPref2ndEmpire.checked;
-		this.member.preferences['prefSecession']       = pAccountParams.vAccountPrefSecession.checked;
-		this.member.preferences['prefFarWest']         = pAccountParams.vAccountPrefFarWest.checked;
-		this.member.preferences['prefWW1']             = pAccountParams.vAccountPrefWW1.checked;
-		this.member.preferences['prefWW2']             = pAccountParams.vAccountPrefWW2.checked;
-		this.member.preferences['prefContemporain']    = pAccountParams.vAccountPrefContemporain.checked;
-		this.member.preferences['prefFuturiste']       = pAccountParams.vAccountPrefFuturiste.checked;
-		this.member.preferences['prefFantastique']     = pAccountParams.vAccountPrefFantastique.checked;
-		this.member.preferences['prefHFrancaise']      = pAccountParams.vAccountPrefHFrancaise.checked;
-		this.member.preferences['prefHAmericaine']     = pAccountParams.vAccountPrefHAmericaine.checked;
-		this.member.preferences['prefHInternationale'] = pAccountParams.vAccountPrefHInternationale.checked;
-		this.member.preferences['prefAutre']           = pAccountParams.vAccountPrefAutre.checked;
-
-		this.member.presentation  = pAccountParams.vAccountForm.idAccountPresentation.value;
-
-		if (pAccountParams.vAccountForm.idAccountCurrentPassword.value !==''){                                 
-			this.member.oldPassword = pAccountParams.vAccountForm.idAccountCurrentPassword.value;
-			this.member.password = pAccountParams.vAccountForm.idAccountPassword.value;
-		}
-
-		webSocketConnection.emit('dataProfilMembre', this.member);   		// Transmission au serveur des infos saisies
-
-		$('#idModalAccount').modal('toggle');                           // Fermeture de la fenêtre modale de Login
-		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
-
-		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
-			this.displayAvatar(pAvatarInfo);
-		};
-
-		this.displayPresentationCard(pProfileInfo);
-	}
-}
-
 
 
 
@@ -1446,30 +1110,21 @@ function AddInvitLines(item, index, pModalMgrFriendListGroup) {
 // d'affichage des invitations
 // --------------------------------------------------------------
 MemberClient.prototype.displayWaitingInvitation = function(pWaitingInvit, pDisplayWaitingInvitationData){
-
 	// Préparation et ouverture de la fenêtre modale de sélection des invitations à traiter
-	this.InitHeaderColor('bg-warning', pDisplayWaitingInvitationData.modalMgrFriendHeader);
-	$('#idModalMgrFriend').modal('show');     // Ouverture de la modale                                     
-
-	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
-	
-	lineHTML.vH5 = window.document.createElement('h5');
-	var parentDiv1 = pDisplayWaitingInvitationData.modalMgrFriendExitBtn.parentNode;
-	parentDiv1.insertBefore(lineHTML.vH5, pDisplayWaitingInvitationData.modalMgrFriendExitBtn);
-	lineHTML.vH5.setAttribute('class', 'modal-title');
-	lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-check"></i>'+' Validation d\'amis';
-	
-	lineHTML.vH6 = window.document.createElement('h6');
-	var parentDiv2 = pDisplayWaitingInvitationData.modalMgrFriendListGroup.parentNode;
-	parentDiv2.insertBefore(lineHTML.vH6, pDisplayWaitingInvitationData.modalMgrFriendListGroup);
-	lineHTML.vH6.setAttribute('class', 'text-center');
-	lineHTML.vH6.innerHTML = 'Validez les membres avec qui vous acceptez de devenir ami';
+	var vModalHeaderParams = 
+	{
+		displayModalDatas : pDisplayWaitingInvitationData,
+		modalId 					: '#idModalMgrFriend',
+		modalTitle 				: '<i class="fa fa-fw fa-check"></i>'+' Validation d\'amis',
+		modalDesc					: 'Validez les membres avec qui vous acceptez de devenir ami',
+	}
+	new DisplayModalHeader().displayModalHeader(vModalHeaderParams);
 
 	// Création dynamique des lignes HTML et création des EventListener pour activer les opération de validation ou de rejet
 	var vInvitAvailable = [];
 	pWaitingInvit.forEach((item, index) => {
 		// Ajoute les éléments d'une ligne vide dans le tableau des invitations
-		vInvitAvailable.push(new AddInvitLines(item, index, pDisplayWaitingInvitationData.modalMgrFriendListGroup));	
+		vInvitAvailable.push(new AddInvitLines(item, index, pDisplayWaitingInvitationData.modalListGroup));	
 
 		var vDataToTransmit = {
 			member					: this.member,
@@ -1659,7 +1314,7 @@ MemberClient.prototype.displayNotifInvitationValided = function(pSelectedInvit, 
 	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
 
 	setTimeout(() => {
-		this.deleteLineInvitProcessed(pSelectedInvit, pNotifInvitValidedData.modalMgrFriendListGroup)
+		this.deleteLineInvitProcessed(pSelectedInvit, pNotifInvitValidedData.modalListGroup)
 	},cstDelayClosingPopover+500);																	// Supprime la ligne après un délai de quelques secondes
 
 	this.addFriendIntoCard(pSelectedInvit, pFriendInfo);						// Ajout de mon nouvel ami dans la carte "Mes amis"
@@ -1719,7 +1374,7 @@ MemberClient.prototype.displayNotifInvitationRefused = function(pSelectedInvit, 
 	},cstDelayClosingPopover);     // Fermeture temporisée de la PopOver
 
 	setTimeout(() => {
-		this.deleteLineInvitProcessed(pSelectedInvit, pDisplayNotifInvitationRefusedData.modalMgrFriendListGroup)
+		this.deleteLineInvitProcessed(pSelectedInvit, pDisplayNotifInvitationRefusedData.modalListGroup)
 	},cstDelayClosingPopover+500);																		// Supprime la ligne après un délai de quelques secondes
 };
 	
@@ -1803,171 +1458,40 @@ function AddMemberListLines(item, index, modalMemberListGroup){
 }
 
 // --------------------------------------------------------------
-// Affichage des champs de saisie nécessaires pour la recherche 
-// des membres (Pseudo et/ou Prénom et/ou nom)
-// --------------------------------------------------------------
-MemberClient.prototype.displaySearchMembersFilter = function(pDisplayPotentialfriendData){  
-	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
-
-	lineHTML.vSearchContainer = window.document.createElement('div');
-	var parentDiv2 = pDisplayPotentialfriendData.modalMemberListGroup.parentNode;
-	parentDiv2.insertBefore(lineHTML.vSearchContainer, pDisplayPotentialfriendData.modalMemberListGroup);
-	lineHTML.vSearchContainer.setAttribute('id', 'idSearchMembersFields');
-	lineHTML.vSearchContainer.setAttribute('class', 'container mb-2');
-
-	lineHTML.vSearchRow = window.document.createElement('div');
-	lineHTML.vSearchContainer.appendChild(lineHTML.vSearchRow);
-	lineHTML.vSearchRow.setAttribute('class', 'row');
-
-	lineHTML.vFieldSearch = window.document.createElement('div');
-	lineHTML.vSearchRow.appendChild(lineHTML.vFieldSearch);
-	lineHTML.vFieldSearch.setAttribute('class', 'col-12 px-0');
-
-	lineHTML.vGroupSearchMembers = window.document.createElement('div');
-	lineHTML.vFieldSearch.appendChild(lineHTML.vGroupSearchMembers);
-	lineHTML.vGroupSearchMembers.setAttribute('class', 'input-group input-group-sm border rounded');
-
-	lineHTML.vInputPseudo = window.document.createElement('input');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputPseudo);
-	lineHTML.vInputPseudo.setAttribute('id', 'idSearchPseudo');
-	lineHTML.vInputPseudo.setAttribute('class', 'form-control');
-	lineHTML.vInputPseudo.setAttribute('type', 'text');
-	lineHTML.vInputPseudo.setAttribute('placeholder', 'Pseudo');
-
-	lineHTML.vInputFirstName = window.document.createElement('input');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputFirstName);
-	lineHTML.vInputFirstName.setAttribute('id', 'idSearchFirstName');
-	lineHTML.vInputFirstName.setAttribute('class', 'form-control');
-	lineHTML.vInputFirstName.setAttribute('type', 'text');
-	lineHTML.vInputFirstName.setAttribute('placeholder', 'Prénom');
-
-	lineHTML.vInputName = window.document.createElement('input');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputName);
-	lineHTML.vInputName.setAttribute('id', 'idSearchName');
-	lineHTML.vInputName.setAttribute('class', 'form-control');
-	lineHTML.vInputName.setAttribute('type', 'text');
-	lineHTML.vInputName.setAttribute('placeholder', 'Nom');
-
-	lineHTML.vClearSearch = window.document.createElement('div');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vClearSearch);
-	lineHTML.vClearSearch.setAttribute('class', 'input-group-append');
-
-	lineHTML.vBtnClearSearch = window.document.createElement('button');
-	lineHTML.vClearSearch.appendChild(lineHTML.vBtnClearSearch);
-	lineHTML.vBtnClearSearch.setAttribute('id', 'idClearSearchMembers');
-	lineHTML.vBtnClearSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
-
-	lineHTML.vIIconClearSearch = window.document.createElement('i');
-	lineHTML.vBtnClearSearch.appendChild(lineHTML.vIIconClearSearch);
-	lineHTML.vIIconClearSearch.setAttribute('class', 'fa fa-fw fa-times');
-
-	lineHTML.vBtnRunSearch = window.document.createElement('button');
-	lineHTML.vClearSearch.appendChild(lineHTML.vBtnRunSearch);
-	lineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearchMembers');
-	lineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
-
-	lineHTML.vIIconRunSearch = window.document.createElement('i');
-	lineHTML.vBtnRunSearch.appendChild(lineHTML.vIIconRunSearch);
-	lineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
-
-	vDataToTransmit = {
-		myPseudo : this.member.pseudo,
-	}
-
-	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredMembers);
-	lineHTML.vBtnRunSearch.datas = vDataToTransmit;
-	lineHTML.vIIconRunSearch.datas = vDataToTransmit;
-
-	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullMemberList);
-	lineHTML.vBtnClearSearch.datas = vDataToTransmit;
-	lineHTML.vIIconClearSearch.datas = vDataToTransmit;
-}
-
-// --------------------------------------------------------------
-// On a clické sur la RAZ du filtre sur Pseudo et/ou prénom et/ou nom,
-// on restaure l'affichage standard des membres
-// --------------------------------------------------------------
-MemberClient.prototype.restoreFullMemberList = function(event){   
-	document.getElementById('idSearchPseudo').value = '',
-	document.getElementById('idSearchFirstName').value = '';
-	document.getElementById('idSearchName').value = '';
-
-	var vDataToTransmit = {
-		withNewModal	: cstWithoutNewModal,
-	}
-	webSocketConnection.emit('askMemberList', vDataToTransmit);  
-}
-
-// --------------------------------------------------------------
-// Demande d'affichage des membres filtrés 
-// sur Pseudo et/ou prénom et/ou nom 
-// --------------------------------------------------------------
-MemberClient.prototype.searchFilteredMembers = function(event){  
-	var vSearchMembersParams	= document.getElementById('idSearchPseudo').value + ' '
-														+ document.getElementById('idSearchFirstName').value + ' '
-														+ document.getElementById('idSearchName').value;
-
-	if (vSearchMembersParams.length > 2){ 							// "2" pour tenir compte des 2 espaces inclus entre les hamps de filtrage
-		vDataToTransmit = 
-		{
-			withNewModal	: cstWithoutNewModal,
-			searchMemberParams 	: vSearchMembersParams,
-		}
-
-		webSocketConnection.emit('searchFilteredMembers',vDataToTransmit);  
-	}
-}
-
-// --------------------------------------------------------------
 // Affichage du Header de la modale de la liste des membres
-// --------------------------------------------------------------
-MemberClient.prototype.displayHeaderMemberList = function(pDisplayMembersModalData){   
-	// Préparation et ouverture de la fenêtre modale de sélection des membres 
-	this.InitHeaderColor('bg-warning', pDisplayMembersModalData.modalMemberListHeader);
-	document.getElementById('idModalMemberListDialog').classList.add('form-MgrFriends');
-
-	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
-
-	lineHTML.vH5 = window.document.createElement('h5');
-	var parentDiv1 = pDisplayMembersModalData.modalMemberListExitBtn.parentNode;
-	parentDiv1.insertBefore(lineHTML.vH5, pDisplayMembersModalData.modalMemberListExitBtn);
-	lineHTML.vH5.setAttribute('class', 'modal-title');
-	lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-th-list"></i>'+' Liste des membres déclarés';
-	
-	lineHTML.vH6 = window.document.createElement('h6');
-	var parentDiv2 = pDisplayMembersModalData.modalMemberListGroup.parentNode;
-	parentDiv2.insertBefore(lineHTML.vH6, pDisplayMembersModalData.modalMemberListGroup);
-	lineHTML.vH6.setAttribute('class', 'text-center');
-	lineHTML.vH6.innerHTML = 'Liste de tous les membres déclarés dans \'Collect\'Or\'';
-}
-
-// --------------------------------------------------------------
-// Affichage des lignes des amis potentiel pour l'ajout d'amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayMembersLines = function(pMembers, pDisplayMembersModalData){ 
 	// Création dynamique des lignes HTML 
 	var vMembers = [];
 
 	pMembers.forEach((item, index) => {
-		vMembers.push(new AddMemberListLines(item, index, pDisplayMembersModalData.modalMemberListGroup));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+		vMembers.push(new AddMemberListLines(item, index, pDisplayMembersModalData.modalListGroup));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
 	});
 }
 
 // --------------------------------------------------------------
-// On a reçu une liste de membres pouvant devenir amis
+// On a reçu une liste de membres 
 // Ajout dynamique des membres dans le DOM sur la modale
-// de sélection des membres pour devenir amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayMembers = function(pMembers, pDisplayMembersModalData){   
-	this.displayHeaderMemberList(pDisplayMembersModalData);
-
-	// Affiche les champs de recherche des membres (Pseudo et/ou Prénom et/ou Nom)
-	this.displaySearchMembersFilter(pDisplayMembersModalData);		
-
-	// Affiche les lignes des amis potentiels
-	this.displayMembersLines(pMembers, pDisplayMembersModalData)
-
-	$('#idModalMemberList').modal('show');     // Ouverture de la modale                                     
+	var vModalHeaderParams = 
+	{
+		displayModalDatas : pDisplayMembersModalData,
+		modalId 					: '#idModalMemberList',
+		modalTitle 				: '<i class="fa fa-fw fa-th-list"></i>'+' Liste des membres déclarés',
+		modalDesc					: 'Liste de tous les membres déclarés dans \'Collect\'Or\'',
+	}
+	new DisplayModalHeader().displayModalHeader(vModalHeaderParams);
+	
+	var vSearchFilterParams = 
+	{
+		displayModalDatas 	: pDisplayMembersModalData,
+		myPseudo						: this.member.pseudo,
+		msgRestoreFullList	: 'askMemberList',
+		msgFilteredList			: 'searchFilteredMembers',
+	}
+	new SearchFilter().displaySearchFilter(vSearchFilterParams);		// Affiche les champs de recherche des membres (Pseudo et/ou Prénom et/ou Nom)
+	this.displayMembersLines(pMembers, pDisplayMembersModalData);		// Affiche les lignes des membres
 };
 
 
@@ -2067,161 +1591,15 @@ function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
 	this.lineHTML.vIFA.setAttribute('class', 'fa fa-user-plus fa-2x text-dark');
 }
 
-
-
-// --------------------------------------------------------------
-// Affichage des champs de saisie nécessaires pour la recherche 
-// des membres (Pseudo et/ou Prénom et/ou nom)
-// --------------------------------------------------------------
-MemberClient.prototype.displaySearchPotentialFriendsFilter = function(pDisplayPotentialfriendData){  
-	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
-
-	lineHTML.vSearchContainer = window.document.createElement('div');
-	var parentDiv2 = pDisplayPotentialfriendData.modalMgrFriendListGroup.parentNode;
-	parentDiv2.insertBefore(lineHTML.vSearchContainer, pDisplayPotentialfriendData.modalMgrFriendListGroup);
-	lineHTML.vSearchContainer.setAttribute('id', 'idSearchMembersFields');
-	lineHTML.vSearchContainer.setAttribute('class', 'container mb-2');
-
-	lineHTML.vSearchRow = window.document.createElement('div');
-	lineHTML.vSearchContainer.appendChild(lineHTML.vSearchRow);
-	lineHTML.vSearchRow.setAttribute('class', 'row');
-
-	lineHTML.vFieldSearch = window.document.createElement('div');
-	lineHTML.vSearchRow.appendChild(lineHTML.vFieldSearch);
-	lineHTML.vFieldSearch.setAttribute('class', 'col-12 px-0');
-
-	lineHTML.vGroupSearchMembers = window.document.createElement('div');
-	lineHTML.vFieldSearch.appendChild(lineHTML.vGroupSearchMembers);
-	lineHTML.vGroupSearchMembers.setAttribute('class', 'input-group input-group-sm border rounded');
-
-	lineHTML.vInputPseudo = window.document.createElement('input');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputPseudo);
-	lineHTML.vInputPseudo.setAttribute('id', 'idSearchPseudo');
-	lineHTML.vInputPseudo.setAttribute('class', 'form-control');
-	lineHTML.vInputPseudo.setAttribute('type', 'text');
-	lineHTML.vInputPseudo.setAttribute('placeholder', 'Pseudo');
-
-	lineHTML.vInputFirstName = window.document.createElement('input');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputFirstName);
-	lineHTML.vInputFirstName.setAttribute('id', 'idSearchFirstName');
-	lineHTML.vInputFirstName.setAttribute('class', 'form-control');
-	lineHTML.vInputFirstName.setAttribute('type', 'text');
-	lineHTML.vInputFirstName.setAttribute('placeholder', 'Prénom');
-
-	lineHTML.vInputName = window.document.createElement('input');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vInputName);
-	lineHTML.vInputName.setAttribute('id', 'idSearchName');
-	lineHTML.vInputName.setAttribute('class', 'form-control');
-	lineHTML.vInputName.setAttribute('type', 'text');
-	lineHTML.vInputName.setAttribute('placeholder', 'Nom');
-
-	lineHTML.vClearSearch = window.document.createElement('div');
-	lineHTML.vGroupSearchMembers.appendChild(lineHTML.vClearSearch);
-	lineHTML.vClearSearch.setAttribute('class', 'input-group-append');
-
-	lineHTML.vBtnClearSearch = window.document.createElement('button');
-	lineHTML.vClearSearch.appendChild(lineHTML.vBtnClearSearch);
-	lineHTML.vBtnClearSearch.setAttribute('id', 'idClearSearchMembers');
-	lineHTML.vBtnClearSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
-
-	lineHTML.vIIconClearSearch = window.document.createElement('i');
-	lineHTML.vBtnClearSearch.appendChild(lineHTML.vIIconClearSearch);
-	lineHTML.vIIconClearSearch.setAttribute('class', 'fa fa-fw fa-times');
-
-	lineHTML.vBtnRunSearch = window.document.createElement('button');
-	lineHTML.vClearSearch.appendChild(lineHTML.vBtnRunSearch);
-	lineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearchMembers');
-	lineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
-
-	lineHTML.vIIconRunSearch = window.document.createElement('i');
-	lineHTML.vBtnRunSearch.appendChild(lineHTML.vIIconRunSearch);
-	lineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
-
-	vDataToTransmit = {
-		myPseudo : this.member.pseudo,
-	}
-
-	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredPotentialFriends);
-	lineHTML.vBtnRunSearch.datas = vDataToTransmit;
-	lineHTML.vIIconRunSearch.datas = vDataToTransmit;
-
-	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullAddFriend);
-	lineHTML.vBtnClearSearch.datas = vDataToTransmit;
-	lineHTML.vIIconClearSearch.datas = vDataToTransmit;
-}
-
-// --------------------------------------------------------------
-// On a clické sur la RAZ du filtre sur Pseudo et/ou prénom et/ou nom,
-// on restaure l'affichage standard des membres pouvant devenir amis
-// --------------------------------------------------------------
-MemberClient.prototype.restoreFullAddFriend = function(event){   
-	document.getElementById('idSearchPseudo').value = '',
-	document.getElementById('idSearchFirstName').value = '';
-	document.getElementById('idSearchName').value = '';
-
-	var vDataToTransmit = {
-		myPseudo 			: event.target.datas.myPseudo,
-		withNewModal	: cstWithoutNewModal,
-	}
-
-	webSocketConnection.emit('askAddFriend', vDataToTransmit);  
-}
-
-// --------------------------------------------------------------
-// Demande d'affichage des membres potentiellement amis filtrés 
-// sur Pseudo et/ou prénom et/ou nom 
-// --------------------------------------------------------------
-MemberClient.prototype.searchFilteredPotentialFriends = function(event){  
-	var vSearchMembersParams	= document.getElementById('idSearchPseudo').value + ' '
-														+ document.getElementById('idSearchFirstName').value + ' '
-														+ document.getElementById('idSearchName').value;
-
-	if (vSearchMembersParams.length > 2){ 							// "2" pour tenir compte des 2 espaces inclus entre les hamps de filtrage
-		vDataToTransmit = 
-		{
-			myPseudo						: event.target.datas.myPseudo,
-			searchMemberParams 	: vSearchMembersParams,
-		}
-		webSocketConnection.emit('searchFilteredPotentialFriends',vDataToTransmit);  
-	}
-}
-
-// --------------------------------------------------------------
-// Affichage du Header de la modale d'ajout d'amis
-// --------------------------------------------------------------
-MemberClient.prototype.displayHeaderPotentialFriends = function(pDisplayPotentialfriendData){   
-
-	// Préparation et ouverture de la fenêtre modale de sélection des membres pouvant devenir amis
-	this.InitHeaderColor('bg-warning', pDisplayPotentialfriendData.modalMgrFriendHeader);
-	document.getElementById('idModalMgrFriendDialog').classList.add('form-MgrFriends');
-
-	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
-
-	// <h5 class="modal-title"><i class="fa fa-fw fa-user-plus"></i> Ajout d'amis</h5>
-	lineHTML.vH5 = window.document.createElement('h5');
-	var parentDiv1 = pDisplayPotentialfriendData.modalMgrFriendExitBtn.parentNode;
-	parentDiv1.insertBefore(lineHTML.vH5, pDisplayPotentialfriendData.modalMgrFriendExitBtn);
-	lineHTML.vH5.setAttribute('class', 'modal-title');
-	lineHTML.vH5.innerHTML = '<i class="fa fa-fw fa-user-plus"></i>'+' Ajout d\'amis';
-	
-	// <h6 class="text-center">Sélectionnez les membres avec qui vous souhaitez devenir ami</h6>
-	lineHTML.vH6 = window.document.createElement('h6');
-	var parentDiv2 = pDisplayPotentialfriendData.modalMgrFriendListGroup.parentNode;
-	parentDiv2.insertBefore(lineHTML.vH6, pDisplayPotentialfriendData.modalMgrFriendListGroup);
-	lineHTML.vH6.setAttribute('class', 'text-center');
-	lineHTML.vH6.innerHTML = 'Sélectionnez les membres avec qui vous souhaitez devenir ami';
-}
-
 // --------------------------------------------------------------
 // Affichage des lignes des amis potentiel pour l'ajout d'amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayPotentialFriendsLines = function(pMembersFriendables, pDisplayPotentialfriendData){ 
-	
 	// Création dynamique des lignes HTML et création des EventListener pour activer les opération de demande d'ami
 	var vMembersFriendables = [];
 
 	pMembersFriendables.forEach((item, index) => {
-	vMembersFriendables.push(new AddPotentialFriendLines(item, index, pDisplayPotentialfriendData.modalMgrFriendListGroup));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
+	vMembersFriendables.push(new AddPotentialFriendLines(item, index, pDisplayPotentialfriendData.modalListGroup));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
 	var vDataToTransmit = {
 		member					: this.member,
 		actionBtn				: vMembersFriendables[index].lineHTML.vIFA.id,
@@ -2249,15 +1627,24 @@ MemberClient.prototype.displayPotentialFriendsLines = function(pMembersFriendabl
 // de sélection des membres pour devenir amis
 // --------------------------------------------------------------
 MemberClient.prototype.displayPotentialFriends = function(pMembersFriendables, pDisplayPotentialfriendData){   
-	this.displayHeaderPotentialFriends(pDisplayPotentialfriendData);
+	var vModalHeaderParams = 
+	{
+		displayModalDatas : pDisplayPotentialfriendData,
+		modalId 					: '#idModalMgrFriend',
+		modalTitle 				: '<i class="fa fa-fw fa-user-plus"></i>'+' Ajout d\'amis',
+		modalDesc					: 'Sélectionnez les membres avec qui vous souhaitez devenir ami',
+	}
+	new DisplayModalHeader().displayModalHeader(vModalHeaderParams);
 
-	// Affiche les champs de recherche des membres (Pseudo et/ou Prénom et/ou Nom)
-	this.displaySearchPotentialFriendsFilter(pDisplayPotentialfriendData);		
-
-	// Affiche les lignes des amis potentiels
-	this.displayPotentialFriendsLines(pMembersFriendables, pDisplayPotentialfriendData)
-
-	$('#idModalMgrFriend').modal('show');     // Ouverture de la modale                                     
+	var vSearchFilterParams = 
+	{
+		displayModalDatas 	: pDisplayPotentialfriendData,
+		myPseudo						: this.member.pseudo,
+		msgRestoreFullList	: 'askAddFriend',
+		msgFilteredList			: 'searchFilteredPotentialFriends',
+	}
+	new SearchFilter().displaySearchFilter(vSearchFilterParams);													// Affiche les champs de recherche des membres (Pseudo et/ou Prénom et/ou Nom)
+	this.displayPotentialFriendsLines(pMembersFriendables, pDisplayPotentialfriendData)		// Affiche les lignes des amis potentiels
 };
 
 // --------------------------------------------------------------
@@ -2344,7 +1731,7 @@ MemberClient.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisp
 	},cstDelayClosingPopover);																				// Ferme la notif après un délai de quelques secondes
 
 	setTimeout(() => {
-		this.deleteLineInvitSent(pFriendToAdd, pDisplayNotifInvitationSentData.modalMgrFriendListGroup)
+		this.deleteLineInvitSent(pFriendToAdd, pDisplayNotifInvitationSentData.modalListGroup)
 	},cstDelayClosingPopover + 500);																	// Supprime la ligne après un délai de quelques secondes
 
 	if (!this.vInvitSentCardVisible){
@@ -2511,14 +1898,14 @@ MemberClient.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentI
 };
 
 // --------------------------------------------------------------
-// Change la classe (de couleur BS) lorsque la souris quitte le 
+// Change la classe (de couleur BS4) lorsque la souris quitte le 
 // boutons, en blanc
 // --------------------------------------------------------------
 MemberClient.prototype.ChangeBtnTxtColOver = function(event){
 	document.getElementById(event.target.datas.actionBtn).classList.replace('text-dark','text-light');
 }
 // --------------------------------------------------------------
-// Change la classe (de couleur BS) lorsque la souris quitte le 
+// Change la classe (de couleur BS4) lorsque la souris quitte le 
 // boutons, en noir
 // --------------------------------------------------------------
 MemberClient.prototype.ChangeBtnTxtColOut = function(event){

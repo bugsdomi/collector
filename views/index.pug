@@ -1117,7 +1117,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale des membres
 // *************************************************************************
 #idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalMemberListTitle' aria-hidden='true')
-  #idModalMemberListDialog.modal-dialog.modal-dialog-centered(role='document' style='max-width: 700px;')
+  #idModalMemberListDialog.modal-dialog.modal-lg.modal-dialog-centered(role='document')
     .modal-content
       #idModalMemberListHeader.modal-header
         button#idModalMemberListExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
@@ -1138,6 +1138,10 @@ script(src='static/js/variables.js')
 script(src='static/js/SPAMgr.js')
 script(src='static/js/MemberClientSide.js')
 script(src='static/js/MicroFicheMember.js')
+script(src='static/js/InitHeaderColor.js')
+script(src='static/js/DisplayModalHeader.js')
+script(src='static/js/SearchFilter.js')
+script(src='static/js/AccountModal.js')
 script(src='siofu/client.js')
 // XXXXX A virer "custom.js"
 script(src='static/js/custom.js')

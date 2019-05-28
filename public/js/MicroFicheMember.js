@@ -17,15 +17,14 @@ function MicroFicheMember(pMember, pDivDropDown){   						// Fonction constructe
 	this.divDropDown 			= pDivDropDown;
 	this.friendsOfMember	= [];
 	this.lastMicroFiche 	= 0;									// N0 de al dernière MicroFiche affichée
+};
 
-}
-
-	// ---------------------------------------------------------------------------------------------------------------------------
-	// Filtrage de tous les membres confirmés
-	// ---------------------------------------------------------------------------------------------------------------------------
-	MicroFicheMember.prototype.filterConfirmedFriends = function(pItem){
-		return pItem.pendingFriendRequest === cstAmiConfirme;
-	};
+// ---------------------------------------------------------------------------------------------------------------------------
+// Filtrage de tous les membres confirmés
+// ---------------------------------------------------------------------------------------------------------------------------
+MicroFicheMember.prototype.filterConfirmedFriends = function(pItem){
+	return pItem.pendingFriendRequest === cstAmiConfirme;
+};
 
 // -----------------------------------------------------------------------------
 // Micro-fiche d'un ami
@@ -35,21 +34,28 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(){
 
 	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
+	while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
+    this.lastMicroFiche++
+	}
+
 	vlineHTML.vDiv = window.document.createElement('div');
-	this.divDropDown.appendChild(vlineHTML.vDiv);
+	vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
+	if(this.lastMicroFiche < 2){
+		this.divDropDown.appendChild(vlineHTML.vDiv);
+	} else {
+		var parentDiv = document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)).parentNode;
+		parentDiv.insertBefore(vlineHTML.vDiv, document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)));
+	}
+
 	vlineHTML.vDiv.setAttribute('href', '#');
 	vlineHTML.vDiv.setAttribute('class', 'container list-group-item m-0 p-0 list-group-item-warning');
 	vlineHTML.vDiv.setAttribute('style', 'border-bottom: 1px solid black;');
 
-	while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
-    this.lastMicroFiche++
-	}
-	vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
-
 	// S'il ne s'agit pas de la micro-fiche principale, (et donc c'est une Micro-fiche d'un ami indirect), je l'efface au bout de 10sec
 	if (this.lastMicroFiche > 0){					
 		setTimeout(() => {
-			this.removeLinesOfDropDownMenu(vlineHTML.vDiv)				// Suppression de la microfiche
+			// this.removeLinesOfDropDownMenu(vlineHTML.vDiv)				// Suppression de la microfiche Gardé pour raisons historiques et par sécurité
+			vlineHTML.vDiv.classList.add('d-none')									// Masquage de la microfiche --> Pour ne pas rompre la séquence de numérotation
 		},cstDelayClosingMicroFiche);																
 	}
 
@@ -122,6 +128,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(){
 	// Affiche la carte des amis de mon ami, ou des amis d'un ami de mon ami, etc, etc, etc...
 	vlineHTML.vDivBorderFriendsOfmyFriend = window.document.createElement('div');
 	vlineHTML.vDiv.appendChild(vlineHTML.vDivBorderFriendsOfmyFriend);
+	vlineHTML.vDivBorderFriendsOfmyFriend.setAttribute('id', 'idDivHook'+this.lastMicroFiche);
 	vlineHTML.vDivBorderFriendsOfmyFriend.setAttribute('class', 'rounded');
 	vlineHTML.vDivBorderFriendsOfmyFriend.setAttribute('style', 'border-top: 1px black solid;');
 
@@ -216,7 +223,6 @@ MicroFicheMember.prototype.getFriendsOfMembers = function(event){
 // à la fermeture du sous-menu
 // -----------------------------------------------------------------------------
 MicroFicheMember.prototype.removeLinesOfDropDownMenu = function(pDivDropDown){
-
 	// Suppression des éléments de la micro-fiche
 	while (pDivDropDown.firstChild) {
 		pDivDropDown.removeChild(pDivDropDown.firstChild);
