@@ -8,7 +8,15 @@
 // ************************************************************************
 // --------------------------------------------------------------
 // var vLoginForm;                     // Instance du formulaire de saisie du Login
-var vMemberClient;                  // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
+var vMemberClient;                  // Instanciation de l'objet decrivant un Membre et les méthodes de gestion de ce Membre
+var vFriendPopUpMenu;               // Instanciation de l'objet Popup Menu de mes amis
+var vFriendRequestMgr;              // Instanciation de l'objet gestionnaire des demandes d'amis
+var vInvitationsMgr;                // Instanciation de l'objet gestionnaire des invitations
+var vMembersMgr;                    // Instanciation de l'objet gestionnaire des membres
+var vPresentationCard;              // Instanciation de l'objet "Carte de présentation"
+var vFriendsCard;                   // Instanciation de l'objet "Carte des invitations"
+var vRecommendFriendsMgr;           // Instanciation de l'objet gestionnaire des recommandations
+var vInvitationsCard;               // Instanciation de l'objet "carte des invitations"
 var vToolBox;                       // Instance de la Boîte à outils
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var webSocketConnection;            // Variable pour la connexion WebSocket

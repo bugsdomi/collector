@@ -132,7 +132,7 @@ AccountModal.prototype.initModalAccount = function(pAccountParameters){
 
 	pAccountParameters.vAccountForm.idAccountPresentation.value = this.memberClient.member.presentation;
 
-	this.newPasswordKO = false;
+	this.memberClient.newPasswordKO = false;
 	pAccountParameters.vAccountForm.idAccountCurrentPassword.value = '';
 	pAccountParameters.vAccountForm.idAccountPassword.value = '';
 	pAccountParameters.vAccountForm.idAccountConfirmPassword.value = '';
@@ -242,8 +242,8 @@ var myIdLabel = document.getElementById(pPrefLabel)
 // - Comme cette fonction est "Read-Only", on ne change pas le statut réel des check-box sous-jacents
 // -----------------------------------------------------------------------------
 AccountModal.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel){
-	this.memberClient.member.preferences[pIndex] ? document.getElementById(pPrefLabel).classList.add('active')
-																	: document.getElementById(pPrefLabel).classList.remove('active')
+	this.memberClient.member.preferences[pIndex] 	? document.getElementById(pPrefLabel).classList.add('active')
+																								: document.getElementById(pPrefLabel).classList.remove('active')
 }
 
 	// -------------------------------------------------------------------------
@@ -259,7 +259,7 @@ AccountModal.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex,
 AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pProfileInfo){
 	var cstWaitForUpladToDisplayAvatar = false;
 
-	if (!this.newPasswordKO){
+	if (!this.memberClient.newPasswordKO){
 		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisi dans l explorateur windows
 			this.memberClient.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
 			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                           // Alors on la transfère vers le serveur 
@@ -327,6 +327,6 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
       this.memberClient.displayAvatar(pAvatarInfo);
 		};
 
-		this.memberClient.displayPresentationCard(pProfileInfo);
+		vPresentationCard.displayPresentationCard(pProfileInfo);
 	}
 }

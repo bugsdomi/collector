@@ -272,7 +272,7 @@ ToolBox.prototype.InitPopOverAndToolTipAndDropDown = function(){
 	});
 }
 // -----------------------------------------------------------------------------
-//  Cette fonction formatte al date en JJ/MM/AA
+//  Cette fonction formate al date en JJ/MM/AA
 // -----------------------------------------------------------------------------
 ToolBox.prototype.setFormatDateJJMMAAA  = function(pDate){
 	var myDate 	= new Date(pDate);
@@ -293,5 +293,38 @@ ToolBox.prototype.setFormatDateJJMMAAA  = function(pDate){
 	return myDate
 };
 // -----------------------------------------------------------------------------
+// Cette fonction recherche dans un Array (amis ou invitations), celui qui a la propriété 
+// "pProperty", et la valeur correspondante à celle recherchée "pValue"
+// ---------------------------------------------------------------------------
+ToolBox.prototype.searchObjectInArray = (pArray, pProperty, pValue) => {
+	return pArray.map((propertyFilter) => {
+		return propertyFilter[pProperty];
+	})
+	.indexOf(pValue);
+}
+
+// -----------------------------------------------------------------------------
+// Suppression de toutes le PopOver qui seraient encore ouvertes dû à la 
+// simultaneïté des actions
+// 
+// Bootstrap sets a data field with key `bs.popover` on elements that have a popover.
+// Note that there is no corresponding **HTML attribute** on the elements so we cannot
+// perform a search by attribute.
+// Purge des PopOver qui seraient encore affichée alors que l'utilisateur change d'ami à recommander
+// -----------------------------------------------------------------------------
+ToolBox.prototype.clearAllOpenedPopOverAndToolTip = function(){
+	$("*").each(function () {
+		var popover = $.data(this, "bs.popover");
+		if (popover)
+				$(this).popover('hide');
+	});
+
+	$("*").each(function () {
+		var tooltip = $.data(this, "bs.tooltip");
+		if (tooltip)
+				$(this).tooltip('hide');
+	});
+}
+-----------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

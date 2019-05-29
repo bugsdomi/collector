@@ -52,9 +52,17 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Prépositionnement (Focus) sur les champs des différentes fenêtres modales
 	// Réinitialisations des valeurs des champs de saisies des différentes fenêtres
 	// -------------------------------------------------------------------------
-	vToolBox = new ToolBox();
-	vMemberClient = new MemberClient();       							// Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
-	vAccountModal = new AccountModal(vMemberClient);				// Instanciation de la méga-modale de saisie des infos personnelles;
+	vToolBox 							= new ToolBox();
+	vMemberClient 				= new MemberClient();       										// Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
+	vAccountModal 				= new AccountModal(vMemberClient);							// Instanciation de la méga-modale de saisie des infos personnelles;
+	vFriendPopUpMenu 			= new FriendPopUpMenu(vMemberClient);						// Instanciation de l'objet affichant le PopUp Menu;
+	vFriendRequestMgr			= new FriendRequestMgr(vMemberClient);					// Instanciation de l'objet gérant les demandes d'amis
+	vPresentationCard			= new PresentationCard(vMemberClient);					// Instanciation de l'objet "Carte de présentations"
+	vFriendsCard					= new FriendsCard(vMemberClient);								// Instanciation de l'objet "Carte des amis"
+	vInvitationsMgr				= new InvitationsMgr(vMemberClient);						// Instanciation de l'objet gérant les invitations
+	vMembersMgr						= new MembersMgr(vMemberClient);								// Instanciation de l'objet gérant les membres
+	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
+	vInvitationsCard			= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 		// -------------------------------------------------------------------------
@@ -152,13 +160,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vFilteredFriends = document.getElementById('idFilteredFriends');
 	vFilteredFriends.addEventListener('keyup', function(){
-		vMemberClient.filterFriends(vFilteredFriends.value.toUpperCase())
+		vFriendsCard.filterFriends(vFilteredFriends.value.toUpperCase())
 	});
 
 	var vClearFriendsFilter = document.getElementById('idClearFriendsFilter');
 	vClearFriendsFilter.addEventListener('click', function(){
 		vFilteredFriends.value = '';
-		vMemberClient.filterFriends(vFilteredFriends.value.toUpperCase())
+		vFriendsCard.filterFriends(vFilteredFriends.value.toUpperCase())
 	});
 
 	var vFriendUL = document.getElementById('idFriendUL');
@@ -758,7 +766,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayFriendListOfMember', function(pFriendsOfMember){
 		var vDropDownParent = document.getElementById('idDivMicroFiche0');
-		new MicroFicheMember(pFriendsOfMember, vDropDownParent).displayMicroFicheMember();
+		new MicroFicheMember(pFriendsOfMember).displayMicroFicheMember(vDropDownParent);
 	}); 
 
 	// --------------------------------------------------------------
@@ -766,8 +774,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
 	// --------------------------------------------------------------
 	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
-		pcancelInvitSent.indexInvitToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
-		vMemberClient.removeInvitSentFromMyInvitSentList(pcancelInvitSent, vInvitSentInfo);
+		pcancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
+		vInvitationsCard.removeInvitSentFromMyInvitSentList(pcancelInvitSent, vInvitSentInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -775,8 +783,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
-		pcancelInvitSent.indexInvitToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
-		vMemberClient.refreshMyInvitList(pcancelInvitSent, vInvitSentInfo);
+		pcancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
+		vInvitationsCard.refreshMyInvitList(pcancelInvitSent, vInvitSentInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -784,8 +792,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// de ma carte "Liste d'amis"
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
-		pFriendToDelete.indexFriendToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vMemberClient.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
+		vFriendPopUpMenu.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -794,8 +802,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Même procédure que ci-dessus, sauf que les rôles sont inversés
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
-		pFriendToDelete.indexFriendToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vMemberClient.refreshMyFriendList(pFriendToDelete, vFriendInfo);
+		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
+		vFriendPopUpMenu.refreshMyFriendList(pFriendToDelete, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -817,8 +825,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	// Le serveur a envoyé une liste d'amis à qui je peux recommander mon ami
 	// --------------------------------------------------------------
-	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){  
-		vMemberClient.displayPopUpOfMyFriend(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
+	webSocketConnection.on('displayRecommendableFriendList', function(pRecommendableFriends){ 
+		vFriendPopUpMenu.displayPopUpOfMyFriend(pRecommendableFriends);	// Affichage des amis à qui on peut recommander notre ami
 	});
 
 	// --------------------------------------------------------------
@@ -826,7 +834,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// le serveur après les MAJ réussies de la BDD et l'envoi du mail
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayNotifRecommendationSent', function(pFriendToAdd){  
-		vMemberClient.displayNotifRecommendationSent(pFriendToAdd);
+		vRecommendFriendsMgr.displayNotifRecommendationSent(pFriendToAdd);
 	});
 
 	// --------------------------------------------------------------
@@ -855,7 +863,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
-		vMemberClient.displayWaitingInvitation(pWaitingInvit, vDisplayWaitingInvitationData)
+		vInvitationsMgr.displayWaitingInvitation(pWaitingInvit, vDisplayWaitingInvitationData)
 	});
 
 	// --------------------------------------------------------------
@@ -863,13 +871,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// et ajout de mon Avatar sur la liste de mon nouvel ami
 	// --------------------------------------------------------------
 	webSocketConnection.on('addFriendIntoHisList', function(pMyFriend){ 
-		pMyFriend.indexInvitToDelete = vMemberClient.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pMyFriend.friendPseudo);
+		pMyFriend.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pMyFriend.friendPseudo);
 
 		// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
-		vMemberClient.refreshMyInvitList(pMyFriend, vInvitSentInfo);		
+		vInvitationsCard.refreshMyInvitList(pMyFriend, vInvitSentInfo);		
 
 		// Ajout de l'avatar sujet de l'invitation dans ma liste d'amis
-		vMemberClient.addFriendIntoCard(pMyFriend, vFriendInfo);
+		vFriendsCard.addFriendIntoCard(pMyFriend, vFriendInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -881,7 +889,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationValidedData = {
 			modalListGroup : vModalMgrFriendListGroup,
 		}
-		vMemberClient.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
+		vInvitationsMgr.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
 	});	
 
 	// --------------------------------------------------------------
@@ -892,7 +900,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationRefusedData = {
 			modalListGroup : vModalMgrFriendListGroup,
 		}
-		vMemberClient.displayNotifInvitationRefused(pSelectedInvit, vDisplayNotifInvitationRefusedData);
+		vInvitationsMgr.displayNotifInvitationRefused(pSelectedInvit, vDisplayNotifInvitationRefusedData);
 	});
 
 	// --------------------------------------------------------------
@@ -925,7 +933,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
-		vMemberClient.displayPotentialFriends(pMembersFriendables, vDisplayPotentialfriendData);
+		vFriendRequestMgr.displayPotentialFriends(pMembersFriendables, vDisplayPotentialfriendData);
 	});
 
 	// --------------------------------------------------------------
@@ -946,7 +954,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
-		vMemberClient.displayPotentialFriendsLines(pMembersFriendables, vDisplayPotentialfriendData)
+		vFriendRequestMgr.displayPotentialFriendsLines(pMembersFriendables, vDisplayPotentialfriendData)
 	});
 
 	// --------------------------------------------------------------
@@ -961,7 +969,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			modalListGroup 	: vModalMemberListGroup,
 		}
 
-		vMemberClient.displayMembers(pMembers, vDisplayMembersModalData);
+		vMembersMgr.displayMembers(pMembers, vDisplayMembersModalData);
 	});
 
 	// --------------------------------------------------------------
@@ -981,7 +989,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			modalListGroup 	: vModalMemberListGroup,
 		}
 
-		vMemberClient.displayMembersLines(pMembers, vDisplayMembersModalData);
+		vMembersMgr.displayMembersLines(pMembers, vDisplayMembersModalData);
 	});
 
 	// --------------------------------------------------------------
@@ -992,7 +1000,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationSentData = {
 			modalListGroup : vModalMgrFriendListGroup,
 		}
-		vMemberClient.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData, vInvitSentInfo);
+		vFriendRequestMgr.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData, vInvitSentInfo);
 	});
 
 	// --------------------------------------------------------------
@@ -1175,7 +1183,7 @@ console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 		vMemberClient.displayAvatar(vAvatarInfo)
 	});
 
-	// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------
 // 
