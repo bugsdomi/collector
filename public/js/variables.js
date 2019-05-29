@@ -8,6 +8,7 @@
 // ************************************************************************
 // --------------------------------------------------------------
 // var vLoginForm;                     // Instance du formulaire de saisie du Login
+var vMemberClient;                  // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 var vToolBox;                       // Instance de la Boîte à outils
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var webSocketConnection;            // Variable pour la connexion WebSocket

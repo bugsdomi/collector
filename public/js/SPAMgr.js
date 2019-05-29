@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Réinitialisations des valeurs des champs de saisies des différentes fenêtres
 	// -------------------------------------------------------------------------
 	vToolBox = new ToolBox();
-	var vMemberClient = new MemberClient();       // Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
+	vMemberClient = new MemberClient();       							// Instanciation de l'objet descrivant un Membre et les méthodes de gestion de ce Membre
 	vAccountModal = new AccountModal(vMemberClient);				// Instanciation de la méga-modale de saisie des infos personnelles;
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
