@@ -260,7 +260,7 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 	var cstWaitForUpladToDisplayAvatar = false;
 
 	if (!this.newPasswordKO){
-		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisie dans l explorateur windows
+		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisi dans l explorateur windows
 			this.memberClient.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
 			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                           // Alors on la transfère vers le serveur 
 			cstWaitForUpladToDisplayAvatar = true;
@@ -324,7 +324,7 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
 
 		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
-			this.displayAvatar(pAvatarInfo);
+      this.memberClient.displayAvatar(pAvatarInfo);
 		};
 
 		this.memberClient.displayPresentationCard(pProfileInfo);

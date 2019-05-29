@@ -426,7 +426,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	vAccount.addEventListener('click', function(){
 		vAccountModal.initModalAccount(vAccountParams);
-		
 	});
 
 	// -------------------------------------------------------------------------
@@ -696,7 +695,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	}
 	
 	// -------------------------------------------------------------------------
-	// Structure de transfert des infos de la page de renseignements vers la 
+	// Structure de transfert des infos de la page de renseignements vers l'objet 
 	// page de renseignements
 	// -------------------------------------------------------------------------
 	var vAccountParams = {
