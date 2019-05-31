@@ -42,8 +42,7 @@ DisplayModalHeader.prototype.displayModalHeader = function(pModalHeaderParams){
   lineHTML.vH5.innerHTML = pModalHeaderParams.modalTitle;
 
   lineHTML.vH6 = window.document.createElement('h6');
-  var parentDiv2 = pModalHeaderParams.displayModalDatas.modalListGroup.parentNode;
-  parentDiv2.insertBefore(lineHTML.vH6, pModalHeaderParams.displayModalDatas.modalListGroup);
+  pModalHeaderParams.displayModalDatas.modalListTitle.appendChild(lineHTML.vH6);
   lineHTML.vH6.setAttribute('class', 'text-center');
   lineHTML.vH6.innerHTML = pModalHeaderParams.modalDesc;
 }

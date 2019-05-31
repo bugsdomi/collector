@@ -766,7 +766,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayFriendListOfMember', function(pFriendsOfMember){
 		var vDropDownParent = document.getElementById('idDivMicroFiche0');
-		new MicroFicheMember(pFriendsOfMember).displayMicroFicheMember(vDropDownParent);
+
+		var vMicroFicheParams = {
+			simpleMicroFiche 	: cstStackableMicroFiche,
+			index							: null,
+		};
+		
+		new MicroFicheMember(pFriendsOfMember).displayMicroFicheMember(vDropDownParent, vMicroFicheParams);
 	}); 
 
 	// --------------------------------------------------------------
@@ -860,6 +866,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayWaitingInvitationData = {
 			modalHeader 		: vModalMgrFriendHeader,
 			modalExitBtn 		: vModalMgrFriendExitBtn ,
+			modalListTitle	:	vModalMgrFriendTitle,
 			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
@@ -930,6 +937,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayPotentialfriendData = {
 			modalHeader 		: vModalMgrFriendHeader,
 			modalExitBtn 		: vModalMgrFriendExitBtn,
+			modalListTitle	: vModalMgrFriendTitle,
 			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
@@ -951,6 +959,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayPotentialfriendData = {
 			modalHeader 		: vModalMgrFriendHeader,
 			modalExitBtn 		: vModalMgrFriendExitBtn,
+			modalListTitle	:	vModalMgrFriendTitle,
 			modalListGroup 	: vModalMgrFriendListGroup,
 		}
 
@@ -966,6 +975,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayMembersModalData = {
 			modalHeader 		: vModalMemberListHeader,
 			modalExitBtn		: vModalMemberListExitBtn,
+			modalListTitle	: vModalMemberListTitle,
 			modalListGroup 	: vModalMemberListGroup,
 		}
 
@@ -986,6 +996,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayMembersModalData = {
 			modalHeader 		: vModalMemberListHeader,
 			modalExitBtn		: vModalMemberListExitBtn,
+			modalListTitle	:	vModalMemberListTitle,
 			modalListGroup 	: vModalMemberListGroup,
 		}
 

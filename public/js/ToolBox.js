@@ -325,6 +325,34 @@ ToolBox.prototype.clearAllOpenedPopOverAndToolTip = function(){
 				$(this).tooltip('hide');
 	});
 }
+
+// -----------------------------------------------------------------------------
+// Cette fonction calcule la position d'un élément par rapport à son parent
+// Ceci permet de connaitre une différence en X et Y que l'on peut associer aux
+// coordonnées de la souris pour que l'élement colle au curseur de la souris
+// -----------------------------------------------------------------------------
+ToolBox.prototype.findPos = function(element, event) {
+	var x = y = 0;
+
+	if(element.offsetParent) {
+		x = element.offsetLeft;
+		y = element.offsetTop;
+
+		while(element = element.offsetParent) {
+			x += element.offsetLeft;
+			y += element.offsetTop;
+		}
+	}
+
+	var offsetX = event.clientX - x;
+	var offsetY = event.clientY - y;
+
+	return {
+		'x' : offsetX, 
+		'y' : offsetY
+	};
+}
+
 // -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

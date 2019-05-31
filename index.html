@@ -870,7 +870,7 @@
 	<!--  Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu            -->
 	<!-- "idModalBodyText" sont alimentés par javascript                                     -->
 	<!-- *********************************************************************************** -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idGenericModalTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idAriaGenericModalTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idGenericModalHeader">
@@ -891,7 +891,7 @@
 	<!-- ************************************************************************* -->
 	<!--                             Fenêtre Modale Login                          -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idModalLoginTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idAriaModalLoginTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalLoginHeader">
@@ -930,7 +930,7 @@
 	<!-- ************************************************************************* -->
 	<!--                         Fenêtre Modale Inscription                        -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idModalSignInTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idAriaModalSignInTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalSignInHeader">
@@ -976,7 +976,7 @@
 	<!-- ************************************************************************* -->
 	<!--                     Fenêtre Modale de Mot de passe perdu                  -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idModalLostPWDTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idAriaModalLostPWDTitle" aria-hidden="true">
 <!-- <div class="modal-dialog modal-dialog-centered mt-5" role="document"> -->
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -1011,7 +1011,7 @@
 	<!-- ************************************************************************* -->
 	<!--                         Fenêtre Modale de renseignements                  -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idModalAccountTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idAriaModalAccountTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalAccountHeader">
@@ -1400,16 +1400,15 @@
 	<!-- ************************************************************************* -->
 	<!--                     Fenêtre Modale d'ajout d'amis                         -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idModalMgrFriendTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idAriaModalMgrFriendTitle" aria-hidden="true">
 		<div id="idModalMgrFriendDialog" class="modal-dialog modal-lg modal-dialog-centered" role="document" >
 			<div class="modal-content">
 				<div class="modal-header" id="idModalMgrFriendHeader">
 					<button id="idModalMgrFriendExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
-					<div class="container px-0" id="idModalMgrFriendTitle">
-						<div class="list-group" id="idModalMgrFriendListGroup">
-						</div>
+					<div class="container px-0" id="idModalMgrFriendTitle"></div>
+					<div class="list-group" id="idModalMgrFriendListGroup">
 					</div>
 				</div>			
 			</div>			
@@ -1419,17 +1418,15 @@
 	<!-- ************************************************************************* -->
 	<!--                     Fenêtre Modale des membres                            -->
 	<!-- ************************************************************************* -->
-	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idModalMemberListTitle" aria-hidden="true">
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idAriaModalMemberListTitle" aria-hidden="true">
 		<div id="idModalMemberListDialog" class="modal-dialog modal-lg modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalMemberListHeader">
 					<button id="idModalMemberListExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
-				<div class="modal-body">
-					<div class="container px-0" id="idModalMemberListTitle">
-						<div class="list-group" id="idModalMemberListGroup">
-						</div>
-					</div>
+				<div class="modal-body mb-3" id="idModalBodyMemberList" style="overflow-x: hidden;">
+					<div class="container px-0" id="idModalMemberListTitle"></div>
+					<div class="list-group" id="idModalMemberListGroup"></div>
 				</div>			
 			</div>			
 		</div>	

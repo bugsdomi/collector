@@ -5339,6 +5339,7 @@ input[type="button"].btn-block {
   /* background-color: #b9bbbe; */
   /* background-color: #dcdcdc; */
   background-color: #ffc107;
+  z-index: 10;
 }
 
 .list-group-item-white.list-group-item-action.active {
@@ -5496,7 +5497,8 @@ button.close {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   padding: 1rem;
-  max-height: 80vh; overflow-y: auto;   /* DH+ */
+  max-height: 80vh;   /* DH+ */
+  overflow-y: auto;   /* DH+ */
 }
 
 .modal-footer {

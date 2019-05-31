@@ -263,7 +263,12 @@ FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
 	var vDivDropDown = document.getElementById('idMyDropDown'+pFriend.indexFriendToRecommend);
 	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
-	new MicroFicheMember(pFriend).displayMicroFicheMember(vDivDropDown);
+	var vMicroFicheParams = {
+		simpleMicroFiche 	: cstStackableMicroFiche,
+		index							: null,
+	};
+
+	new MicroFicheMember(pFriend).displayMicroFicheMember(vDivDropDown, vMicroFicheParams);
   this.prepareMenuviewFriend(pFriend, vDivDropDown);
   this.prepareMenuDeleteFriend(pFriend, vDivDropDown);
 

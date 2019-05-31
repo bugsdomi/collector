@@ -32,8 +32,8 @@ SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){
 	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
 
 	lineHTML.vSearchContainer = window.document.createElement('div');
-	var parentDiv = pSearchFilterParams.displayModalDatas.modalListGroup.parentNode;
-	parentDiv.insertBefore(lineHTML.vSearchContainer, pSearchFilterParams.displayModalDatas.modalListGroup);
+	pSearchFilterParams.displayModalDatas.modalListTitle.appendChild(lineHTML.vSearchContainer);
+
 	lineHTML.vSearchContainer.setAttribute('id', 'idFilterFields');
 	lineHTML.vSearchContainer.setAttribute('class', 'container mb-2');
 

@@ -678,7 +678,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu
 // "idModalBodyText" sont alimentés par javascript
 // ***********************************************************************************
-#idGenericModal.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idGenericModalTitle' aria-hidden='true')
+#idGenericModal.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idGenericModalHeader.modal-header
@@ -692,7 +692,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale Login
 // *************************************************************************
-#idModalLogin.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalLoginTitle' aria-hidden='true')
+#idModalLogin.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalLoginHeader.modal-header
@@ -720,7 +720,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale Inscription
 // *************************************************************************
-#idModalSignIn.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalSignInTitle' aria-hidden='true')
+#idModalSignIn.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalSignInTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
       #idModalSignInHeader.modal-header
@@ -754,7 +754,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale de Mot de passe perdu
 // *************************************************************************
-#idModalLostPWD.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalLostPWDTitle' aria-hidden='true')
+#idModalLostPWD.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalLostPWDTitle' aria-hidden='true')
   // <div class="modal-dialog modal-dialog-centered mt-5" role="document">
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
@@ -781,7 +781,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale de renseignements
 // *************************************************************************
-#idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalAccountTitle' aria-hidden='true')
+#idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalAccountTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document' style='max-width: 800px;')
     .modal-content
       #idModalAccountHeader.modal-header
@@ -1105,25 +1105,25 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // *************************************************************************
 // Fenêtre Modale d'ajout d'amis
 // *************************************************************************
-#idModalMgrFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalMgrFriendTitle' aria-hidden='true')
+#idModalMgrFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMgrFriendTitle' aria-hidden='true')
   #idModalMgrFriendDialog.modal-dialog.modal-lg.modal-dialog-centered(role='document')
     .modal-content
       #idModalMgrFriendHeader.modal-header
         button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
         #idModalMgrFriendTitle.container.px-0
-          #idModalMgrFriendListGroup.list-group
+        #idModalMgrFriendListGroup.list-group
 // *************************************************************************
 // Fenêtre Modale des membres
 // *************************************************************************
-#idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idModalMemberListTitle' aria-hidden='true')
+#idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMemberListTitle' aria-hidden='true')
   #idModalMemberListDialog.modal-dialog.modal-lg.modal-dialog-centered(role='document')
     .modal-content
       #idModalMemberListHeader.modal-header
         button#idModalMemberListExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
+      #idModalBodyMemberList.modal-body.mb-3(style='overflow-x: hidden;')
         #idModalMemberListTitle.container.px-0
-          #idModalMemberListGroup.list-group
+        #idModalMemberListGroup.list-group
 // *************************************************************************
 // Vérification Javascript activé + chargement des librairies
 // *************************************************************************

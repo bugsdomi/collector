@@ -29,21 +29,40 @@ MicroFicheMember.prototype.filterConfirmedFriends = function(pItem){
 // Micro-fiche d'un ami
 // Cette méthode affiche les données de bases d'un membre et sa liste d'amis
 // -----------------------------------------------------------------------------
-MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown){
+MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMicroFicheParams){
+
 
 	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
-	while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
-    this.lastMicroFiche++
-	}
+// while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
+//   this.lastMicroFiche++
+// }
 
 	vlineHTML.vDiv = window.document.createElement('div');
-	vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
-	if(this.lastMicroFiche < 2){
+// vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
+
+
+	// Il s'agit d'une Micro-fiche simple, sans empilement ni fermeture automatique
+	// De plus, le N° d'Id est fournis par le demandeur
+	if (pMicroFicheParams.simpleMicroFiche){
 		pDivDropDown.appendChild(vlineHTML.vDiv);
+		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+pMicroFicheParams.Index);
 	} else {
-		var parentDiv = document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)).parentNode;
-		parentDiv.insertBefore(vlineHTML.vDiv, document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)));
+
+	// Il s'agit d'une Micro-fiche Stackable, set fermeture automatique
+	// le N° d'Id est déterminé automatique par cette méthode
+		while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
+			this.lastMicroFiche++;
+		}
+
+		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
+
+		if(this.lastMicroFiche < 2){
+			pDivDropDown.appendChild(vlineHTML.vDiv);
+		} else {
+			var parentDiv = document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)).parentNode;
+			parentDiv.insertBefore(vlineHTML.vDiv, document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)));
+		}
 	}
 
 	vlineHTML.vDiv.setAttribute('href', '#');
@@ -72,7 +91,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown){
 	vlineHTML.vImg.setAttribute('class', 'm-1');
 	vlineHTML.vImg.setAttribute('alt', 'Membre');
 	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+this.memberClient.friendPhoto);
-	vlineHTML.vImg.setAttribute('style', 'width:110px; height: auto;');
+	vlineHTML.vImg.setAttribute('style', 'width:110px; height: auto; border: 1px solid black;');
 	
 	vlineHTML.vDivProfil = window.document.createElement('div');
 	vlineHTML.vDivRow.appendChild(vlineHTML.vDivProfil);

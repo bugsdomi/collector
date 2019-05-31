@@ -30,6 +30,9 @@ var cstInvitation     = 0; 			    // Demande d'invitation classique
 var cstRecommendation = 1; 			    // Recommandation d'un Ami "B", recommandé par moi "A" vers un ami à moi "C"
 var cstWithoutNewModal 	= false;	  // Dans le cadre de l'affichage filtré des membres, la modale étant deja affichée, on veut pas en ouvrir une seconde
 var cstWithNewModal 		= true;		  // Dans le cadre de l'affichage non filtré des membres, la modale n'étant pas encore affichée, on veut pas en ouvrir une
+var cstSimpleMicroFiche	= true;		  // Affichage d'une Micro-fiche simple (sans empilement, ni delai de fermeture)
+var cstStackableMicroFiche = false;	// Affichage d'une Micro-fiche empilable et delai de fermeture automatique
+
 
 
 
