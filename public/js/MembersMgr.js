@@ -82,6 +82,8 @@ function AddMemberListLines(item, index, pModalMemberListGroup){
 	item.friendEmail  			= item.email;
 	item.friendPseudo 			= item.pseudo;
 	item.friendPhoto 				= item.etatCivil.photo;
+	item.friendFirstName		= item.etatCivil.firstName;
+	item.friendName					= item.etatCivil.name;
 
 	var vMicroFicheParams = {
 		simpleMicroFiche 	: cstSimpleMicroFiche,

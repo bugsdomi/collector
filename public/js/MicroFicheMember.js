@@ -31,7 +31,6 @@ MicroFicheMember.prototype.filterConfirmedFriends = function(pItem){
 // -----------------------------------------------------------------------------
 MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMicroFicheParams){
 
-
 	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
 // while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
