@@ -333,7 +333,6 @@ ToolBox.prototype.clearAllOpenedPopOverAndToolTip = function(){
 // -----------------------------------------------------------------------------
 ToolBox.prototype.findPos = function(element, event) {
 	var x = y = 0;
-
 	if(element.offsetParent) {
 		x = element.offsetLeft;
 		y = element.offsetTop;

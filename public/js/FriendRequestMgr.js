@@ -17,7 +17,8 @@
 // ************************************************************************
 
 function FriendRequestMgr(pMemberClient){                              // Fonction constructeur exportée
-  this.memberClient = pMemberClient;
+	this.memberClient = pMemberClient;
+	this.microFiche		= [];
 };   						
 
 // --------------------------------------------------------------
@@ -28,7 +29,7 @@ function FriendRequestMgr(pMemberClient){                              // Foncti
 // Cette fonction alimente un objet avec des créations dans le DOM 
 // des lignes HTML pour chaque membre pouvant devenir ami
 // --------------------------------------------------------------
-function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
+function AddPotentialFriendLines(item, index, pMicroFiche, pModalMgrFriendListGroup) {
 	this.lineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
 	this.friend = item;
@@ -42,7 +43,7 @@ function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
 	
 	this.lineHTML.vDivRow = window.document.createElement('div');
 	this.lineHTML.vA.appendChild(this.lineHTML.vDivRow);
-	this.lineHTML.vDivRow.setAttribute('class', 'row');
+	this.lineHTML.vDivRow.setAttribute('class', 'row mx-0');
 	this.lineHTML.vDivRow.setAttribute('style', 'cursor: default;');
 
 	this.lineHTML.vDivAvatar = window.document.createElement('div');
@@ -66,19 +67,19 @@ function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
 	this.lineHTML.vDivPseudo.setAttribute('class', 'col-3 px-0 text-center align-self-center font-size-120');
 	this.lineHTML.vDivPseudo.innerHTML = item.pseudo;
 
-	this.lineHTML.vDivPseudo = window.document.createElement('div');
-	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
-	this.lineHTML.vDivPseudo.setAttribute('class', 'col-2 px-0 text-center align-self-center font-size-120');
-	this.lineHTML.vDivPseudo.innerHTML = item.etatCivil.firstName;
+	this.lineHTML.vDivFirstName = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFirstName);
+	this.lineHTML.vDivFirstName.setAttribute('class', 'col-2 px-0 text-center align-self-center font-size-120');
+	this.lineHTML.vDivFirstName.innerHTML = item.etatCivil.firstName;
 
-	this.lineHTML.vDivPseudo = window.document.createElement('div');
-	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
-	this.lineHTML.vDivPseudo.setAttribute('class', 'col-3 px-0 text-center align-self-center font-size-120');
-	this.lineHTML.vDivPseudo.innerHTML = item.etatCivil.name;
+	this.lineHTML.vDivName = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivName);
+	this.lineHTML.vDivName.setAttribute('class', 'col-3 px-0 text-center align-self-center font-size-120');
+	this.lineHTML.vDivName.innerHTML = item.etatCivil.name;
 	
 	this.lineHTML.vDivFA = window.document.createElement('div');
 	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
-	this.lineHTML.vDivFA.setAttribute('class', 'col-2 px-0 pl-0 text-left align-self-center');
+	this.lineHTML.vDivFA.setAttribute('class', 'col-2 px-0 pl-0 text-center align-self-center');
 
 	this.lineHTML.vBtn = window.document.createElement('button');
 	this.lineHTML.vDivFA.appendChild(this.lineHTML.vBtn);
@@ -90,6 +91,26 @@ function AddPotentialFriendLines(item, index, pModalMgrFriendListGroup) {
 	this.lineHTML.vBtn.appendChild(this.lineHTML.vIFA);
 	this.lineHTML.vIFA.setAttribute('id', 'idIFAPotentialFriends'+index);
 	this.lineHTML.vIFA.setAttribute('class', 'fa fa-user-plus fa-2x text-dark');
+
+	this.lineHTML.vDivMicroFiche = window.document.createElement('div');
+	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivMicroFiche);
+	this.lineHTML.vDivMicroFiche.setAttribute('class', 'd-none py-0');
+	this.lineHTML.vDivMicroFiche.setAttribute('style', 'position: absolute; width: 350px; border: 1px solid black; '); 
+
+	item.friendsOfMyFriend 	= item.amis;
+	item.friendEmail  			= item.email;
+	item.friendPseudo 			= item.pseudo;
+	item.friendPhoto 				= item.etatCivil.photo;
+	item.friendFirstName		= item.etatCivil.firstName;
+	item.friendName					= item.etatCivil.name;
+
+	var vMicroFicheParams = {
+		simpleMicroFiche 	: cstSimpleMicroFiche,
+		index							: index,
+	};
+
+	pMicroFiche.displayMicroFicheMember(this.lineHTML.vDivMicroFiche, vMicroFicheParams);
+
 }
 
 // --------------------------------------------------------------
@@ -100,28 +121,79 @@ FriendRequestMgr.prototype.displayPotentialFriendsLines = function(pMembersFrien
 	var vMembersFriendables = [];
 
 	pMembersFriendables.forEach((item, index) => {
-	vMembersFriendables.push(new AddPotentialFriendLines(item, index, pDisplayPotentialfriendData.modalListGroup));	// Ajoute les éléments d'une ligne vide dans le tableau des éléments
-	var vDataToTransmit = {
-		member					: this.memberClient.member,
-		actionBtn				: vMembersFriendables[index].lineHTML.vIFA.id,
-		friendEmail  		: item.email,
-		friendPseudo 		: item.pseudo,
-		friendPhoto 		: item.etatCivil.photo,
-		indexPotentialFriend : index,
-		thisContext 		:	this,
-	}
+		this.microFiche[index] = new MicroFicheMember(item);
+		
+		// Ajoute les éléments d'une ligne vide dans le tableau des members
+		vMembersFriendables.push(new AddPotentialFriendLines(item, index, this.microFiche[index], pDisplayPotentialfriendData.modalListGroup));	
 
-	vMembersFriendables[index].lineHTML.vBtn.addEventListener('click', this.sendInvitation,false);
-	vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
-	vMembersFriendables[index].lineHTML.vIFA.datas = vDataToTransmit;
+		var vDataToTransmit = {
+			parentDiv		: vMembersFriendables[index].lineHTML.vDivMicroFiche,
+			index				: index,
+			thisContext	: this,
+		}
 
-	vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
-	vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivRow.addEventListener('mouseover', this.callOpenMicroFiche,false);
+		vMembersFriendables[index].lineHTML.vDivRow.addEventListener('mousemove', this.callOpenMicroFiche,false);
+		vMembersFriendables[index].lineHTML.vDivRow.addEventListener('mouseout', this.closeMicroFiche,false);
+		vMembersFriendables[index].lineHTML.vA.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivRow.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivAvatar.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vImg.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivPseudo.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivFirstName.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivName.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vDivFA.datas = vDataToTransmit;
 
-	vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
-	vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
+		vDataToTransmit = {
+			member					: this.memberClient.member,
+			actionBtn				: vMembersFriendables[index].lineHTML.vIFA.id,
+			friendEmail  		: item.email,
+			friendPseudo 		: item.pseudo,
+			friendPhoto 		: item.etatCivil.photo,
+			thisContext 		:	this,
+			parentDiv				: vMembersFriendables[index].lineHTML.vDivMicroFiche,
+			index						: index,
+		}
+
+		vMembersFriendables[index].lineHTML.vBtn.addEventListener('click', this.sendInvitation,false);
+		vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
+		vMembersFriendables[index].lineHTML.vIFA.datas = vDataToTransmit;
+
+		vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
+		vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
+
+		vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
+		vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
 }
+
+// --------------------------------------------------------------
+// En passant au dessus des lignes des membres, la micro-fiche du membre s'ouvre
+// --------------------------------------------------------------
+FriendRequestMgr.prototype.callOpenMicroFiche = function(event){  
+	var ev = event || window.event;
+
+	var vMicroFicheParams = {
+		thisContext : this,					// Contexte de la ligne survolée
+		event 			: ev,
+		modalBody 	: 'idModalBodyMgrFriend',
+	}
+
+	if (ev.target.datas){
+		ev.target.datas.thisContext.microFiche[ev.target.datas.index].openMicroFiche(vMicroFicheParams);
+	};
+};
+
+// --------------------------------------------------------------
+// En quittant la ligne courante d'un membres, la micro-fiche du membre se ferme
+// --------------------------------------------------------------
+FriendRequestMgr.prototype.closeMicroFiche = function(event){  
+	var ev = event || window.event;
+
+	if (ev.target.datas){
+		ev.target.datas.parentDiv.classList.add('d-none');
+	};
+};
 
 // --------------------------------------------------------------
 // On a reçu une liste de membres pouvant devenir amis
@@ -158,14 +230,14 @@ FriendRequestMgr.prototype.displayPotentialFriends = function(pMembersFriendable
 // --------------------------------------------------------------
 FriendRequestMgr.prototype.sendInvitation = function(event){
 	// Bascule Look des boutons et de leur texte, puis désactive les boutons 
-	var vBtn = document.getElementById('idBtnPotentialFriends' + event.target.datas.indexPotentialFriend);
+	var vBtn = document.getElementById('idBtnPotentialFriends' + event.target.datas.index);
 	vBtn.classList.replace('btn-outline-success','btn-success'); 
-	document.getElementById('idIFAPotentialFriends' + event.target.datas.indexPotentialFriend).classList.replace('text-dark','text-light'); 
+	document.getElementById('idIFAPotentialFriends' + event.target.datas.index).classList.replace('text-dark','text-light'); 
 	vBtn.classList.add('active'); 
 	vBtn.classList.add('disabled'); 
 
 	// Neutralise les events et force le curseur en mode par défaut pour ne pas réactiver des lignes d'invitations deja utilisées
-	document.getElementById('idAddFriendAnchor' + event.target.datas.indexPotentialFriend).classList.add('neutralPointer'); 
+	document.getElementById('idAddFriendAnchor' + event.target.datas.index).classList.add('neutralPointer'); 
 	
 	// Suppression des Listeners
 	vBtn.removeEventListener('click', event.target.datas.thisContext.sendInvitation,false);
@@ -179,7 +251,7 @@ FriendRequestMgr.prototype.sendInvitation = function(event){
 		friendEmail  	: event.target.datas.friendEmail,
 		friendPseudo 	: event.target.datas.friendPseudo,					// Ami que j'invite
 		friendPhoto  	: event.target.datas.friendPhoto,
-		indexPotentialFriend : event.target.datas.indexPotentialFriend,
+		index : event.target.datas.index,
 	}
 	webSocketConnection.emit('invitationSent', vFriendToAdd);  
 }
@@ -189,7 +261,7 @@ FriendRequestMgr.prototype.sendInvitation = function(event){
 // S'il n'y a plus de lignes, je ferme la modale
 // --------------------------------------------------------------
 FriendRequestMgr.prototype.deleteLineInvitSent = function(pFriendToAdd, pModalMgrFriendListGroup){
-	var elem = document.getElementById('idAddFriendAnchor'+pFriendToAdd.indexPotentialFriend);
+	var elem = document.getElementById('idAddFriendAnchor'+pFriendToAdd.index);
 
 	if (elem){
 		elem.parentNode.removeChild(elem);
@@ -208,10 +280,10 @@ FriendRequestMgr.prototype.deleteLineInvitSent = function(pFriendToAdd, pModalMg
 // --------------------------------------------------------------
 FriendRequestMgr.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData, pInvitSentInfo){   
 	// Ferme la notif après un délai de quelques secondes
-	$('#'+'idImgPotentialFriends'+pFriendToAdd.indexPotentialFriend).popover('show');										// Affiche la notification d'envoi de la demande d'ami
+	$('#'+'idImgPotentialFriends'+pFriendToAdd.index).popover('show');										// Affiche la notification d'envoi de la demande d'ami
 
 	setTimeout(function(){
-		$('#'+'idImgPotentialFriends'+pFriendToAdd.indexPotentialFriend).popover('hide');
+		$('#'+'idImgPotentialFriends'+pFriendToAdd.index).popover('hide');
 	},cstDelayClosingPopover);																				// Ferme la notif après un délai de quelques secondes
 
 	setTimeout(() => {

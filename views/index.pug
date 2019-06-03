@@ -782,7 +782,8 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale de renseignements
 // *************************************************************************
 #idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalAccountTitle' aria-hidden='true')
-  .modal-dialog.modal-dialog-centered(role='document' style='max-width: 800px;')
+  // <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
+  .modal-dialog.modal-lg.modal-dialog-centered(role='document')
     .modal-content
       #idModalAccountHeader.modal-header
         h5.modal-title
@@ -1110,7 +1111,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
     .modal-content
       #idModalMgrFriendHeader.modal-header
         button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-      .modal-body
+      #idModalBodyMgrFriend.modal-body.mb-3(style='overflow-x: hidden;')
         #idModalMgrFriendTitle.container.px-0
         #idModalMgrFriendListGroup.list-group
 // *************************************************************************

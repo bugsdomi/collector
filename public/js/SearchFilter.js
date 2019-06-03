@@ -95,9 +95,9 @@ SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){
   vDataToTransmit = 
   {
     myPseudo            : pSearchFilterParams.myPseudo,
-    webSocketConnection : pSearchFilterParams.webSocketConnection,
 		msgRestoreFullList	: pSearchFilterParams.msgRestoreFullList,
-    msgFilteredList			: pSearchFilterParams.msgFilteredList,
+		msgFilteredList			: pSearchFilterParams.msgFilteredList,
+		thisContext					: this,
 	}
 
 	lineHTML.vInputPseudo.addEventListener('keyup', this.searchFilteredList);
@@ -132,6 +132,8 @@ SearchFilter.prototype.restoreFullList = function(event){
 		withNewModal	: cstWithoutNewModal,
 	}
 	webSocketConnection.emit(event.target.datas.msgRestoreFullList, vDataToTransmit);  
+
+	event.target.datas.thisContext.toto(event);
 }
 
 // --------------------------------------------------------------
@@ -150,5 +152,7 @@ SearchFilter.prototype.searchFilteredList = function(event){
 			searchMemberParams 	: vFilterParams,
 		}
 		webSocketConnection.emit(event.target.datas.msgFilteredList,vDataToTransmit);  
+	} else {
+		event.target.datas.thisContext.restoreFullList(event);	// Les caractères de recherche ont été effacés 1 à 1, et les champs sont vides ==> Réaffichage de la liste complete
 	}
 }

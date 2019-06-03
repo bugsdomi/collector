@@ -90,7 +90,8 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
 
 	// Z-Index pour ne pas cacher la partie basse de la Micro-fiche avec la barre de bas d'écran
-	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden; z-index: 1035;'); 
+	// vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden; z-index: 1035;'); 
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden;'); 
 // 
 // 
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->

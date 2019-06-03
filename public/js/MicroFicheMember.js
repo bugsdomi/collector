@@ -33,21 +33,14 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
 
-// while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
-//   this.lastMicroFiche++
-// }
-
 	vlineHTML.vDiv = window.document.createElement('div');
-// vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
-
 
 	// Il s'agit d'une Micro-fiche simple, sans empilement ni fermeture automatique
-	// De plus, le N° d'Id est fournis par le demandeur
+	// De plus, le N° d'Id est fourni par le demandeur
 	if (pMicroFicheParams.simpleMicroFiche){
 		pDivDropDown.appendChild(vlineHTML.vDiv);
-		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+pMicroFicheParams.Index);
+		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+pMicroFicheParams.index);
 	} else {
-
 	// Il s'agit d'une Micro-fiche Stackable, set fermeture automatique
 	// le N° d'Id est déterminé automatique par cette méthode
 		while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
@@ -248,3 +241,47 @@ MicroFicheMember.prototype.removeMicroFichesOfMember = function(pDivDropDown){
 	pDivDropDown.parentNode.removeChild(pDivDropDown);
 }
 
+// --------------------------------------------------------------
+// En passant au dessus des lignes des membres, la micro-fiche du membre s'ouvre
+// --------------------------------------------------------------
+MicroFicheMember.prototype.openMicroFiche = function(pMicroFicheParams){
+	var vDistFromBodyToHoverLine = vToolBox.findPos(pMicroFicheParams.thisContext, pMicroFicheParams.event);
+	var vBody = document.getElementById(pMicroFicheParams.modalBody);							// Cadre Body enveloppant la liste des membres
+	var vPosCursorFromBody = vToolBox.findPos(vBody, pMicroFicheParams.event);		// Position relative de la souris par rapport au cadre Body
+
+	// Gestion de la position verticale de la MF par rapport au bord inférieur de la modale
+	var vBodyHeight = vBody.offsetHeight;																					// Hauteur du cadre Body
+	var vIntElemScrollTop = vBody.scrollTop;																			// Décalage en pixel de la scrollBar
+
+	var vMFHeight = pMicroFicheParams.event.target.datas.parentDiv.offsetHeight;	// Hauteur de la Micro-Fiche (MF) - Varie en fonction de la taille de l'image et du nombre d'amis
+	var vPosBottomMF = vPosCursorFromBody.y + vIntElemScrollTop + 25 + vMFHeight;	// Position du bas de la MF par rapport au Top du cadre Body
+	var vDistFromBottomMFToBottomBody = vBodyHeight - vPosBottomMF;								// Distance entre le bas de la MF et la bas du cadre Body
+
+	if (vDistFromBottomMFToBottomBody < 50 - vIntElemScrollTop){									// Si cette distance est > à 50, on fixe la MF pour qu'elle totalement visible
+		var distTopBodyToTopMF = vBodyHeight - (vMFHeight + 50) + vIntElemScrollTop;
+		var myTop = distTopBodyToTopMF - (vPosCursorFromBody.y - vDistFromBodyToHoverLine.y);
+
+		pMicroFicheParams.event.target.datas.parentDiv.style.top =  myTop + 'px';
+	} else {
+		pMicroFicheParams.event.target.datas.parentDiv.style.top = vDistFromBodyToHoverLine.y + vIntElemScrollTop + 25 + 'px';
+	}
+
+	// Gestion de la position horizontale de la MF par rapport au bord droit de la modale
+	// var vBodyWidth = vBody.offsetWidth;																					// Largeur du cadre Body
+	// var vMFWidth = pMicroFicheParams.event.target.datas.parentDiv.offsetWidth;	// Largeur de la Micro-Fiche (MF)
+	// var vPosRightMF = vPosCursorFromBody.x + 15 + vMFWidth;											// Position de la droite de la MF par rapport à la droite du cadre Body
+	// var vDistFromRightMFToRightBody = vBodyWidth - vPosRightMF;									// Distance entre la droite de la MF et la droite du cadre du cadre Body
+
+	// if (vDistFromRightMFToRightBody < 40){									// Si cette distance est > à 50, on fixe la MF pour qu'elle totalement visible
+	// 	var distRightBodyToLeftMF = vBodyWidth - (vMFWidth + 40);
+	// 	var myLeft = distRightBodyToLeftMF - (vPosCursorFromBody.x - vDistFromBodyToHoverLine.x);
+
+	// 	pMicroFicheParams.event.target.datas.parentDiv.style.left =  myLeft + 'px';
+	// } else {
+	// 	pMicroFicheParams.event.target.datas.parentDiv.style.left = vDistFromBodyToHoverLine.x + 15 + 'px';
+	// }
+
+	pMicroFicheParams.event.target.datas.parentDiv.style.left = vDistFromBodyToHoverLine.x + 15 + 'px';
+
+	pMicroFicheParams.event.target.datas.parentDiv.classList.remove('d-none');
+}
