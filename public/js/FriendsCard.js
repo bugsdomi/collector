@@ -1,33 +1,164 @@
-// ************************************************************************
-// ***      FriendsCard  : Affichage de la "Carte des amis"             ***
-// ***                                                                  ***
-// *** Objet : FriendsCard                                              ***
-// ***                                                                  ***
-// *** Cet objet sert à gérer toutes les fonctions liées aux amis       ***
-// ***  - L'affichage intelligent (eventuellement filtré) des membres   ***
-// ***  - L'affichage des amis                                          ***
-// ***  - La possibilité de visiter                                     ***
-// ***  - La possibilité de les supprimer                               ***
-// ***                                                                  ***
-// ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
-// ***                                                                  ***
-// ************************************************************************
+// ------------------------------------------------------------------------
+// ---      FriendsCard  : Affichage de la "Carte des amis"             ---
+// ---                                                                  ---
+// --- Objet : FriendsCard                                              ---
+// ---                                                                  ---
+// --- Cet objet sert à gérer toutes les fonctions liées aux amis       ---
+// ---  - L'affichage intelligent (eventuellement filtré) des membres   ---
+// ---  - L'affichage des amis                                          ---
+// ---  - La possibilité de visiter                                     ---
+// ---  - La possibilité de les supprimer                               ---
+// ---                                                                  ---
+// ---  Nécessite :                                                     ---
+// ---      Rien                                                        ---
+// ---                                                                  ---
+// ------------------------------------------------------------------------
 
 function FriendsCard (pMemberClient){                              // Fonction constructeur exportée
   this.memberClient = pMemberClient;
 };   						
 
+// ------------------------------------------------------------------------------
+//                               Création de la Carte "Amis"                     
+// ------------------------------------------------------------------------------
+FriendsCard.prototype.displayFriendsCard = function(){
+	var vlineHTML = {};						
+
+	// Détermination du point de montage, selon que l'on est sur la fiche du membre principal ou celle d'un de ses amis
+	if (vActiveProfile === cstMainProfileActive){
+		var vDivMountPointProfile = document.getElementById('idDivMountPointMainProfile');
+	} else {
+		var vDivMountPointProfile = document.getElementById('idDivMountPointFriendProfile');
+	}
+
+// <div class="card border-warning mb-4">
+	vlineHTML.vDivCardBorder = window.document.createElement('div');
+	vDivMountPointProfile.appendChild(vlineHTML.vDivCardBorder);
+	vlineHTML.vDivCardBorder.setAttribute('class', 'card border-warning mb-4');
+
+// ------------------------------------------------------------------------------
+//                      Entête de la carte "Amis"                        
+// ------------------------------------------------------------------------------
+// 	<div class="card-header bg-warning border-bottom border-warning">
+	vlineHTML.vDivCardHeader = window.document.createElement('div');
+	vlineHTML.vDivCardBorder.appendChild(vlineHTML.vDivCardHeader);
+	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning');
+
+// 		<div class="container">
+	vlineHTML.vDivContAvatToken = window.document.createElement('div');
+	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vDivContAvatToken);
+	vlineHTML.vDivContAvatToken.setAttribute('class', 'container');
+
+// 			<div class="row">
+	vlineHTML.vDivRow1 = window.document.createElement('div');
+	vlineHTML.vDivContAvatToken.appendChild(vlineHTML.vDivRow1);
+	vlineHTML.vDivRow1.setAttribute('class', 'row');
+
+// 				<h5 class="col-2 px-0 my-0 align-self-center">Amis</h5>
+	vlineHTML.vH5 = window.document.createElement('h5');
+	vlineHTML.vDivRow1.appendChild(vlineHTML.vH5);
+	vlineHTML.vH5.setAttribute('class', 'col-2 px-0 my-0 align-self-center');
+	vlineHTML.vH5.innerHTML='Amis';
+
+// 				<div class="col-10 px-0">
+	vlineHTML.vDivCol1 = window.document.createElement('div');
+	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol1);
+	vlineHTML.vDivCol1.setAttribute('class', 'col-10 px-0');
+	
+// 					<div class="input-group input-group-sm border rounded">
+	vlineHTML.vDivInputGroup = window.document.createElement('div');
+	vlineHTML.vDivCol1.appendChild(vlineHTML.vDivInputGroup);
+	vlineHTML.vDivInputGroup.setAttribute('class', 'input-group input-group-sm border rounded');
+
+// 						<div class="input-group-prepend">
+	vlineHTML.vDivInputGroupPrepend = window.document.createElement('div');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupPrepend);
+	vlineHTML.vDivInputGroupPrepend.setAttribute('class', 'input-group-prepend');
+
+// 							<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
+	vlineHTML.vSpanInputGroupPrepend = window.document.createElement('span');
+	vlineHTML.vDivInputGroupPrepend.appendChild(vlineHTML.vSpanInputGroupPrepend);
+	vlineHTML.vSpanInputGroupPrepend.setAttribute('class', 'input-group-text');
+	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter"></i>';
+
+// 						<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
+	vlineHTML.vDivFilteredFriends = window.document.createElement('input');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivFilteredFriends);
+	vlineHTML.vDivFilteredFriends.setAttribute('id', 'idFilteredFriends'+vActiveProfile);
+	vlineHTML.vDivFilteredFriends.setAttribute('class', 'form-control');
+	vlineHTML.vDivFilteredFriends.setAttribute('type', 'text');
+	vlineHTML.vDivFilteredFriends.setAttribute('placeholder', 'Filtrer des amis');
+
+// // <div class="input-group-btn">
+// 						<div class="input-group-append">
+	vlineHTML.vDivInputGroupAppend = window.document.createElement('div');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupAppend);
+	vlineHTML.vDivInputGroupAppend.setAttribute('class', 'input-group-append');
+
+// 							<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
+	vlineHTML.vBtnClearFriendsFilter = window.document.createElement('button');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vBtnClearFriendsFilter);
+	vlineHTML.vBtnClearFriendsFilter.setAttribute('id', 'idClearFriendsFilter'+vActiveProfile);
+	vlineHTML.vBtnClearFriendsFilter.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+	vlineHTML.vBtnClearFriendsFilter.setAttribute('type', 'button');
+
+// 								<i class="fa fa-fw fa-times"></i>
+	vlineHTML.viFaTimes = window.document.createElement('i');
+	vlineHTML.vBtnClearFriendsFilter.appendChild(vlineHTML.viFaTimes);
+	vlineHTML.viFaTimes.setAttribute('class', 'fa fa-fw fa-times');
+
+// ------------------------------------------------------------------------------
+//                      Corps de la carte "Amis"                         
+// ------------------------------------------------------------------------------
+// 	<div class="card-body" style="border: 1px black solid;">
+	vlineHTML.vDivCardBody = window.document.createElement('div');
+	vlineHTML.vDivCardBorder.appendChild(vlineHTML.vDivCardBody);
+	vlineHTML.vDivCardBody.setAttribute('class', 'card-body');
+	vlineHTML.vDivCardBody.setAttribute('style', 'border: 1px black solid;');
+
+// 		<div class="row">
+vlineHTML.vDivRow2 = window.document.createElement('div');
+vlineHTML.vDivCardBody.appendChild(vlineHTML.vDivRow2);
+vlineHTML.vDivRow2.setAttribute('class', 'row');
+
+// 			<div class="col-md-12 px-0 text-dark">
+	vlineHTML.vDivCol2 = window.document.createElement('div');
+	vlineHTML.vDivRow2.appendChild(vlineHTML.vDivCol2);
+	vlineHTML.vDivCol2.setAttribute('class', 'col-md-12 px-0 text-dark');
+
+// 				<ul id="idFriendUL" class="p-0 m-0" style="list-style: none;">
+	vlineHTML.vULFriend = window.document.createElement('ul');
+	vlineHTML.vDivCol2.appendChild(vlineHTML.vULFriend);
+	vlineHTML.vULFriend.setAttribute('id', 'idFriendUL'+vActiveProfile);
+	vlineHTML.vULFriend.setAttribute('class', 'p-0 m-0');
+	vlineHTML.vULFriend.setAttribute('style', 'list-style: none;');
+
+	// -------------------------------------------------------------------------
+	// Champs de filtrage des amis
+	// -------------------------------------------------------------------------
+	vlineHTML.vDivFilteredFriends.addEventListener('keyup', () => {
+		this.filterFriends(vlineHTML.vDivFilteredFriends.value.toUpperCase())
+	});
+
+	vlineHTML.vBtnClearFriendsFilter.addEventListener('click', () => {
+		vlineHTML.vDivFilteredFriends.value = '';
+		this.filterFriends(vlineHTML.vDivFilteredFriends.value.toUpperCase())
+	});
+
+	this.fillFriendsCard();
+}
+
 // -----------------------------------------------------------------------------
-// Gestion de la liste des amis
 // Filtrage des amis
 // -----------------------------------------------------------------------------
 FriendsCard.prototype.filterFriends = function(pFilteredFriends){
 	this.memberClient.vMyFriendList.forEach((item, index) => {
+		var vMyFriendLi = document.getElementById('idMyFriendLi'+vActiveProfile+index);
+
 		if (item.friendPseudo.toUpperCase().startsWith(pFilteredFriends)){
-			document.getElementById('idMyFriendLi'+index).classList.remove('d-none');
+			vMyFriendLi.classList.remove('d-none');
 		} else {
-			document.getElementById('idMyFriendLi'+index).classList.add('d-none');
+			vMyFriendLi.classList.add('d-none');
 		}
 	});
 }
@@ -35,7 +166,7 @@ FriendsCard.prototype.filterFriends = function(pFilteredFriends){
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la carte "Mes Amis" sur ma page de profil
 // -----------------------------------------------------------------------------
-FriendsCard.prototype.displayFriendsCard = function(pFriendInfo){
+FriendsCard.prototype.fillFriendsCard = function(){
 	var vMyFriend = 
 	{
 		friendEmail  			: null,
@@ -43,13 +174,15 @@ FriendsCard.prototype.displayFriendsCard = function(pFriendInfo){
 		friendPhoto 			: null,
 	}
 
-	this.memberClient.member.amis.forEach((item) => {																					// Pour chacun de mes amis en BDD
-		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personne est un ami confirmé, je l'ajoute à ma liste
-			vMyFriend.friendEmail 			= item.friendEmail;
-			vMyFriend.friendPseudo 			= item.friendPseudo;
-			vMyFriend.friendPhoto 			= item.friendPhoto;
+	vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
 
-			this.addFriendIntoCard(vMyFriend, pFriendInfo);
+	this.memberClient.member.amis.forEach((item) => {															// Pour chacun de mes amis en BDD
+		if (item.pendingFriendRequest === cstAmiConfirme){													// Si la personne est un ami confirmé, je l'ajoute à ma liste
+			vMyFriend.friendEmail 	= item.friendEmail;
+			vMyFriend.friendPseudo	= item.friendPseudo;
+			vMyFriend.friendPhoto 	= item.friendPhoto;
+
+			this.addFriendIntoCard(vMyFriend, vULFriend);
 		}
 	});
 };
@@ -58,8 +191,7 @@ FriendsCard.prototype.displayFriendsCard = function(pFriendInfo){
 // Cette fonction ajoute un Ami sur la carte "Amis" de la page de profil 
 // et prépare son sous-menu PopUp pour les recommandations d'amis
 // -----------------------------------------------------------------------------
-FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
-
+FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	var vFriendLocal = 
 	{
 		friendEmail  			: pMyFriend.friendEmail,
@@ -70,11 +202,10 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 	this.memberClient.vMyFriendList.push(vFriendLocal);
 	var index = (this.memberClient.vMyFriendList.length-1);
 
-	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
-	
+	var vlineHTML = {};						
 	vlineHTML.vLi = window.document.createElement('li');
-	pFriendInfo.vFriendUL.appendChild(vlineHTML.vLi);
-	vlineHTML.vLi.setAttribute('id', 'idMyFriendLi'+index);
+	pULFriend.appendChild(vlineHTML.vLi);
+	vlineHTML.vLi.setAttribute('id', 'idMyFriendLi'+vActiveProfile+index);
 	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
 
 	vlineHTML.vA = window.document.createElement('a');
@@ -86,12 +217,12 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 
 	vlineHTML.vDivDropDown = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
-	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+index);
+	vlineHTML.vDivDropDown.setAttribute('id', 'idMyDropDown'+vActiveProfile+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
 
 	// Z-Index pour ne pas cacher la partie basse de la Micro-fiche avec la barre de bas d'écran
-	// vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden; z-index: 1035;'); 
-	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden;'); 
+	vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden; z-index: 1035;'); 
+	// vlineHTML.vDivDropDown.setAttribute('style', 'width: 350px; border: 1px solid black; visibility: hidden;'); 
 // 
 // 
 // <--- Endroit à partir duquel les lignes du menu Popup vont venir s'insérer --->
@@ -118,7 +249,7 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pFriendInfo){
 
 	// A l'ouverture du DropDownMenu, on créée dynamiquement tous ses sous-éléments (les amis-cibles des recommandations)dans le DOM
 	$('#'+vlineHTML.vLi.id).on('shown.bs.dropdown', () => {
-		vRecommendFriendsMgr.searchFriendsNotAlreadyInvitWithTargetFriend(index);
+		vRecommendFriendsMgr.searchFriendsNotAlreadyInvitWithTargetFriend(this.memberClient, index);
 	});
 	
 	// A la fermeture du DropDownMenu, on detruit tous ses sous-éléments dans le DOM

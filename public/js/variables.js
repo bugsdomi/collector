@@ -8,6 +8,7 @@
 // ************************************************************************
 // --------------------------------------------------------------
 // var vLoginForm;                     // Instance du formulaire de saisie du Login
+var vToolBox;                       // Instance de la Boîte à outils
 var vMemberClient;                  // Instanciation de l'objet decrivant un Membre et les méthodes de gestion de ce Membre
 var vFriendPopUpMenu;               // Instanciation de l'objet Popup Menu de mes amis
 var vFriendRequestMgr;              // Instanciation de l'objet gestionnaire des demandes d'amis
@@ -17,8 +18,8 @@ var vPresentationCard;              // Instanciation de l'objet "Carte de prése
 var vFriendsCard;                   // Instanciation de l'objet "Carte des invitations"
 var vRecommendFriendsMgr;           // Instanciation de l'objet gestionnaire des recommandations
 var vInvitationsCard;               // Instanciation de l'objet "carte des invitations"
-var vToolBox;                       // Instance de la Boîte à outils
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
+var vViewFriendProfile; 			      // Instanciation de l'objet de présentation du profil d'un ami
 var webSocketConnection;            // Variable pour la connexion WebSocket
 var cstDelayClosingMicroFiche = 10000;  // Délai en msec avant la fermeture des Micro-Fiches
 var cstDelayClosingPopover = 3000;  // Délai en msec avant la fermeture des notifications diverses
@@ -32,6 +33,11 @@ var cstWithoutNewModal 	= false;	  // Dans le cadre de l'affichage filtré des m
 var cstWithNewModal 		= true;		  // Dans le cadre de l'affichage non filtré des membres, la modale n'étant pas encore affichée, on veut pas en ouvrir une
 var cstSimpleMicroFiche	= true;		  // Affichage d'une Micro-fiche simple (sans empilement, ni delai de fermeture)
 var cstStackableMicroFiche = false;	// Affichage d'une Micro-fiche empilable et delai de fermeture automatique
+var cstMainProfileActive = 'Main';    // Indique si c'est le profil du membre principal qui est affiché ou celui d'un de ses amis
+var cstFriendProfileActive = 'Friend'; // Indique si c'est le profil d membre principal qui est affiché ou celui d'un de ses amis
+var vActiveProfile = cstMainProfileActive; // Par défaut, c'est le profil du membre principal qui est affiché
+var cstWithScaling = 'withScaling';
+var cstWithNoScaling = 'withNoScaling';
 
 
 

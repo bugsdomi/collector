@@ -119,7 +119,7 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// ------------------------------------
 	// Gestion des amis
 	// ------------------------------------
-	// On a reçu une demande de la liste d'ajout d'amis 
+	// On a reçu une demande de la liste d'amis potentiels
 	webSocketConnection.on('askAddFriend', function(pDataToTransmit){
 		vMemberServer.askAddFriend(pDataToTransmit, webSocketConnection);
 	});   						
@@ -169,10 +169,17 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		vMemberServer.deleteFriendOfMine(pFriendToDelete, webSocketConnection, socketIo);
 	});   				
 
-		// On a reçu une demande de liste d'amis
-		webSocketConnection.on('getFriendsOfMember', function(pFriendsOfMember){
-			vMemberServer.getFriendsOfMember(pFriendsOfMember, webSocketConnection);
-		});   				
+	// On a reçu une demande de liste d'amis
+	webSocketConnection.on('getFriendsOfMember', function(pFriendsOfMember){
+		vMemberServer.getFriendsOfMember(pFriendsOfMember, webSocketConnection);
+	});   				
+
+	// On a reçu une demande de vision du profil d'un ami
+	webSocketConnection.on('getCompleteRecordOfMyFriend', function(pFriendToView){
+		vMemberServer.getCompleteRecordOfMyFriend(pFriendToView, webSocketConnection);
+	});   				
+
+		
 
 	// ------------------------------------
 	// Gestion des recommandations

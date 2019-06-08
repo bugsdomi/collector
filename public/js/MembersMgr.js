@@ -27,8 +27,7 @@ function MembersMgr(pMemberClient){                              // Fonction con
 // --------------------------------------------------------------
 // function AddMemberListLines(item, index, pModalMemberListGroup){
 function AddMemberListLines(item, index, pMicroFiche, pModalMemberListGroup){
-	this.lineHTML = {};						// Structure HTML générée pour chaque ligne de membre
-
+	this.lineHTML = {};						
 	this.friend = item;
 	this.index = index;
 
@@ -87,6 +86,7 @@ function AddMemberListLines(item, index, pMicroFiche, pModalMemberListGroup){
 	var vMicroFicheParams = {
 		simpleMicroFiche 	: cstSimpleMicroFiche,
 		index							: index,
+		withScalingParam	: cstWithNoScaling,
 	};
 
 	pMicroFiche.displayMicroFicheMember(this.lineHTML.vDivMicroFiche, vMicroFicheParams);

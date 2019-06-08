@@ -24,8 +24,7 @@ function InvitationsMgr(pMemberClient){                              // Fonction
 // des lignes HTML pour chaque invitation en attente à valider
 // --------------------------------------------------------------
 function AddInvitLines(item, index, pModalMgrFriendListGroup) {
-	this.lineHTML = {};		// Structure HTML générée pour chaque ligne de membre
-
+	this.lineHTML = {};		
 	this.friend = item;
 	this.index = index;
 
@@ -98,7 +97,6 @@ function AddInvitLines(item, index, pModalMgrFriendListGroup) {
 // d'affichage des invitations
 // --------------------------------------------------------------
 InvitationsMgr.prototype.displayWaitingInvitation = function(pWaitingInvit, pDisplayWaitingInvitationData){
-
 	document.getElementById('idModalMgrFriendDialog').classList.remove('modal-lg');
 
 	// Préparation et ouverture de la fenêtre modale de sélection des invitations à traiter
@@ -134,10 +132,10 @@ InvitationsMgr.prototype.displayWaitingInvitation = function(pWaitingInvit, pDis
 		vInvitAvailable[index].lineHTML.vBtnUp.datas = vDataToTransmit;
 		vInvitAvailable[index].lineHTML.vIFAUp.datas = vDataToTransmit;
 
-		vInvitAvailable[index].lineHTML.vBtnUp.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
+		vInvitAvailable[index].lineHTML.vBtnUp.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver,false);
 		vInvitAvailable[index].lineHTML.vBtnUp.datas = vDataToTransmit;
 
-		vInvitAvailable[index].lineHTML.vBtnUp.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
+		vInvitAvailable[index].lineHTML.vBtnUp.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut,false);
 		vInvitAvailable[index].lineHTML.vBtnUp.datas = vDataToTransmit;
 
 		var vDataToTransmit = {
@@ -154,10 +152,10 @@ InvitationsMgr.prototype.displayWaitingInvitation = function(pWaitingInvit, pDis
 		vInvitAvailable[index].lineHTML.vBtnDown.datas = vDataToTransmit;
 		vInvitAvailable[index].lineHTML.vIFADown.datas = vDataToTransmit;
 
-		vInvitAvailable[index].lineHTML.vBtnDown.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
+		vInvitAvailable[index].lineHTML.vBtnDown.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver,false);
 		vInvitAvailable[index].lineHTML.vBtnDown.datas = vDataToTransmit;
 
-		vInvitAvailable[index].lineHTML.vBtnDown.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
+		vInvitAvailable[index].lineHTML.vBtnDown.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut,false);
 		vInvitAvailable[index].lineHTML.vBtnDown.datas = vDataToTransmit;
 	});
 };
@@ -170,7 +168,7 @@ InvitationsMgr.prototype.acceptInvitation = function(event){
 	var vBtnUp = document.getElementById('idBtnUpInvit' + event.target.datas.indexInvitation);
 	var vBtnDown = document.getElementById('idBtnDownInvit' + event.target.datas.indexInvitation);
 	
-	vBtnUp.classList.replace('btn-outline-danger','btn-danger'); 
+	vBtnUp.classList.replace('btn-outline-success','btn-success'); 
 	document.getElementById('idIFAUpInvit' + event.target.datas.indexInvitation).classList.replace('text-dark','text-light'); 
 	vBtnUp.classList.add('active'); 
 	vBtnUp.classList.add('disabled'); 
@@ -204,7 +202,7 @@ InvitationsMgr.prototype.acceptInvitation = function(event){
 // 	 le serveur après les MAJ réussies de la BDD
 // - Ajout de l'avatar de mon nouvel ami dans ma liste d'amis
 // --------------------------------------------------------------
-InvitationsMgr.prototype.displayNotifInvitationValided = function(pSelectedInvit, pFriendInfo, pNotifInvitValidedData){
+InvitationsMgr.prototype.displayNotifInvitationValided = function(pSelectedInvit, pNotifInvitValidedData){
 	var idImg = 'idImgInvitAvatarToken' + pSelectedInvit.indexInvitation;
 	var vImg = document.getElementById(idImg);
 
@@ -221,7 +219,8 @@ InvitationsMgr.prototype.displayNotifInvitationValided = function(pSelectedInvit
 		this.deleteLineInvitProcessed(pSelectedInvit, pNotifInvitValidedData.modalListGroup)
 	},cstDelayClosingPopover+500);																	// Supprime la ligne après un délai de quelques secondes
 
-	vFriendsCard.addFriendIntoCard(pSelectedInvit, pFriendInfo);						// Ajout de mon nouvel ami dans la carte "Mes amis"
+	vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
+	vFriendsCard.addFriendIntoCard(pSelectedInvit, vULFriend);						// Ajout de mon nouvel ami dans la carte "Mes amis"
 };
 
 // --------------------------------------------------------------

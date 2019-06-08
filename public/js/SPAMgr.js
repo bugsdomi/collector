@@ -63,6 +63,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vMembersMgr						= new MembersMgr(vMemberClient);								// Instanciation de l'objet gérant les membres
 	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
 	vInvitationsCard			= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
+	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 		// -------------------------------------------------------------------------
@@ -98,7 +99,7 @@ window.addEventListener('DOMContentLoaded', function(){
 // -------------------------------------------------------------------------
 	var vProfileNavBar = document.getElementById('idProfileNavBar');			// Menu du profil
 	var vAddFriend = document.getElementById('idAddFriend');							// Bouton "Ajouter des amis"
-	var vMemberList = document.getElementById('idMemberList');							// Bouton "Ajouter des amis"
+	var vMemberList = document.getElementById('idMemberList');						// Bouton "Ajouter des amis"
 	var vInvitations = document.getElementById('idInvitations');					// Bouton "Valider des amis"
 	var vNbrWaitingInvit = document.getElementById('idNbrWaitingInvit');	// Puce "Nbre d'invit en attentes"
 
@@ -138,45 +139,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	vAvatarImg1.setAttribute('src', 'static/images/visiteur.jpg');  // Avatar par défaut lorsque le visiteur ne s'est pas loggé
 	vAvatarMemberNameImg1.innerHTML = 'Visiteur';
 	
-	// -------------------------------------------------------------------------
-	// Eléments de la page de profil (Page qui affiche la présentation, les posts, 
-	// les amis, la discussion de groupe...)
-	// -------------------------------------------------------------------------
-	var vProfilePage = document.getElementById('idProfilePage');
-	
-	// -------------------------------------------------------------------------
-	// Eléments de la carte de Présentation du membre sur son profil
-	// -------------------------------------------------------------------------
-	var vAvatarToken = document.getElementById('idAvatarToken');
-	var vAboutPrenom = document.getElementById('idAboutPrenom');
-	var vAboutNom = document.getElementById('idAboutNom');
-	var vAboutAge = document.getElementById('idAboutAge');
-	var vAboutVille = document.getElementById('idAboutVille');
-	var vAboutDepartmentName = document.getElementById('idAboutDepartmentName');
-	var vAboutPresentation = document.getElementById('idAboutPresentation');
-
-	// -------------------------------------------------------------------------
-	// Eléments de la carte des amis du membre sur son profil
-	// -------------------------------------------------------------------------
-	var vFilteredFriends = document.getElementById('idFilteredFriends');
-	vFilteredFriends.addEventListener('keyup', function(){
-		vFriendsCard.filterFriends(vFilteredFriends.value.toUpperCase())
-	});
-
-	var vClearFriendsFilter = document.getElementById('idClearFriendsFilter');
-	vClearFriendsFilter.addEventListener('click', function(){
-		vFilteredFriends.value = '';
-		vFriendsCard.filterFriends(vFilteredFriends.value.toUpperCase())
-	});
-
-	var vFriendUL = document.getElementById('idFriendUL');
-	
-	// -------------------------------------------------------------------------
-	// Eléments de la carte des invitations lancées membre sur son profil
-	// -------------------------------------------------------------------------
-	var vInvitSentCard = document.getElementById('idInvitSentCard');
-	var vInvitSentUL = document.getElementById('idInvitSentUL');
-
 	// -------------------------------------------------------------------------
 	// Déconnexion du membre:
 	// - Réinitialisation de la landing-page
@@ -466,7 +428,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// la validation globale de la fiche de renseignement
 	// -------------------------------------------------------------------------
 	vAccountPhotoFile.addEventListener('change', function(){
-
 		// if (vAccountPhotoFile.files[0]!=='undefined'){ // Suggestion de Mathos
 		if (vAccountPhotoFile.files[0]!==undefined){		
 			vAccountPhotoImg.setAttribute('src',window.URL.createObjectURL(vAccountPhotoFile.files[0]));
@@ -546,9 +507,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 		vAccountForm.addEventListener('submit', function (event){ 
 			event.preventDefault();
-			vAccountModal.updateProfile(vAccountParams, vAvatarInfo, vProfileInfo);
+			vAccountModal.updateProfile(vAccountParams, vAvatarInfo);
 		});
-
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
@@ -655,7 +615,6 @@ window.addEventListener('DOMContentLoaded', function(){
 		vDeconnexion,
 		vProfileNavBar,
 		vNbrWaitingInvit,
-		vProfilePage,
 		vPad
 	}
 
@@ -666,42 +625,10 @@ window.addEventListener('DOMContentLoaded', function(){
 		vImgAvatarDropDownMenu,
 		vSpanAvatarDropDownMenu,
 		vAvatarImg1,
-		vAvatarToken,
 		vAvatarMemberNameImg1
 	}
 	
-	// -------------------------------------------------------------------------
-	// Structure de transfert des infos du profil
-	// -------------------------------------------------------------------------
-	var vProfileInfo = {
-		vAboutPrenom,
-		vAboutNom,
-		vAboutAge,
-		vAboutVille,
-		vAboutDepartmentName,
-		vAboutPresentation,
-	}
 
-	// -------------------------------------------------------------------------
-	// Structure de transfert des infos des amis
-	// -------------------------------------------------------------------------
-	var vFriendInfo = {
-		vGenericModal,
-		vGenericModalHeader,
-		vGenericModalTitle,
-		vGenericModalBodyText,
-		vClearFriendsFilter,
-		vFriendUL,
-	}
-
-	// -------------------------------------------------------------------------
-	// Structure de transfert des infos des invitations lancées
-	// -------------------------------------------------------------------------
-	var vInvitSentInfo = {
-		vInvitSentCard,
-		vInvitSentUL,
-	}
-	
 	// -------------------------------------------------------------------------
 	// Structure de transfert des infos de la page de renseignements vers l'objet 
 	// page de renseignements
@@ -761,6 +688,15 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ******************************************************************************************************************************
 	
 	// --------------------------------------------------------------
+	// Le membre a demandé à voir la fiche d'un ami
+	// ==> Ouverture de la page de profil
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayFriendProfile', function(pMyFriend){
+		pMyFriend.vMyFriendList = [];
+		vViewFriendProfile.displayFriendProfile(pMyFriend);
+	});
+
+	// --------------------------------------------------------------
 	// Le serveur a renvoyé une liste d'amis pour le membre clické sur la micro-fiche
 	// On ouvre une nouvelle micro-fiche pour ce membre
 	// --------------------------------------------------------------
@@ -768,8 +704,9 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDropDownParent = document.getElementById('idDivMicroFiche0');
 
 		var vMicroFicheParams = {
-			simpleMicroFiche 	: cstStackableMicroFiche,
-			index							: null,
+			simpleMicroFiche 	: cstStackableMicroFiche,				// Signifie que les Micro-fiches seront empilées les unes sur les autres
+			index							: null,													// Signifie que l'index des ID seront générés directement dans l'objet "MicroFiche"
+			withScalingParam	: vActiveProfile === cstMainProfileActive ? cstWithScaling : cstWithNoScaling,
 		};
 		
 		new MicroFicheMember(pFriendsOfMember).displayMicroFicheMember(vDropDownParent, vMicroFicheParams);
@@ -781,7 +718,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
 		pcancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
-		vInvitationsCard.removeInvitSentFromMyInvitSentList(pcancelInvitSent, vInvitSentInfo);
+		vInvitationsCard.removeInvitSentFromMyInvitSentList(pcancelInvitSent);
 	});
 
 	// --------------------------------------------------------------
@@ -790,7 +727,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
 		pcancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
-		vInvitationsCard.refreshMyInvitList(pcancelInvitSent, vInvitSentInfo);
+		vInvitationsCard.refreshMyInvitList(pcancelInvitSent);
 	});
 
 	// --------------------------------------------------------------
@@ -799,7 +736,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vFriendPopUpMenu.removeFriendFromMyFriendList(pFriendToDelete, vFriendInfo);
+		vFriendPopUpMenu.removeFriendFromMyFriendList(pFriendToDelete);
 	});
 
 	// --------------------------------------------------------------
@@ -809,7 +746,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vFriendPopUpMenu.refreshMyFriendList(pFriendToDelete, vFriendInfo);
+		vFriendPopUpMenu.refreshMyFriendList(pFriendToDelete);
 	});
 
 	// --------------------------------------------------------------
@@ -881,10 +818,11 @@ window.addEventListener('DOMContentLoaded', function(){
 		pMyFriend.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pMyFriend.friendPseudo);
 
 		// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
-		vInvitationsCard.refreshMyInvitList(pMyFriend, vInvitSentInfo);		
+		vInvitationsCard.refreshMyInvitList(pMyFriend);		
 
 		// Ajout de l'avatar sujet de l'invitation dans ma liste d'amis
-		vFriendsCard.addFriendIntoCard(pMyFriend, vFriendInfo);
+		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
+		vFriendsCard.addFriendIntoCard(pMyFriend, vULFriend);
 	});
 
 	// --------------------------------------------------------------
@@ -896,7 +834,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationValidedData = {
 			modalListGroup : vModalMgrFriendListGroup,
 		}
-		vInvitationsMgr.displayNotifInvitationValided(pSelectedInvit, vFriendInfo, vDisplayNotifInvitationValidedData);
+		vInvitationsMgr.displayNotifInvitationValided(pSelectedInvit, vDisplayNotifInvitationValidedData);
 	});	
 
 	// --------------------------------------------------------------
@@ -1011,7 +949,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vDisplayNotifInvitationSentData = {
 			modalListGroup : vModalMgrFriendListGroup,
 		}
-		vFriendRequestMgr.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData, vInvitSentInfo);
+		vFriendRequestMgr.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData);
 	});
 
 	// --------------------------------------------------------------
@@ -1105,7 +1043,7 @@ console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 		$('#idGenericModal').modal('show');                                           		// ouverture de la fenêtre modale de Félicitations
 
 		// Affichage de la page de profil avec les avatars, les amis, les invitations...
-		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, vProfileInfo, vFriendInfo, vInvitSentInfo, askingMembers, myFriendsInfo);			// Affichage de la page de profil
+		vMemberClient.displayProfilePage(vContextInfo, vAvatarInfo, askingMembers);			// Affichage de la page de profil
 	});
 
 	// --------------------------------------------------------------

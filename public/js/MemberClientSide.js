@@ -8,6 +8,7 @@ function MemberClient(){   							// Fonction constructeur exportée
 	this.vMyFriendList					= [];			// Ma liste d'amis
 	this.vMyInvitSentList 			= [];			// Ma liste d'invitations envoyées
 	this.vInvitSentCardVisible 	= false;	// Indicateur de visibilité de la carte des invitations en attente
+	this.friendsOfMyFriend			= [];			// Liste d'amis de mon ami
 
 	this.member =                 // Structure de stockage provisoire du membre
 	{   
@@ -210,20 +211,16 @@ MemberClient.prototype.initModalEmptyWaitingInvit = function(pModalTitle, pModal
 MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pAskingMembers){
 	pContextInfo.vConnexion.style.display = 'none';         			// Désactivation du bouton 'Connexion'
 	pContextInfo.vCreation.style.display = 'none';          			// Désactivation du bouton 'Creation de compte'
-
 	pContextInfo.vDropDownProfilMenu.style.display = 'block';			// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
 	
 	// Affiche le nom et la photo du membre dans la NavBar d'entête
 	pAvatarInfo.vImgAvatarDropDownMenu.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 	pAvatarInfo.vSpanAvatarDropDownMenu.innerHTML = this.member.pseudo;		
 
-	pContextInfo.vDeconnexion.classList.remove('disabled');				// Active l'option "Deconnexion" du menu d'entête
-	pContextInfo.vProfileNavBar.style.display = 'block';					// Affichage du menu du profil (sous l'Avatar)
-
-	this.displayPuceNbrWaitingInvit(pContextInfo, pAskingMembers.length);				// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
-
-	pContextInfo.vProfilePage.style.display = 'block';						// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
-	pContextInfo.vPad.style.display = 'none';											// Masquage de la "div" de masquage du menu du profil
+	pContextInfo.vDeconnexion.classList.remove('disabled');									// Active l'option "Deconnexion" du menu d'entête
+	pContextInfo.vProfileNavBar.style.display = 'block';										// Affichage du menu du profil (sous l'Avatar)
+	this.displayPuceNbrWaitingInvit(pContextInfo, pAskingMembers.length);		// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
+	pContextInfo.vPad.style.display = 'none';																// Masquage de la "div" de padding du profil
 }
 
 // -----------------------------------------------------------------------------
@@ -246,12 +243,13 @@ MemberClient.prototype.unsetMemberContext = function(){
 // 		- La carte des "Amis"
 // 		- La carte des invitations lancées (seulement s'il y en a)
 // -----------------------------------------------------------------------------
-MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pProfileInfo, pFriendInfo, pInvitSentInfo, pAskingMembers, pMyFriendsInfo){
+MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, pAskingMembers){
 	this.setMemberContext(pContextInfo, pAvatarInfo, pAskingMembers);  			//  Active le contexte du membre (NavBar d'entête, options de menu, etc)
+	document.getElementById('idMainProfilePage').classList.replace('d-none','d-block');	// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
+	vPresentationCard.displayPresentationCard();														// - Affiche les informations du profil dans la carte "Présentation"
 	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
-	vPresentationCard.displayPresentationCard(pProfileInfo);															// - Affiche les informations du profil dans la carte "Présentation"
-	vFriendsCard.displayFriendsCard(pFriendInfo);																		// - Affiche les amis dans la carte "Amis"
-	vInvitationsCard.displayInvitSentCard(pInvitSentInfo);															// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
+	vFriendsCard.displayFriendsCard();																			// - Affiche les amis dans la carte "Amis"
+	vInvitationsCard.displayInvitSentCard();																// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
 }
 
 // -----------------------------------------------------------------------------
@@ -261,7 +259,6 @@ MemberClient.prototype.displayAvatar = function(pAvatarInfo){
 	pAvatarInfo.vImgAvatarDropDownMenu.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 	pAvatarInfo.vAvatarImg1.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 	pAvatarInfo.vAvatarMemberNameImg1.innerHTML = this.member.pseudo;
-	pAvatarInfo.vAvatarToken.setAttribute('src', 'static/images/members/'+this.member.etatCivil.photo);
 }
 
 // -----------------------------------------------------------------------------
@@ -296,7 +293,7 @@ MemberClient.prototype.initModalSignIn = function(pSignInParameters){
 }
 
 // --------------------------------------------------------------
-// Change la classe (de couleur BS4) lorsque la souris quitte le 
+// Change la classe (de couleur BS4) lorsque la souris passe sur le 
 // boutons, en blanc
 // --------------------------------------------------------------
 MemberClient.prototype.changeBtnTxtColOver = function(event){

@@ -30,8 +30,7 @@ MicroFicheMember.prototype.filterConfirmedFriends = function(pItem){
 // Cette méthode affiche les données de bases d'un membre et sa liste d'amis
 // -----------------------------------------------------------------------------
 MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMicroFicheParams){
-
-	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
+	var vlineHTML = {};						
 
 	vlineHTML.vDiv = window.document.createElement('div');
 
@@ -41,17 +40,17 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 		pDivDropDown.appendChild(vlineHTML.vDiv);
 		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+pMicroFicheParams.index);
 	} else {
-	// Il s'agit d'une Micro-fiche Stackable, set fermeture automatique
-	// le N° d'Id est déterminé automatique par cette méthode
+	// Il s'agit d'une Micro-fiche Stackable, et à fermeture automatique
+	// le N° d'Id est déterminé automatiquement par cette méthode
 		while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
 			this.lastMicroFiche++;
 		}
 
 		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
 
-		if(this.lastMicroFiche < 2){
+		if(this.lastMicroFiche < 2){									// Si je n'ai que la MF principale, j'ajoute une MF juste en dessous
 			pDivDropDown.appendChild(vlineHTML.vDiv);
-		} else {
+		} else {																			// sinon je l'insere en la MF principaale et la MF située juste au dessous
 			var parentDiv = document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)).parentNode;
 			parentDiv.insertBefore(vlineHTML.vDiv, document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)));
 		}
@@ -169,7 +168,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	// Filtrage des membres confirmés uniquement
 	this.memberClient.friendsOfMyFriend.filter(this.filterConfirmedFriends).forEach((item, index) => {
-			new AddFriendsOfMembers(this, item, index, vlineHTML.vUL);
+		new AddFriendsOfMembers(this, item, index, vlineHTML.vUL, pMicroFicheParams);
 	})
 }
 
@@ -177,14 +176,14 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 // Créée les avatars des amis des amis et/ou membres et leur attache 
 // un DropDown Menu
 // --------------------------------------------------------------
-function AddFriendsOfMembers(pThis, pItem, pIndex, pUL) {
-	this.lineHTML = {};					// Structure HTML générée pour chaque ligne de membre
+function AddFriendsOfMembers(pThis, pItem, pIndex, pUL, pMicroFicheParams) {
+	this.lineHTML = {};					
 	this.friend = pItem; 
 	this.index = pIndex;
 
 	this.lineHTML.vLi = window.document.createElement('li');
 	pUL.appendChild(this.lineHTML.vLi);
-	this.lineHTML.vLi.setAttribute('class', 'friendList withScaling');
+	this.lineHTML.vLi.setAttribute('class', 'friendList ' + pMicroFicheParams.withScalingParam);
 
 	this.lineHTML.vA = window.document.createElement('a');
 	this.lineHTML.vLi.appendChild(this.lineHTML.vA);
@@ -242,7 +241,7 @@ MicroFicheMember.prototype.removeMicroFichesOfMember = function(pDivDropDown){
 }
 
 // --------------------------------------------------------------
-// En passant au dessus des lignes des membres, la micro-fiche du membre s'ouvre
+// En cliquant au dessus des lignes des membres, la micro-fiche du membre s'ouvre
 // --------------------------------------------------------------
 MicroFicheMember.prototype.openMicroFiche = function(pMicroFicheParams){
 	var vDistFromBodyToHoverLine = vToolBox.findPos(pMicroFicheParams.thisContext, pMicroFicheParams.event);

@@ -235,17 +235,6 @@ var myIdLabel = document.getElementById(pPrefLabel)
 	pPref.checked ? myIdLabel.classList.add('active') : myIdLabel.classList.remove('active');
 }
 
-// -----------------------------------------------------------------------------
-// Cette fonction simule le click des boutons de préférences a true pour refléter
-// le statut et la couleur correspondante des badges colorés
-// - Elle ajoute ou retire la classe "active" du label
-// - Comme cette fonction est "Read-Only", on ne change pas le statut réel des check-box sous-jacents
-// -----------------------------------------------------------------------------
-AccountModal.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel){
-	this.memberClient.member.preferences[pIndex] 	? document.getElementById(pPrefLabel).classList.add('active')
-																								: document.getElementById(pPrefLabel).classList.remove('active')
-}
-
 	// -------------------------------------------------------------------------
 	// Validation Fiche "Renseignements"
 	// Envoi des infos de la fiche renseignement du visiteur au serveur pour 
@@ -256,7 +245,7 @@ AccountModal.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex,
 	// De plus, s'il y a eu une demande changement dde MDP, on MAJ la BDD en conséquence
 	// et on demande au serveur d'envoyer un mail de notification de MDP
 	// -------------------------------------------------------------------------
-AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pProfileInfo){
+AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 	var cstWaitForUpladToDisplayAvatar = false;
 
 	if (!this.memberClient.newPasswordKO){
@@ -324,9 +313,9 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo, pPr
 		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
 
 		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
-      this.memberClient.displayAvatar(pAvatarInfo);
+			this.memberClient.displayAvatar(pAvatarInfo);
+			document.getElementById('idAvatarToken'+cstMainProfileActive).setAttribute('src', 'static/images/members/'+this.memberClient.member.etatCivil.photo);
 		};
-
-		vPresentationCard.displayPresentationCard(pProfileInfo);
+		vPresentationCard.fillPresentationCard(this.memberClient.member);
 	}
 }

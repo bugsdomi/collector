@@ -30,8 +30,7 @@ function FriendRequestMgr(pMemberClient){                              // Foncti
 // des lignes HTML pour chaque membre pouvant devenir ami
 // --------------------------------------------------------------
 function AddPotentialFriendLines(item, index, pMicroFiche, pModalMgrFriendListGroup) {
-	this.lineHTML = {};						// Structure HTML générée pour chaque ligne de membre
-
+	this.lineHTML = {};						
 	this.friend = item;
 	this.index = index;
 
@@ -107,6 +106,7 @@ function AddPotentialFriendLines(item, index, pMicroFiche, pModalMgrFriendListGr
 	var vMicroFicheParams = {
 		simpleMicroFiche 	: cstSimpleMicroFiche,
 		index							: index,
+		withScalingParam	: cstWithNoScaling,
 	};
 
 	pMicroFiche.displayMicroFicheMember(this.lineHTML.vDivMicroFiche, vMicroFicheParams);
@@ -159,10 +159,10 @@ FriendRequestMgr.prototype.displayPotentialFriendsLines = function(pMembersFrien
 		vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
 		vMembersFriendables[index].lineHTML.vIFA.datas = vDataToTransmit;
 
-		vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
+		vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver,false);
 		vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
 
-		vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
+		vMembersFriendables[index].lineHTML.vBtn.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut,false);
 		vMembersFriendables[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
 }
@@ -201,8 +201,6 @@ FriendRequestMgr.prototype.closeMicroFiche = function(event){
 // de sélection des membres pour devenir amis
 // --------------------------------------------------------------
 FriendRequestMgr.prototype.displayPotentialFriends = function(pMembersFriendables, pDisplayPotentialfriendData){   
-
-	document.getElementById('idModalMgrFriendDialog').classList.add('modal-lg');
 	var vModalHeaderParams = 
 	{
 		displayModalDatas : pDisplayPotentialfriendData,
@@ -278,7 +276,7 @@ FriendRequestMgr.prototype.deleteLineInvitSent = function(pFriendToAdd, pModalMg
 // Ajout de l'invitation envoyée dans la carte gestionnaire  
 // d'invitation
 // --------------------------------------------------------------
-FriendRequestMgr.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData, pInvitSentInfo){   
+FriendRequestMgr.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData){   
 	// Ferme la notif après un délai de quelques secondes
 	$('#'+'idImgPotentialFriends'+pFriendToAdd.index).popover('show');										// Affiche la notification d'envoi de la demande d'ami
 
@@ -291,9 +289,9 @@ FriendRequestMgr.prototype.displayNotifInvitationSent = function(pFriendToAdd, p
 	},cstDelayClosingPopover + 500);																	// Supprime la ligne après un délai de quelques secondes
 
 	if (!this.memberClient.vInvitSentCardVisible){
-		pInvitSentInfo.vInvitSentCard.style.display = 'block';					// S'il y a des invitations en attente, affiche la carte des invitations en attente
+		document.getElementById('idInvitSentCard'+vActiveProfile).style.display = 'block';	// S'il y a des invitations en attente, affiche la carte des invitations en attente
 		this.memberClient.vInvitSentCardVisible = true;
 	}
 
-	vInvitationsCard.addInvitSentIntoCard(pFriendToAdd, pInvitSentInfo);
+	vInvitationsCard.addInvitSentIntoCard(pFriendToAdd);
 }

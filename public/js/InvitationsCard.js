@@ -1,26 +1,171 @@
-// ************************************************************************
-// ***      InvitationsCard : Gestionnaire des invitations lancées      ***
-// ***                                                                  ***
-// *** Objet : InvitationsCard                                          ***
-// ***                                                                  ***
-// *** Cet objet sert à gérer toutes les fonctions liées aux invitations***
-// ***  - L'affichage des invitations                                   ***
-// ***  - La possibilité de les annuler                                 ***
-// ***                                                                  ***
-// ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
-// ***                                                                  ***
-// ************************************************************************
+// ------------------------------------------------------------------------
+// ---      InvitationsCard : Gestionnaire des invitations lancées      ---
+// ---                                                                  ---
+// --- Objet : InvitationsCard                                          ---
+// ---                                                                  ---
+// --- Cet objet sert à gérer toutes les fonctions liées aux invitations---
+// ---  - L'affichage des invitations                                   ---
+// ---  - La possibilité de les annuler                                 ---
+// ---                                                                  ---
+// ---  Nécessite :                                                     ---
+// ---      Rien                                                        ---
+// ---                                                                  ---
+// ------------------------------------------------------------------------
 
 function InvitationsCard(pMemberClient){                              // Fonction constructeur exportée
   this.memberClient = pMemberClient;
 };   						
 
-// -----------------------------------------------------------------------------
-// Cette fonction affiche la carte "Mes invitations lancées" sur ma page de profil
-// -----------------------------------------------------------------------------
-InvitationsCard.prototype.displayInvitSentCard = function(pInvitSentInfo){
+// ------------------------------------------------------------------------------
+//                     Carte "Invitations lancées"                            
+// ------------------------------------------------------------------------------
+InvitationsCard.prototype.displayInvitSentCard = function(){
+	var vlineHTML = {};						
 
+	// Détermination du point de montage, selon que l'on est sur la fiche du membre principal ou celle d'un de ses amis
+	if (vActiveProfile === cstMainProfileActive){
+		var vDivMountPointProfile = document.getElementById('idDivMountPointMainProfile');
+	} else {
+		var vDivMountPointProfile = document.getElementById('idDivMountPointFriendProfile');
+	}
+
+// <div id="idInvitSentCard" class="card border-warning mb-4">
+	vlineHTML.vDivCardBorder = window.document.createElement('div');
+	vDivMountPointProfile.appendChild(vlineHTML.vDivCardBorder);
+	vlineHTML.vDivCardBorder.setAttribute('id', 'idInvitSentCard'+vActiveProfile);
+	vlineHTML.vDivCardBorder.setAttribute('class', 'card border-warning mb-4');
+
+// ------------------------------------------------------------------------------
+//                      Entête de la carte "Invitations lancées"                        
+// ------------------------------------------------------------------------------
+// 	<div class="card-header bg-warning border-bottom border-warning">
+	vlineHTML.vDivCardHeader = window.document.createElement('div');
+	vlineHTML.vDivCardBorder.appendChild(vlineHTML.vDivCardHeader);
+	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning');
+
+// 		<div class="container">
+	vlineHTML.vDivContAvatToken = window.document.createElement('div');
+	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vDivContAvatToken);
+	vlineHTML.vDivContAvatToken.setAttribute('class', 'container');
+
+// 			<div class="row">
+	vlineHTML.vDivRow1 = window.document.createElement('div');
+	vlineHTML.vDivContAvatToken.appendChild(vlineHTML.vDivRow1);
+	vlineHTML.vDivRow1.setAttribute('class', 'row');
+
+// 		<h5 class="card-title mx-0">Invitations envoyées aux membres suivants </h5>
+	vlineHTML.vH5 = window.document.createElement('h5');
+	vlineHTML.vDivRow1.appendChild(vlineHTML.vH5);
+	vlineHTML.vH5.setAttribute('class', 'col-4 px-0 my-0 align-self-center');
+	
+	vlineHTML.vH5.innerHTML='Mes invitations';
+
+// 				<div class="col-10 px-0">
+	vlineHTML.vDivCol1 = window.document.createElement('div');
+	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol1);
+	vlineHTML.vDivCol1.setAttribute('class', 'col-8 px-0');
+	
+// 					<div class="input-group input-group-sm border rounded">
+	vlineHTML.vDivInputGroup = window.document.createElement('div');
+	vlineHTML.vDivCol1.appendChild(vlineHTML.vDivInputGroup);
+	vlineHTML.vDivInputGroup.setAttribute('class', 'input-group input-group-sm border rounded');
+
+// 						<div class="input-group-prepend">
+	vlineHTML.vDivInputGroupPrepend = window.document.createElement('div');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupPrepend);
+	vlineHTML.vDivInputGroupPrepend.setAttribute('class', 'input-group-prepend');
+
+// 							<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
+	vlineHTML.vSpanInputGroupPrepend = window.document.createElement('span');
+	vlineHTML.vDivInputGroupPrepend.appendChild(vlineHTML.vSpanInputGroupPrepend);
+	vlineHTML.vSpanInputGroupPrepend.setAttribute('class', 'input-group-text');
+	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter"></i>';
+
+// 						<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
+	vlineHTML.vDivFilteredInvits = window.document.createElement('input');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivFilteredInvits);
+	vlineHTML.vDivFilteredInvits.setAttribute('id', 'idFilteredInvits'+vActiveProfile);
+	vlineHTML.vDivFilteredInvits.setAttribute('class', 'form-control');
+	vlineHTML.vDivFilteredInvits.setAttribute('type', 'text');
+	vlineHTML.vDivFilteredInvits.setAttribute('placeholder', 'Filtrer des invitations');
+
+// // <div class="input-group-btn">
+// 						<div class="input-group-append">
+	vlineHTML.vDivInputGroupAppend = window.document.createElement('div');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupAppend);
+	vlineHTML.vDivInputGroupAppend.setAttribute('class', 'input-group-append');
+
+// 							<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
+	vlineHTML.vBtnClearInvitsFilter = window.document.createElement('button');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vBtnClearInvitsFilter);
+	vlineHTML.vBtnClearInvitsFilter.setAttribute('id', 'idClearInvitsFilter'+vActiveProfile);
+	vlineHTML.vBtnClearInvitsFilter.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+	vlineHTML.vBtnClearInvitsFilter.setAttribute('type', 'button');
+
+// 								<i class="fa fa-fw fa-times"></i>
+	vlineHTML.viFaTimes = window.document.createElement('i');
+	vlineHTML.vBtnClearInvitsFilter.appendChild(vlineHTML.viFaTimes);
+	vlineHTML.viFaTimes.setAttribute('class', 'fa fa-fw fa-times');
+
+// ------------------------------------------------------------------------------
+//                      Corps de la carte "Invitations lancées"                         
+// ------------------------------------------------------------------------------
+// 	<div class="card-body" style="border: 1px black solid;">
+	vlineHTML.vDivCardBody = window.document.createElement('div');
+	vlineHTML.vDivCardBorder.appendChild(vlineHTML.vDivCardBody);
+	vlineHTML.vDivCardBody.setAttribute('class', 'card-body');
+	vlineHTML.vDivCardBody.setAttribute('style', 'border: 1px black solid;');
+
+// 		<div class="row">
+	vlineHTML.vDivRow1 = window.document.createElement('div');
+	vlineHTML.vDivCardBody.appendChild(vlineHTML.vDivRow1);
+	vlineHTML.vDivRow1.setAttribute('class', 'row');
+
+// 			<div class="col-md-12 px-0 text-dark">
+	vlineHTML.vDivCol1 = window.document.createElement('div');
+	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol1);
+	vlineHTML.vDivCol1.setAttribute('class', 'col-md-12 px-0 text-dark');
+
+// 				<ul id="idInvitSentUL" class="p-0 m-0" style="list-style: none;">
+	vlineHTML.vULSent = window.document.createElement('ul');
+	vlineHTML.vDivCol1.appendChild(vlineHTML.vULSent);
+	vlineHTML.vULSent.setAttribute('id', 'idInvitSentUL'+vActiveProfile);
+	vlineHTML.vULSent.setAttribute('class', 'p-0 m-0" style="list-style: none;');
+	vlineHTML.vULSent.setAttribute('style', 'list-style: none;');
+
+
+	// -------------------------------------------------------------------------
+	// Champs de filtrage des invitations
+	// -------------------------------------------------------------------------
+	vlineHTML.vDivFilteredInvits.addEventListener('keyup', () => {
+		this.filterInvits(vlineHTML.vDivFilteredInvits.value.toUpperCase())
+	});
+
+	vlineHTML.vBtnClearInvitsFilter.addEventListener('click', () => {
+		vlineHTML.vDivFilteredInvits.value = '';
+		this.filterInvits(vlineHTML.vDivFilteredInvits.value.toUpperCase())
+	});
+
+	this.fillInvitSentCard();
+	}
+
+// -----------------------------------------------------------------------------
+// Filtrage des invitations
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.filterInvits = function(pFilteredInvits){
+	this.memberClient.vMyInvitSentList.forEach((item, index) => {
+		if (item.friendPseudo.toUpperCase().startsWith(pFilteredInvits)){
+			document.getElementById('idMyInvitSentLi'+vActiveProfile+index).classList.remove('d-none');
+		} else {
+			document.getElementById('idMyInvitSentLi'+vActiveProfile+index).classList.add('d-none');
+		}
+	});
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction remplit la carte "Mes invitations lancées" sur ma page de profil
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.fillInvitSentCard = function(){
 	var vMyinvitSent = 
 	{
 		friendEmail  	: null,
@@ -35,10 +180,10 @@ InvitationsCard.prototype.displayInvitSentCard = function(pInvitSentInfo){
 			vMyinvitSent.friendPhoto = item.friendPhoto;
 
 			if (!this.memberClient.vInvitSentCardVisible){
-				pInvitSentInfo.vInvitSentCard.style.display = 'block';								// S'il y a des invitations en attente, affiche la carte des invitations en attente
+				document.getElementById('idInvitSentCard'+vActiveProfile).style.display = 'block';	// S'il y a des invitations en attente, affiche la carte des invitations en attente
 				this.memberClient.vInvitSentCardVisible = true;
 			}
-			this.addInvitSentIntoCard(vMyinvitSent, pInvitSentInfo);								// et je la peuple avec mes invitations en attente
+			this.addInvitSentIntoCard(vMyinvitSent);								// et je la peuple avec mes invitations en attente
 		}
 	});
 };
@@ -47,7 +192,7 @@ InvitationsCard.prototype.displayInvitSentCard = function(pInvitSentInfo){
 // Cette fonction ajoute une invitation sur la carte "Invitations lancées" de la 
 // page de profil et prépare son sous-menu PopUp pour les éventuelles annulations
 // -----------------------------------------------------------------------------
-InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSentInfo){
+InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 
 	var vInvitSentLocal = 
 	{
@@ -56,14 +201,16 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSe
 		friendPhoto 	: pMyInvitSent.friendPhoto,
 	}
 
+	vULSent = document.getElementById('idInvitSentUL'+vActiveProfile);
+
 	this.memberClient.vMyInvitSentList.push(vInvitSentLocal);
 	var index = (this.memberClient.vMyInvitSentList.length-1);
 
-	var vlineHTML = {};									// Structure HTML générée pour chaque ligne de membre
-
+	var vlineHTML = {};									
+	
 	vlineHTML.vLi = window.document.createElement('li');
-	pInvitSentInfo.vInvitSentUL.appendChild(vlineHTML.vLi);
-	vlineHTML.vLi.setAttribute('id', 'idMyInvitSentLi'+index);
+	vULSent.appendChild(vlineHTML.vLi);
+	vlineHTML.vLi.setAttribute('id', 'idMyInvitSentLi'+vActiveProfile+index);
 	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
 
 	vlineHTML.vA = window.document.createElement('a');
@@ -75,7 +222,7 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSe
 
 	vlineHTML.vDivDropDown = window.document.createElement('div');
 	vlineHTML.vA.appendChild(vlineHTML.vDivDropDown);
-	vlineHTML.vDivDropDown.setAttribute('id', 'idMyInvitSentDropDown'+index);
+	vlineHTML.vDivDropDown.setAttribute('id', 'idMyInvitSentDropDown'+vActiveProfile+index);
 	vlineHTML.vDivDropDown.setAttribute('class', 'dropdown-menu py-0');
 	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black;');
 
@@ -86,7 +233,7 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSe
 	// ----------------------------
 	vlineHTML.vACancelInvit = window.document.createElement('a');
 	vlineHTML.vDivDropDown.appendChild(vlineHTML.vACancelInvit);
-	vlineHTML.vACancelInvit.setAttribute('id', 'idAnchorCancelInvit'+index);
+	vlineHTML.vACancelInvit.setAttribute('id', 'idAnchorCancelInvit'+vActiveProfile+index);
 
 	vlineHTML.vACancelInvit.setAttribute('href', '#');
 	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
@@ -103,7 +250,7 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSe
 
 	vlineHTML.vImgCancelInvit = window.document.createElement('img');
 	vlineHTML.vDivAvatarCancelInvit.appendChild(vlineHTML.vImgCancelInvit);
-	vlineHTML.vImgCancelInvit .setAttribute('id', 'idImgCancelInvit'+index);
+	vlineHTML.vImgCancelInvit .setAttribute('id', 'idImgCancelInvit'+vActiveProfile+index);
 	vlineHTML.vImgCancelInvit.setAttribute('class', 'avatarToken tokenSize32 m-1');
 	vlineHTML.vImgCancelInvit.setAttribute('alt', 'Membre');
 	vlineHTML.vImgCancelInvit.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
@@ -130,7 +277,7 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSe
 
 	vlineHTML.vIFACancelInvit = window.document.createElement('i');
 	vlineHTML.vBtnCancelInvit.appendChild(vlineHTML.vIFACancelInvit);
-	vlineHTML.vIFACancelInvit.setAttribute('id', 'idIFACancelInvit'+index);
+	vlineHTML.vIFACancelInvit.setAttribute('id', 'idIFACancelInvit'+vActiveProfile+index);
 	vlineHTML.vIFACancelInvit.setAttribute('class', 'fa fa-envelope text-dark');
 
 	vlineHTML.vDivAvatar = window.document.createElement('div');
@@ -156,8 +303,8 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent, pInvitSe
     thisContext         : this,
 	}
 
-	vlineHTML.vBtnCancelInvit.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver);
-	vlineHTML.vBtnCancelInvit.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut);
+	vlineHTML.vBtnCancelInvit.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver);
+	vlineHTML.vBtnCancelInvit.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut);
 	vlineHTML.vBtnCancelInvit.addEventListener('click', this.cancelInvitation);						// Suppression d'un ami
 	vlineHTML.vBtnCancelInvit.datas = vDataToTransmit;
 	vlineHTML.vIFACancelInvit.datas = vDataToTransmit;
@@ -198,22 +345,22 @@ InvitationsCard.prototype.cancelInvitation = function(event){
 // sous-elements (Popup-Menu, Lignes de reco, etc...) de ma liste d'invitations en attente
 // Si plus d'invitation en attente, fermeture de la carte des invitations en attente
 // -----------------------------------------------------------------------------
-InvitationsCard.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete, pInvitSentInfo){
+InvitationsCard.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete){
 	// Tant que j'ai une opération d'annulation d'invitation encours, je neutralise tous les autres avatars pour ne pas lancer plusieurs annulations simultanement
 	this.memberClient.vMyInvitSentList.forEach((item, index) => {
 		if (index !== pInvitToDelete.indexInvitToDelete){
-			document.getElementById('idAnchorCancelInvit'+index).classList.add('disabled')
+			document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.add('disabled')
 		}
 	})
-	
-	this.displayNotifInvitCanceled(pInvitToDelete, pInvitSentInfo);			// Affiche la notification de suppression d'invitation avant la fermeture du PopUp Menu
+
+	this.displayNotifInvitCanceled(pInvitToDelete);			// Affiche la notification de suppression d'invitation avant la fermeture du PopUp Menu
 }
 
 // --------------------------------------------------------------
 // Affichage d'une Notification de suppression d'invitation envoyée
 // --------------------------------------------------------------
-InvitationsCard.prototype.displayNotifInvitCanceled = function(pInvitToDelete, pInvitSentInfo){
-	var idImg = 'idImgCancelInvit' + pInvitToDelete.indexInvitToDelete;
+InvitationsCard.prototype.displayNotifInvitCanceled = function(pInvitToDelete){
+	var idImg = 'idImgCancelInvit'+vActiveProfile + pInvitToDelete.indexInvitToDelete;
 	$('#'+idImg).popover('show');
 
 	setTimeout(function(){
@@ -221,7 +368,7 @@ InvitationsCard.prototype.displayNotifInvitCanceled = function(pInvitToDelete, p
 	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
 
 	setTimeout(() => {
-		this.refreshMyInvitList(pInvitToDelete, pInvitSentInfo)
+		this.refreshMyInvitList(pInvitToDelete)
 	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
 };
 
@@ -230,12 +377,12 @@ InvitationsCard.prototype.displayNotifInvitCanceled = function(pInvitToDelete, p
 // - 1) Suppression de l'invitation du tableau de mes invitations
 // - 2) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon invitation de ma liste d'invitations
 // -----------------------------------------------------------------------------
-InvitationsCard.prototype.refreshMyInvitList = function(pInvitToDelete, pInvitSentInfo){
+InvitationsCard.prototype.refreshMyInvitList = function(pInvitToDelete){
 	this.memberClient.vMyInvitSentList.splice(pInvitToDelete.indexInvitToDelete, 1);   // Efface l'occurence de mon invitation du tableau de mes invitations en attente
 
 	// Je régénère ma liste d'invitations pour recaler les indexes attachés à chaque invitation et utilisés pour les "Id" HTML:
 	// Suppression de tous les avatars affichés à partir de l'avatar dont j'ai fait l'annulation
-	var vElem = document.getElementById('idMyInvitSentLi'+0); 
+	var vElem = document.getElementById('idMyInvitSentLi'+vActiveProfile+0); 
 
 	if (vElem){
 		var vParentNode = vElem.parentNode;
@@ -262,17 +409,17 @@ InvitationsCard.prototype.refreshMyInvitList = function(pInvitToDelete, pInvitSe
 				vMyInvitationSent.friendPseudo = item.friendPseudo;
 				vMyInvitationSent.friendPhoto = item.friendPhoto;
 
-				this.addInvitSentIntoCard(vMyInvitationSent, pInvitSentInfo);					// Ajout de l'avatar de l'invitation en cours dans ma carte d'invitations
+				this.addInvitSentIntoCard(vMyInvitationSent);					// Ajout de l'avatar de l'invitation en cours dans ma carte d'invitations
 			});
 		} else {
-			pInvitSentInfo.vInvitSentCard.style.display = 'none';										// Je cache la carte des invitations en attente puisqu'elle est vide
+			document.getElementById('idInvitSentCard'+vActiveProfile).style.display = 'none';	// S'il y a des invitations en attente, affiche la carte des invitations en attente
 			this.memberClient.vInvitSentCardVisible = false;
 		}
 	}
 
 	// Réactivation de ligne de menu permettant d'annuler une invitation
 	this.memberClient.vMyInvitSentList.forEach((item, index) => {
-		document.getElementById('idAnchorCancelInvit'+index).classList.remove('disabled')
+		document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.remove('disabled')
 	})
 	vToolBox.clearAllOpenedPopOverAndToolTip();
 }

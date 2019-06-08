@@ -175,7 +175,6 @@
 									<div class="name txt-yellow-stroke"><a href="#" id="idAvatarMemberNameImg1"></a></div>
 
 									<ul class="cover-nav" id="idProfileNavBar">
-										<li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
 										<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
 										<li><a id="idMemberList" href="#"><i class="fa fa-fw fa-search"></i> Rechercher des membres</a></li>
 										<li><a id="idInvitations" href="#"><i class="fa fa-fw fa-users"></i> Invitations reçues <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
@@ -194,651 +193,281 @@
 	<!--                                Page de profil du membre                        --> 
 	<!-- ****************************************************************************** -->
 	<div id="idPad"></div>
-	<div class="container" id="idProfilePage">
-		<div class="row mb-4">
-			<div class="col-md-12 col-md-offset-2">
-				<div class="row">
-					<div class="col-md-5">
-
-					<!-- ****************************************************************************** -->
-					<!--                               Carte "Présentation"                             -->
-					<!-- ****************************************************************************** -->
-					<div class="card border-warning mb-4">
-						<!-- ****************************************************************************** -->
-						<!--                      Entête de la carte "Présentation"                         -->
-						<!-- ****************************************************************************** -->
-						<div class="card-header bg-warning border-bottom border-warning">
-							<div class="containerAvatarToken">
-								<img id="idAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="">
-							</div>
-							<h5 class="card-title">Présentation</h5>
+		<div id="idMainProfilePage" class="container d-none" >	
+			<div class="row mb-4">
+				<div class="col-md-12 col-md-offset-2">
+					<div class="row">
+						<div class="col-md-5" id="idDivMountPointMainProfile">
 						</div>
 
-						<!-- ****************************************************************************** -->
-						<!--                      Corps de la carte "Présentation"                          -->
-						<!-- ****************************************************************************** -->
-						<div class="card-body" style="border: 1px black solid;">
-							<ul class="list-group list-unstyled">
-								<li>
-									<div class="row">
-										<div class="col-sm-4 text-dark">Prénom</div>
-										<div class="col-sm-8 font-weight-bold" id="idAboutPrenom"></div>
-										</div>
-								</li>
-								<li>
-									<div class="row">
-										<div class="col-sm-4 text-dark">Nom</div>
-										<div class="col-sm-8 font-weight-bold" id="idAboutNom"></div>
-										</div>
-								</li>
-								<li>
-									<div class="row">
-										<div class="col-sm-4 text-dark">Âge</div>
-											<div class="col-sm-8 font-weight-bold" id="idAboutAge"></div>
-										</div>
-								</li>
-								<li>
-									<div class="row">
-										<div class="col-sm-4 text-dark">Ville</div>
-											<div class="col-sm-8 font-weight-bold" id="idAboutVille"></div>
-										</div>
-								</li>
-								<li>
-									<div class="row">
-										<div class="col-sm-4 text-dark">Département</div>
-											<div class="col-sm-8 font-weight-bold" id="idAboutDepartmentName"></div>
-										</div>
-								</li>
-								<li>
-									<div class="row">
-                    <div class="col-sm-12 text-dark mb-2">Présentation</div>
-                    <textarea class="col-sm-12 presentationCard font-weight-bold" rows="2"  id="idAboutPresentation" disabled></textarea>
-									</div>
-								</li>
-								
-								<li>
-									<div class="row">
-										<div class="col-sm-12 text-dark my-2">Mes préférences...</div>
-										<div class="col-sm-12 presentationCard btn-group-toggle text-center">
-											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefGravuresLabel">
-												<input type="checkbox">Gravures
-											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefLivresLabel">
-												<input type="checkbox">Livres
-											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefFilmsLabel">
-												<input type="checkbox">Films
-											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPrefJeuxLabel">
-												<input type="checkbox">Jeux
-											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPrefMaquettesLabel">
-												<input type="checkbox">Maquettes
-											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefFigurinesLabel">
-												<input type="checkbox">Figurines
-											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefBlindesLabel">
-												<input type="checkbox">Blindés
-											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefAvionsLabel">
-												<input type="checkbox">Avions
-											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefBateauxLabel">
-												<input type="checkbox">Bateaux
-											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefDioramasLabel">
-												<input type="checkbox">Dioramas
-											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPrefPrehistoireLabel">
-												<input type="checkbox">Préhistoire
-											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPrefAntiquiteLabel">
-												<input type="checkbox">Antiquité
-											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefMoyenAgeLabel">
-												<input type="checkbox">Moyen-âge
-											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefRenaissanceLabel">
-												<input type="checkbox">Renaissance
-											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefDentellesLabel">
-												<input type="checkbox">Guerre en dentelles
-											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefAncienRegimeLabel">
-												<input type="checkbox">Ancien-regime
-											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefRevolutionLabel">
-												<input type="checkbox">Révolution Française
-											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPref1erEmpireLabel">
-												<input type="checkbox">1er Empire
-											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPref2ndEmpireLabel">
-												<input type="checkbox">2nd Empire
-											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefSecessionLabel">
-												<input type="checkbox">Guerre de sécession
-											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefFarWestLabel">
-												<input type="checkbox">Far West
-											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefWW1Label">
-												<input type="checkbox">1ère Guerre Mondiale
-											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefWW2Label">
-												<input type="checkbox">2ème Guerre mondiale
-											</label>
-											<label class="btn btn-outline-warning badge badge-pill mr-1 neutralPointer" id="idAboutPrefContemporainLabel">
-												<input type="checkbox">Contemporain
-											</label>
-											<label class="btn btn-outline-info badge badge-pill mr-1 neutralPointer" id="idAboutPrefFuturisteLabel">
-												<input type="checkbox">Futuriste
-											</label>
-											<label class="btn btn-outline-primary badge badge-pill mr-1 neutralPointer" id="idAboutPrefFantastiqueLabel">
-												<input type="checkbox">Fantastique
-											</label>
-											<label class="btn btn-outline-secondary badge badge-pill mr-1 neutralPointer" id="idAboutPrefHFrancaiseLabel">
-												<input type="checkbox">Histoire Française
-											</label>
-											<label class="btn btn-outline-dark badge badge-pill mr-1 neutralPointer" id="idAboutPrefHAmericaineLabel">
-												<input type="checkbox">Histoire Américaine
-											</label>
-											<label class="btn btn-outline-success badge badge-pill mr-1 neutralPointer" id="idAboutPrefHInternationaleLabel">
-												<input type="checkbox">Histoire internationale
-											</label>
-											<label class="btn btn-outline-danger badge badge-pill mr-1 neutralPointer" id="idAboutPrefAutreLabel">
-												<input type="checkbox">Autre
-											</label> 
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div> <!-- Card-Body-->
-					</div>
-
-					<!-- ****************************************************************************** -->
-					<!--                               Carte "Amis"                             -->
-					<!-- ****************************************************************************** -->
-					<div class="card border-warning mb-4">
-						<!-- ****************************************************************************** -->
-						<!--                      Entête de la carte "Amis"                         -->
-						<!-- ****************************************************************************** -->
-						<div class="card-header bg-warning border-bottom border-warning">
-							<div class="container">
+			<!--============= timeline posts-->
+						<div class="col-md-7">
 								<div class="row">
-									<h5 class="col-2 px-0 my-0 align-self-center">Amis</h5>
-									<div class="col-10 px-0">
-										<div class="input-group input-group-sm border rounded">
-											<div class="input-group-prepend">
-												<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
-											</div>
-											<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
-<!-- <div class="input-group-btn"> -->
-											<div class="input-group-append">
-												<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
-													<i class="fa fa-fw fa-times"></i>
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 
-						<!-- ****************************************************************************** -->
-						<!--                      Corps de la carte "Amis"                          -->
-						<!-- ****************************************************************************** -->
-						<div class="card-body" style="border: 1px black solid;">
-							<div class="row">
-								<div class="col-md-12 px-0 text-dark">
-									<ul id="idFriendUL" class="p-0 m-0" style="list-style: none;">
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
+										<!-- left posts-->
+										<div class="col-md-12">
+												<div class="row">
+														<div class="col-md-12">
 
+																<!-- post state form -->
+																<div class="box profile-info n-border-top">
+																		<form>
+																				<textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?"></textarea>
+																		</form>
 
-					<!-- ****************************************************************************** -->
-					<!--                               Carte "Invitations lancées"                             -->
-					<!-- ****************************************************************************** -->
-					<div id="idInvitSentCard" class="card border-warning mb-4">
-						<!-- ****************************************************************************** -->
-						<!--                      Entête de la carte "Invitations lancées"                         -->
-						<!-- ****************************************************************************** -->
-						<div class="card-header bg-warning border-bottom border-warning">
-							<h5 class="card-title mx-0">Invitations envoyées aux membres suivants </h5>
-						</div>
-
-						<!-- ****************************************************************************** -->
-						<!--                      Corps de la carte "Invitations lancées"                          -->
-						<!-- ****************************************************************************** -->
-						<div class="card-body" style="border: 1px black solid;">
-							<div class="row">
-								<div class="col-md-12 px-0 text-dark">
-									<ul id="idInvitSentUL" class="p-0 m-0" style="list-style: none;">
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-
-
-
-
-										<div class="widget">
-												<div class="widget-header">
-														<h3 class="widget-caption">Groups</h3>
-												</div>
-												<div class="widget-body bordered-top bordered-sky">
-														<div class="card">
-																<div class="content">
-																		<ul class="list-unstyled team-members">
-																				<li>
-																						<div class="row">
-																								<div class="col-xs-3">
-																										<div class="avatar">
-																												<img src="static/images/Likes/likes-1.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-																										</div>
-																								</div>
-																								<div class="col-xs-6">
-																										Github
-																								</div>
-																								
-																								<div class="col-xs-3 text-right">
-																										<btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
-																								</div>
-																						</div>
-																				</li>
-
-																				<li>
-																						<div class="row">
-																								<div class="col-xs-3">
-																										<div class="avatar">
-																												<img src="static/images/Likes/likes-3.png" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-																										</div>
-																								</div>
-																						<div class="col-xs-6">
-																								Css snippets
-																						</div>
-
-																						<div class="col-xs-3 text-right">
-																								<btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
+																		<div class="box-footer box-form">
+																				<button type="button" class="btn btn-azure pull-right">Post</button>
+																				<ul class="nav nav-pills">
+																						<li><a href="#"><i class="fa fa-map-marker"></i></a></li>
+																						<li><a href="#"><i class="fa fa-camera"></i></a></li>
+																						<li><a href="#"><i class="fa fa-film"></i></a></li>
+																						<li><a href="#"><i class="fa fa-microphone"></i></a></li>
+																				</ul>
+																		</div>
+																</div><!-- end post state form -->
+						
+																<!--   posts -->
+																<div class="box box-widget">
+																		<div class="box-header with-border">
+																				<div class="user-block">
+																						<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<span class="username"><a href="#">John Breakgrow jr.</a></span>
+																						<span class="description">Shared publicly - 7:30 PM Today</span>
+																				</div>
+																		</div>
+						
+																		<div class="box-body" style="display: block;">
+																				<img class="img-responsive show-in-modal" src="static/images/Post/young-couple-in-love.jpg" alt="Photo">
+																				<p>I took this photo this morning. What do you guys think?</p>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+																				<span class="pull-right text-muted">127 likes - 3 comments</span>
+																		</div>
+																		<div class="box-footer box-comments" style="display: block;">
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Maria Gonzales
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
 																						</div>
 																				</div>
-																		</li>
-																		<li>
-																				<div class="row">
-																						<div class="col-xs-3">
-																								<div class="avatar">
-																										<img src="static/images/Likes/likes-2.png " alt="Circle Image" class="img-circle img-no-padding img-responsive">
-																								</div>
-																						</div>
-																						<div class="col-xs-6">
-																								Html Action
-																						</div>
-														
-																						<div class="col-xs-3 text-right">
-																								<btn class="btn btn-sm btn-azure btn-icon"><i class="fa fa-user"></i></btn>
+								
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Luna Stark
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
 																						</div>
 																				</div>
-																				</li>
-																		</ul>
-																</div>
-														</div>  
-												</div>
-										</div>
-								</div>
-						
-						
-								<!--============= timeline posts-->
-								<div class="col-md-7">
-										<div class="row">
-
-												<!-- left posts-->
-												<div class="col-md-12">
-														<div class="row">
-																<div class="col-md-12">
-						
-																		<!-- post state form -->
-																		<div class="box profile-info n-border-top">
-																				<form>
-																						<textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?"></textarea>
+																		</div>
+																		<div class="box-footer" style="display: block;">
+																				<form action="#" method="post">
+																						<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+																						<div class="img-push">
+																								<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+																						</div>
 																				</form>
+																		</div>
+																</div><!--  end posts-->
 
-																				<div class="box-footer box-form">
-																						<button type="button" class="btn btn-azure pull-right">Post</button>
-																						<ul class="nav nav-pills">
-																								<li><a href="#"><i class="fa fa-map-marker"></i></a></li>
-																								<li><a href="#"><i class="fa fa-camera"></i></a></li>
-																								<li><a href="#"><i class="fa fa-film"></i></a></li>
-																								<li><a href="#"><i class="fa fa-microphone"></i></a></li>
-																						</ul>
+																<!-- post -->
+																<div class="box box-widget">
+																		<div class="box-header with-border">
+																				<div class="user-block">
+																						<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<span class="username"><a href="#">Jonathan Burke Jr.</a></span>
+																						<span class="description">Shared publicly - 7:30 PM Today</span>
 																				</div>
-																		</div><!-- end post state form -->
+																		</div>
+																		
+																		<div class="box-body">
+																				<p>Far far away, behind the word mountains, far from the
+																				countries Vokalia and Consonantia, there live the blind
+																				texts. Separated they live in Bookmarksgrove right at</p>
 								
-																		<!--   posts -->
-																		<div class="box box-widget">
-																				<div class="box-header with-border">
-																						<div class="user-block">
-																								<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<span class="username"><a href="#">John Breakgrow jr.</a></span>
-																								<span class="description">Shared publicly - 7:30 PM Today</span>
+																				<p>the coast of the Semantics, a large language ocean.
+																				A small river named Duden flows by their place and supplies
+																				it with the necessary regelialia. It is a paradisematic
+																				country, in which roasted parts of sentences fly into
+																				your mouth.</p>
+								
+																				<div class="attachment-block clearfix">
+																						<img class="attachment-img show-in-modal" src="static/images/Photos/2.jpg" alt="Attachment Image">
+																						<div class="attachment-pushed">
+																								<h4 class="attachment-heading"><a href="http://www.bootdey.com/">Lorem ipsum text generator</a></h4>
+																								<div class="attachment-text">
+																										Description about the attachment can be placed here.
+																										Lorem Ipsum is simply dummy text of the printing and typesetting industry... <a href="#">more</a>
+																								</div>
+																						</div>
+																				</div>
+
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+																				<span class="pull-right text-muted">45 likes - 2 comments</span>
+																		</div>
+
+																		<div class="box-footer box-comments">
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-5.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Maria Gonzales
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
+																						</div>
+																				</div>
+
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-6.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Nora Havisham
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								The point of using Lorem Ipsum is that it has a more-or-less
+																								normal distribution of letters, as opposed to using
+																								'Content here, content here', making it look like readable English.
+																						</div>
+																				</div>
+																		</div>
+
+																		<div class="box-footer">
+																				<form action="#" method="post">
+																						<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+																						<div class="img-push">
+																								<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+																						</div>
+																				</form>
+																		</div>
+																</div><!-- end post -->
+										
+																<!--  posts -->
+																<div class="box box-widget">
+																		<div class="box-header with-border">
+																				<div class="user-block">
+																						<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<span class="username"><a href="#">John Breakgrow jr.</a></span>
+																						<span class="description">Shared publicly - 7:30 PM Today</span>
+																				</div>
+																		</div>
+										
+																		<div class="box-body" style="display: block;">
+																				<p>
+																						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac iaculis ligula, eget efficitur nisi. In vel rutrum orci. Etiam ut orci volutpat, maximus quam vel, euismod orci. Nunc in urna non lectus malesuada aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam dignissim mi ac metus consequat, a pharetra neque molestie. Maecenas condimentum lorem quis vulputate volutpat. Etiam sapien diam
+																				</p>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+																				<span class="pull-right text-muted">127 likes - 3 comments</span>
+																		</div>
+
+																		<div class="box-footer box-comments" style="display: block;">
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Maria Gonzales
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
+																						</div>
+																				</div>
+										
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Luna Stark
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
+																						</div>
+																				</div>
+																		</div>
+																		<div class="box-footer" style="display: block;">
+																				<form action="#" method="post">
+																						<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+																						<div class="img-push">
+																								<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+																						</div>
+																				</form>
+																		</div>
+																</div><!--  end posts -->
+
+																<!--   posts -->
+																<div class="box box-widget">
+																		<div class="box-header with-border">
+																				<div class="user-block">
+																						<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<span class="username"><a href="#">John Breakgrow jr.</a></span>
+																						<span class="description">Shared publicly - 7:30 PM Today</span>
+																				</div>
+																		</div>
+								
+																		<div class="box-body" style="display: block;">
+																				<img class="img-responsive pad show-in-modal" src="static/images/Photos/3.jpg" alt="Photo">
+																				<p>I took this photo this morning. What do you guys think?</p>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+																				<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+																				<span class="pull-right text-muted">127 likes - 3 comments</span>
+																		</div>
+								
+																		<div class="box-footer box-comments" style="display: block;">
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Maria Gonzales
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
 																						</div>
 																				</div>
 								
-																				<div class="box-body" style="display: block;">
-																						<img class="img-responsive show-in-modal" src="static/images/Post/young-couple-in-love.jpg" alt="Photo">
-																						<p>I took this photo this morning. What do you guys think?</p>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-																						<span class="pull-right text-muted">127 likes - 3 comments</span>
-																				</div>
-																				<div class="box-footer box-comments" style="display: block;">
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Maria Gonzales
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
-																						</div>
-										
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Luna Stark
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
+																				<div class="box-comment">
+																						<img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
+																						<div class="comment-text">
+																								<span class="username">
+																										Luna Stark
+																										<span class="text-muted pull-right">8:03 PM Today</span>
+																								</span>
+																								It is a long established fact that a reader will be distracted
+																								by the readable content of a page when looking at its layout.
 																						</div>
 																				</div>
-																				<div class="box-footer" style="display: block;">
-																						<form action="#" method="post">
-																								<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
-																								<div class="img-push">
-																										<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-																								</div>
-																						</form>
-																				</div>
-																		</div><!--  end posts-->
+																		</div>
 
-																		<!-- post -->
-																		<div class="box box-widget">
-																				<div class="box-header with-border">
-																						<div class="user-block">
-																								<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-																								<span class="description">Shared publicly - 7:30 PM Today</span>
+																		<div class="box-footer" style="display: block;">
+																				<form action="#" method="post">
+																						<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
+																						<div class="img-push">
+																								<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
 																						</div>
-																				</div>
-																				
-																				<div class="box-body">
-																						<p>Far far away, behind the word mountains, far from the
-																						countries Vokalia and Consonantia, there live the blind
-																						texts. Separated they live in Bookmarksgrove right at</p>
-										
-																						<p>the coast of the Semantics, a large language ocean.
-																						A small river named Duden flows by their place and supplies
-																						it with the necessary regelialia. It is a paradisematic
-																						country, in which roasted parts of sentences fly into
-																						your mouth.</p>
-										
-																						<div class="attachment-block clearfix">
-																								<img class="attachment-img show-in-modal" src="static/images/Photos/2.jpg" alt="Attachment Image">
-																								<div class="attachment-pushed">
-																										<h4 class="attachment-heading"><a href="http://www.bootdey.com/">Lorem ipsum text generator</a></h4>
-																										<div class="attachment-text">
-																												Description about the attachment can be placed here.
-																												Lorem Ipsum is simply dummy text of the printing and typesetting industry... <a href="#">more</a>
-																										</div>
-																								</div>
-																						</div>
-
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-																						<span class="pull-right text-muted">45 likes - 2 comments</span>
-																				</div>
-
-																				<div class="box-footer box-comments">
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-5.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Maria Gonzales
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
-																						</div>
-
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-6.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Nora Havisham
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										The point of using Lorem Ipsum is that it has a more-or-less
-																										normal distribution of letters, as opposed to using
-																										'Content here, content here', making it look like readable English.
-																								</div>
-																						</div>
-																				</div>
-
-																				<div class="box-footer">
-																						<form action="#" method="post">
-																								<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
-																								<div class="img-push">
-																										<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-																								</div>
-																						</form>
-																				</div>
-																		</div><!-- end post -->
-												
-																		<!--  posts -->
-																		<div class="box box-widget">
-																				<div class="box-header with-border">
-																						<div class="user-block">
-																								<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<span class="username"><a href="#">John Breakgrow jr.</a></span>
-																								<span class="description">Shared publicly - 7:30 PM Today</span>
-																						</div>
-																				</div>
-												
-																				<div class="box-body" style="display: block;">
-																						<p>
-																								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac iaculis ligula, eget efficitur nisi. In vel rutrum orci. Etiam ut orci volutpat, maximus quam vel, euismod orci. Nunc in urna non lectus malesuada aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam dignissim mi ac metus consequat, a pharetra neque molestie. Maecenas condimentum lorem quis vulputate volutpat. Etiam sapien diam
-																						</p>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-																						<span class="pull-right text-muted">127 likes - 3 comments</span>
-																				</div>
-
-																				<div class="box-footer box-comments" style="display: block;">
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Maria Gonzales
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
-																						</div>
-												
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Luna Stark
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
-																						</div>
-																				</div>
-																				<div class="box-footer" style="display: block;">
-																						<form action="#" method="post">
-																								<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
-																								<div class="img-push">
-																										<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-																								</div>
-																						</form>
-																				</div>
-																		</div><!--  end posts -->
-
-																		<!--   posts -->
-																		<div class="box box-widget">
-																				<div class="box-header with-border">
-																						<div class="user-block">
-																								<img class="img-circle" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<span class="username"><a href="#">John Breakgrow jr.</a></span>
-																								<span class="description">Shared publicly - 7:30 PM Today</span>
-																						</div>
-																				</div>
-										
-																				<div class="box-body" style="display: block;">
-																						<img class="img-responsive pad show-in-modal" src="static/images/Photos/3.jpg" alt="Photo">
-																						<p>I took this photo this morning. What do you guys think?</p>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-																						<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-																						<span class="pull-right text-muted">127 likes - 3 comments</span>
-																				</div>
-										
-																				<div class="box-footer box-comments" style="display: block;">
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-2.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Maria Gonzales
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
-																						</div>
-										
-																						<div class="box-comment">
-																								<img class="img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="User Image">
-																								<div class="comment-text">
-																										<span class="username">
-																												Luna Stark
-																												<span class="text-muted pull-right">8:03 PM Today</span>
-																										</span>
-																										It is a long established fact that a reader will be distracted
-																										by the readable content of a page when looking at its layout.
-																								</div>
-																						</div>
-																				</div>
-
-																				<div class="box-footer" style="display: block;">
-																						<form action="#" method="post">
-																								<img class="img-responsive img-circle img-sm" src="static/images/Friends/guy-3.jpg" alt="Alt Text">
-																								<div class="img-push">
-																										<input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
-																								</div>
-																						</form>
-																				</div>
-																		</div><!--  end posts -->
-																</div>
+																				</form>
+																		</div>
+																</div><!--  end posts -->
 														</div>
-												</div><!-- end left posts-->
-										</div>
-								</div><!-- end timeline posts-->
-						</div>
+												</div>
+										</div><!-- end left posts-->
+								</div>
+						</div><!-- end timeline posts-->
+					</div>
 				</div>
+			</div>	
 		</div>
-				
-		<!-- Online users sidebar content-->
-		<div class="chat-sidebar focus">
-				<div class="list-group text-left">
-						<p class="text-center visible-xs"><a href="#" class="hide-chat btn btn-success">Hide</a></p> 
-						<p class="text-center chat-title">Online users</p>  
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/guy-2.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Jeferh Smith</span>
-						</a>
-				
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-times-circle absent-status"></i>
-								<img src="static/images/Friends/woman-1.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Dapibus acatar</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/guy-3.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Antony andrew lobghi</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/woman-2.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Maria fernanda coronel</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/guy-4.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Markton contz</span>
-						</a>
-				
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-times-circle absent-status"></i>
-								<img src="static/images/Friends/woman-3.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Martha creaw</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-times-circle absent-status"></i>
-								<img src="static/images/Friends/woman-8.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Yira Cartmen</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/woman-4.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Jhoanath matew</span>
-						</a>
-				
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/woman-5.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Ryanah Haywofd</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/woman-9.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Linda palma</span>
-						</a>
-
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/woman-10.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Andrea ramos</span>
-						</a>
-				
-						<a href="messages1.html" class="list-group-item">
-								<i class="fa fa-check-circle connected-status"></i>
-								<img src="static/images/Friends/child-1.jpg" class="img-chat img-thumbnail">
-								<span class="chat-user-name">Dora ty bluekl</span>
-						</a>        
-				</div>
-		</div><!-- Online users sidebar content-->
-	</div>
 
 	<!-- ************************************************************************* -->
 	<!--                                 Footer                                    -->
@@ -1009,11 +638,43 @@
 	</div>       
 
 	<!-- ************************************************************************* -->
+	<!--                         Fenêtre Modale du profil de mon ami               -->
+	<!-- ************************************************************************* -->
+	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalFriendProfilePage" aria-labelledby="idAriaModalFriendProfilePageTitle" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header border-bottom border-warning" id="idModalFriendProfilePageHeader">
+					<h5 class="modal-title" id="idModalFriendProfilePageTitle"><i class="fa fa-users"></i></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body border-warning border-top-0" id="idModalFriendProfilePageBody" style="background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),url('static/images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png'), url('static/images/FondVert-60.png'); background-attachment: fixed; border-style: solid; border-width: 3px;">
+					<div class="container">
+						<div class="row mb-4">
+							<div class="col-md-12 col-md-offset-2">
+								<div class="row">
+									<div class="col-md-5 pl-0" id="idDivMountPointFriendProfile">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+	<!-- ************************************************************************* -->
 	<!--                         Fenêtre Modale de renseignements                  -->
 	<!-- ************************************************************************* -->
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idAriaModalAccountTitle" aria-hidden="true">
-<!-- <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;"> -->
-		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-dialog modal-md modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalAccountHeader">
 					<h5 class="modal-title"><i class="fa fa-id-card-o"></i> Renseignements personnels</h5>
@@ -1306,7 +967,7 @@
 												<input type="checkbox" name="accountPref" id="idAccountPrefDentelles" autocomplete="off">Guerre en dentelles
 											</label>
 											<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAncienRegimeLabel">
-												<input type="checkbox" name="accountPref" id="idAccountPrefAncienRegime" autocomplete="off">Ancien-regime
+												<input type="checkbox" name="accountPref" id="idAccountPrefAncienRegime" autocomplete="off">Ancien-régime
 											</label>
 											<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefRevolutionLabel">
 												<input type="checkbox" name="accountPref" id="idAccountPrefRevolution" autocomplete="off">Révolution Française
@@ -1402,7 +1063,7 @@
 	<!--                     Fenêtre Modale d'ajout d'amis                         -->
 	<!-- ************************************************************************* -->
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idAriaModalMgrFriendTitle" aria-hidden="true">
-		<div id="idModalMgrFriendDialog" class="modal-dialog modal-lg modal-dialog-centered" role="document" >
+		<div id="idModalMgrFriendDialog" class="modal-dialog modal-md modal-dialog-centered" role="document" >
 			<div class="modal-content">
 				<div class="modal-header" id="idModalMgrFriendHeader">
 					<button id="idModalMgrFriendExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
@@ -1414,13 +1075,13 @@
 				</div>			
 			</div>			
 		</div>	
-	</div>		
+	</div>
 
 	<!-- ************************************************************************* -->
 	<!--                     Fenêtre Modale des membres                            -->
 	<!-- ************************************************************************* -->
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idAriaModalMemberListTitle" aria-hidden="true">
-		<div id="idModalMemberListDialog" class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div id="idModalMemberListDialog" class="modal-dialog modal-md modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header" id="idModalMemberListHeader">
 					<button id="idModalMemberListExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
@@ -1459,6 +1120,7 @@
 		<script src="static/js/DisplayModalHeader.js"></script>
 		<script src="static/js/SearchFilter.js"></script>
 		<script src="static/js/AccountModal.js"></script>
+		<script src="static/js/ViewFriendProfile.js"></script>
 		<script src="siofu/client.js"></script>
 <!-- XXXXX A virer "custom.js"-->
 		<script src="static/js/custom.js"></script>

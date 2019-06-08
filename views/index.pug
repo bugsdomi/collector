@@ -143,10 +143,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                 .name.txt-yellow-stroke
                   a#idAvatarMemberNameImg1(href='#')
                 ul#idProfileNavBar.cover-nav
-                  li.active
-                    a(href='profile.html')
-                      i.fa.fa-fw.fa-bars
-                      |  Mur
+                  // XXXXX
+                  // <li class="active"><a href="profile.html"><i class="fa fa-fw fa-bars"></i> Mur</a></li>
+                  // <li class="invisible" id='idBack2Profile'><a href="profile.html"><i class="fa fa-fw fa-user"></i> Retour à mon profil</a></li>
                   li
                     a#idAddFriend(href='#')
                       i.fa.fa-fw.fa-user-plus
@@ -168,227 +167,11 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
 // Page de profil du membre
 // ******************************************************************************
 #idPad
-#idProfilePage.container
+#idMainProfilePage.container.d-none
   .row.mb-4
     .col-md-12.col-md-offset-2
       .row
-        .col-md-5
-          // ******************************************************************************
-          // Carte "Présentation"
-          // ******************************************************************************
-          .card.border-warning.mb-4
-            // ******************************************************************************
-            // Entête de la carte "Présentation"
-            // ******************************************************************************
-            .card-header.bg-warning.border-bottom.border-warning
-              .containerAvatarToken
-                img#idAvatarToken.avatarToken.tokenSize50.ml-0(alt='Avatar' src='')
-              h5.card-title Pr&eacute;sentation
-            // ******************************************************************************
-            // Corps de la carte "Présentation"
-            // ******************************************************************************
-            .card-body(style='border: 1px black solid;')
-              ul.list-group.list-unstyled
-                li
-                  .row
-                    .col-sm-4.text-dark Pr&eacute;nom
-                    #idAboutPrenom.col-sm-8.font-weight-bold
-                li
-                  .row
-                    .col-sm-4.text-dark Nom
-                    #idAboutNom.col-sm-8.font-weight-bold
-                li
-                  .row
-                    .col-sm-4.text-dark &Acirc;ge
-                    #idAboutAge.col-sm-8.font-weight-bold
-                li
-                  .row
-                    .col-sm-4.text-dark Ville
-                    #idAboutVille.col-sm-8.font-weight-bold
-                li
-                  .row
-                    .col-sm-4.text-dark D&eacute;partement
-                    #idAboutDepartmentName.col-sm-8.font-weight-bold
-                li
-                  .row
-                    .col-sm-12.text-dark.mb-2 Pr&eacute;sentation
-                    textarea#idAboutPresentation.col-sm-12.presentationCard.font-weight-bold(rows='2' disabled='')
-                li
-                  .row
-                    .col-sm-12.text-dark.my-2 Mes pr&eacute;f&eacute;rences...
-                    .col-sm-12.presentationCard.btn-group-toggle.text-center
-                      label#idAboutPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Gravures
-                      label#idAboutPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Livres
-                      label#idAboutPrefFilmsLabel.btn.btn-outline-warning.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Films
-                      label#idAboutPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Jeux
-                      label#idAboutPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Maquettes
-                      label#idAboutPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Figurines
-                      label#idAboutPrefBlindesLabel.btn.btn-outline-dark.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Blind&eacute;s
-                      label#idAboutPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Avions
-                      label#idAboutPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Bateaux
-                      label#idAboutPrefDioramasLabel.btn.btn-outline-warning.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Dioramas
-                      label#idAboutPrefPrehistoireLabel.btn.btn-outline-info.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Pr&eacute;histoire
-                      label#idAboutPrefAntiquiteLabel.btn.btn-outline-primary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Antiquit&eacute;
-                      label#idAboutPrefMoyenAgeLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Moyen-&acirc;ge
-                      label#idAboutPrefRenaissanceLabel.btn.btn-outline-dark.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Renaissance
-                      label#idAboutPrefDentellesLabel.btn.btn-outline-success.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Guerre en dentelles
-                      label#idAboutPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Ancien-regime
-                      label#idAboutPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | R&eacute;volution Fran&ccedil;aise
-                      label#idAboutPref1erEmpireLabel.btn.btn-outline-info.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | 1er Empire
-                      label#idAboutPref2ndEmpireLabel.btn.btn-outline-primary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | 2nd Empire
-                      label#idAboutPrefSecessionLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Guerre de s&eacute;cession
-                      label#idAboutPrefFarWestLabel.btn.btn-outline-dark.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Far West
-                      label#idAboutPrefWW1Label.btn.btn-outline-success.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | 1&egrave;re Guerre Mondiale
-                      label#idAboutPrefWW2Label.btn.btn-outline-danger.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | 2&egrave;me Guerre mondiale
-                      label#idAboutPrefContemporainLabel.btn.btn-outline-warning.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Contemporain
-                      label#idAboutPrefFuturisteLabel.btn.btn-outline-info.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Futuriste
-                      label#idAboutPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Fantastique
-                      label#idAboutPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Histoire Fran&ccedil;aise
-                      label#idAboutPrefHAmericaineLabel.btn.btn-outline-dark.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Histoire Am&eacute;ricaine
-                      label#idAboutPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Histoire internationale
-                      label#idAboutPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill.mr-1.neutralPointer
-                        input(type='checkbox')
-                        | Autre
-            // Card-Body
-          // ******************************************************************************
-          // Carte "Amis"
-          // ******************************************************************************
-          .card.border-warning.mb-4
-            // ******************************************************************************
-            // Entête de la carte "Amis"
-            // ******************************************************************************
-            .card-header.bg-warning.border-bottom.border-warning
-              .container
-                .row
-                  h5.col-2.px-0.my-0.align-self-center Amis
-                  .col-10.px-0
-                    .input-group.input-group-sm.border.rounded
-                      .input-group-prepend
-                        span.input-group-text
-                          i.fa.fa-fw.fa-filter
-                      input#idFilteredFriends.form-control(type='text' placeholder='Filtrer des amis')
-                      // <div class="input-group-btn">
-                      .input-group-append
-                        button#idClearFriendsFilter.btn.btn-sm.border.pushBtnFilters(type='button')
-                          i.fa.fa-fw.fa-times
-            // ******************************************************************************
-            // Corps de la carte "Amis"
-            // ******************************************************************************
-            .card-body(style='border: 1px black solid;')
-              .row
-                .col-md-12.px-0.text-dark
-                  ul#idFriendUL.p-0.m-0(style='list-style: none;')
-          // ******************************************************************************
-          // Carte "Invitations lancées"
-          // ******************************************************************************
-          #idInvitSentCard.card.border-warning.mb-4
-            // ******************************************************************************
-            // Entête de la carte "Invitations lancées"
-            // ******************************************************************************
-            .card-header.bg-warning.border-bottom.border-warning
-              h5.card-title.mx-0 Invitations envoy&eacute;es aux membres suivants 
-            // ******************************************************************************
-            // Corps de la carte "Invitations lancées"
-            // ******************************************************************************
-            .card-body(style='border: 1px black solid;')
-              .row
-                .col-md-12.px-0.text-dark
-                  ul#idInvitSentUL.p-0.m-0(style='list-style: none;')
-          .widget
-            .widget-header
-              h3.widget-caption Groups
-            .widget-body.bordered-top.bordered-sky
-              .card
-                .content
-                  ul.list-unstyled.team-members
-                    li
-                      .row
-                        .col-xs-3
-                          .avatar
-                            img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-1.png' alt='Circle Image')
-                        .col-xs-6
-                          | Github
-                        .col-xs-3.text-right
-                          btn.btn.btn-sm.btn-azure.btn-icon
-                            i.fa.fa-user
-                    li
-                      .row
-                        .col-xs-3
-                          .avatar
-                            img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-3.png' alt='Circle Image')
-                        .col-xs-6
-                          | Css snippets
-                        .col-xs-3.text-right
-                          btn.btn.btn-sm.btn-azure.btn-icon
-                            i.fa.fa-user
-                    li
-                      .row
-                        .col-xs-3
-                          .avatar
-                            img.img-circle.img-no-padding.img-responsive(src='static/images/Likes/likes-2.png ' alt='Circle Image')
-                        .col-xs-6
-                          | Html Action
-                        .col-xs-3.text-right
-                          btn.btn.btn-sm.btn-azure.btn-icon
-                            i.fa.fa-user
+        #idDivMountPointMainProfile.col-md-5
         // ============= timeline posts
         .col-md-7
           .row
@@ -441,16 +224,16 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                           span.username
                             | Maria Gonzales
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                       .box-comment
                         img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
                         .comment-text
                           span.username
                             | Luna Stark
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                     .box-footer(style='display: block;')
                       form(action='#' method='post')
                         img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
@@ -499,17 +282,17 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                           span.username
                             | Maria Gonzales
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                       .box-comment
                         img.img-circle.img-sm(src='static/images/Friends/guy-6.jpg' alt='User Image')
                         .comment-text
                           span.username
                             | Nora Havisham
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The point of using Lorem Ipsum is that it has a more-or-less
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;normal distribution of letters, as opposed to using
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&apos;Content here, content here&apos;, making it look like readable English.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;The point of using Lorem Ipsum is that it has a more-or-less
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;normal distribution of letters, as opposed to using
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&apos;Content here, content here&apos;, making it look like readable English.
                     .box-footer
                       form(action='#' method='post')
                         img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
@@ -541,16 +324,16 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                           span.username
                             | Maria Gonzales
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                       .box-comment
                         img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
                         .comment-text
                           span.username
                             | Luna Stark
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                     .box-footer(style='display: block;')
                       form(action='#' method='post')
                         img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
@@ -582,16 +365,16 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                           span.username
                             | Maria Gonzales
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                       .box-comment
                         img.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='User Image')
                         .comment-text
                           span.username
                             | Luna Stark
                             span.text-muted.pull-right 8:03 PM Today
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
-                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;It is a long established fact that a reader will be distracted
+                          | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;by the readable content of a page when looking at its layout.
                     .box-footer(style='display: block;')
                       form(action='#' method='post')
                         img.img-responsive.img-circle.img-sm(src='static/images/Friends/guy-3.jpg' alt='Alt Text')
@@ -600,61 +383,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                   // end posts
             // end left posts
         // end timeline posts
-  // Online users sidebar content
-  .chat-sidebar.focus
-    .list-group.text-left
-      p.text-center.visible-xs
-        a.hide-chat.btn.btn-success(href='#') Hide
-      p.text-center.chat-title Online users
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/guy-2.jpg')
-        span.chat-user-name Jeferh Smith
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-times-circle.absent-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-1.jpg')
-        span.chat-user-name Dapibus acatar
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/guy-3.jpg')
-        span.chat-user-name Antony andrew lobghi
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-2.jpg')
-        span.chat-user-name Maria fernanda coronel
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/guy-4.jpg')
-        span.chat-user-name Markton contz
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-times-circle.absent-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-3.jpg')
-        span.chat-user-name Martha creaw
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-times-circle.absent-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-8.jpg')
-        span.chat-user-name Yira Cartmen
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-4.jpg')
-        span.chat-user-name Jhoanath matew
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-5.jpg')
-        span.chat-user-name Ryanah Haywofd
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-9.jpg')
-        span.chat-user-name Linda palma
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/woman-10.jpg')
-        span.chat-user-name Andrea ramos
-      a.list-group-item(href='messages1.html')
-        i.fa.fa-check-circle.connected-status
-        img.img-chat.img-thumbnail(src='static/images/Friends/child-1.jpg')
-        span.chat-user-name Dora ty bluekl
-  // Online users sidebar content
 // *************************************************************************
 // Footer
 // *************************************************************************
@@ -779,11 +507,26 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
           .modal-footer
             button#idLostPWDBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
 // *************************************************************************
+// Fenêtre Modale du profil de mon ami
+// *************************************************************************
+#idModalFriendProfilePage.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalFriendProfilePageTitle' aria-hidden='true')
+  .modal-dialog.modal-lg.modal-dialog-centered(role='document')
+    .modal-content
+      #idModalFriendProfilePageHeader.modal-header.border-bottom.border-warning
+        h5#idModalFriendProfilePageTitle.modal-title
+          i.fa.fa-users
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      #idModalFriendProfilePageBody.modal-body.border-warning.border-top-0(style="background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),url('static/images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png'), url('static/images/FondVert-60.png'); background-attachment: fixed; border-style: solid; border-width: 3px;")
+        .container
+          .row.mb-4
+            .col-md-12.col-md-offset-2
+              .row
+                #idDivMountPointFriendProfile.col-md-5.pl-0
+// *************************************************************************
 // Fenêtre Modale de renseignements
 // *************************************************************************
 #idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalAccountTitle' aria-hidden='true')
-  // <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px;">
-  .modal-dialog.modal-lg.modal-dialog-centered(role='document')
+  .modal-dialog.modal-md.modal-dialog-centered(role='document')
     .modal-content
       #idModalAccountHeader.modal-header
         h5.modal-title
@@ -1035,7 +778,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
                       | Guerre en dentelles
                     label#idAccountPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
                       input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
-                      | Ancien-regime
+                      | Ancien-r&eacute;gime
                     label#idAccountPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
                       input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
                       | R&eacute;volution Fran&ccedil;aise
@@ -1107,7 +850,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale d'ajout d'amis
 // *************************************************************************
 #idModalMgrFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMgrFriendTitle' aria-hidden='true')
-  #idModalMgrFriendDialog.modal-dialog.modal-lg.modal-dialog-centered(role='document')
+  #idModalMgrFriendDialog.modal-dialog.modal-md.modal-dialog-centered(role='document')
     .modal-content
       #idModalMgrFriendHeader.modal-header
         button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
@@ -1118,7 +861,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 // Fenêtre Modale des membres
 // *************************************************************************
 #idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMemberListTitle' aria-hidden='true')
-  #idModalMemberListDialog.modal-dialog.modal-lg.modal-dialog-centered(role='document')
+  #idModalMemberListDialog.modal-dialog.modal-md.modal-dialog-centered(role='document')
     .modal-content
       #idModalMemberListHeader.modal-header
         button#idModalMemberListExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
@@ -1151,6 +894,7 @@ script(src='static/js/InitHeaderColor.js')
 script(src='static/js/DisplayModalHeader.js')
 script(src='static/js/SearchFilter.js')
 script(src='static/js/AccountModal.js')
+script(src='static/js/ViewFriendProfile.js')
 script(src='siofu/client.js')
 // XXXXX A virer "custom.js"
 script(src='static/js/custom.js')

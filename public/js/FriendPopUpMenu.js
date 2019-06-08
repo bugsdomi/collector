@@ -22,7 +22,7 @@ function FriendPopUpMenu(pMemberClient){                              // Fonctio
 // Option de menu "Voir le Profil d'un ami"
 // -----------------------------------------------------------------------------
 FriendPopUpMenu.prototype.prepareMenuviewFriend = function(pFriend, pDivDropDown){
-	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
+	var vlineHTML = {};						
 	var vDataToTransmit = null;
 
 	vlineHTML.vHdrAViewFriend = window.document.createElement('a');
@@ -68,14 +68,14 @@ FriendPopUpMenu.prototype.prepareMenuviewFriend = function(pFriend, pDivDropDown
 
 	vDataToTransmit = 
 	{
-		friendEmail				: this.memberClient.vMyFriendList[pFriend.indexFriendToRecommend].friendEmail,
+		myFriend					: this.memberClient.vMyFriendList[pFriend.indexFriendToRecommend],
 		actionBtn  				: vlineHTML.vHdrIFAViewFriend.id,
     indexFriendToView : pFriend.indexFriendToRecommend,
     thisContext       : this,
 	}
 
-	vlineHTML.vHdrBtnViewFriend.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver);
-	vlineHTML.vHdrBtnViewFriend.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut);
+	vlineHTML.vHdrBtnViewFriend.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver);
+	vlineHTML.vHdrBtnViewFriend.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut);
 	vlineHTML.vHdrBtnViewFriend.addEventListener('click', this.viewFriend);				// Voir la fiche d'un ami
 	vlineHTML.vHdrBtnViewFriend.datas = vDataToTransmit;
 	vlineHTML.vHdrIFAViewFriend.datas = vDataToTransmit;
@@ -85,11 +85,16 @@ FriendPopUpMenu.prototype.prepareMenuviewFriend = function(pFriend, pDivDropDown
 // Voir la fiche d'un Ami
 // -----------------------------------------------------------------------------
 FriendPopUpMenu.prototype.viewFriend = function(event){
-  alert('View Friend');
-    document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', event.target.datas.thisContext.memberClient.changeBtnTxtColOver);						
-    document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', event.target.datas.thisContext.memberClient.changeBtnTxtColOut);						
-    document.getElementById(event.target.datas.actionBtn).removeEventListener('click', event.target.datas.thisContext.viewFriend);					
-  }
+	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', event.target.datas.thisContext.memberClient.changeBtnTxtColOver);						
+	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', event.target.datas.thisContext.memberClient.changeBtnTxtColOut);						
+	document.getElementById(event.target.datas.actionBtn).removeEventListener('click', event.target.datas.thisContext.viewFriend);	
+
+	var vFriendToView = {
+		friendEmail: event.target.datas.myFriend.friendEmail,
+	}
+	
+	webSocketConnection.emit('getCompleteRecordOfMyFriend',vFriendToView);
+}
 
 
 
@@ -101,7 +106,7 @@ FriendPopUpMenu.prototype.viewFriend = function(event){
 // Option de menu "Supprimer un ami"
 // -----------------------------------------------------------------------------
 FriendPopUpMenu.prototype.prepareMenuDeleteFriend = function(pFriend, pDivDropDown){
-  var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
+  var vlineHTML = {};						
   var vDataToTransmit = null;
 
 	vlineHTML.vHdrADelFriend = window.document.createElement('a');
@@ -186,7 +191,7 @@ FriendPopUpMenu.prototype.deleteFriend = function(event){
 		friendEmail 	: event.target.datas.friendEmail,
 	}
 
-	webSocketConnection.emit('deleteFriendOfMine',vFriendToDelete)
+	webSocketConnection.emit('deleteFriendOfMine',vFriendToDelete);
 }
 
 // -----------------------------------------------------------------------------
@@ -196,16 +201,16 @@ FriendPopUpMenu.prototype.deleteFriend = function(event){
 // - Fermeture définitive de la PopUp Menu
 // - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
 // -----------------------------------------------------------------------------
-FriendPopUpMenu.prototype.removeFriendFromMyFriendList = function(pFriendToDelete, pFriendInfo){
+FriendPopUpMenu.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
 	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
 	$('#'+idImg).popover('show');
 
 	setTimeout(function(){
-		$('#'+idImg).popover('hide')
+		$('#'+idImg).popover('hide');
 	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
 
 	setTimeout(() => {
-		this.refreshMyFriendList(pFriendToDelete, pFriendInfo)
+		this.refreshMyFriendList(pFriendToDelete);
 	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
 };
 
@@ -216,12 +221,12 @@ FriendPopUpMenu.prototype.removeFriendFromMyFriendList = function(pFriendToDelet
 // - 3) Fermeture définitive de la PopUp Menu
 // - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
 // -----------------------------------------------------------------------------
-FriendPopUpMenu.prototype.refreshMyFriendList = function(pFriendToDelete, pFriendInfo){
-		this.memberClient.vMyFriendList.splice(pFriendToDelete.indexFriendToDelete, 1);   									// Efface l'occurence de mon ami du tableau de mes amis
+FriendPopUpMenu.prototype.refreshMyFriendList = function(pFriendToDelete){
+	this.memberClient.vMyFriendList.splice(pFriendToDelete.indexFriendToDelete, 1);   									// Efface l'occurence de mon ami du tableau de mes amis
 
 	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
 	// Suppression de tous les avatars affichés
-	var vElem = document.getElementById('idMyFriendLi'+0); // Je régénère ma liste d'amis pour recaler les indexes
+	var vElem = document.getElementById('idMyFriendLi'+vActiveProfile+0); // Je régénère ma liste d'amis pour recaler les indexes
 
 	if (vElem){
 		var vParentNode = vElem.parentNode;
@@ -241,13 +246,15 @@ FriendPopUpMenu.prototype.refreshMyFriendList = function(pFriendToDelete, pFrien
 		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
 		vSaveMyFriendList = this.memberClient.vMyFriendList.splice(0,this.memberClient.vMyFriendList.length);		
 
+		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
+
 		// Recréation des avatars de mes amis dans ma carte d'amis
 		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
 			vMyFriend.friendEmail 			= item.friendEmail;
 			vMyFriend.friendPseudo 			= item.friendPseudo;
 			vMyFriend.friendPhoto 			= item.friendPhoto;
 
-			vFriendsCard.addFriendIntoCard(vMyFriend, pFriendInfo);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
+			vFriendsCard.addFriendIntoCard(vMyFriend, vULFriend);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
 		});
 	}
 	vToolBox.clearAllOpenedPopOverAndToolTip();
@@ -259,29 +266,33 @@ FriendPopUpMenu.prototype.refreshMyFriendList = function(pFriendToDelete, pFrien
 // les amis à recommander
 // -----------------------------------------------------------------------------
 FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
-
-	var vDivDropDown = document.getElementById('idMyDropDown'+pFriend.indexFriendToRecommend);
-	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
-
+	// Obtention de la Div qui va contenir le menu popUp
+	var vDivDropDown = document.getElementById('idMyDropDown'+vActiveProfile + pFriend.indexFriendToRecommend);
+	var vlineHTML = {};						
+	
 	var vMicroFicheParams = {
 		simpleMicroFiche 	: cstStackableMicroFiche,
 		index							: null,
+		withScalingParam	: vActiveProfile === cstMainProfileActive ? cstWithScaling : cstWithNoScaling,
 	};
 
 	new MicroFicheMember(pFriend).displayMicroFicheMember(vDivDropDown, vMicroFicheParams);
-  this.prepareMenuviewFriend(pFriend, vDivDropDown);
-  this.prepareMenuDeleteFriend(pFriend, vDivDropDown);
 
-  vRecommendFriendsMgr.displayHeaderRecommendations(pFriend, vDivDropDown);
+	if (vActiveProfile === cstMainProfileActive){
+		this.prepareMenuviewFriend(pFriend, vDivDropDown);
+		this.prepareMenuDeleteFriend(pFriend, vDivDropDown);
+		vRecommendFriendsMgr.displayHeaderRecommendations(pFriend, vDivDropDown);
 
-	vlineHTML.vDivContain = window.document.createElement('div');
-	vDivDropDown.appendChild(vlineHTML.vDivContain);
-	vlineHTML.vDivContain.setAttribute('id', 'idDivContain'+pFriend.indexFriendToRecommend);
-	vlineHTML.vDivContain.setAttribute('style', 'max-height: 400px; overflow-y: auto');
+		vlineHTML.vDivContain = window.document.createElement('div');
+		vDivDropDown.appendChild(vlineHTML.vDivContain);
+		vlineHTML.vDivContain.setAttribute('id', 'idDivContain'+pFriend.indexFriendToRecommend);
+		vlineHTML.vDivContain.setAttribute('style', 'max-height: 400px; overflow-y: auto');
 
-	return vlineHTML.vDivContain;
+		return vlineHTML.vDivContain;
+	} else {
+			vDivDropDown.style.visibility='visible';
+	}
 }
-
 
 // -----------------------------------------------------------------------------
 // Cette fonction affiche une Popup avec les amis à qui on peut recommander un ami
@@ -296,5 +307,8 @@ FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
 FriendPopUpMenu.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
 	// Préparation de l'entête du menu Popup
 	var vDivContain = this.preparePopupHeader(pRecommendableFriends);
-  vRecommendFriendsMgr.displayRecommendationLines(pRecommendableFriends, vDivContain);
+
+	if (vActiveProfile === cstMainProfileActive){
+		vRecommendFriendsMgr.displayRecommendationLines(pRecommendableFriends, vDivContain);
+	}
 }

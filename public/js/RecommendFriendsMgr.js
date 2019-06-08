@@ -25,8 +25,7 @@ function RecommendFriendsMgr(pMemberClient){   						// Fonction constructeur ex
 // Entête de la liste des recommandations
 // --------------------------------------------------------------
 RecommendFriendsMgr.prototype.displayHeaderRecommendations= function(pFriend, pDivDropDown){
-
-	var vlineHTML = {};						// Structure HTML générée pour chaque ligne de membre
+	var vlineHTML = {};					
 
 	vlineHTML.vHdrARecoFriend = window.document.createElement('a');
 	pDivDropDown.appendChild(vlineHTML.vHdrARecoFriend);
@@ -74,8 +73,7 @@ RecommendFriendsMgr.prototype.displayHeaderRecommendations= function(pFriend, pD
 // l'ami  sélectionné
 // --------------------------------------------------------------
 function AddTargetFriendsforRecommendLines(pItem, pIndex, pDivContain, pRecommendedFriendPseudo) {
-	this.lineHTML = {};					// Structure HTML générée pour chaque ligne de membre
-
+	this.lineHTML = {};					
 	this.friend = pItem; 
 	this.index = pIndex;
 
@@ -163,15 +161,15 @@ RecommendFriendsMgr.prototype.displayRecommendationLines = function(pRecommendab
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 		vTargetFriendForRecommend[index].lineHTML.vIFA.datas = vDataToTransmit;
 
-		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
+		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver,false);
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 
-		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
+		vTargetFriendForRecommend[index].lineHTML.vBtn.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut,false);
 		vTargetFriendForRecommend[index].lineHTML.vBtn.datas = vDataToTransmit;
 	});
 
 	// Affichage de la PopUp dès qu'elle est entièrement constituée (pour éviter l'effat "Affichage en 2 steps")
-	document.getElementById('idMyDropDown'+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
+	document.getElementById('idMyDropDown'+vActiveProfile+pRecommendableFriends.indexFriendToRecommend).style.visibility = 'visible';
 };
 
 // --------------------------------------------------------------
@@ -224,12 +222,12 @@ RecommendFriendsMgr.prototype.sendRecommendation = function(event){
 // - L'ami vers qui je vais envoyer les recommandations
 // - ceux qui n'ont pas déjà une recommandation par moi-même en cours
 // -----------------------------------------------------------------------------
-RecommendFriendsMgr.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pIndex){
+RecommendFriendsMgr.prototype.searchFriendsNotAlreadyInvitWithTargetFriend = function(pMember, pIndex){
 	vRecommendFriendsList = {
-		friendEmail 						: this.memberClient.vMyFriendList[pIndex].friendEmail,
-		friendPseudo 						: this.memberClient.vMyFriendList[pIndex].friendPseudo,
-		friendPhoto 						: this.memberClient.vMyFriendList[pIndex].friendPhoto,
-		myFriendList 						: this.memberClient.vMyFriendList,
+		friendEmail 						: pMember.vMyFriendList[pIndex].friendEmail,
+		friendPseudo 						: pMember.vMyFriendList[pIndex].friendPseudo,
+		friendPhoto 						: pMember.vMyFriendList[pIndex].friendPhoto,
+		myFriendList 						: pMember.vMyFriendList,
 		indexFriendToRecommend 	: pIndex,
 	}
 

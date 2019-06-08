@@ -1459,6 +1459,21 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		});
 	};
 
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Dans le cadre de laa vision du profil d'un ami, je vais lire TOUTES ses infos
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.getCompleteRecordOfMyFriend = function(pFriendToView, pWebSocketConnection){
+		// Lecture de la totalité des infos du membre (Etat Civil, relations amicales, et messages) 
+		this.getFriendInfos(pFriendToView)
+		.then((document) => {
+			vFriendToView = {
+				member : document,		
+			}
+
+			return pWebSocketConnection.emit('displayFriendProfile',vFriendToView); 
+		});
+	};
+
   // ---------------------------------------------------------------------------------------------------------------------------
 	// Promesse d'ajout de l'ami que je recommande dans la liste d'amis de l'Ami-cible
 	// A noter : Je concatene le pseudo de l'ami que je recommande avec le mien, séparé par "/"

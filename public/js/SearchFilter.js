@@ -132,8 +132,6 @@ SearchFilter.prototype.restoreFullList = function(event){
 		withNewModal	: cstWithoutNewModal,
 	}
 	webSocketConnection.emit(event.target.datas.msgRestoreFullList, vDataToTransmit);  
-
-	event.target.datas.thisContext.toto(event);
 }
 
 // --------------------------------------------------------------
