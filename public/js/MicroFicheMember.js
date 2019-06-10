@@ -244,9 +244,9 @@ MicroFicheMember.prototype.removeMicroFichesOfMember = function(pDivDropDown){
 // En cliquant au dessus des lignes des membres, la micro-fiche du membre s'ouvre
 // --------------------------------------------------------------
 MicroFicheMember.prototype.openMicroFiche = function(pMicroFicheParams){
-	var vDistFromBodyToHoverLine = vToolBox.findPos(pMicroFicheParams.thisContext, pMicroFicheParams.event);
+	var vDistFromBodyToHoverLine = vToolBox.calcRelativeMouseCursorPos(pMicroFicheParams.thisContext, pMicroFicheParams.event);
 	var vBody = document.getElementById(pMicroFicheParams.modalBody);							// Cadre Body enveloppant la liste des membres
-	var vPosCursorFromBody = vToolBox.findPos(vBody, pMicroFicheParams.event);		// Position relative de la souris par rapport au cadre Body
+	var vPosCursorFromBody = vToolBox.calcRelativeMouseCursorPos(vBody, pMicroFicheParams.event);		// Position relative de la souris par rapport au cadre Body
 
 	// Gestion de la position verticale de la MF par rapport au bord inférieur de la modale
 	var vBodyHeight = vBody.offsetHeight;																					// Hauteur du cadre Body

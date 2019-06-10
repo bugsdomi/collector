@@ -1345,10 +1345,10 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			this.deleteMeIntoFriendList(pcancelInvitSent)
 			.then(() => {
 
-				// Envoi à moi-même de la demande de suppression de l'Avatar de l'ami qui avait reçu l'invitation
+				// Envoi à moi-même de la demande de suppression de l'Avatar du membre qui avait reçu l'invitation
 				pWebSocketConnection.emit('cancelInvitedMemberFromMyInvitSentList',pcancelInvitSent);     
 
-				// Recherche du pseudo de mon ex-ami dans le tableau des membres connectés car s'il est connecté, je déduis 1 de son nombre d'invitations reçues à traiter
+				// Recherche du pseudo du membre dans le tableau des membres connectés car s'il est connecté, je déduis 1 de son nombre d'invitations reçues à traiter
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pcancelInvitSent.friendPseudo);
 
 				if (myIndex !== -1){  																													// Si membre trouvé dans la table des membres actuellement connectés

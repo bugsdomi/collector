@@ -327,11 +327,12 @@ ToolBox.prototype.clearAllOpenedPopOverAndToolTip = function(){
 }
 
 // -----------------------------------------------------------------------------
-// Cette fonction calcule la position d'un élément par rapport à son parent
+// Cette fonction calcule la position relative du curseur de la souris par 
+// rapport à un élément (et lui même par rapport à son parent, etc, etc)
 // Ceci permet de connaitre une différence en X et Y que l'on peut associer aux
 // coordonnées de la souris pour que l'élement colle au curseur de la souris
 // -----------------------------------------------------------------------------
-ToolBox.prototype.findPos = function(element, event) {
+ToolBox.prototype.calcRelativeMouseCursorPos = function(element, event) {
 	var x = y = 0;
 	if(element.offsetParent) {
 		x = element.offsetLeft;

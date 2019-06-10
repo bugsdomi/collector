@@ -6,7 +6,8 @@ Design professionnel
 Developpement 6 points : page d'affichage activité des utilisateurs en temps réel
 Affichage de la liste d'user et recherche d'user avec ou sans critères
 Profil utilisateur inscription connection profil mot de passe perdu publication de message
-Discussion instantannée envoie de notif par mail système de gestion de la liste de connaissance ajouter supprimer des userInterface de gestion administrateur : gestion des users, gestion des messages, gestion des publications, consultation des stats instantannées
+Discussion instantannée envoie de notif par mail système de gestion de la liste de connaissance ajouter supprimer des user
+Interface de gestion administrateur : gestion des users, gestion des messages, gestion des publications, consultation des stats instantannées
 respect de la modelisation de la base de données
 Test et sécurité : faille de sécurité, controle des données entrantes (url fichier mail etc), coherence des affichages, traitement adapté au mauvais choix d'u internaute et bugs
 Oral: aisance orale ou gestuelle elocution clarté de la présentation implication ressentie par les examinateurs réponse correctes et concise lors des questions reponses respect du temps imparti

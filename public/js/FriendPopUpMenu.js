@@ -278,7 +278,7 @@ FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
 
 	new MicroFicheMember(pFriend).displayMicroFicheMember(vDivDropDown, vMicroFicheParams);
 
-	if (vActiveProfile === cstMainProfileActive){
+	if (vActiveProfile === cstMainProfileActive){							// Si on est sur la page du profil principal, j'affiche le Menu popUp complet
 		this.prepareMenuviewFriend(pFriend, vDivDropDown);
 		this.prepareMenuDeleteFriend(pFriend, vDivDropDown);
 		vRecommendFriendsMgr.displayHeaderRecommendations(pFriend, vDivDropDown);

@@ -716,18 +716,18 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Le serveur a supprimé le membre à qui j'avais envoyé une 
 	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
 	// --------------------------------------------------------------
-	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
-		pcancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
-		vInvitationsCard.removeInvitSentFromMyInvitSentList(pcancelInvitSent);
+	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pCancelInvitSent){ 
+		pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
+		vInvitationsCard.removeInvitSentFromMyInvitSentList(pCancelInvitSent);
 	});
 
 	// --------------------------------------------------------------
 	// Le serveur a supprimé le membre à qui j'avais envoyé une 
 	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
 	// --------------------------------------------------------------
-	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pcancelInvitSent){ 
-		pcancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pcancelInvitSent.friendPseudo);	
-		vInvitationsCard.refreshMyInvitList(pcancelInvitSent);
+	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pCancelInvitSent){ 
+		pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
+		vInvitationsCardMain.refreshMyInvitList(pCancelInvitSent);
 	});
 
 	// --------------------------------------------------------------

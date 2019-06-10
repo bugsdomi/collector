@@ -8,7 +8,6 @@ function MemberClient(){   							// Fonction constructeur exportée
 	this.vMyFriendList					= [];			// Ma liste d'amis
 	this.vMyInvitSentList 			= [];			// Ma liste d'invitations envoyées
 	this.vInvitSentCardVisible 	= false;	// Indicateur de visibilité de la carte des invitations en attente
-	this.friendsOfMyFriend			= [];			// Liste d'amis de mon ami
 
 	this.member =                 // Structure de stockage provisoire du membre
 	{   

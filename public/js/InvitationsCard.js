@@ -130,7 +130,7 @@ InvitationsCard.prototype.displayInvitSentCard = function(){
 	vlineHTML.vULSent = window.document.createElement('ul');
 	vlineHTML.vDivCol1.appendChild(vlineHTML.vULSent);
 	vlineHTML.vULSent.setAttribute('id', 'idInvitSentUL'+vActiveProfile);
-	vlineHTML.vULSent.setAttribute('class', 'p-0 m-0" style="list-style: none;');
+	vlineHTML.vULSent.setAttribute('class', 'p-0 m-0');
 	vlineHTML.vULSent.setAttribute('style', 'list-style: none;');
 
 
@@ -191,9 +191,10 @@ InvitationsCard.prototype.fillInvitSentCard = function(){
 // -----------------------------------------------------------------------------
 // Cette fonction ajoute une invitation sur la carte "Invitations lancées" de la 
 // page de profil et prépare son sous-menu PopUp pour les éventuelles annulations
+// Mais UNIQUEMENT si je suis sur le profil principal
 // -----------------------------------------------------------------------------
-InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
-
+InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSent){
+	var vlineHTML = {};									
 	var vInvitSentLocal = 
 	{
 		friendEmail  	: pMyInvitSent.friendEmail,
@@ -206,8 +207,6 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 	this.memberClient.vMyInvitSentList.push(vInvitSentLocal);
 	var index = (this.memberClient.vMyInvitSentList.length-1);
 
-	var vlineHTML = {};									
-	
 	vlineHTML.vLi = window.document.createElement('li');
 	vULSent.appendChild(vlineHTML.vLi);
 	vlineHTML.vLi.setAttribute('id', 'idMyInvitSentLi'+vActiveProfile+index);
@@ -227,14 +226,12 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 	vlineHTML.vDivDropDown.setAttribute('style', 'width: 300px; border: 1px solid black;');
 
 
-
 	// ----------------------------
-	// Annuler une invitation lancée
+	// Annuler une invitation lancée (Seulement si je suis sur le profil principal)
 	// ----------------------------
 	vlineHTML.vACancelInvit = window.document.createElement('a');
 	vlineHTML.vDivDropDown.appendChild(vlineHTML.vACancelInvit);
 	vlineHTML.vACancelInvit.setAttribute('id', 'idAnchorCancelInvit'+vActiveProfile+index);
-
 	vlineHTML.vACancelInvit.setAttribute('href', '#');
 	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vACancelInvit.setAttribute('style', 'border-bottom: 1px solid black;');
@@ -295,17 +292,17 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 
 	vDataToTransmit = 
 	{
-		myPseudo 						: this.memberClient.member.pseudo,
-		myEmail 						: this.memberClient.member.email,
-		friendPseudo				: this.memberClient.vMyInvitSentList[index].friendPseudo,
-		friendEmail					: this.memberClient.vMyInvitSentList[index].friendEmail,
-    actionBtn  					: vlineHTML.vIFACancelInvit.id,
-    thisContext         : this,
+		myPseudo 			: this.memberClient.member.pseudo,
+		myEmail 			: this.memberClient.member.email,
+		friendPseudo	: this.memberClient.vMyInvitSentList[index].friendPseudo,
+		friendEmail		: this.memberClient.vMyInvitSentList[index].friendEmail,
+		actionBtn  		: vlineHTML.vIFACancelInvit.id,
+		thisContext   : this,
 	}
 
 	vlineHTML.vBtnCancelInvit.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver);
 	vlineHTML.vBtnCancelInvit.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut);
-	vlineHTML.vBtnCancelInvit.addEventListener('click', this.cancelInvitation);						// Suppression d'un ami
+	vlineHTML.vBtnCancelInvit.addEventListener('click', this.cancelInvitation);						// Suppression d'une invitation
 	vlineHTML.vBtnCancelInvit.datas = vDataToTransmit;
 	vlineHTML.vIFACancelInvit.datas = vDataToTransmit;
 
@@ -317,6 +314,65 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 
 	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
 	vToolBox.InitPopOverAndToolTipAndDropDown();
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction ajoute une invitation sur la carte "Invitations lancées" de la 
+// page de profil SANS sous-menu PopUp pour les éventuelles annulations
+// car je suis sur le profil de mon AMi
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.addInvitSentIntoCardWithoutDropDown = function(pMyInvitSent){
+	var vlineHTML = {};									
+	var vInvitSentLocal = 
+	{
+		friendEmail  	: pMyInvitSent.friendEmail,
+		friendPseudo 	: pMyInvitSent.friendPseudo,
+		friendPhoto 	: pMyInvitSent.friendPhoto,
+	}
+
+	vULSent = document.getElementById('idInvitSentUL'+vActiveProfile);
+
+	this.memberClient.vMyInvitSentList.push(vInvitSentLocal);
+	var index = (this.memberClient.vMyInvitSentList.length-1);
+
+	vlineHTML.vLi = window.document.createElement('li');
+	vULSent.appendChild(vlineHTML.vLi);
+	vlineHTML.vLi.setAttribute('id', 'idMyInvitSentLi'+vActiveProfile+index);
+	vlineHTML.vLi.setAttribute('class', 'container friendList m-0 py-0');
+	
+	vlineHTML.vDivRowCancelInvit = window.document.createElement('div');
+	vlineHTML.vLi.appendChild(vlineHTML.vDivRowCancelInvit);
+	vlineHTML.vDivRowCancelInvit.setAttribute('class', 'row');
+	vlineHTML.vDivRowCancelInvit.setAttribute('style', 'cursor: default;');
+
+	vlineHTML.vDivAvatar = window.document.createElement('div');
+	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivAvatar);
+	vlineHTML.vDivAvatar.setAttribute('class', 'containerAvatarToken ml-1 py-0 text-center align-self-center');
+
+	vlineHTML.vImg = window.document.createElement('img');
+	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
+	vlineHTML.vImg.setAttribute('class', 'avatarToken tokenSize50');
+	vlineHTML.vImg.setAttribute('alt', 'Ami');
+	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
+	vlineHTML.vImg.setAttribute('data-toggle', 'tooltip');
+	vlineHTML.vImg.setAttribute('data-placement', 'top');
+	vlineHTML.vImg.setAttribute('data-title', pMyInvitSent.friendPseudo);
+
+	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
+	vToolBox.InitPopOverAndToolTipAndDropDown();
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction ajoute une invitation sur la carte "Invitations lancées" de la 
+// page de profil et prépare son sous-menu PopUp pour les éventuelles annulations
+// MAIS UNIQUEMENY si je suis sur le profil principal
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
+	if(vActiveProfile === cstMainProfileActive){
+		this.addInvitSentIntoCardWithDropDown(pMyInvitSent)
+	} else {
+		this.addInvitSentIntoCardWithoutDropDown(pMyInvitSent)
+	}
 };
 
 // --------------------------------------------------------------
@@ -334,7 +390,6 @@ InvitationsCard.prototype.cancelInvitation = function(event){
 		friendPseudo 	: event.target.datas.friendPseudo,
 		friendEmail 	: event.target.datas.friendEmail,
 	}
-
 	webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
 }
 
@@ -347,6 +402,7 @@ InvitationsCard.prototype.cancelInvitation = function(event){
 // -----------------------------------------------------------------------------
 InvitationsCard.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete){
 	// Tant que j'ai une opération d'annulation d'invitation encours, je neutralise tous les autres avatars pour ne pas lancer plusieurs annulations simultanement
+
 	this.memberClient.vMyInvitSentList.forEach((item, index) => {
 		if (index !== pInvitToDelete.indexInvitToDelete){
 			document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.add('disabled')
