@@ -60,52 +60,20 @@ FriendsCard.prototype.displayFriendsCard = function(){
 	vlineHTML.vH5.setAttribute('class', 'col-2 px-0 my-0 align-self-center');
 	vlineHTML.vH5.innerHTML='Amis';
 
-// 				<div class="col-10 px-0">
-	vlineHTML.vDivCol1 = window.document.createElement('div');
-	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol1);
-	vlineHTML.vDivCol1.setAttribute('class', 'col-10 px-0');
-	
-// 					<div class="input-group input-group-sm border rounded">
-	vlineHTML.vDivInputGroup = window.document.createElement('div');
-	vlineHTML.vDivCol1.appendChild(vlineHTML.vDivInputGroup);
-	vlineHTML.vDivInputGroup.setAttribute('class', 'input-group input-group-sm border rounded');
-
-// 						<div class="input-group-prepend">
-	vlineHTML.vDivInputGroupPrepend = window.document.createElement('div');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupPrepend);
-	vlineHTML.vDivInputGroupPrepend.setAttribute('class', 'input-group-prepend');
-
-// 							<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
-	vlineHTML.vSpanInputGroupPrepend = window.document.createElement('span');
-	vlineHTML.vDivInputGroupPrepend.appendChild(vlineHTML.vSpanInputGroupPrepend);
-	vlineHTML.vSpanInputGroupPrepend.setAttribute('class', 'input-group-text');
-	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter"></i>';
-
-// 						<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
-	vlineHTML.vDivFilteredFriends = window.document.createElement('input');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivFilteredFriends);
-	vlineHTML.vDivFilteredFriends.setAttribute('id', 'idFilteredFriends'+vActiveProfile);
-	vlineHTML.vDivFilteredFriends.setAttribute('class', 'form-control');
-	vlineHTML.vDivFilteredFriends.setAttribute('type', 'text');
-	vlineHTML.vDivFilteredFriends.setAttribute('placeholder', 'Filtrer des amis');
-
-// // <div class="input-group-btn">
-// 						<div class="input-group-append">
-	vlineHTML.vDivInputGroupAppend = window.document.createElement('div');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupAppend);
-	vlineHTML.vDivInputGroupAppend.setAttribute('class', 'input-group-append');
-
-// 							<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
-	vlineHTML.vBtnClearFriendsFilter = window.document.createElement('button');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vBtnClearFriendsFilter);
-	vlineHTML.vBtnClearFriendsFilter.setAttribute('id', 'idClearFriendsFilter'+vActiveProfile);
-	vlineHTML.vBtnClearFriendsFilter.setAttribute('class', 'btn btn-sm border pushBtnFilters');
-	vlineHTML.vBtnClearFriendsFilter.setAttribute('type', 'button');
-
-// 								<i class="fa fa-fw fa-times"></i>
-	vlineHTML.viFaTimes = window.document.createElement('i');
-	vlineHTML.vBtnClearFriendsFilter.appendChild(vlineHTML.viFaTimes);
-	vlineHTML.viFaTimes.setAttribute('class', 'fa fa-fw fa-times');
+// ------------------------------------------------------------------------------
+// Inclusion du champs de filtrage
+// ------------------------------------------------------------------------------
+	var vFilterParams = 
+	{
+		mountPoint							: vlineHTML.vDivRow1,
+		colWidth								: 'col-10',
+		idFilterField						: 'idFilteredFriends',
+		placeHolderFilterField	: 'Filtrer les amis',
+		idClearBtn							: 'idClearFriendsFilter',
+		listToFilter						: this.memberClient.vMyFriendList,
+		idLiOfAVatars						: 'idMyFriendLi',
+	}
+	new SearchFilter().displayFilter(vFilterParams);												
 
 // ------------------------------------------------------------------------------
 //                      Corps de la carte "Amis"                         
@@ -117,9 +85,9 @@ FriendsCard.prototype.displayFriendsCard = function(){
 	vlineHTML.vDivCardBody.setAttribute('style', 'border: 1px black solid;');
 
 // 		<div class="row">
-vlineHTML.vDivRow2 = window.document.createElement('div');
-vlineHTML.vDivCardBody.appendChild(vlineHTML.vDivRow2);
-vlineHTML.vDivRow2.setAttribute('class', 'row');
+	vlineHTML.vDivRow2 = window.document.createElement('div');
+	vlineHTML.vDivCardBody.appendChild(vlineHTML.vDivRow2);
+	vlineHTML.vDivRow2.setAttribute('class', 'row');
 
 // 			<div class="col-md-12 px-0 text-dark">
 	vlineHTML.vDivCol2 = window.document.createElement('div');
@@ -133,34 +101,7 @@ vlineHTML.vDivRow2.setAttribute('class', 'row');
 	vlineHTML.vULFriend.setAttribute('class', 'p-0 m-0');
 	vlineHTML.vULFriend.setAttribute('style', 'list-style: none;');
 
-	// -------------------------------------------------------------------------
-	// Champs de filtrage des amis
-	// -------------------------------------------------------------------------
-	vlineHTML.vDivFilteredFriends.addEventListener('keyup', () => {
-		this.filterFriends(vlineHTML.vDivFilteredFriends.value.toUpperCase())
-	});
-
-	vlineHTML.vBtnClearFriendsFilter.addEventListener('click', () => {
-		vlineHTML.vDivFilteredFriends.value = '';
-		this.filterFriends(vlineHTML.vDivFilteredFriends.value.toUpperCase())
-	});
-
 	this.fillFriendsCard();
-}
-
-// -----------------------------------------------------------------------------
-// Filtrage des amis
-// -----------------------------------------------------------------------------
-FriendsCard.prototype.filterFriends = function(pFilteredFriends){
-	this.memberClient.vMyFriendList.forEach((item, index) => {
-		var vMyFriendLi = document.getElementById('idMyFriendLi'+vActiveProfile+index);
-
-		if (item.friendPseudo.toUpperCase().startsWith(pFilteredFriends)){
-			vMyFriendLi.classList.remove('d-none');
-		} else {
-			vMyFriendLi.classList.add('d-none');
-		}
-	});
 }
 
 // -----------------------------------------------------------------------------

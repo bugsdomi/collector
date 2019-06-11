@@ -29,7 +29,7 @@ function SearchFilter(){};        // Fonction constructeur exportée
 // des membres, d'amis ou autres listes du même type (Pseudo et/ou Prénom et/ou nom)
 // --------------------------------------------------------------
 SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){  
-	var lineHTML = {};						// Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
+	var lineHTML = {};
 
 	lineHTML.vSearchContainer = window.document.createElement('div');
 	pSearchFilterParams.displayModalDatas.modalListTitle.appendChild(lineHTML.vSearchContainer);
@@ -153,4 +153,85 @@ SearchFilter.prototype.searchFilteredList = function(event){
 	} else {
 		event.target.datas.thisContext.restoreFullList(event);	// Les caractères de recherche ont été effacés 1 à 1, et les champs sont vides ==> Réaffichage de la liste complete
 	}
+}
+
+// --------------------------------------------------------------
+// Affichage d'un champs de filtrage dynamique (uniquement sur 
+// les avatars des cartes), pas d'accès à la BDD
+// --------------------------------------------------------------
+SearchFilter.prototype.displayFilter = function(pFilterParams){
+	var vlineHTML = {};
+
+// 				<div class="col-10 px-0">
+	vlineHTML.vDivCol1 = window.document.createElement('div');
+	pFilterParams.mountPoint.appendChild(vlineHTML.vDivCol1);
+	vlineHTML.vDivCol1.setAttribute('class', pFilterParams.colWidth + ' px-0');
+
+
+	// 					<div class="input-group input-group-sm border rounded">
+	vlineHTML.vDivInputGroup = window.document.createElement('div');
+	vlineHTML.vDivCol1.appendChild(vlineHTML.vDivInputGroup);
+	vlineHTML.vDivInputGroup.setAttribute('class', 'input-group input-group-sm border rounded');
+
+	// 						<div class="input-group-prepend">
+	vlineHTML.vDivInputGroupPrepend = window.document.createElement('div');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupPrepend);
+	vlineHTML.vDivInputGroupPrepend.setAttribute('class', 'input-group-prepend');
+
+	// 							<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
+	vlineHTML.vSpanInputGroupPrepend = window.document.createElement('span');
+	vlineHTML.vDivInputGroupPrepend.appendChild(vlineHTML.vSpanInputGroupPrepend);
+	vlineHTML.vSpanInputGroupPrepend.setAttribute('class', 'input-group-text');
+	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter"></i>';
+
+	// 						<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
+	vlineHTML.vDivFiltered = window.document.createElement('input');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivFiltered);
+	vlineHTML.vDivFiltered.setAttribute('id', pFilterParams.idFilterField + vActiveProfile);
+	vlineHTML.vDivFiltered.setAttribute('class', 'form-control');
+	vlineHTML.vDivFiltered.setAttribute('type', 'text');
+	vlineHTML.vDivFiltered.setAttribute('placeholder', pFilterParams.placeHolderFilterField);
+
+	// // <div class="input-group-btn">
+	// 						<div class="input-group-append">
+	vlineHTML.vDivInputGroupAppend = window.document.createElement('div');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupAppend);
+	vlineHTML.vDivInputGroupAppend.setAttribute('class', 'input-group-append');
+
+	// 							<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
+	vlineHTML.vBtnClearInvitsFilter = window.document.createElement('button');
+	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vBtnClearInvitsFilter);
+	vlineHTML.vBtnClearInvitsFilter.setAttribute('id', pFilterParams.idClearBtn + vActiveProfile);
+	vlineHTML.vBtnClearInvitsFilter.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+	vlineHTML.vBtnClearInvitsFilter.setAttribute('type', 'button');
+
+	// 								<i class="fa fa-fw fa-times"></i>
+	vlineHTML.viFaTimes = window.document.createElement('i');
+	vlineHTML.vBtnClearInvitsFilter.appendChild(vlineHTML.viFaTimes);
+	vlineHTML.viFaTimes.setAttribute('class', 'fa fa-fw fa-times');
+
+	// -------------------------------------------------------------------------
+	// Traitement des Champs de filtrage
+	// -------------------------------------------------------------------------
+	vlineHTML.vDivFiltered.addEventListener('keyup', () => {
+		this.filterAvatars(vlineHTML.vDivFiltered.value.toUpperCase(), pFilterParams)
+	});
+
+	vlineHTML.vBtnClearInvitsFilter.addEventListener('click', () => {
+		vlineHTML.vDivFiltered.value = '';
+		this.filterAvatars(vlineHTML.vDivFiltered.value.toUpperCase(), pFilterParams)
+	});
+}
+
+// -----------------------------------------------------------------------------
+// Filtrage des invitations
+// -----------------------------------------------------------------------------
+SearchFilter.prototype.filterAvatars = function(pFilteredPseudo, pFilterParams){
+	pFilterParams.listToFilter.forEach((item, index) => {
+		if (item.friendPseudo.toUpperCase().startsWith(pFilteredPseudo)){
+			document.getElementById(pFilterParams.idLiOfAVatars + vActiveProfile + index).classList.remove('d-none');
+		} else {
+			document.getElementById(pFilterParams.idLiOfAVatars + vActiveProfile + index).classList.add('d-none');
+		}
+	});
 }

@@ -60,52 +60,21 @@ InvitationsCard.prototype.displayInvitSentCard = function(){
 	
 	vlineHTML.vH5.innerHTML='Mes invitations';
 
-// 				<div class="col-10 px-0">
-	vlineHTML.vDivCol1 = window.document.createElement('div');
-	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol1);
-	vlineHTML.vDivCol1.setAttribute('class', 'col-8 px-0');
-	
-// 					<div class="input-group input-group-sm border rounded">
-	vlineHTML.vDivInputGroup = window.document.createElement('div');
-	vlineHTML.vDivCol1.appendChild(vlineHTML.vDivInputGroup);
-	vlineHTML.vDivInputGroup.setAttribute('class', 'input-group input-group-sm border rounded');
 
-// 						<div class="input-group-prepend">
-	vlineHTML.vDivInputGroupPrepend = window.document.createElement('div');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupPrepend);
-	vlineHTML.vDivInputGroupPrepend.setAttribute('class', 'input-group-prepend');
-
-// 							<span class="input-group-text"><i class="fa fa-fw fa-filter"></i></span>
-	vlineHTML.vSpanInputGroupPrepend = window.document.createElement('span');
-	vlineHTML.vDivInputGroupPrepend.appendChild(vlineHTML.vSpanInputGroupPrepend);
-	vlineHTML.vSpanInputGroupPrepend.setAttribute('class', 'input-group-text');
-	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter"></i>';
-
-// 						<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
-	vlineHTML.vDivFilteredInvits = window.document.createElement('input');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivFilteredInvits);
-	vlineHTML.vDivFilteredInvits.setAttribute('id', 'idFilteredInvits'+vActiveProfile);
-	vlineHTML.vDivFilteredInvits.setAttribute('class', 'form-control');
-	vlineHTML.vDivFilteredInvits.setAttribute('type', 'text');
-	vlineHTML.vDivFilteredInvits.setAttribute('placeholder', 'Filtrer des invitations');
-
-// // <div class="input-group-btn">
-// 						<div class="input-group-append">
-	vlineHTML.vDivInputGroupAppend = window.document.createElement('div');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vDivInputGroupAppend);
-	vlineHTML.vDivInputGroupAppend.setAttribute('class', 'input-group-append');
-
-// 							<button class="btn btn-sm border pushBtnFilters" id="idClearFriendsFilter" type="button">
-	vlineHTML.vBtnClearInvitsFilter = window.document.createElement('button');
-	vlineHTML.vDivInputGroup.appendChild(vlineHTML.vBtnClearInvitsFilter);
-	vlineHTML.vBtnClearInvitsFilter.setAttribute('id', 'idClearInvitsFilter'+vActiveProfile);
-	vlineHTML.vBtnClearInvitsFilter.setAttribute('class', 'btn btn-sm border pushBtnFilters');
-	vlineHTML.vBtnClearInvitsFilter.setAttribute('type', 'button');
-
-// 								<i class="fa fa-fw fa-times"></i>
-	vlineHTML.viFaTimes = window.document.createElement('i');
-	vlineHTML.vBtnClearInvitsFilter.appendChild(vlineHTML.viFaTimes);
-	vlineHTML.viFaTimes.setAttribute('class', 'fa fa-fw fa-times');
+// ------------------------------------------------------------------------------
+// Inclusion du champs de filtrage
+// ------------------------------------------------------------------------------
+	var vFilterParams = 
+	{
+		mountPoint							: vlineHTML.vDivRow1,
+		colWidth								: 'col-8',
+		idFilterField						: 'idFilteredInvits',
+		placeHolderFilterField	: 'Filtrer les invitations',
+		idClearBtn							: 'idClearInvitsFilter',
+		listToFilter						: this.memberClient.vMyInvitSentList,
+		idLiOfAVatars						: 'idMyInvitSentLi',
+	}
+	new SearchFilter().displayFilter(vFilterParams);												
 
 // ------------------------------------------------------------------------------
 //                      Corps de la carte "Invitations lancées"                         
@@ -133,33 +102,7 @@ InvitationsCard.prototype.displayInvitSentCard = function(){
 	vlineHTML.vULSent.setAttribute('class', 'p-0 m-0');
 	vlineHTML.vULSent.setAttribute('style', 'list-style: none;');
 
-
-	// -------------------------------------------------------------------------
-	// Champs de filtrage des invitations
-	// -------------------------------------------------------------------------
-	vlineHTML.vDivFilteredInvits.addEventListener('keyup', () => {
-		this.filterInvits(vlineHTML.vDivFilteredInvits.value.toUpperCase())
-	});
-
-	vlineHTML.vBtnClearInvitsFilter.addEventListener('click', () => {
-		vlineHTML.vDivFilteredInvits.value = '';
-		this.filterInvits(vlineHTML.vDivFilteredInvits.value.toUpperCase())
-	});
-
 	this.fillInvitSentCard();
-	}
-
-// -----------------------------------------------------------------------------
-// Filtrage des invitations
-// -----------------------------------------------------------------------------
-InvitationsCard.prototype.filterInvits = function(pFilteredInvits){
-	this.memberClient.vMyInvitSentList.forEach((item, index) => {
-		if (item.friendPseudo.toUpperCase().startsWith(pFilteredInvits)){
-			document.getElementById('idMyInvitSentLi'+vActiveProfile+index).classList.remove('d-none');
-		} else {
-			document.getElementById('idMyInvitSentLi'+vActiveProfile+index).classList.add('d-none');
-		}
-	});
 }
 
 // -----------------------------------------------------------------------------
@@ -365,7 +308,7 @@ InvitationsCard.prototype.addInvitSentIntoCardWithoutDropDown = function(pMyInvi
 // -----------------------------------------------------------------------------
 // Cette fonction ajoute une invitation sur la carte "Invitations lancées" de la 
 // page de profil et prépare son sous-menu PopUp pour les éventuelles annulations
-// MAIS UNIQUEMENY si je suis sur le profil principal
+// MAIS UNIQUEMENT si je suis sur le profil principal
 // -----------------------------------------------------------------------------
 InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 	if(vActiveProfile === cstMainProfileActive){
