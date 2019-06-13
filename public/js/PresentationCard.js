@@ -208,6 +208,7 @@ PresentationCard.prototype.displayPresentationCard = function(){
 	vlineHTML.vDivCol12.setAttribute('class', 'col-sm-12 presentationCard font-weight-bold');
 	vlineHTML.vDivCol12.setAttribute('rows', '2');
 	vlineHTML.vDivCol12.setAttribute('disabled', '');
+	vlineHTML.vDivCol12.setAttribute('style', 'border-color: darkGray;');
 
 
 	// ------------------------------------------------------------------------------ 
@@ -232,6 +233,7 @@ PresentationCard.prototype.displayPresentationCard = function(){
 	vlineHTML.vDivCol14 = window.document.createElement('div');
 	vlineHTML.vDivRow7.appendChild(vlineHTML.vDivCol14);
 	vlineHTML.vDivCol14.setAttribute('class', 'col-sm-12 presentationCard btn-group-toggle text-center');
+	vlineHTML.vDivCol14.setAttribute('style', 'border-color: darkGray;');
 	
 
 	// ------------------------------------------------------------------------------ 

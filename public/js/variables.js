@@ -7,7 +7,6 @@
 // ***                                                                  ***
 // ************************************************************************
 // --------------------------------------------------------------
-// var vLoginForm;                     // Instance du formulaire de saisie du Login
 var vToolBox;                       // Instance de la Boîte à outils
 var vMemberClient;                  // Instanciation de l'objet decrivant un Membre et les méthodes de gestion de ce Membre
 var vFriendPopUpMenu;               // Instanciation de l'objet Popup Menu de mes amis

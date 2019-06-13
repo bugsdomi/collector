@@ -408,6 +408,14 @@ body {
 }
 
 /* ********************************** */
+/* Change la taille des caractères    */
+/* a 0.8rem pour un usage général    */
+/* ********************************** */
+.font-size-70{
+    font-size: 0.7rem;
+}
+
+/* ********************************** */
 /* Badge du compteur d'invitations    */
 /* en attente                         */
 /* ********************************** */

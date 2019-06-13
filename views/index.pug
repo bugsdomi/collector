@@ -7,7 +7,8 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
   // Nécessaire pour le coté "Responsive"
   meta(name='description' content="Réseau social des Collectionneurs de sujets d'Histoire Militaire")
-  meta(name='author' content='kingstudio.ro')
+  // <meta name="author" content="kingstudio.ro">
+  meta(name='author' content='Vil-Coyote Product')
   // Favicon
   link(rel='icon' href='static/images/favicon.png')
   title Collect&apos;Or
@@ -15,6 +16,8 @@ head
   link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i' rel='stylesheet')
   link(href='static/css/font-awesome.css' rel='stylesheet' type='text/css')
   script(src='https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
+  // XXXXX
+  // <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
   // Styles
   link(href='static/css/bootstrap.css' rel='stylesheet' type='text/css')
   link(href='static/css/index.css' rel='stylesheet')
@@ -56,7 +59,6 @@ head
     // *   Tel : 01-40-21-83-78                                            * //
     // *                                                                   * //
     // ********************************************************************* //
-// <body class="animated fadeIn">
 // <div class="cOpacity">
 // Ajouté pour créer une opacité sur l'ensemble de la page
 // *************************************************************************
@@ -181,6 +183,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
             .col-md-12
               .row
                 #idDivMountPointPostEditMain.col-md-12
+                  // ******************************************************************************
+                  // Emplacement des Posts :
+                  // PostEdit
+                  // Tous les autres Posts
+                  // Toutes ces Posts sont gérés en JS
+                  // ******************************************************************************
                   //
                     <div class="box profile-info n-border-top">
                     <form>
@@ -432,7 +440,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 #idGenericModal.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaGenericModalTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      #idGenericModalHeader.modal-header
+      #idGenericModalHeader.modal-header.border-bottom
         h5#idGenericModalTitle.modal-title
         button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
       .modal-body
@@ -446,7 +454,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 #idModalLogin.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalLoginTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      #idModalLoginHeader.modal-header
+      #idModalLoginHeader.modal-header.border-bottom
         h5.modal-title
           i.fa.fa-sign-in
           |  Connexion
@@ -474,7 +482,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 #idModalSignIn.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalSignInTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      #idModalSignInHeader.modal-header
+      #idModalSignInHeader.modal-header.border-bottom
         h5.modal-title
           i.fa.fa-plus
           |  Cr&eacute;ation de compte
@@ -508,7 +516,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 #idModalLostPWD.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalLostPWDTitle' aria-hidden='true')
   .modal-dialog.modal-dialog-centered(role='document')
     .modal-content
-      #idModalLostPWDHeader.modal-header
+      #idModalLostPWDHeader.modal-header.border-bottom
         h5.modal-title
           i.fa.fa-key
           |  Mot de passe perdu
@@ -560,382 +568,389 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
                     .col-md-12
                       .row
                         #idDivMountPointPostEditFriend.col-md-12
-        // *************************************************************************
-        // Fenêtre Modale de renseignements
-        // *************************************************************************
-        #idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalAccountTitle' aria-hidden='true')
-          .modal-dialog.modal-md.modal-dialog-centered(role='document')
-            .modal-content
-              #idModalAccountHeader.modal-header
-                h5.modal-title
-                  i.fa.fa-id-card-o
-                  |  Renseignements personnels
-                button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-              .modal-body
+                          // ******************************************************************************
+                          // Emplacement des Posts :
+                          // PostEdit
+                          // Tous les autres Posts
+                          // Toutes ces Posts sont gérés en JS
+                          // ******************************************************************************
+// *************************************************************************
+// Fenêtre Modale de renseignements
+// *************************************************************************
+#idModalAccount.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalAccountTitle' aria-hidden='true')
+  .modal-dialog.modal-md.modal-dialog-centered(role='document')
+    .modal-content
+      #idModalAccountHeader.modal-header.border-bottom
+        h5.modal-title
+          i.fa.fa-id-card-o
+          |  Renseignements personnels
+        button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      .modal-body
+        // ******************************************************************************
+        // Texte de présentation de la modale en entête
+        // ******************************************************************************
+        .text-center
+          img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
+          h2 Saisie des renseignements personnels
+          p.lead
+            | Ces informations, optionnelles, vont permettre aux autres internautes de mieux vous conna&icirc;tre &agrave; travers vos centres d&apos;int&eacute;r&ecirc;t, ou vos types de collections pr&eacute;f&eacute;r&eacute;es par exemple...
+        // ******************************************************************************
+        // Pseudo + Mail
+        // ******************************************************************************
+        .text-center
+          form#idAccountForm.form-Account
+            fieldset.border.rounded.p-3
+              .row.justify-content-around
+                .col-md-5.mb-3
+                  label(for='idAccountPseudo') Pseudonyme
+                  input#idAccountPseudo.form-control(type='text' name='accountPseudo' disabled='' tabindex='-1')
+                .col-md-5.mb-3
+                  label(for='idAccountEmail') Email
+                  input#idAccountEmail.form-control(type='email' name='accountEmail' disabled='' tabindex='-1')
+            // ******************************************************************************
+            // Avatar + Nom + Prénom
+            // ******************************************************************************
+            fieldset.border.rounded.p-3
+              .row.justify-content-around
+                .col-md-3
+                  img#idAccountPhotoImg.img-thumbnail.mb-3(src='' alt='Image du profile')
+                  span.btn.btn-success.btn-file.mb-3
+                    | Changer d&apos;avatar 
+                    input#idAccountPhotoFile(type='file' name='AccountPhotoFile' accept='image/png, image/jpeg')
+                .col-md-8.mb-3
+                  label(for='idAccountFirstName') Pr&eacute;nom
+                  input#idAccountFirstName.form-control.mb-3(type='text' name='accountFirstName' placeholder='Prénom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
+                  label(for='idAccountName') Nom de famille
+                  input#idAccountName.form-control.mb-3(type='text' name='accountName' placeholder='Nom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
+                  .invalid-feedback
+                    | Un nom valide est requis.
+            // ******************************************************************************
+            // Date naissance + Age + Sexe
+            // ******************************************************************************
+            fieldset.border.rounded.p-3
+              .row.justify-content-around
+                .col-md-4.mb-3
+                  label(for='idAccountBirthDate') Date de naissance
+                  input#idAccountBirthDate.form-control(type='date' name='accountBirthdate')
+                  .invalid-feedback
+                    | Une date valide est requise
+                .col-md-2.mb-3
+                  label(for='idAccountAge') Age
+                  input#idAccountAge.form-control(type='text' name='accountAge' disabled='')
+                .col-md-3.mb-3
+                  label.text-left(for='accountSexe') Sexe
+                  fieldset.border.rounded.p-3
+                    .form-check.text-left
+                      input#idAccountSexNone.form-check-input(type='radio' name='accountSexe' value='Non divulgué' checked='' aria-checked='')
+                      label.form-check-label(for='idAccountSexNone') Non divulgu&eacute;
+                    .form-check.text-left
+                      input#idAccountSexMale.form-check-input(type='radio' name='accountSexe' value='masculin')
+                      label.form-check-label(for='idAccountSexMale') Masculin
+                    .form-check.text-left
+                      input#idAccountSexFemale.form-check-input(type='radio' name='accountSexe' value='feminin')
+                      label.form-check-label(for='idAccountSexFemale') F&eacute;minin
+            // ******************************************************************************
+            // Adresse + Ville + Code Postal + Département
+            // ******************************************************************************
+            fieldset.border.rounded.p-3
+              .row.justify-content-around
+                .col-md-6.mb-3
+                  label(for='idAccountStreet') Adresse
+                  input#idAccountStreet.form-control(type='text' name='accountStreet' placeholder='N° et voie')
+                  .invalid-feedback
+                    | Veuillez saisir votre adresse
+                .col-md-6.mb-3
+                  label(for='idAccountCity') Ville
+                  input#idAccountCity.form-control(type='text' name='accountCity' placeholder='Ville')
+              .row.justify-content-around
+                .col-md-3.mb-3
+                  label(for='idAccountZipCode') Code postal
+                  input#idAccountZipCode.form-control(type='text' placeholder='Code postal')
+                  .invalid-feedback
+                    | Code postal requis.
+                .col-md-5.mb-3
+                  label(for='idAccountDepartment') D&eacute;partement
+                  select#idAccountDepartment.custom-select(name='accountDepartment')
+                    option(selected='') Non renseign&eacute;
+                    option(value='00') (00) Hors France
+                    option(value='01') (01) Ain 
+                    option(value='02') (02) Aisne 
+                    option(value='03') (03) Allier 
+                    option(value='04') (04) Alpes de Haute Provence 
+                    option(value='05') (05) Hautes Alpes 
+                    option(value='06') (06) Alpes Maritimes 
+                    option(value='07') (07) Ard&egrave;che 
+                    option(value='08') (08) Ardennes 
+                    option(value='09') (09) Ari&egrave;ge 
+                    option(value='10') (10) Aube 
+                    option(value='11') (11) Aude 
+                    option(value='12') (12) Aveyron 
+                    option(value='13') (13) Bouches du Rh&ocirc;ne 
+                    option(value='14') (14) Calvados 
+                    option(value='15') (15) Cantal 
+                    option(value='16') (16) Charente 
+                    option(value='17') (17) Charente Maritime 
+                    option(value='18') (18) Cher 
+                    option(value='19') (19) Corr&egrave;ze 
+                    option(value='2A') (2A) Corse du Sud 
+                    option(value='2B') (2B) Haute-Corse 
+                    option(value='21') (21) C&ocirc;te d&apos;Or 
+                    option(value='22') (22) C&ocirc;tes d&apos;Armor 
+                    option(value='23') (23) Creuse 
+                    option(value='24') (24) Dordogne 
+                    option(value='25') (25) Doubs 
+                    option(value='26') (26) Dr&ocirc;me 
+                    option(value='27') (27) Eure 
+                    option(value='28') (28) Eure et Loir 
+                    option(value='29') (29) Finist&egrave;re 
+                    option(value='30') (30) Gard 
+                    option(value='31') (31) Haute Garonne 
+                    option(value='32') (32) Gers 
+                    option(value='33') (33) Gironde 
+                    option(value='34') (34) H&eacute;rault 
+                    option(value='35') (35) Ille et Vilaine 
+                    option(value='36') (36) Indre 
+                    option(value='37') (37) Indre et Loire 
+                    option(value='38') (38) Is&egrave;re 
+                    option(value='39') (39) Jura 
+                    option(value='40') (40) Landes 
+                    option(value='41') (41) Loir et Cher 
+                    option(value='42') (42) Loire 
+                    option(value='43') (43) Haute Loire 
+                    option(value='44') (44) Loire Atlantique 
+                    option(value='45') (45) Loiret 
+                    option(value='46') (46) Lot 
+                    option(value='47') (47) Lot et Garonne 
+                    option(value='48') (48) Loz&egrave;re 
+                    option(value='49') (49) Maine et Loire 
+                    option(value='50') (50) Manche 
+                    option(value='51') (51) Marne 
+                    option(value='52') (52) Haute Marne 
+                    option(value='53') (53) Mayenne 
+                    option(value='54') (54) Meurthe et Moselle 
+                    option(value='55') (55) Meuse 
+                    option(value='56') (56) Morbihan 
+                    option(value='57') (57) Moselle 
+                    option(value='58') (58) Ni&egrave;vre 
+                    option(value='59') (59) Nord 
+                    option(value='60') (60) Oise 
+                    option(value='61') (61) Orne 
+                    option(value='62') (62) Pas de Calais 
+                    option(value='63') (63) Puy de D&ocirc;me 
+                    option(value='64') (64) Pyr&eacute;n&eacute;es Atlantiques 
+                    option(value='65') (65) Hautes Pyr&eacute;n&eacute;es 
+                    option(value='66') (66) Pyr&eacute;n&eacute;es Orientales 
+                    option(value='67') (67) Bas Rhin 
+                    option(value='68') (68) Haut Rhin 
+                    option(value='69') (69) Rh&ocirc;ne 
+                    option(value='70') (70) Haute Sa&ocirc;ne 
+                    option(value='71') (71) Sa&ocirc;ne et Loire 
+                    option(value='72') (72) Sarthe 
+                    option(value='73') (73) Savoie 
+                    option(value='74') (74) Haute Savoie 
+                    option(value='75') (75) Paris 
+                    option(value='76') (76) Seine Maritime 
+                    option(value='77') (77) Seine et Marne 
+                    option(value='78') (78) Yvelines 
+                    option(value='79') (79) Deux S&egrave;vres 
+                    option(value='80') (80) Somme 
+                    option(value='81') (81) Tarn 
+                    option(value='82') (82) Tarn et Garonne 
+                    option(value='83') (83) Var 
+                    option(value='84') (84) Vaucluse 
+                    option(value='85') (85) Vend&eacute;e 
+                    option(value='86') (86) Vienne 
+                    option(value='87') (87) Haute Vienne 
+                    option(value='88') (88) Vosges 
+                    option(value='89') (89) Yonne 
+                    option(value='90') (90) Territoire de Belfort 
+                    option(value='91') (91) Essonne 
+                    option(value='92') (92) Hauts de Seine 
+                    option(value='93') (93) Seine Saint Denis 
+                    option(value='94') (94) Val de Marne 
+                    option(value='95') (95) Val d&apos;Oise 
+                    option(value='971') (971) Guadeloupe 
+                    option(value='972') (972) Martinique 
+                    option(value='973') (973) Guyane 
+                    option(value='974') (974) R&eacute;union 
+                    option(value='975') (975) Saint Pierre et Miquelon 
+                    option(value='976') (976) Mayotte 
+            // ******************************************************************************
+            // Préférences
+            // ******************************************************************************
+            fieldset.border.rounded.px-3.pt-3.mb-3
+              .row.justify-content-around
+                .col-md-6.mb-3
+                  label(for='accountPref') Pr&eacute;f&eacute;rences
+                  .btn-group-toggle(data-toggle='buttons')
+                    label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                      input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
+                      | Gravures
+                    label#idAccountPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                      input#idAccountPrefLivres(type='checkbox' name='accountPref' autocomplete='off')
+                      | Livres
+                    label#idAccountPrefFilmsLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                      input#idAccountPrefFilms(type='checkbox' name='accountPref' autocomplete='off')
+                      | Films
+                    label#idAccountPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                      input#idAccountPrefJeux(type='checkbox' name='accountPref' autocomplete='off')
+                      | Jeux
+                    label#idAccountPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                      input#idAccountPrefMaquettes(type='checkbox' name='accountPref' autocomplete='off')
+                      | Maquettes
+                    label#idAccountPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                      input#idAccountPrefFigurines(type='checkbox' name='accountPref' autocomplete='off')
+                      | Figurines
+                    label#idAccountPrefBlindesLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                      input#idAccountPrefBlindes(type='checkbox' name='accountPref' autocomplete='off')
+                      | Blind&eacute;s
+                    label#idAccountPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                      input#idAccountPrefAvions(type='checkbox' name='accountPref' autocomplete='off')
+                      | Avions
+                    label#idAccountPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                      input#idAccountPrefBateaux(type='checkbox' name='accountPref' autocomplete='off')
+                      | Bateaux
+                    label#idAccountPrefDioramasLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                      input#idAccountPrefDioramas(type='checkbox' name='accountPref' autocomplete='off')
+                      | Dioramas
+                    label#idAccountPrefPrehistoireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                      input#idAccountPrefPrehistoire(type='checkbox' name='accountPref' autocomplete='off')
+                      | Pr&eacute;histoire
+                    label#idAccountPrefAntiquiteLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                      input#idAccountPrefAntiquite(type='checkbox' name='accountPref' autocomplete='off')
+                      | Antiquit&eacute;
+                    label#idAccountPrefMoyenAgeLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                      input#idAccountPrefMoyenAge(type='checkbox' name='accountPref' autocomplete='off')
+                      | Moyen-&acirc;ge
+                    label#idAccountPrefRenaissanceLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                      input#idAccountPrefRenaissance(type='checkbox' name='accountPref' autocomplete='off')
+                      | Renaissance
+                    label#idAccountPrefDentellesLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                      input#idAccountPrefDentelles(type='checkbox' name='accountPref' autocomplete='off')
+                      | Guerre en dentelles
+                    label#idAccountPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                      input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
+                      | Ancien-r&eacute;gime
+                    label#idAccountPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                      input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
+                      | R&eacute;volution Fran&ccedil;aise
+                    label#idAccountPref1erEmpireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                      input#idAccountPref1erEmpire(type='checkbox' name='accountPref' autocomplete='off')
+                      | 1er Empire
+                    label#idAccountPref2ndEmpireLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                      input#idAccountPref2ndEmpire(type='checkbox' name='accountPref' autocomplete='off')
+                      | 2nd Empire
+                    label#idAccountPrefSecessionLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                      input#idAccountPrefSecession(type='checkbox' name='accountPref' autocomplete='off')
+                      | Guerre de s&eacute;cession
+                    label#idAccountPrefFarWestLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                      input#idAccountPrefFarWest(type='checkbox' name='accountPref' autocomplete='off')
+                      | Far West
+                    label#idAccountPrefWW1Label.btn.btn-outline-success.badge.badge-pill.mr-1
+                      input#idAccountPrefWW1(type='checkbox' name='accountPref' autocomplete='off')
+                      | 1&egrave;re Guerre Mondiale
+                    label#idAccountPrefWW2Label.btn.btn-outline-danger.badge.badge-pill.mr-1
+                      input#idAccountPrefWW2(type='checkbox' name='accountPref' autocomplete='off')
+                      | 2&egrave;me Guerre mondiale
+                    label#idAccountPrefContemporainLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
+                      input#idAccountPrefContemporain(type='checkbox' name='accountPref' autocomplete='off')
+                      | Contemporain
+                    label#idAccountPrefFuturisteLabel.btn.btn-outline-info.badge.badge-pill.mr-1
+                      input#idAccountPrefFuturiste(type='checkbox' name='accountPref' autocomplete='off')
+                      | Futuriste
+                    label#idAccountPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
+                      input#idAccountPrefFantastique(type='checkbox' name='accountPref' autocomplete='off')
+                      | Fantastique
+                    label#idAccountPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
+                      input#idAccountPrefHFrancaise(type='checkbox' name='accountPref' autocomplete='off')
+                      | Histoire Fran&ccedil;aise
+                    label#idAccountPrefHAmericaineLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
+                      input#idAccountPrefHAmericaine(type='checkbox' name='accountPref' autocomplete='off')
+                      | Histoire Am&eacute;ricaine
+                    label#idAccountPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill.mr-1
+                      input#idAccountPrefHInternationale(type='checkbox' name='accountPref' autocomplete='off')
+                      | Histoire internationale
+                    label#idAccountPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
+                      input#idAccountPrefAutre(type='checkbox' name='accountPref' autocomplete='off')
+                      | Autre
                 // ******************************************************************************
-                // Texte de présentation de la modale en entête
+                // Texte de présentation
                 // ******************************************************************************
-                .text-center
-                  img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" width='auto' height='72')
-                  h2 Saisie des renseignements personnels
-                  p.lead
-                    | Ces informations, optionnelles, vont permettre aux autres internautes de mieux vous conna&icirc;tre &agrave; travers vos centres d&apos;int&eacute;r&ecirc;t, ou vos types de collections pr&eacute;f&eacute;r&eacute;es par exemple...
-                // ******************************************************************************
-                // Pseudo + Mail
-                // ******************************************************************************
-                .text-center
-                  form#idAccountForm.form-Account
-                    fieldset.border.rounded.p-3
-                      .row.justify-content-around
-                        .col-md-5.mb-3
-                          label(for='idAccountPseudo') Pseudonyme
-                          input#idAccountPseudo.form-control(type='text' name='accountPseudo' disabled='' tabindex='-1')
-                        .col-md-5.mb-3
-                          label(for='idAccountEmail') Email
-                          input#idAccountEmail.form-control(type='email' name='accountEmail' disabled='' tabindex='-1')
-                    // ******************************************************************************
-                    // Avatar + Nom + Prénom
-                    // ******************************************************************************
-                    fieldset.border.rounded.p-3
-                      .row.justify-content-around
-                        .col-md-3
-                          img#idAccountPhotoImg.img-thumbnail.mb-3(src='' alt='Image du profile')
-                          span.btn.btn-success.btn-file.mb-3
-                            | Changer d&apos;avatar 
-                            input#idAccountPhotoFile(type='file' name='AccountPhotoFile' accept='image/png, image/jpeg')
-                        .col-md-8.mb-3
-                          label(for='idAccountFirstName') Pr&eacute;nom
-                          input#idAccountFirstName.form-control.mb-3(type='text' name='accountFirstName' placeholder='Prénom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
-                          label(for='idAccountName') Nom de famille
-                          input#idAccountName.form-control.mb-3(type='text' name='accountName' placeholder='Nom' pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$")
-                          .invalid-feedback
-                            | Un nom valide est requis.
-                    // ******************************************************************************
-                    // Date naissance + Age + Sexe
-                    // ******************************************************************************
-                    fieldset.border.rounded.p-3
-                      .row.justify-content-around
-                        .col-md-4.mb-3
-                          label(for='idAccountBirthDate') Date de naissance
-                          input#idAccountBirthDate.form-control(type='date' name='accountBirthdate')
-                          .invalid-feedback
-                            | Une date valide est requise
-                        .col-md-2.mb-3
-                          label(for='idAccountAge') Age
-                          input#idAccountAge.form-control(type='text' name='accountAge' disabled='')
-                        .col-md-3.mb-3
-                          label.text-left(for='accountSexe') Sexe
-                          fieldset.border.rounded.p-3
-                            .form-check.text-left
-                              input#idAccountSexNone.form-check-input(type='radio' name='accountSexe' value='Non divulgué' checked='' aria-checked='')
-                              label.form-check-label(for='idAccountSexNone') Non divulgu&eacute;
-                            .form-check.text-left
-                              input#idAccountSexMale.form-check-input(type='radio' name='accountSexe' value='masculin')
-                              label.form-check-label(for='idAccountSexMale') Masculin
-                            .form-check.text-left
-                              input#idAccountSexFemale.form-check-input(type='radio' name='accountSexe' value='feminin')
-                              label.form-check-label(for='idAccountSexFemale') F&eacute;minin
-                    // ******************************************************************************
-                    // Adresse + Ville + Code Postal + Département
-                    // ******************************************************************************
-                    fieldset.border.rounded.p-3
-                      .row.justify-content-around
-                        .col-md-6.mb-3
-                          label(for='idAccountStreet') Adresse
-                          input#idAccountStreet.form-control(type='text' name='accountStreet' placeholder='N° et voie')
-                          .invalid-feedback
-                            | Veuillez saisir votre adresse
-                        .col-md-6.mb-3
-                          label(for='idAccountCity') Ville
-                          input#idAccountCity.form-control(type='text' name='accountCity' placeholder='Ville')
-                      .row.justify-content-around
-                        .col-md-3.mb-3
-                          label(for='idAccountZipCode') Code postal
-                          input#idAccountZipCode.form-control(type='text' placeholder='Code postal')
-                          .invalid-feedback
-                            | Code postal requis.
-                        .col-md-5.mb-3
-                          label(for='idAccountDepartment') D&eacute;partement
-                          select#idAccountDepartment.custom-select(name='accountDepartment')
-                            option(selected='') Non renseign&eacute;
-                            option(value='00') (00) Hors France
-                            option(value='01') (01) Ain 
-                            option(value='02') (02) Aisne 
-                            option(value='03') (03) Allier 
-                            option(value='04') (04) Alpes de Haute Provence 
-                            option(value='05') (05) Hautes Alpes 
-                            option(value='06') (06) Alpes Maritimes 
-                            option(value='07') (07) Ard&egrave;che 
-                            option(value='08') (08) Ardennes 
-                            option(value='09') (09) Ari&egrave;ge 
-                            option(value='10') (10) Aube 
-                            option(value='11') (11) Aude 
-                            option(value='12') (12) Aveyron 
-                            option(value='13') (13) Bouches du Rh&ocirc;ne 
-                            option(value='14') (14) Calvados 
-                            option(value='15') (15) Cantal 
-                            option(value='16') (16) Charente 
-                            option(value='17') (17) Charente Maritime 
-                            option(value='18') (18) Cher 
-                            option(value='19') (19) Corr&egrave;ze 
-                            option(value='2A') (2A) Corse du Sud 
-                            option(value='2B') (2B) Haute-Corse 
-                            option(value='21') (21) C&ocirc;te d&apos;Or 
-                            option(value='22') (22) C&ocirc;tes d&apos;Armor 
-                            option(value='23') (23) Creuse 
-                            option(value='24') (24) Dordogne 
-                            option(value='25') (25) Doubs 
-                            option(value='26') (26) Dr&ocirc;me 
-                            option(value='27') (27) Eure 
-                            option(value='28') (28) Eure et Loir 
-                            option(value='29') (29) Finist&egrave;re 
-                            option(value='30') (30) Gard 
-                            option(value='31') (31) Haute Garonne 
-                            option(value='32') (32) Gers 
-                            option(value='33') (33) Gironde 
-                            option(value='34') (34) H&eacute;rault 
-                            option(value='35') (35) Ille et Vilaine 
-                            option(value='36') (36) Indre 
-                            option(value='37') (37) Indre et Loire 
-                            option(value='38') (38) Is&egrave;re 
-                            option(value='39') (39) Jura 
-                            option(value='40') (40) Landes 
-                            option(value='41') (41) Loir et Cher 
-                            option(value='42') (42) Loire 
-                            option(value='43') (43) Haute Loire 
-                            option(value='44') (44) Loire Atlantique 
-                            option(value='45') (45) Loiret 
-                            option(value='46') (46) Lot 
-                            option(value='47') (47) Lot et Garonne 
-                            option(value='48') (48) Loz&egrave;re 
-                            option(value='49') (49) Maine et Loire 
-                            option(value='50') (50) Manche 
-                            option(value='51') (51) Marne 
-                            option(value='52') (52) Haute Marne 
-                            option(value='53') (53) Mayenne 
-                            option(value='54') (54) Meurthe et Moselle 
-                            option(value='55') (55) Meuse 
-                            option(value='56') (56) Morbihan 
-                            option(value='57') (57) Moselle 
-                            option(value='58') (58) Ni&egrave;vre 
-                            option(value='59') (59) Nord 
-                            option(value='60') (60) Oise 
-                            option(value='61') (61) Orne 
-                            option(value='62') (62) Pas de Calais 
-                            option(value='63') (63) Puy de D&ocirc;me 
-                            option(value='64') (64) Pyr&eacute;n&eacute;es Atlantiques 
-                            option(value='65') (65) Hautes Pyr&eacute;n&eacute;es 
-                            option(value='66') (66) Pyr&eacute;n&eacute;es Orientales 
-                            option(value='67') (67) Bas Rhin 
-                            option(value='68') (68) Haut Rhin 
-                            option(value='69') (69) Rh&ocirc;ne 
-                            option(value='70') (70) Haute Sa&ocirc;ne 
-                            option(value='71') (71) Sa&ocirc;ne et Loire 
-                            option(value='72') (72) Sarthe 
-                            option(value='73') (73) Savoie 
-                            option(value='74') (74) Haute Savoie 
-                            option(value='75') (75) Paris 
-                            option(value='76') (76) Seine Maritime 
-                            option(value='77') (77) Seine et Marne 
-                            option(value='78') (78) Yvelines 
-                            option(value='79') (79) Deux S&egrave;vres 
-                            option(value='80') (80) Somme 
-                            option(value='81') (81) Tarn 
-                            option(value='82') (82) Tarn et Garonne 
-                            option(value='83') (83) Var 
-                            option(value='84') (84) Vaucluse 
-                            option(value='85') (85) Vend&eacute;e 
-                            option(value='86') (86) Vienne 
-                            option(value='87') (87) Haute Vienne 
-                            option(value='88') (88) Vosges 
-                            option(value='89') (89) Yonne 
-                            option(value='90') (90) Territoire de Belfort 
-                            option(value='91') (91) Essonne 
-                            option(value='92') (92) Hauts de Seine 
-                            option(value='93') (93) Seine Saint Denis 
-                            option(value='94') (94) Val de Marne 
-                            option(value='95') (95) Val d&apos;Oise 
-                            option(value='971') (971) Guadeloupe 
-                            option(value='972') (972) Martinique 
-                            option(value='973') (973) Guyane 
-                            option(value='974') (974) R&eacute;union 
-                            option(value='975') (975) Saint Pierre et Miquelon 
-                            option(value='976') (976) Mayotte 
-                    // ******************************************************************************
-                    // Préférences
-                    // ******************************************************************************
-                    fieldset.border.rounded.px-3.pt-3.mb-3
-                      .row.justify-content-around
-                        .col-md-6.mb-3
-                          label(for='accountPref') Pr&eacute;f&eacute;rences
-                          .btn-group-toggle(data-toggle='buttons')
-                            label#idAccountPrefGravuresLabel.btn.btn-outline-success.badge.badge-pill.mr-1
-                              input#idAccountPrefGravures(type='checkbox' name='accountPref' autocomplete='off')
-                              | Gravures
-                            label#idAccountPrefLivresLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
-                              input#idAccountPrefLivres(type='checkbox' name='accountPref' autocomplete='off')
-                              | Livres
-                            label#idAccountPrefFilmsLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
-                              input#idAccountPrefFilms(type='checkbox' name='accountPref' autocomplete='off')
-                              | Films
-                            label#idAccountPrefJeuxLabel.btn.btn-outline-info.badge.badge-pill.mr-1
-                              input#idAccountPrefJeux(type='checkbox' name='accountPref' autocomplete='off')
-                              | Jeux
-                            label#idAccountPrefMaquettesLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
-                              input#idAccountPrefMaquettes(type='checkbox' name='accountPref' autocomplete='off')
-                              | Maquettes
-                            label#idAccountPrefFigurinesLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
-                              input#idAccountPrefFigurines(type='checkbox' name='accountPref' autocomplete='off')
-                              | Figurines
-                            label#idAccountPrefBlindesLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
-                              input#idAccountPrefBlindes(type='checkbox' name='accountPref' autocomplete='off')
-                              | Blind&eacute;s
-                            label#idAccountPrefAvionsLabel.btn.btn-outline-success.badge.badge-pill.mr-1
-                              input#idAccountPrefAvions(type='checkbox' name='accountPref' autocomplete='off')
-                              | Avions
-                            label#idAccountPrefBateauxLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
-                              input#idAccountPrefBateaux(type='checkbox' name='accountPref' autocomplete='off')
-                              | Bateaux
-                            label#idAccountPrefDioramasLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
-                              input#idAccountPrefDioramas(type='checkbox' name='accountPref' autocomplete='off')
-                              | Dioramas
-                            label#idAccountPrefPrehistoireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
-                              input#idAccountPrefPrehistoire(type='checkbox' name='accountPref' autocomplete='off')
-                              | Pr&eacute;histoire
-                            label#idAccountPrefAntiquiteLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
-                              input#idAccountPrefAntiquite(type='checkbox' name='accountPref' autocomplete='off')
-                              | Antiquit&eacute;
-                            label#idAccountPrefMoyenAgeLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
-                              input#idAccountPrefMoyenAge(type='checkbox' name='accountPref' autocomplete='off')
-                              | Moyen-&acirc;ge
-                            label#idAccountPrefRenaissanceLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
-                              input#idAccountPrefRenaissance(type='checkbox' name='accountPref' autocomplete='off')
-                              | Renaissance
-                            label#idAccountPrefDentellesLabel.btn.btn-outline-success.badge.badge-pill.mr-1
-                              input#idAccountPrefDentelles(type='checkbox' name='accountPref' autocomplete='off')
-                              | Guerre en dentelles
-                            label#idAccountPrefAncienRegimeLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
-                              input#idAccountPrefAncienRegime(type='checkbox' name='accountPref' autocomplete='off')
-                              | Ancien-r&eacute;gime
-                            label#idAccountPrefRevolutionLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
-                              input#idAccountPrefRevolution(type='checkbox' name='accountPref' autocomplete='off')
-                              | R&eacute;volution Fran&ccedil;aise
-                            label#idAccountPref1erEmpireLabel.btn.btn-outline-info.badge.badge-pill.mr-1
-                              input#idAccountPref1erEmpire(type='checkbox' name='accountPref' autocomplete='off')
-                              | 1er Empire
-                            label#idAccountPref2ndEmpireLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
-                              input#idAccountPref2ndEmpire(type='checkbox' name='accountPref' autocomplete='off')
-                              | 2nd Empire
-                            label#idAccountPrefSecessionLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
-                              input#idAccountPrefSecession(type='checkbox' name='accountPref' autocomplete='off')
-                              | Guerre de s&eacute;cession
-                            label#idAccountPrefFarWestLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
-                              input#idAccountPrefFarWest(type='checkbox' name='accountPref' autocomplete='off')
-                              | Far West
-                            label#idAccountPrefWW1Label.btn.btn-outline-success.badge.badge-pill.mr-1
-                              input#idAccountPrefWW1(type='checkbox' name='accountPref' autocomplete='off')
-                              | 1&egrave;re Guerre Mondiale
-                            label#idAccountPrefWW2Label.btn.btn-outline-danger.badge.badge-pill.mr-1
-                              input#idAccountPrefWW2(type='checkbox' name='accountPref' autocomplete='off')
-                              | 2&egrave;me Guerre mondiale
-                            label#idAccountPrefContemporainLabel.btn.btn-outline-warning.badge.badge-pill.mr-1
-                              input#idAccountPrefContemporain(type='checkbox' name='accountPref' autocomplete='off')
-                              | Contemporain
-                            label#idAccountPrefFuturisteLabel.btn.btn-outline-info.badge.badge-pill.mr-1
-                              input#idAccountPrefFuturiste(type='checkbox' name='accountPref' autocomplete='off')
-                              | Futuriste
-                            label#idAccountPrefFantastiqueLabel.btn.btn-outline-primary.badge.badge-pill.mr-1
-                              input#idAccountPrefFantastique(type='checkbox' name='accountPref' autocomplete='off')
-                              | Fantastique
-                            label#idAccountPrefHFrancaiseLabel.btn.btn-outline-secondary.badge.badge-pill.mr-1
-                              input#idAccountPrefHFrancaise(type='checkbox' name='accountPref' autocomplete='off')
-                              | Histoire Fran&ccedil;aise
-                            label#idAccountPrefHAmericaineLabel.btn.btn-outline-dark.badge.badge-pill.mr-1
-                              input#idAccountPrefHAmericaine(type='checkbox' name='accountPref' autocomplete='off')
-                              | Histoire Am&eacute;ricaine
-                            label#idAccountPrefHInternationaleLabel.btn.btn-outline-success.badge.badge-pill.mr-1
-                              input#idAccountPrefHInternationale(type='checkbox' name='accountPref' autocomplete='off')
-                              | Histoire internationale
-                            label#idAccountPrefAutreLabel.btn.btn-outline-danger.badge.badge-pill.mr-1
-                              input#idAccountPrefAutre(type='checkbox' name='accountPref' autocomplete='off')
-                              | Autre
-                        // ******************************************************************************
-                        // Texte de présentation
-                        // ******************************************************************************
-                        .col-md-6.mb-3
-                          .form-group
-                            label(for='idAccountPresentation') Pr&eacute;sentation
-                            textarea#idAccountPresentation.form-control(rows='8' name='accountPresentation')
-                    // ******************************************************************************
-                    // Changement de Mot de Passe + zone d'alerte
-                    // ******************************************************************************
-                    .row.justify-content-around
-                      .col-md-6.mb-3
-                        label(for='idAccountCurrentPassword') Changement de mot de passe
-                        fieldset.border.rounded.p-3
-                          input#idAccountCurrentPassword.form-control.mb-3(type='password' name='accountCurrentPassword' placeholder='Mot de passe actuel' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
-                          label.sr-only(for='idAccountPassword') Mot de passe
-                          input#idAccountPassword.form-control(type='password' name='accountPassword' placeholder='Nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
-                          input#idAccountConfirmPassword.form-control(type='password' name='accountConfirmPassword' placeholder='Confirmez le nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
-                          label.sr-only(for='idAccountConfirmPassword') Confirmez le mot de passe
-                    p#idAccountAlertMsg.lead.mt-2.display-4.text-danger.text-center.alertMsg
-                    // ******************************************************************************
-                    // Footer et bouton de validation de la Form
-                    // ******************************************************************************
-                    .modal-footer
-                      button#idAccountBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
-        // *************************************************************************
-        // Fenêtre Modale d'ajout d'amis
-        // *************************************************************************
-        #idModalMgrFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMgrFriendTitle' aria-hidden='true')
-          #idModalMgrFriendDialog.modal-dialog.modal-md.modal-dialog-centered(role='document')
-            .modal-content
-              #idModalMgrFriendHeader.modal-header
-                button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-              #idModalBodyMgrFriend.modal-body.mb-3(style='overflow-x: hidden;')
-                #idModalMgrFriendTitle.container.px-0
-                #idModalMgrFriendListGroup.list-group
-        // *************************************************************************
-        // Fenêtre Modale des membres
-        // *************************************************************************
-        #idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMemberListTitle' aria-hidden='true')
-          #idModalMemberListDialog.modal-dialog.modal-md.modal-dialog-centered(role='document')
-            .modal-content
-              #idModalMemberListHeader.modal-header
-                button#idModalMemberListExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
-              #idModalBodyMemberList.modal-body.mb-3(style='overflow-x: hidden;')
-                #idModalMemberListTitle.container.px-0
-                #idModalMemberListGroup.list-group
-        // *************************************************************************
-        // Vérification Javascript activé + chargement des librairies
-        // *************************************************************************
-        noscript
-          p Veuillez activer JavaScript
-        script(src='static/js/jquery-3.4.1.slim.min.js')
-        script(src='static/js/popper.min.js')
-        script(src='static/js/bootstrap.min.js')
-        script(src='/socket.io/socket.io.js')
-        script(src='static/js/ToolBox.js')
-        script(src='static/js/variables.js')
-        script(src='static/js/SPAMgr.js')
-        script(src='static/js/MemberClientSide.js')
-        script(src='static/js/FriendRequestMgr.js')
-        script(src='static/js/PresentationCard.js')
-        script(src='static/js/FriendsCard.js')
-        script(src='static/js/MembersMgr.js')
-        script(src='static/js/InvitationsMgr.js')
-        script(src='static/js/MicroFicheMember.js')
-        script(src='static/js/FriendPopUpMenu.js')
-        script(src='static/js/RecommendFriendsMgr.js')
-        script(src='static/js/InvitationsCard.js')
-        script(src='static/js/InitHeaderColor.js')
-        script(src='static/js/DisplayModalHeader.js')
-        script(src='static/js/SearchFilter.js')
-        script(src='static/js/AccountModal.js')
-        script(src='static/js/ViewFriendProfile.js')
-        script(src='static/js/Posts.js')
-        script(src='siofu/client.js')
-        // XXXXX A virer "custom.js"
-        script(src='static/js/custom.js')
-        // </div>
-        // Opacity
+                .col-md-6.mb-3
+                  .form-group
+                    label(for='idAccountPresentation') Pr&eacute;sentation
+                    textarea#idAccountPresentation.form-control(rows='8' name='accountPresentation')
+            // ******************************************************************************
+            // Changement de Mot de Passe + zone d'alerte
+            // ******************************************************************************
+            .row.justify-content-around
+              .col-md-6.mb-3
+                label(for='idAccountCurrentPassword') Changement de mot de passe
+                fieldset.border.rounded.p-3
+                  input#idAccountCurrentPassword.form-control.mb-3(type='password' name='accountCurrentPassword' placeholder='Mot de passe actuel' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères")
+                  label.sr-only(for='idAccountPassword') Mot de passe
+                  input#idAccountPassword.form-control(type='password' name='accountPassword' placeholder='Nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
+                  input#idAccountConfirmPassword.form-control(type='password' name='accountConfirmPassword' placeholder='Confirmez le nouveau mot de passe' pattern='^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$' title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required='')
+                  label.sr-only(for='idAccountConfirmPassword') Confirmez le mot de passe
+            p#idAccountAlertMsg.lead.mt-2.display-4.text-danger.text-center.alertMsg
+            // ******************************************************************************
+            // Footer et bouton de validation de la Form
+            // ******************************************************************************
+            .modal-footer
+              button#idAccountBtn.btn.btn-lg.btn-success.btn-block(type='submit') Envoi
+// *************************************************************************
+// Fenêtre Modale d'ajout d'amis
+// *************************************************************************
+#idModalMgrFriend.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMgrFriendTitle' aria-hidden='true')
+  #idModalMgrFriendDialog.modal-dialog.modal-md.modal-dialog-centered(role='document')
+    .modal-content
+      #idModalMgrFriendHeader.modal-header.border-bottom
+        button#idModalMgrFriendExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      #idModalBodyMgrFriend.modal-body.mb-3(style='overflow-x: hidden;')
+        #idModalMgrFriendTitle.container.px-0
+        #idModalMgrFriendListGroup.list-group
+// *************************************************************************
+// Fenêtre Modale des membres
+// *************************************************************************
+#idModalMemberList.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalMemberListTitle' aria-hidden='true')
+  #idModalMemberListDialog.modal-dialog.modal-md.modal-dialog-centered(role='document')
+    .modal-content
+      #idModalMemberListHeader.modal-header.border-bottom
+        button#idModalMemberListExitBtn.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
+      #idModalBodyMemberList.modal-body.mb-3(style='overflow-x: hidden;')
+        #idModalMemberListTitle.container.px-0
+        #idModalMemberListGroup.list-group
+// *************************************************************************
+// Vérification Javascript activé + chargement des librairies
+// *************************************************************************
+noscript
+  p Veuillez activer JavaScript
+script(src='static/js/jquery-3.4.1.slim.min.js')
+script(src='static/js/popper.min.js')
+script(src='static/js/bootstrap.min.js')
+script(src='/socket.io/socket.io.js')
+script(src='static/js/ToolBox.js')
+script(src='static/js/variables.js')
+script(src='static/js/SPAMgr.js')
+script(src='static/js/MemberClientSide.js')
+script(src='static/js/FriendRequestMgr.js')
+script(src='static/js/PresentationCard.js')
+script(src='static/js/FriendsCard.js')
+script(src='static/js/MembersMgr.js')
+script(src='static/js/InvitationsMgr.js')
+script(src='static/js/MicroFicheMember.js')
+script(src='static/js/FriendPopUpMenu.js')
+script(src='static/js/RecommendFriendsMgr.js')
+script(src='static/js/InvitationsCard.js')
+script(src='static/js/InitHeaderColor.js')
+script(src='static/js/DisplayModalHeader.js')
+script(src='static/js/SearchFilter.js')
+script(src='static/js/AccountModal.js')
+script(src='static/js/ViewFriendProfile.js')
+script(src='static/js/Posts.js')
+script(src='siofu/client.js')
+script(src='static/js/moment-with-locales.js')
+// XXXXX A virer "custom.js"
+script(src='static/js/custom.js')
+// </div>
+// Opacity

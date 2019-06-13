@@ -7,7 +7,8 @@
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  <!-- Nécessaire pour le coté "Responsive"-->
 		<meta name="description" content="Réseau social des Collectionneurs de sujets d'Histoire Militaire">
-		<meta name="author" content="kingstudio.ro">
+		<!-- <meta name="author" content="kingstudio.ro"> -->
+		<meta name="author" content="Vil-Coyote Product">
 		
 		<!-- Favicon -->
 		<link rel="icon" href="static/images/favicon.png">
@@ -17,7 +18,6 @@
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
 		<link href="static/css/font-awesome.css" rel="stylesheet" type="text/css">
 		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
-
 		<!-- Styles -->
 		<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css">
 		<link href="static/css/index.css" rel="stylesheet" >
@@ -65,7 +65,6 @@
 		// ********************************************************************* //
 		</script>
 </head>
-<!-- <body class="animated fadeIn">      -->
 <body>     
 <!--	<div class="cOpacity">	-->		<!--	Ajouté pour créer une opacité sur l'ensemble de la page -->
 	<!-- ************************************************************************* -->
@@ -215,6 +214,13 @@
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-12" id="idDivMountPointPostEditMain">
+											<!-- ****************************************************************************** -->
+											<!--                      Emplacement des Posts :  					                      	--> 
+											<!--                                PostEdit							                      		--> 
+											<!--                                Tous les autres Posts			                      --> 
+											<!--                       Toutes ces Posts sont gérés en JS			                	--> 
+											<!-- ****************************************************************************** -->
+
 																<!-- <div class="box profile-info n-border-top">
 																		<form>
 																				<textarea class="form-control input-lg p-text-area" rows="2" placeholder="Whats in your mind today?"></textarea>
@@ -459,7 +465,7 @@
 																				</form>
 																		</div>
 																</div> -->
-											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -502,7 +508,7 @@
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idAriaGenericModalTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idGenericModalHeader">
+				<div class="modal-header border-bottom" id="idGenericModalHeader">
 					<h5 class="modal-title" id="idGenericModalTitle"></h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
@@ -523,7 +529,7 @@
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idAriaModalLoginTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idModalLoginHeader">
+				<div class="modal-header border-bottom" id="idModalLoginHeader">
 					<h5 class="modal-title"><i class="fa fa-sign-in"></i> Connexion</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
@@ -562,7 +568,7 @@
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idAriaModalSignInTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idModalSignInHeader">
+				<div class="modal-header border-bottom" id="idModalSignInHeader">
 					<h5 class="modal-title"><i class="fa fa-plus"></i> Création de compte</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
@@ -608,7 +614,7 @@
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idAriaModalLostPWDTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idModalLostPWDHeader">
+				<div class="modal-header border-bottom" id="idModalLostPWDHeader">
 					<h5 class="modal-title"><i class="fa fa-key"></i> Mot de passe perdu</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
@@ -653,23 +659,33 @@
 							<div class="col-md-12 col-md-offset-2">
 								<div class="row">
 									<div class="col-md-5 pl-0" id="idDivMountPointFriendProfile">
-						<!-- ****************************************************************************** -->
-						<!--                      Emplacement des Cartes :  					                      --> 
-						<!--                                Présentation							                      --> 
-						<!--                                Amis											                      --> 
-						<!--                                Invitations								                      --> 
-						<!--                       Toutes ces cartes sont gérées en JS			                --> 
-						<!-- ****************************************************************************** -->
-					</div>
-						
-					<!-- ****************************************************************************** -->
-					<!--                                Posts											                      --> 
-					<!-- ****************************************************************************** -->
-					<div class="col-md-7">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-12" id="idDivMountPointPostEditFriend">
+										<!-- ****************************************************************************** -->
+										<!--                      Emplacement des Cartes :  					                      --> 
+										<!--                                Présentation							                      --> 
+										<!--                                Amis											                      --> 
+										<!--                                Invitations								                      --> 
+										<!--                       Toutes ces cartes sont gérées en JS			                --> 
+										<!-- ****************************************************************************** -->
+									</div>
+										
+									<!-- ****************************************************************************** -->
+									<!--                                Posts											                      --> 
+									<!-- ****************************************************************************** -->
+									<div class="col-md-7">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row">
+													<div class="col-md-12" id="idDivMountPointPostEditFriend">
+														<!-- ****************************************************************************** -->
+														<!--                      Emplacement des Posts :  					                      	--> 
+														<!--                                PostEdit							                      		--> 
+														<!--                                Tous les autres Posts			                      --> 
+														<!--                       Toutes ces Posts sont gérés en JS			                	--> 
+														<!-- ****************************************************************************** -->
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -680,20 +696,13 @@
 		</div>
 	</div>
 
-
-
-
-
-
-
-
 	<!-- ************************************************************************* -->
 	<!--                         Fenêtre Modale de renseignements                  -->
 	<!-- ************************************************************************* -->
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idAriaModalAccountTitle" aria-hidden="true">
 		<div class="modal-dialog modal-md modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idModalAccountHeader">
+				<div class="modal-header border-bottom" id="idModalAccountHeader">
 					<h5 class="modal-title"><i class="fa fa-id-card-o"></i> Renseignements personnels</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
@@ -1082,7 +1091,7 @@
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idAriaModalMgrFriendTitle" aria-hidden="true">
 		<div id="idModalMgrFriendDialog" class="modal-dialog modal-md modal-dialog-centered" role="document" >
 			<div class="modal-content">
-				<div class="modal-header" id="idModalMgrFriendHeader">
+				<div class="modal-header border-bottom" id="idModalMgrFriendHeader">
 					<button id="idModalMgrFriendExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body mb-3" id="idModalBodyMgrFriend" style="overflow-x: hidden;">
@@ -1100,7 +1109,7 @@
 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idAriaModalMemberListTitle" aria-hidden="true">
 		<div id="idModalMemberListDialog" class="modal-dialog modal-md modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header" id="idModalMemberListHeader">
+				<div class="modal-header border-bottom" id="idModalMemberListHeader">
 					<button id="idModalMemberListExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body mb-3" id="idModalBodyMemberList" style="overflow-x: hidden;">
@@ -1140,7 +1149,9 @@
 		<script src="static/js/ViewFriendProfile.js"></script>
 		<script src="static/js/Posts.js"></script>
 		<script src="siofu/client.js"></script>
-<!-- XXXXX A virer "custom.js"-->
+		<script src="static/js/moment-with-locales.js"></script>
+
+		<!-- XXXXX A virer "custom.js"-->
 		<script src="static/js/custom.js"></script>
 <!-- </div>	-->	<!-- Opacity -->
 </body>

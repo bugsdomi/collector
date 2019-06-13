@@ -30,6 +30,10 @@ function ViewFriendProfile(pMemberClient){                              // Fonct
 		while (parent.firstChild){
 			parent.removeChild(parent.firstChild);
 		}
+		var parent = document.getElementById('idDivMountPointPostEditFriend');
+		while (parent.firstChild){
+			parent.removeChild(parent.firstChild);
+		}
 })
 // -----------------------------------------------------------------------------
 // Option de menu "Voir le Profil d'un ami"

@@ -67,6 +67,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	vPosts								= new Posts(vMemberClient);											// Instanciation de l'objet affichant les Posts
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
+	moment.locale('fr');	// Choisit le Preset "France" pour les dates et heures (Mode global)
+
 
 	// -------------------------------------------------------------------------
 	// 
