@@ -42,16 +42,11 @@ PresentationCard.prototype.displayPresentationCard = function(){
 	// 	<div class="card-header bg-warning border-bottom border-warning">
 	vlineHTML.vDivCardHeader = window.document.createElement('div');
 	vlineHTML.vDivCardBorder.appendChild(vlineHTML.vDivCardHeader);
-	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning');
-	
-	// 		<div class="containerAvatarToken">
-	vlineHTML.vDivContAvatToken = window.document.createElement('div');
-	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vDivContAvatToken);
-	vlineHTML.vDivContAvatToken.setAttribute('class', 'containerAvatarToken');
-	
+	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning py-0 pb-1');
+
 	// 			<img id="idAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="">
 	vlineHTML.vImgAvatToken = window.document.createElement('img');
-	vlineHTML.vDivContAvatToken.appendChild(vlineHTML.vImgAvatToken);
+	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vImgAvatToken);
 	vlineHTML.vImgAvatToken.setAttribute('id', 'idAvatarToken'+vActiveProfile);
 	vlineHTML.vImgAvatToken.setAttribute('class', 'avatarToken tokenSize50 ml-0');
 	vlineHTML.vImgAvatToken.setAttribute('alt', 'Avatar');

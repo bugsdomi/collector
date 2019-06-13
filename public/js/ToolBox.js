@@ -354,5 +354,36 @@ ToolBox.prototype.calcRelativeMouseCursorPos = function(element, event) {
 }
 
 // -----------------------------------------------------------------------------
+// Cette fonction redimensionne automatiquement des elements du DOM sur la base 
+// d'un event de saisie dans l'élément
+// -----------------------------------------------------------------------------
+ToolBox.prototype.autoResizeElem = function(pIElemToResize) {
+  var event = new MouseEvent('input', {
+    'view': window,
+    'bubbles': true,
+    'cancelable': true
+  });
+	document.getElementById(pIElemToResize).dispatchEvent(event); 
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction redimensionne automatiquement des elements du DOM sur la base 
+// d'un event de saisie dans l'élément
+// -----------------------------------------------------------------------------
+ToolBox.prototype.autoExpand = function(pElem) {
+	pElem.style.height = 'inherit';
+	var computed = window.getComputedStyle(pElem);			// Récupère les caractéristiques CSS de l'élément
+	
+		// Calcule la hauteur
+		var height	= parseInt(computed.getPropertyValue('border-top-width'), 10)
+								+ parseInt(computed.getPropertyValue('padding-top'), 10)
+								+ pElem.scrollHeight
+								+ parseInt(computed.getPropertyValue('padding-bottom'), 10)
+								+ parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+	
+		pElem.style.height = height + 'px';
+	};
+	
+// -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

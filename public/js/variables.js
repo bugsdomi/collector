@@ -17,9 +17,10 @@ var vMembersMgr;                    // Instanciation de l'objet gestionnaire des
 var vPresentationCard;              // Instanciation de l'objet "Carte de présentation"
 var vFriendsCard;                   // Instanciation de l'objet "Carte des invitations"
 var vRecommendFriendsMgr;           // Instanciation de l'objet gestionnaire des recommandations
-var vInvitationsCard;           // Instanciation de l'objet "carte des invitations" pour le profil principal
+var vInvitationsCard;               // Instanciation de l'objet "carte des invitations" pour le profil principal
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var vViewFriendProfile; 			      // Instanciation de l'objet de présentation du profil d'un ami
+var vPosts; 			                  // Instanciation de l'objet de Postage
 var webSocketConnection;            // Variable pour la connexion WebSocket
 
 var cstSuperAdmin = 1;        // Statut du Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin

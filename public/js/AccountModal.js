@@ -6,7 +6,7 @@
 // *** Cet objet sert à saisir toutes les données de profil personnelles***
 // ***                                                                  ***
 // ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
+// ***      InitHeaderColor                                             ***
 // ***                                                                  ***
 // ************************************************************************
 

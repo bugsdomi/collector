@@ -9,7 +9,9 @@
 // ***    membres)                                          						***
 // ***                                                                  ***
 // ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
+// ***      MicroFicheMember                                            ***
+// ***      DisplayModalHeader                                          ***
+// ***      SearchFilter			                                          ***
 // ***                                                                  ***
 // ************************************************************************
 
@@ -93,7 +95,7 @@ function AddMemberListLines(item, index, pMicroFiche, pModalMemberListGroup){
 }
 
 // --------------------------------------------------------------
-// Affichage du Header de la modale de la liste des membres
+// Affichage de la liste des membres
 // --------------------------------------------------------------
 MembersMgr.prototype.displayMembersLines = function(pMembers, pDisplayMembersModalData){ 
 	var vMembers = [];

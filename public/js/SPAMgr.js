@@ -64,9 +64,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
 	vInvitationsCard			= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
+	vPosts								= new Posts(vMemberClient);											// Instanciation de l'objet affichant les Posts
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
-		// -------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal (Header Menu)
 	// 
@@ -182,7 +184,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vLoginAlertMsg = document.getElementById('idLoginAlertMsg');
 	var vModalLoginHeader = document.getElementById('idModalLoginHeader');
 	
-	vMemberClient.giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
+// ZZZZZ XXXXX 
+// vMemberClient.giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
+	$('#idModalLogin').on('shown.bs.modal', function(){
+		$('#idLoginPseudo').focus();
+	})
 
 	vConnexion.addEventListener('click', function(){
 		vLoginForm.idLoginPseudo.value = '';                                 
@@ -237,7 +243,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vModalLostPWDHeader = document.getElementById('idModalLostPWDHeader');
 	var vLostPWDAlertMsg = document.getElementById('idLostPWDAlertMsg');
 
-	vMemberClient.giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
+// XXXXX
+// vMemberClient.giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
+	$('#idModalLostPWD').on('shown.bs.modal', function(){
+		$('#idLostPWDEmail').focus();
+	})
 
 	vLostPWD.addEventListener('click', function(){
 		vLostPWDForm.idLostPWDEmail.value = '';
@@ -274,8 +284,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vSignInAlertMsg = document.getElementById('idSignInAlertMsg');
 	var vSignInPassword = document.getElementById('idSignInPassword');
 	var vSignInConfirmPassword = document.getElementById('idSignInConfirmPassword');
-	
-	vMemberClient.giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');                                               
+// XXXXX	
+// vMemberClient.giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');     
+	$('#idModalSignIn').on('shown.bs.modal', function(){
+		$('#idSignInEmail').focus();
+	})
 
 	vCreation.addEventListener('click', function(){
 		var lSignInParameters = {
@@ -371,8 +384,12 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAccountConfirmPassword = document.getElementById('idAccountConfirmPassword');
 	var vAccountAlertMsg = document.getElementById('idAccountAlertMsg');1
 	var vAccountBtn = document.getElementById('idAccountBtn');1
-
-	vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');    
+// XXXXX
+// vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');
+	$('#idModalAccount').on('shown.bs.modal', function(){
+		$('#idAccountFirstName').focus();
+	})
+    
 
 	// -------------------------------------------------------------------------
 	// Eléments du UpLoader d'images du profil (avec ses events)

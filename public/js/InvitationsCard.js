@@ -41,7 +41,7 @@ InvitationsCard.prototype.displayInvitSentCard = function(){
 // 	<div class="card-header bg-warning border-bottom border-warning">
 	vlineHTML.vDivCardHeader = window.document.createElement('div');
 	vlineHTML.vDivCardBorder.appendChild(vlineHTML.vDivCardHeader);
-	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning');
+	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning py-0 pb-1');
 
 // 		<div class="container">
 	vlineHTML.vDivContAvatToken = window.document.createElement('div');

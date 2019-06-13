@@ -83,14 +83,18 @@ SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){
 	lineHTML.vBtnClearSearch.appendChild(lineHTML.vIIconClearSearch);
 	lineHTML.vIIconClearSearch.setAttribute('class', 'fa fa-fw fa-times');
 
-	// lineHTML.vBtnRunSearch = window.document.createElement('button');
-	// lineHTML.vClearSearch.appendChild(lineHTML.vBtnRunSearch);
-	// lineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearch');
-	// lineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+// --------------------------------------------------------------
+// Option N°1 : avec bouton de validation au lieu de la saisie à la volée
+// --------------------------------------------------------------
 
-	// lineHTML.vIIconRunSearch = window.document.createElement('i');
-	// lineHTML.vBtnRunSearch.appendChild(lineHTML.vIIconRunSearch);
-	// lineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
+	lineHTML.vBtnRunSearch = window.document.createElement('button');
+	lineHTML.vClearSearch.appendChild(lineHTML.vBtnRunSearch);
+	lineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearch');
+	lineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+
+	lineHTML.vIIconRunSearch = window.document.createElement('i');
+	lineHTML.vBtnRunSearch.appendChild(lineHTML.vIIconRunSearch);
+	lineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
 
   vDataToTransmit = 
   {
@@ -100,16 +104,22 @@ SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){
 		thisContext					: this,
 	}
 
-	lineHTML.vInputPseudo.addEventListener('keyup', this.searchFilteredList);
-	lineHTML.vInputFirstName.addEventListener('keyup', this.searchFilteredList);
-	lineHTML.vInputName.addEventListener('keyup', this.searchFilteredList);
-	lineHTML.vInputPseudo.datas = vDataToTransmit;
-	lineHTML.vInputFirstName.datas = vDataToTransmit;
-	lineHTML.vInputName.datas = vDataToTransmit;
+// --------------------------------------------------------------
+// Option N°2 : Saisie des caractères à la volée
+// --------------------------------------------------------------
 
-	// lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredList);
-	// lineHTML.vBtnRunSearch.datas = vDataToTransmit;
-	// lineHTML.vIIconRunSearch.datas = vDataToTransmit;
+	// lineHTML.vInputPseudo.addEventListener('keyup', this.searchFilteredList);
+	// lineHTML.vInputFirstName.addEventListener('keyup', this.searchFilteredList);
+	// lineHTML.vInputName.addEventListener('keyup', this.searchFilteredList);
+	// lineHTML.vInputPseudo.datas = vDataToTransmit;
+	// lineHTML.vInputFirstName.datas = vDataToTransmit;
+	// lineHTML.vInputName.datas = vDataToTransmit;
+
+
+
+	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredList);
+	lineHTML.vBtnRunSearch.datas = vDataToTransmit;
+	lineHTML.vIIconRunSearch.datas = vDataToTransmit;
 
 	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullList);
 	lineHTML.vBtnClearSearch.datas = vDataToTransmit;

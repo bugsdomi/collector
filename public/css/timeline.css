@@ -641,7 +641,8 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
 }
 
 /*====================== Timeline posts ================*/
-.p-text-area {
+/* DH- */
+/* .p-text-area {
     border: none !important;
     font-weight: 300;
     box-shadow: none;
@@ -649,13 +650,15 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
     font-size: 16px;
     resize: vertical;
     background: #fff !important;
-}
+} */
 
 .box-widget {
     border: none;
     position: relative;
 }
-.box {
+
+/* DH-*/
+/* .box {
     position: relative;
     border-radius: 3px;
     background: #ffffff;
@@ -663,7 +666,7 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
     margin-bottom: 20px;
     width: 100%;
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-}
+} */
 .box-header.with-border {
     border-bottom: 1px solid #f4f4f4;
 }
@@ -764,11 +767,12 @@ h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-tit
 .img-sm+.img-push {
     margin-left: 40px;
 }
-.box .form-control {
+/* DH- */
+/* .box .form-control {
     border-radius: 0;
     box-shadow: none;
     border-color: #d2d6de;
-}
+} */
 
 .attachment-block {
     border: 1px solid #f4f4f4;

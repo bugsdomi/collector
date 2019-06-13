@@ -10,7 +10,7 @@
 // ***  - La gestion ddes recommandation                                ***
 // ***                                                                  ***
 // ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
+// ***      MicroFicheMember                                            ***
 // ***                                                                  ***
 // ************************************************************************
 
@@ -95,12 +95,6 @@ FriendPopUpMenu.prototype.viewFriend = function(event){
 	
 	webSocketConnection.emit('getCompleteRecordOfMyFriend',vFriendToView);
 }
-
-
-
-
-
-
 
 // -----------------------------------------------------------------------------
 // Option de menu "Supprimer un ami"

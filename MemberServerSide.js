@@ -588,7 +588,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		});
 	};
 
-// ---------------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------------------
 	// Ajout des données du visiteur (futur membre) (Email, Pseudo, MDP, timestamp (au format brut), et statut dans la BDD)
 	// ATTENTION !!!!
 	// S'il n'y aucun membre dans la BDD, le Premier membre qui est créé est le Super-Administrateur
@@ -915,7 +915,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Promesse d'ajout de moi-même dans la liste d'ami de mon futur ami
+	// Ajout de moi-même dans la liste d'ami de mon futur ami
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addMeToPotentialFriend = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {
@@ -945,7 +945,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Promesse d'ajout de mon futur Ami dans mon record
+	// Ajout de mon futur Ami dans mon record
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addPotentialFriendToMe = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {
@@ -1475,7 +1475,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
   // ---------------------------------------------------------------------------------------------------------------------------
-	// Promesse d'ajout de l'ami que je recommande dans la liste d'amis de l'Ami-cible
+	// Ajout de l'ami que je recommande dans la liste d'amis de l'Ami-cible
 	// A noter : Je concatene le pseudo de l'ami que je recommande avec le mien, séparé par "/"
 	// Exemple : "Mathos/BugsDomi"
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1507,7 +1507,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	};
 
   // ---------------------------------------------------------------------------------------------------------------------------
-	// Promesse d'ajout de l'Ami-cible de la recommandation dans le record de l'ami que je recommandde
+	// Ajout de l'Ami-cible de la recommandation dans le record de l'ami que je recommandde
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addTargetFriendToRecommendedFriend = function(pFriendToAdd){
 		return new Promise((resolve, reject) => {

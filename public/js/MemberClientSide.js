@@ -73,16 +73,16 @@ function MemberClient(){   							// Fonction constructeur exportée
 
 // ===================================================== Fonctions ===========================================================
 
-
-// -----------------------------------------------------------------------------
-//  Cette fonction donne le focus au champs pIdField  de la fenêtre modale pIdModal
-//  passée en paramètre car le composant "Modal" court-circuite l'attibut "Auto-focus"
-// -----------------------------------------------------------------------------
-MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField){
-	$('#'+pIdModal).on('shown.bs.modal', function(){
-		$('#'+pIdField).focus();
-	})
-}
+// XXXXX
+// // -----------------------------------------------------------------------------
+// //  Cette fonction donne le focus au champs pIdField  de la fenêtre modale pIdModal
+// //  passée en paramètre car le composant "Modal" court-circuite l'attibut "Auto-focus"
+// // -----------------------------------------------------------------------------
+// MemberClient.prototype.giveFocusToModalFirstField = function(pIdModal, pIdField){
+// 	$('#'+pIdModal).on('shown.bs.modal', function(){
+// 		$('#'+pIdField).focus();
+// 	})
+// }
 
 // -----------------------------------------------------------------------------
 // Cette fonction vérifie que le MDP et sa confirmation sont bien identiques
@@ -249,6 +249,7 @@ MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, 
 	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
 	vFriendsCard.displayFriendsCard();																			// - Affiche les amis dans la carte "Amis"
 	vInvitationsCard.displayInvitSentCard();																// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
+	vPosts.displayPosts();																									// - Affiche les Posts
 }
 
 // -----------------------------------------------------------------------------

@@ -41,7 +41,8 @@ module.exports = function DBMgr(){
                 
                 resolve(true);
                 this.myDB = db;                                                                         // Conservation de l'instance de BDD
-                this.collectionMembers = this.myDB.db('collect-or').collection('members');              // On sélectionne la collection des joueurs
+                this.collectionMembers = this.myDB.db('collect-or').collection('members');              // On sélectionne la collection des membres
+                this.collectionMessages = this.myDB.db('collect-or').collection('messages');            // On sélectionne la collection des messages (au sens large)
                 this.collectionTechnical = this.myDB.db('collect-or').collection('technical');          // On sélectionne la collection des données techniques
                 console.log('La BDD "collect-or" est bien lancée et tourne');    // Message de notification BDD OK à destination de l'Admin 
             });

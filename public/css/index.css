@@ -76,7 +76,7 @@ body {
 }
 
 .infosOnNavBar{
-    color: #FFFFFF;
+    color: white;
 }
 
 /* ******************************* */
@@ -274,7 +274,7 @@ body {
     filter: alpha(opacity=0);
     opacity: 0;
     outline: none;
-    background: #fff;
+    background: white;
     cursor: inherit;
     display: block
 }
@@ -556,18 +556,27 @@ a, a:hover {
     transition-timing-function: ease-out;
 }
 
+/* ********************************************************************************************** */
 /* DH+ Création des différents formats de modales (pour surcharger la taille initiale des modales */
+/* ********************************************************************************************** */
 .modal-xs {
     max-width: 20% !important;
-  }
+}
 .modal-md {
     max-width: 40% !important;
-  }
+}
 .modal-lg {
     max-width: 60% !important;
-  }
+}
 .modal-xl {
     max-width: 80% !important;
-  }
-  
+}
 
+/* ********************************************************************************************** */
+/* Permet de définir les dimensions des text-Area lorsqu elles sont auto-redimensionnées          */
+/* ********************************************************************************************** */
+.textareaAutoResizable {
+	/* min-height: 5em; */
+	max-height: 50vh;
+	width: 100%;
+}

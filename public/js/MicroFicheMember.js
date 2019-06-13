@@ -15,7 +15,7 @@
 function MicroFicheMember(pMember){   						// Fonction constructeur exportée
 	this.memberClient 		= pMember;
 	this.friendsOfMember	= [];
-	this.lastMicroFiche 	= 0;																		// N0 de la dernière MicroFiche affichée
+	this.lastMicroFiche 	= 0;											// N0 de la dernière MicroFiche affichée
 };
 
 // ---------------------------------------------------------------------------------------------------------------------------
@@ -38,21 +38,22 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 	// De plus, le N° d'Id est fourni par le demandeur
 	if (pMicroFicheParams.simpleMicroFiche){
 		pDivDropDown.appendChild(vlineHTML.vDiv);
-		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+pMicroFicheParams.index);
+		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+ vActiveProfile +pMicroFicheParams.index);
 	} else {
 	// Il s'agit d'une Micro-fiche Stackable, et à fermeture automatique
 	// le N° d'Id est déterminé automatiquement par cette méthode
-		while ($('#idDivMicroFiche'+this.lastMicroFiche).length > 0) { 
+		while ($('#idDivMicroFiche'+ vActiveProfile +this.lastMicroFiche).length > 0) { 
 			this.lastMicroFiche++;
 		}
 
-		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+this.lastMicroFiche);
+		vlineHTML.vDiv.setAttribute('id', 'idDivMicroFiche'+ vActiveProfile +this.lastMicroFiche);
 
 		if(this.lastMicroFiche < 2){									// Si je n'ai que la MF principale, j'ajoute une MF juste en dessous
 			pDivDropDown.appendChild(vlineHTML.vDiv);
-		} else {																			// sinon je l'insere en la MF principaale et la MF située juste au dessous
-			var parentDiv = document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)).parentNode;
-			parentDiv.insertBefore(vlineHTML.vDiv, document.getElementById('idDivMicroFiche'+(this.lastMicroFiche-1)));
+		} else {																			// sinon je l'insere entre la MF principale et la MF située juste au dessous
+			var vDivMicroFiche = document.getElementById('idDivMicroFiche'+ vActiveProfile +(this.lastMicroFiche-1));
+			var parentDiv = vDivMicroFiche.parentNode;
+			parentDiv.insertBefore(vlineHTML.vDiv, vDivMicroFiche);
 		}
 	}
 

@@ -12,7 +12,8 @@
 // ***  - La suppression du membre invité de la liste                   ***
 // ***                                                                  ***
 // ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
+// ***      MicroFicheMember                                            ***
+// ***      DisplayModalHeader                                          ***
 // ***                                                                  ***
 // ************************************************************************
 

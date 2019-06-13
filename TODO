@@ -1,4 +1,7 @@
 
+Todo
+
+
 Todo:
 ☐ Propager les champs entre le coté serveur et le coté client :
   Coté Serveur :
@@ -16,6 +19,7 @@ Todo:
     - displayxxx
     - updateProfile
 
+    ☐ Dans la fiche de renseignements, blinder les controles (Nom, prénom, Date naissance, département, adresse, ville
     ☐ Ajouter la version du produit en bas a droite de l'écran
     ☐ Changer les avatars dynamiquement chez mes amis ou futurs amis
     ☐ Voir Toastr
@@ -27,7 +31,6 @@ Todo:
     ☐ Gerer le nombre de messages :
         ☐ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire
         ☐ A la fermeture, écrire le Nbre de Msg en BDD
-    ☐ Pourquoi les bordures des champs de saisie sont en rouge sur Firefox ?
     ☐ Gerer le pseudo qui est illisible en mode réduit
     ☐ Gerer la photo de profil sur la fiche de renseignement qui est trop grande en mode reduit
     ☐ Corriger Bug du calcul de l âge dans la fiche de renseignement
@@ -183,5 +186,6 @@ Todo:
     ✔ Convertir les fonctions anonymes en fonctions fleches @done(19-05-11 13:07)
     ✔ Ajouter une Popover ssur l'annulation d'une invitation @done(19-05-22 09:09)
     ✘ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher @cancelled(19-05-22 09:10)
-    
+    ✔ Pourquoi les bordures des champs de saisie sont en rouge sur Firefox ? @done(19-06-12 11:02)
+        
     

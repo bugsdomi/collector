@@ -9,7 +9,10 @@
 // ***    (en fonction de notre propre statut (Admin ou non))           ***
 // ***                                                                  ***
 // ***  Nécessite :                                                     ***
-// ***      Rien                                                        ***
+// ***      InitHeaderColor                                             ***
+// ***      PresentationCard                                            ***
+// ***      FriendsCard			                                            ***
+// ***      InvitationsCard                                             ***
 // ***                                                                  ***
 // ************************************************************************
 
@@ -17,6 +20,17 @@ function ViewFriendProfile(pMemberClient){                              // Fonct
   this.memberClient = pMemberClient;
 };   						
 
+// -----------------------------------------------------------------------------
+// Suppression de tous les éléments contenus dans la modale "FriendPrrofile"
+// -----------------------------------------------------------------------------
+	$('#idModalFriendProfilePage').on('hidden.bs.modal', () => {
+		vActiveProfile = cstMainProfileActive;
+
+		var parent = document.getElementById('idDivMountPointFriendProfile');
+		while (parent.firstChild){
+			parent.removeChild(parent.firstChild);
+		}
+})
 // -----------------------------------------------------------------------------
 // Option de menu "Voir le Profil d'un ami"
 // -----------------------------------------------------------------------------
@@ -30,23 +44,11 @@ ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 	new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 	document.getElementById('idModalFriendAvatarToken').setAttribute('src','static/images/members/'+pMyFriend.member.etatCivil.photo);
 	document.getElementById('idModalFriendProfilePageTitle').innerHTML = ' Profil de ' + pMyFriend.member.pseudo;
-
 	$('#idModalFriendProfilePage').modal('show');     // Ouverture de la modale                                     
 
 	new PresentationCard(pMyFriend).displayPresentationCard();							// - Affiche les informations du profil dans la carte "Présentation"
 	new FriendsCard(pMyFriend).displayFriendsCard();												// - Affiche les amis dans la carte "Amis"
-
 	pMyFriend.vMyInvitSentList = [];
 	new InvitationsCard(pMyFriend).displayInvitSentCard();									// - Affiche les invitations lancées dans la carte "Invitation lancées"
+	new Posts(pMyFriend).displayPosts();																		// - Affiche les Posts et le PostEdit
 }
-
-	// Suppression de tous les éléments de la liste des membres pouvant devenir ami à la fermeture de la modale
-	$('#idModalFriendProfilePage').on('hidden.bs.modal', () => {
-		vActiveProfile = cstMainProfileActive;
-
-		var parent = document.getElementById('idDivMountPointFriendProfile');
-		while (parent.firstChild){
-			parent.removeChild(parent.firstChild);
-		}
-})
-

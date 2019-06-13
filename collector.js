@@ -28,7 +28,7 @@ app.set('view engine', 'pug');
 app.use('/static', express.static(__dirname + '/public'));
 app.use('/staticNodeModules', express.static(__dirname + '/node_modules'));
 app.get('/', function(req, res){
-    res.render('index');    
+  res.render('index');    
 });
 // -------------------------------------------------------------------------
 // Création du serveur et lancement du listener
