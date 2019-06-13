@@ -88,7 +88,7 @@ Posts.prototype.displayPostEdit = function(){
 	vlineHTML.vInputSubject.setAttribute('placeholder', 'Titre du sujet');
 	vlineHTML.vInputSubject.setAttribute('class', 'col-10 mx-auto px-0');
 	vlineHTML.vInputSubject.setAttribute('name', 'postEditTitle'+vActiveProfile);
-	vlineHTML.vInputSubject.setAttribute('style', 'border: none !important; box-shadow: none;');
+	vlineHTML.vInputSubject.setAttribute('style', 'border: none !important; box-shadow: none; outline: none;');
 	
 //           <textarea id="idAccountPresentation" rows="8" name="accountPresentation" placeholder="Tapez votre texte ici..." style="border: none !important; box-shadow: none; height: 100px;" class="form-control px-0 pb-0">
 	vlineHTML.vTextAreaPost = window.document.createElement('textarea');
@@ -213,7 +213,7 @@ Posts.prototype.displayPublishedPosts = function(pSubject, pMessage){
 	vlineHTML.vInputSubject.setAttribute('readonly', '');
 	vlineHTML.vInputSubject.setAttribute('class', 'col-10 mx-auto px-0');
 	vlineHTML.vInputSubject.setAttribute('name', 'publishedPostTitle'+vActiveProfile);
-	vlineHTML.vInputSubject.setAttribute('style', 'border: none !important; box-shadow: none;');
+	vlineHTML.vInputSubject.setAttribute('style', 'border: none !important; box-shadow: none; outline: none;');
 	if (!pSubject){
 		vlineHTML.vInputSubject.value = 'Sans titre';
 	} else {
