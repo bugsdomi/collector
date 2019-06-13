@@ -100,7 +100,6 @@ Posts.prototype.displayPostEdit = function(){
 	vlineHTML.vBtnValidPost.innerHTML = 'Post';
 
 	vlineHTML.vBtnValidPost.addEventListener('click', this.publishPost.bind(this),false);
-	vlineHTML.vBtnValidPost.datas = vDataToTransmit;
 
 	this.vPostTitle = document.getElementById('idPostEditTitle'+vActiveProfile);
 	this.vPostMsg = document.getElementById('idPostEditArea'+vActiveProfile);
