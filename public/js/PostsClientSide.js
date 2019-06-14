@@ -14,7 +14,7 @@
 // ***                                                                  ***
 // ************************************************************************
 
-function Posts(pMemberClient){   						// Fonction constructeur exportée
+function PostsClient(pMemberClient){   						// Fonction constructeur exportée
 	this.memberClient = pMemberClient;
 	this.lastPublishedPost = 0;				// N0 du dernier Post publié affiché
 	this.vPostTitle;
@@ -29,7 +29,7 @@ function Posts(pMemberClient){   						// Fonction constructeur exportée
 // -----------------------------------------------------------------------------
 // Cette méthode affiche la carte de saisie des Posts
 // -----------------------------------------------------------------------------
-Posts.prototype.displayPostEdit = function(){
+PostsClient.prototype.displayPostEdit = function(){
 	var vlineHTML = {};						
 	var vMountPointPostEdit = document.getElementById('idDivMountPointPostEdit'+vActiveProfile);
 
@@ -126,7 +126,7 @@ Posts.prototype.displayPostEdit = function(){
 // -----------------------------------------------------------------------------
 // Cette méthode affiche les Posts publiés
 // -----------------------------------------------------------------------------
-Posts.prototype.displayPublishedPosts = function(pPostToPublish){
+PostsClient.prototype.displayPublishedPosts = function(pPostToPublish){
 	var vlineHTML = {};						
 	var vMountPointPostEdit = document.getElementById('idDivMountPointPostEdit'+vActiveProfile);
 
@@ -151,18 +151,27 @@ Posts.prototype.displayPublishedPosts = function(pPostToPublish){
 
 	vlineHTML.vDivCardHeader = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardHeader);
-	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header py-1');
+	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header border-0 py-0');
+
+	vlineHTML.vDivCardHeaderRow = window.document.createElement('div');
+	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardHeaderRow);
+	vlineHTML.vDivCardHeaderRow.setAttribute('class', 'row m-0 py-1 px-2');
 
 	vlineHTML.vImgAvatToken = window.document.createElement('img');
-	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vImgAvatToken);
+	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vImgAvatToken);
 	vlineHTML.vImgAvatToken.setAttribute('class', 'avatarToken tokenSize32 ml-0');
 	vlineHTML.vImgAvatToken.setAttribute('alt', 'Avatar');
 	vlineHTML.vImgAvatToken.setAttribute('src', 'static/images/'+pPostToPublish.authorPhoto);
 
 	vlineHTML.vH5Header = window.document.createElement('h5');
-	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vH5Header);
-	vlineHTML.vH5Header.setAttribute('class', 'card-title text-dark');
+	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vH5Header);
+	vlineHTML.vH5Header.setAttribute('class', 'card-title ml-1 text-dark m-0 align-self-center');
 	vlineHTML.vH5Header.innerHTML = pPostToPublish.authorPseudo;
+
+	vlineHTML.vDivTimeStamp = window.document.createElement('div');
+	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vDivTimeStamp);
+	vlineHTML.vDivTimeStamp.setAttribute('class', 'text-dark p-0 ml-2 font-size-70 align-self-center');
+	vlineHTML.vDivTimeStamp.innerHTML = moment(pPostToPublish.postDate).format('[à publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
 
 	vlineHTML.vDivCardBody = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardBody);
@@ -198,52 +207,58 @@ Posts.prototype.displayPublishedPosts = function(pPostToPublish){
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivFooter);
 	vlineHTML.vDivFooter.setAttribute('class', 'card-footer row justify-content-between border py-1 px-0 mx-0 mt-1');
 
-	vlineHTML.vDivTimeStamp = window.document.createElement('div');
-	vlineHTML.vDivFooter.appendChild(vlineHTML.vDivTimeStamp);
-	vlineHTML.vDivTimeStamp.setAttribute('class', 'col-auto text-dark p-0 ml-2 font-size-70 align-self-center');
-	vlineHTML.vDivTimeStamp.innerHTML = pPostToPublish.postDate;
-
 	vlineHTML.vBtnDeletePost = window.document.createElement('button');
 	vlineHTML.vDivFooter.appendChild(vlineHTML.vBtnDeletePost);
 	vlineHTML.vBtnDeletePost.setAttribute('id', 'idBtnDeletePost' + vActiveProfile + this.lastPublishedPost);
 	vlineHTML.vBtnDeletePost.setAttribute('type', 'button');
 	vlineHTML.vBtnDeletePost.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters mr-4 border-danger');
+	vlineHTML.vBtnDeletePost.setAttribute('style', 'visibility: hidden;');
 	vlineHTML.vBtnDeletePost.innerHTML = 'Supprimer';
 
-	vlineHTML.vBtnDeletePost.addEventListener('click', this.deletePublishedPost.bind(this),false);
+	if 	((vMemberClient.member.pseudo === vlineHTML.vH5Header.innerHTML) ||  		// Si le propriétaire du mur principal est l'auteur du post, il peut effacer son Post
+			(vActiveProfile === cstMainProfileActive)){
+		vlineHTML.vBtnDeletePost.style.visibility='visible';											// Alors Affichage du bouton de supppression du Post
+		vlineHTML.vBtnDeletePost.addEventListener('click', this.deletePublishedPost.bind(this),false);
+	}
 }
 
 // -----------------------------------------------------------------------------
 // Cette méthode supprime un Post
 // -----------------------------------------------------------------------------
-Posts.prototype.deletePublishedPost = function(){
+PostsClient.prototype.deletePublishedPost = function(){
 	alert('Post supprimé')
 }
 
 // -----------------------------------------------------------------------------
 // Cette méthode publie le nouveau Post
 // -----------------------------------------------------------------------------
-Posts.prototype.addPublishedPost = function(){
+PostsClient.prototype.addPublishedPost = function(){
 
 console.log('addPublishedPost - vMemberClient : ',vMemberClient)
+console.log('addPublishedPost 1 - this.lastPublishedPost : ',this.lastPublishedPost)
 
 	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: this.vPostTitle.value,
-		postMsg				: this.vPostMsg.value,
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+		postDate    		: moment().format(),													// Récupération de l'heure actuelle
+		postTitle				: this.vPostTitle.value,
+		postMsg					: this.vPostMsg.value,
+		authorPseudo 		: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
+		authorPhoto			:	vMemberClient.member.etatCivil.photo,
+		// Par contre le membre principal, peut poster un message sur le profil de son ami (Propriétaire de son mur et de tous les Posts qui y sont écrits)
+		postOwnerMail		: this.memberClient.member.email,							// Pour pouvoir afficher QUE les Posts écrits sur le mur du propriétaire
+		postOwnerPseudo	: this.memberClient.member.pseudo,						// Propriétaire du mur sur lequel sont affichés les posts (les siens et ceux ecrits pour lui par d autres)
+		postNumber			: this.lastPublishedPost,											// N° de Post du propriétaire pour savoir qui en est l'auteur
 	}
 
 console.log('addPublishedPost - vPostToPublish : ',vPostToPublish)
 	this.displayPublishedPosts(vPostToPublish);
+	webSocketConnection.emit('addNewPost',vPostToPublish);
+
 }
 
 // -----------------------------------------------------------------------------
 // Cette méthode publie le nouveau Post
 // -----------------------------------------------------------------------------
-Posts.prototype.publishPost = function(){
+PostsClient.prototype.publishPost = function(){
 	if (this.vPostMsg.value){				// Si le message est non vide, il est publié
 		this.addPublishedPost();
 		vToolBox.autoResizeElem('idPublishedPostArea' + vActiveProfile + this.lastPublishedPost);
@@ -258,85 +273,97 @@ Posts.prototype.publishPost = function(){
 // -----------------------------------------------------------------------------
 // Cette méthode affiche les Posts
 // -----------------------------------------------------------------------------
-Posts.prototype.displayPosts = function(){
-	this.displayPostEdit();
+PostsClient.prototype.displayPosts = function(){
+	this.displayPostEdit();									// Affiche la carte d'édition des Posts
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°1',
-		postMsg				: 'Ceci est le message N°1',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'Papa',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'Administrateur.png',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°1',
+	// 	postMsg				: 'Ceci est le message N°1',
+	// 	postOwnerPseudo			: 'Duf',		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 1,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°2',
-		postMsg				: 'Ceci est le message N°2',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'maman',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'woman-8.jpg',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°2',
+	// 	postMsg				: 'Ceci est le message N°2',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 2,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°3',
-		postMsg				: 'Ceci est le message N°3',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'Vil-Coyote',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'Vil-Coyote - Bo Gosse.jpg',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°3',
+	// 	postMsg				: 'Ceci est le message N°3',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 3,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°4',
-		postMsg				: 'Ceci est le message N°4',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'Duf',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'mad - With tongue.png',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°4',
+	// 	postMsg				: 'Ceci est le message N°4',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 4,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°5',
-		postMsg				: 'Ceci est le message N°5',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°6',
-		postMsg				: 'Ceci est le message N°6',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'maman',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'woman-8.jpg',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°5',
+	// 	postMsg				: 'Ceci est le message N°5',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 5,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'Vil-Coyote',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'Vil-Coyote - Bo Gosse.jpg',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°6',
+	// 	postMsg				: 'Ceci est le message N°6',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 6,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°7',
-		postMsg				: 'Ceci est le message N°7',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'Papa',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'Administrateur.png',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°7',
+	// 	postMsg				: 'Ceci est le message N°7',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 7,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
 
-	var vPostToPublish = {
-		authorPseudo 	: vMemberClient.member.pseudo,								// C'est toujours le membre principal qui écrit
-		authorPhoto		:	vMemberClient.member.etatCivil.photo,
-		postDate    	: moment().format('[Publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]'),
-		postTitle			: 'Titre du Message N°8',
-		postMsg				: 'Ceci est le message N°8',
-		postOwner			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
-	}
-	this.displayPublishedPosts(vPostToPublish);
+	// var vPostToPublish = {
+	// 	authorPseudo 	: 'maman',								// C'est toujours le membre principal qui écrit
+	// 	authorPhoto		:	'woman-8.jpg',
+	// 	postDate    	: moment().format(),
+	// 	postTitle			: 'Titre du Message N°8',
+	// 	postMsg				: 'Ceci est le message N°8',
+	// 	postOwnerPseudo			: this.memberClient.member.pseudo,		// Par contre le membre principal, peut poster un message sur le profil de son ami
+	// 	postNumber		: 8,											// N° de Post du membre pour savoir qui en est l'auteur et le propriétaire
+	// }
+	// this.displayPublishedPosts(vPostToPublish);
+
+
+	// webSocketConnection.emit('ask',vPostToPublish);
+
 }

@@ -54,5 +54,5 @@ ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 	new FriendsCard(pMyFriend).displayFriendsCard();												// - Affiche les amis dans la carte "Amis"
 	pMyFriend.vMyInvitSentList = [];
 	new InvitationsCard(pMyFriend).displayInvitSentCard();									// - Affiche les invitations lancées dans la carte "Invitation lancées"
-	new Posts(pMyFriend).displayPosts();																		// - Affiche les Posts et le PostEdit
+	new PostsClient(pMyFriend).displayPosts();													// - Affiche les Posts et le PostEdit
 }

@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
 	vInvitationsCard			= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
-	vPosts								= new Posts(vMemberClient);											// Instanciation de l'objet affichant les Posts
+	vPostsClientSide			= new PostsClient(vMemberClient);						// Instanciation de l'objet affichant les Posts
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 	moment.locale('fr');	// Choisit le Preset "France" pour les dates et heures (Mode global)
@@ -186,8 +186,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vLoginAlertMsg = document.getElementById('idLoginAlertMsg');
 	var vModalLoginHeader = document.getElementById('idModalLoginHeader');
 	
-// ZZZZZ XXXXX 
-// vMemberClient.giveFocusToModalFirstField('idModalLogin', 'idLoginPseudo');            // Donne le Focus au 1er champ de la Form
 	$('#idModalLogin').on('shown.bs.modal', function(){
 		$('#idLoginPseudo').focus();
 	})
@@ -245,8 +243,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vModalLostPWDHeader = document.getElementById('idModalLostPWDHeader');
 	var vLostPWDAlertMsg = document.getElementById('idLostPWDAlertMsg');
 
-// XXXXX
-// vMemberClient.giveFocusToModalFirstField('idModalLostPWD', 'idLostPWDEmail');
 	$('#idModalLostPWD').on('shown.bs.modal', function(){
 		$('#idLostPWDEmail').focus();
 	})
@@ -286,8 +282,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vSignInAlertMsg = document.getElementById('idSignInAlertMsg');
 	var vSignInPassword = document.getElementById('idSignInPassword');
 	var vSignInConfirmPassword = document.getElementById('idSignInConfirmPassword');
-// XXXXX	
-// vMemberClient.giveFocusToModalFirstField('idModalSignIn', 'idSignInEmail');     
+
 	$('#idModalSignIn').on('shown.bs.modal', function(){
 		$('#idSignInEmail').focus();
 	})
@@ -386,8 +381,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAccountConfirmPassword = document.getElementById('idAccountConfirmPassword');
 	var vAccountAlertMsg = document.getElementById('idAccountAlertMsg');1
 	var vAccountBtn = document.getElementById('idAccountBtn');1
-// XXXXX
-// vMemberClient.giveFocusToModalFirstField('idModalAccount', 'idAccountFirstName');
+
 	$('#idModalAccount').on('shown.bs.modal', function(){
 		$('#idAccountFirstName').focus();
 	})
@@ -720,7 +714,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// On ouvre une nouvelle micro-fiche pour ce membre
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayFriendListOfMember', function(pFriendsOfMember){
-		var vDropDownParent = document.getElementById('idDivMicroFiche0');
+		var vDropDownParent = document.getElementById('idDivMicroFiche'+vActiveProfile + '0');
 
 		var vMicroFicheParams = {
 			simpleMicroFiche 	: cstStackableMicroFiche,				// Signifie que les Micro-fiches seront empilées les unes sur les autres
@@ -746,7 +740,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pCancelInvitSent){ 
 		pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
-		vInvitationsCardMain.refreshMyInvitList(pCancelInvitSent);
+		vInvitationsCard.refreshMyInvitList(pCancelInvitSent);
 	});
 
 	// --------------------------------------------------------------

@@ -16,8 +16,6 @@ head
   link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i' rel='stylesheet')
   link(href='static/css/font-awesome.css' rel='stylesheet' type='text/css')
   script(src='https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
-  // XXXXX
-  // <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
   // Styles
   link(href='static/css/bootstrap.css' rel='stylesheet' type='text/css')
   link(href='static/css/index.css' rel='stylesheet')
@@ -542,7 +540,7 @@ footer#idFooter.footer.fixed-bottom.font-small.bg-dark.txt-yellow-shadow
 #idModalFriendProfilePage.modal.px-0(tabindex='-1' role='dialog' aria-labelledby='idAriaModalFriendProfilePageTitle' aria-hidden='true')
   .modal-dialog.modal-lg.modal-dialog-centered(role='document')
     .modal-content
-      #idModalFriendProfilePageHeader.modal-header.border-bottom.border-warning.PY-2
+      #idModalFriendProfilePageHeader.modal-header.border-bottom.border-warning.py-1
         img#idModalFriendAvatarToken.avatarToken.tokenSize50.ml-0(alt='Avatar' src='')
         h5#idModalFriendProfilePageTitle.modal-title.align-self-center
           i.fa.fa-users
@@ -947,7 +945,7 @@ script(src='static/js/DisplayModalHeader.js')
 script(src='static/js/SearchFilter.js')
 script(src='static/js/AccountModal.js')
 script(src='static/js/ViewFriendProfile.js')
-script(src='static/js/Posts.js')
+script(src='static/js/PostsClientSide.js')
 script(src='siofu/client.js')
 script(src='static/js/moment-with-locales.js')
 // XXXXX A virer "custom.js"

@@ -2,11 +2,19 @@ const express = require('express');
 const path = require('path');
 const SocketIo = require('socket.io');
 const MemberServer = require('./MemberServerSide');
+const PostsServer = require('./PostsServerSide');
 const SocketIOFileUpload = require('socketio-file-upload');
+const DBMgr = require('./dbMgr');
+const sgMail = require('@sendgrid/mail');
+
+
 // -------------------------------------------------------------------------
 // Initilisations des variables, structures, constantes...
 // -------------------------------------------------------------------------
-let vMemberServer = new MemberServer();     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+let vDBMgr = new DBMgr();       									// Instanciation de la base de données
+let vMemberServer = new MemberServer(vDBMgr, sgMail);   // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
+let vPostsServer = new PostsServer(vDBMgr, sgMail, vMemberServer);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
 // -------------------------------------------------------------------------
 // Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
 // mais en tout état de cause, normalement, professionnellement, je devrais 
@@ -116,6 +124,8 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		vMemberServer.lostPWDMgr(pLostPWDEmail, webSocketConnection);
 	});
 
+
+
 	// ------------------------------------
 	// Gestion des amis
 	// ------------------------------------
@@ -179,7 +189,8 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 		vMemberServer.getCompleteRecordOfMyFriend(pFriendToView, webSocketConnection);
 	});   				
 
-		
+
+
 
 	// ------------------------------------
 	// Gestion des recommandations
@@ -193,7 +204,21 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	webSocketConnection.on('recommendationSent', function(pFriendToAdd){
 		vMemberServer.recommendationSent(pFriendToAdd, webSocketConnection, socketIo);
 	});   						
-	
+
+
+
+	// ------------------------------------
+	// Gestion des Posts
+	// ------------------------------------
+	webSocketConnection.on('addNewPost', function(vPostToAdd){
+		vPostsServer.addNewPost(vPostToAdd, socketIo);
+	});   						
+
+
+
+
+
+
 	// ------------------------------------
 	// Déconnexion
 	// ------------------------------------

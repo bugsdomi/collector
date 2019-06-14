@@ -8,17 +8,13 @@
 // ***   - La structure principale des données d'échange avec les clients***
 // ***                                                                   ***
 // ***  Nécessite :                                                      ***
-// ***      Le module "dbMgr"                                            ***
-// ***      Une variable pour son instanciation                          ***
+// ***      Le module "SendGrid                                          ***
 // ***                                                                   ***
 // *************************************************************************
 // -------------------------------------------------------------------------
 
-const DBMgr = require('./dbMgr');
-let vDBMgr = new DBMgr();       // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
-
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const sgMail = require('@sendgrid/mail');
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const cstSuperAdmin = 1;  // Statut du Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 const cstAdmin = 2;       					// Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
@@ -34,7 +30,9 @@ const cstAttenteConfirm = 2; 				// Attente d'acceptation d'une invitation lanc�
 const cstWithoutNewModal 	= false;	// Dans le cadre de l'affichage filtré des membres, la modale étant deja affichée, on veut pas en ouvrir une seconde
 const cstWithNewModal 		= true;		// Dans le cadre de l'affichage non filtré des membres, la modale n'étant pas encore affichée, on veut pas en ouvrir une
 
-module.exports = function MemberServer(){ // Fonction constructeur exportée
+module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeur exportée
+	this.sgMail = pSGMail;									// Instance du gestionnaire de mails
+	this.vDBMgr = pDBMgr;										// Récupération des infos de la BDD
 	this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
 	this.nbrPublicMsgs;                     // Nbre de messages publics
 
@@ -43,17 +41,17 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		members             : 								// Tableau de toutes les connexions ( Visiteurs dont [Membres + Admin])
 		[
 		// {
-			// idSocket        	: 0,							// N° de socket "WebSocketConnection.id"
-			// isMember        	: false,					// Permet de savoir si la personne connectée est un visiteurr ou un membre
+			// idSocket        	: 0,						// N° de socket "WebSocketConnection.id"
+			// isMember        	: false,				// Permet de savoir si la personne connectée est un visiteurr ou un membre
 			// email           	: '',
 			// pseudo          	: '',
 			// role						 	: 0,
 			// nbrWaitingInvit 	: 0,
 		// }
 	],   
-		nbrConnections      : 0,    // Nbre de connexions actives sans préjuger de leur rôle
-		nbrMembersInSession : 0,    // Nbre de membres connectés (Membres + Admin)
-		nbrAdminsInSessions : 0,    // Nombre d'Admins connectés
+		nbrConnections      : 0,    					// Nbre de connexions actives sans préjuger de leur rôle
+		nbrMembersInSession : 0,    					// Nbre de membres connectés (Membres + Admin)
+		nbrAdminsInSessions : 0,    					// Nombre d'Admins connectés
 	}
 
 	this.member =                  // Structure de stockage provisoire du membre
@@ -164,7 +162,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.findVisitorBecomeMember = (pVisiteurLoginData) => {
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.find(
+			this.vDBMgr.collectionMembers.find(
 			{ 
 				'pseudo': pVisiteurLoginData.pseudo, 
 				'password': pVisiteurLoginData.password, 
@@ -191,7 +189,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.getFriendInfos = function(pMyFriend){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.find(
+			this.vDBMgr.collectionMembers.find(
 			{ 
 				'email': pMyFriend.friendEmail, 
 			})
@@ -327,7 +325,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.updateDataInBDD = function(pDataSet){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 
 				'email': pDataSet.email, 
 			},
@@ -363,7 +361,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.checkLostPWDMailIsValid = function(pLostPWDEmail, pWebSocketConnection){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.find(
+			this.vDBMgr.collectionMembers.find(
 			{ 
 				'email': pLostPWDEmail, 
 			})
@@ -416,14 +414,20 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Prépare les données de population et les envoie à tous clients connectés
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.UpdateDisplayPopulation = function(pSocketIo){
-		population = {
-			nbrVisitors    : this.objectPopulation.nbrConnections,
-			nbrMembers     : this.objectPopulation.nbrMembersInSession,
-			nbrAdmins      : this.objectPopulation.nbrAdminsInSessions,
-			nbrPublicMsgs  : this.nbrPublicMsgs,
-		}
 
-		pSocketIo.emit('displayNbrConnectedMembers', population); // Affichage sur tous les clients de la MAJ du nombre de membres connectés
+		this.getNbrPublicsMsgs()
+		.then((document) => {
+			this.nbrPublicMsgs = document.nbrPublicMsgs;
+
+			population = {
+				nbrVisitors    : this.objectPopulation.nbrConnections,
+				nbrMembers     : this.objectPopulation.nbrMembersInSession,
+				nbrAdmins      : this.objectPopulation.nbrAdminsInSessions,
+				nbrPublicMsgs  : this.nbrPublicMsgs,
+			}
+
+			pSocketIo.emit('displayNbrConnectedMembers', population); // Affichage sur tous les clients de la MAJ du nombre de membres connectés
+		});
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -466,7 +470,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			// text  : 'Félicitations\n\nVous êtes dorénavant membre de la Communauté \'Collect\'Or\'',      // Variante pour une version "Text" (Non HTML)
 			html     : pHTML,
 		}
-		sgMail.send(messageToSend)
+		this.sgMail.send(messageToSend)
 		.catch((error) => {
 			console.log('--------------------------------------------------------------------------');
 			console.log('Problème lors de l\'envoi d\'email à ',pEMail,' --- Sujet : ',pSubject);
@@ -484,7 +488,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 			nbrPublicMsgs : 0,                                       
 		}
 
-		vDBMgr.collectionTechnical.insertOne(technicalRecord, (error) => {
+		this.vDBMgr.collectionTechnical.insertOne(technicalRecord, (error) => {
 			if (error){
 				console.log('-------------------------------------------------------------');
 				console.log('createTechnicalRecord - technicalRecord : ',technicalRecord);   // Si erreur technique... Message et Plantage
@@ -509,7 +513,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.countMembers = function(){
 		return new Promise((resolve, reject) => {
 
-			vDBMgr.collectionMembers.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
+			this.vDBMgr.collectionMembers.countDocuments((error, count) => {        // On compte le nombre de membres dans la base pour savoir si le nouveau membre sera le SuperAdmin
 				if (error){
 					console.log('-------------------------------------------------------------');
 					console.log('countMembers - Erreur de Comptage dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
@@ -530,7 +534,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.checkVisitorSignInMailIsValid = function(pVisiteurSignInData, pWebSocketConnection){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
+			this.vDBMgr.collectionMembers.find(                                                   // Vérification de non-pré-existence du mail
 			{ 
 				'email': pVisiteurSignInData.email, 
 			})
@@ -563,7 +567,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		return new Promise((resolve, reject) => {
 
 			// Le mail n a pas été trouvé (donc OK), on vérifie maintenant la non-existence du Pseudo
-			vDBMgr.collectionMembers.find(                  
+			this.vDBMgr.collectionMembers.find(                  
 			{ 
 				'pseudo': pVisiteurSignInData.pseudo, 
 			})
@@ -673,7 +677,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				dateCreation    : myLocalDate,         // Timestamp de la création du record en tenant compte du décalage horaire
 			}
 
-			vDBMgr.collectionMembers.insertOne(memberLocal, (error) => {
+			this.vDBMgr.collectionMembers.insertOne(memberLocal, (error) => {
 				if (error){
 					console.log('-------------------------------------------------------------');
 					console.log('addMemberInDatabase - Erreur d\'insertion dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
@@ -788,7 +792,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.getMembers = function(){
 		return new Promise((resolve, reject) => {
 
-			vDBMgr.collectionMembers.find(                                                   
+			this.vDBMgr.collectionMembers.find(                                                   
 				{},
 				{
 					"pseudo" : 1, 
@@ -848,7 +852,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.getFilteredMembers = function(pSearchMemberParam){
 		return new Promise((resolve, reject) => {
 
-			vDBMgr.collectionMembers.find(   
+			this.vDBMgr.collectionMembers.find(   
 				{ 
 					$text: 	{ $search : pSearchMemberParam,                         
 										$caseSensitive: false, 
@@ -926,7 +930,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				friendPhoto					 : pFriendToAdd.myPhoto,
 			}
 
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 'email': pFriendToAdd.friendEmail, },
 			{ $push: { amis : vFriendToAdd, } }, 
 			(error) => {
@@ -956,7 +960,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				friendPhoto					 : pFriendToAdd.friendPhoto,
 			}
 
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 'email': pFriendToAdd.myEmail, },
 			{ $push: { amis : vFriendToAdd, } }, 
 			(error) => {
@@ -1018,7 +1022,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.readFriends = function(pMyEmail){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.find(                                                   
+			this.vDBMgr.collectionMembers.find(                                                   
 			{ 
 				'email': pMyEmail, 
 			},
@@ -1069,7 +1073,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		return new Promise((resolve, reject) => {
 			let vFriendPseudo = this.splitFriendFromCombo(pSelectedInvit.friendPseudo);
 
-			vDBMgr.collectionMembers.updateOne(                                                   
+			this.vDBMgr.collectionMembers.updateOne(                                                   
 			{ 
 				'email': pSelectedInvit.myEmail,
 				'amis.friendPseudo' : pSelectedInvit.friendPseudo
@@ -1101,7 +1105,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.acceptMeIntoFriendList = function(pSelectedInvit){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.updateOne(                                                   
+			this.vDBMgr.collectionMembers.updateOne(                                                   
 			{ 
 				'email': pSelectedInvit.friendEmail,
 				'amis.friendPseudo' : pSelectedInvit.myPseudo
@@ -1188,7 +1192,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.deleteFriendIntoMyFriendList = function(pSelectedInvit){
 		return new Promise((resolve, reject) => {
 
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 
 				'email': pSelectedInvit.myEmail,
 			},
@@ -1216,7 +1220,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.deleteMeIntoFriendList = function(pSelectedInvit){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 
 				'email': pSelectedInvit.friendEmail,
 			},
@@ -1263,7 +1267,6 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				
 				// Recherche du pseudo du membre que je refuse dans le tableau des membres connectés car s'il est connecté, je supprime mon Avatar dans sa Carte "Invitations lancées" en temps réel
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pSelectedInvit.friendPseudo);
-		
 				// Si membre trouvé dans la table des membres actuellement connectés
 				// Envoi à ce membre seul, de la demande de suppression de mon Avatar dans sa liste d'invitations envoyées
 				if (myIndex !== -1){  																													
@@ -1488,7 +1491,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				friendPhoto					 : pFriendToAdd.friendPhoto,
 			}
 
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 'email': pFriendToAdd.targetFriendEmail, },
 			{ $push: { amis : vFriendToAdd, } }, 
 			(error) => {
@@ -1518,7 +1521,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 				friendPhoto					 : pFriendToAdd.targetFriendPhoto,
 			}
 
-			vDBMgr.collectionMembers.updateOne(
+			this.vDBMgr.collectionMembers.updateOne(
 			{ 'email': pFriendToAdd.friendEmail, },											// Ami que je recommande
 			{ $push: { amis : vFriendToAdd, } }, 
 			(error) => {
@@ -1606,7 +1609,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	MemberServer.prototype.updateAvatarInOneFriend = function(pMyFriend){
 		return new Promise((resolve, reject) => {
 	
-		vDBMgr.collectionMembers.findOneAndUpdate(                                                   
+		this.vDBMgr.collectionMembers.findOneAndUpdate(                                                   
 		{ 
 			'email'							: pMyFriend.friendEmail,
 			'amis.friendPseudo' : pMyFriend.myPseudo
@@ -1765,13 +1768,13 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 		console.log('--------------------------------------------------------------------------------------------------------------------');
 	};
 
+
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Au lancement du serveur, on tente de lire le Nbre de messages publics stockés dans la BDD, si KO, on initialise a 0
-	// On en profite poour initialiser toutes les variables de population à 0
+	// Lecture de la collection "Technical" pour connaitre le Nbre de messages publics
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.initNbrPublicMsgs = function(){
+	MemberServer.prototype.getNbrPublicsMsgs = function(){
 		return new Promise((resolve, reject) => {
-			vDBMgr.collectionTechnical.find()
+			this.vDBMgr.collectionTechnical.find()
 			.limit(1)
 			.toArray((error, documents) => {
 				if (error) {
@@ -1783,19 +1786,27 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 					throw error;
 				};
 
-				if (documents.length) {
-					this.nbrPublicMsgs = documents[0].nbrPublicMsgs;                    
-				} else {
-					this.nbrPublicMsgs = 0;
-				};
-
-				this.objectPopulation.nbrConnections = 0;
-				this.objectPopulation.nbrMembersInSession = 0;
-				this.objectPopulation.nbrAdminsInSessions = 0;
-
-				resolve('Ok')
+				resolve(documents[0]);
 			});
 		});
+	}	
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Au lancement du serveur, on tente de lire le Nbre de messages publics stockés dans la BDD, si KO, on initialise a 0
+	// On en profite pour initialiser toutes les variables de population à 0
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.initNbrPublicMsgs = function(){
+		this.getNbrPublicsMsgs()
+		.then((document) => {
+			if (document.length) {
+				this.nbrPublicMsgs = document.nbrPublicMsgs;                    
+			} else {
+				this.nbrPublicMsgs = 0;
+			};
+
+			this.objectPopulation.nbrConnections = 0;
+			this.objectPopulation.nbrMembersInSession = 0;
+			this.objectPopulation.nbrAdminsInSessions = 0;
+		})
 	};
 	
 	// -------------------------------------------------------------------------
@@ -1806,7 +1817,7 @@ module.exports = function MemberServer(){ // Fonction constructeur exportée
 	// Si elle ne fonctionne pas, je sors de l'application, après avoir envoyé un message à la console
 	// -------------------------------------------------------------------------
 	MemberServer.prototype.checkDBConnect = function(){
-		vDBMgr.checkDBConnect()
+		this.vDBMgr.checkDBConnect()
 		.then((valeur) => {
 			this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
 		});

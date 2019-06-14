@@ -249,7 +249,7 @@ MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, 
 	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
 	vFriendsCard.displayFriendsCard();																			// - Affiche les amis dans la carte "Amis"
 	vInvitationsCard.displayInvitSentCard();																// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
-	vPosts.displayPosts();																									// - Affiche les Posts
+	vPostsClientSide.displayPosts();																				// - Affiche les Posts
 }
 
 // -----------------------------------------------------------------------------
