@@ -19,18 +19,17 @@ Todo:
     - displayxxx
     - updateProfile
 
+    ☐ Ajouter une modale de confirmation pour la suppression des amis, invitations et Posts
+    ☐ Faire une MAJ en temps réel des cartes Presentation, Amis, et Invitation quand on est dans le profiil d'un ami
+    ☐ Faire une MAJ en temps réel des avatars chez mes amis ou futurs amis
     ☐ Dans la fiche de renseignements, blinder les controles (Nom, prénom, Date naissance, département, adresse, ville
     ☐ Ajouter la version du produit en bas a droite de l'écran
-    ☐ Changer les avatars dynamiquement chez mes amis ou futurs amis
     ☐ Voir Toastr
     ☐ Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
     ☐ Passer tous les champs a XS-4
     
-    ☐ Gerer le nombre de messages :
-        ☐ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire
-        ☐ A la fermeture, écrire le Nbre de Msg en BDD
     ☐ Gerer le pseudo qui est illisible en mode réduit
     ☐ Gerer la photo de profil sur la fiche de renseignement qui est trop grande en mode reduit
     ☐ Corriger Bug du calcul de l âge dans la fiche de renseignement
@@ -45,7 +44,7 @@ Todo:
     ☐ Dans index.html, harmoniser col-sm et col-md
     ☐ Ne pas attendre l'upload de l image de l avatar pour l afficher sur le client
     ☐ Reviser completement le coté Responsive de l'application
-    ☐ Voir pour unifier le cadre et la bordeure des modales sur le meme modele que la Carte "Presentation"
+    ☐ Voir pour unifier le cadre et la bordure des modales sur le meme modele que la Carte "Presentation"
     ☐ Enlever le coté "Deformé" des AvatarsToken (Voir avec backgroundImage pour cadrer l image dans l"AvatarToken")
     ☐ Voir pourquoi la puce du Nbre d invits decale le menu suivant a son 1er affichage
     ☐ Passer les adresses email en minuscules
@@ -187,5 +186,8 @@ Todo:
     ✔ Ajouter une Popover ssur l'annulation d'une invitation @done(19-05-22 09:09)
     ✘ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher @cancelled(19-05-22 09:10)
     ✔ Pourquoi les bordures des champs de saisie sont en rouge sur Firefox ? @done(19-06-12 11:02)
+    ✔ Gerer le nombre de messages : @done(19-06-17 19:26)
+        ✔ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire @done(19-06-17 19:26)
+        ✔ A la fermeture, écrire le Nbre de Msg en BDD @done(19-06-17 19:26)
         
     

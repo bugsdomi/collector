@@ -286,6 +286,7 @@ MemberClient.prototype.initModalSignIn = function(pSignInParameters){
 // boutons, en blanc
 // --------------------------------------------------------------
 MemberClient.prototype.changeBtnTxtColOver = function(event){
+console.log('changeBtnTxtColOver - event : ',event)
 	document.getElementById(event.target.datas.actionBtn).classList.replace('text-dark','text-light');
 }
 

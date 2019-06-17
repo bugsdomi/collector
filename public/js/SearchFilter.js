@@ -131,7 +131,7 @@ SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){
 // on restaure l'affichage standard des membres
 // --------------------------------------------------------------
 SearchFilter.prototype.restoreFullList = function(event){   
-	document.getElementById('idSearchPseudo').value = '',
+	document.getElementById('idSearchPseudo').value = '';
 	document.getElementById('idSearchFirstName').value = '';
 	document.getElementById('idSearchName').value = '';
 

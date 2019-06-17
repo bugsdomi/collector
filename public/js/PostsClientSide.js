@@ -38,6 +38,8 @@ PostsClient.prototype.displayPostEdit = function(){
 	vlineHTML.vDivCard.setAttribute('id', 'idPostEditCard'+vActiveProfile);
 	vlineHTML.vDivCard.setAttribute('class', 'card text-white bg-warning border-warning mb-3');
 
+
+	// Card Header
 	vlineHTML.vDivCardHeader = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardHeader);
 	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header py-0 pb-1');
@@ -47,6 +49,8 @@ PostsClient.prototype.displayPostEdit = function(){
 	vlineHTML.vH5Header.setAttribute('class', 'card-title text-dark ml-0');
 	vlineHTML.vH5Header.innerHTML = 'Postez vos idées et informations...';
 
+
+	// Card Body
 	vlineHTML.vDivCardBody = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardBody);
 	vlineHTML.vDivCardBody.setAttribute('class', 'card-body bg-white text-dark px-1 pt-2 pb-0');
@@ -88,15 +92,25 @@ PostsClient.prototype.displayPostEdit = function(){
 	vlineHTML.vTextAreaPost.setAttribute('placeholder', 'Tapez votre texte ici...');
 	vlineHTML.vTextAreaPost.setAttribute('style', 'box-shadow: none; border-top: 1px darkGray solid; border-right: none; border-bottom: none; border-left: none; border-radius: unset; resize: none;');
 
+
+	// Card-Footer
 	vlineHTML.vDivFooter = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivFooter);
-	vlineHTML.vDivFooter.setAttribute('class', 'card-footer row justify-content-end border py-1 px-0 mx-0 mt-1');
-	
+	vlineHTML.vDivFooter.setAttribute('class', 'card-footer border mt-1 py-1');
+
+	vlineHTML.vDivCardFooterRow = window.document.createElement('div');
+	vlineHTML.vDivFooter.appendChild(vlineHTML.vDivCardFooterRow);
+	vlineHTML.vDivCardFooterRow.setAttribute('class', 'row');
+
+	vlineHTML.vDivCardFooterCol = window.document.createElement('div');
+	vlineHTML.vDivCardFooterRow.appendChild(vlineHTML.vDivCardFooterCol);
+	vlineHTML.vDivCardFooterCol.setAttribute('class', 'col-auto ml-auto');
+
 	vlineHTML.vBtnValidPost = window.document.createElement('button');
-	vlineHTML.vDivFooter.appendChild(vlineHTML.vBtnValidPost);
+	vlineHTML.vDivCardFooterCol.appendChild(vlineHTML.vBtnValidPost);
 	vlineHTML.vBtnValidPost.setAttribute('id', 'idBtnValidPost'+vActiveProfile);
 	vlineHTML.vBtnValidPost.setAttribute('type', 'button');
-	vlineHTML.vBtnValidPost.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters mr-4 border-success');
+	vlineHTML.vBtnValidPost.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters border-success');
 	vlineHTML.vBtnValidPost.innerHTML = 'Post';
 
 	vlineHTML.vBtnValidPost.addEventListener('click', this.publishPost.bind(this),false);
@@ -120,7 +134,6 @@ PostsClient.prototype.displayPostEdit = function(){
 			vToolBox.autoExpand(event.target);
 		}
 	}, false);
-	
 }
 
 // -----------------------------------------------------------------------------
@@ -139,8 +152,11 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 		vLastPostId = vLastPost.id;
 		vLastPostNumber = vLastPostId.slice(('idPublishedPost' + pActiveProfile).length, vLastPostId.length)
 		this.lastPublishedPost = parseInt(vLastPostNumber) + 1;
+
+console.log('displayPublishedPosts  1 - this.lastPublishedPost : ',this.lastPublishedPost)
 	} else {																																				// Il n'y a aucun Post
 		this.lastPublishedPost = 0;
+console.log('displayPublishedPosts  1 - this.lastPublishedPost : ',this.lastPublishedPost)
 	}
 
 	vlineHTML.vDivCard = window.document.createElement('div');
@@ -148,13 +164,15 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 	vlineHTML.vDivCard.setAttribute('id', 'idPublishedPost'+ pActiveProfile + this.lastPublishedPost);
 	vlineHTML.vDivCard.setAttribute('class', 'card text-white bg-warning border-warning mb-3');
 
+
+	// Card Header
 	vlineHTML.vDivCardHeader = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardHeader);
 	vlineHTML.vDivCardHeader.setAttribute('class', 'card-header border-0 py-0');
 
 	vlineHTML.vDivCardHeaderRow = window.document.createElement('div');
 	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vDivCardHeaderRow);
-	vlineHTML.vDivCardHeaderRow.setAttribute('class', 'row m-0 py-1 px-2');
+	vlineHTML.vDivCardHeaderRow.setAttribute('class', 'row m-0 py-1 px-0');
 
 	vlineHTML.vImgAvatToken = window.document.createElement('img');
 	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vImgAvatToken);
@@ -179,6 +197,8 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 	vlineHTML.vDivTimeStampMoment.setAttribute('class', 'd-none');
 	vlineHTML.vDivTimeStampMoment.innerHTML = moment(pPostToPublish.postDate);
 
+
+	// Card Body
 	vlineHTML.vDivCardBody = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivCardBody);
 	vlineHTML.vDivCardBody.setAttribute('class', 'card-body bg-white text-dark px-1 pt-2 pb-0');
@@ -187,13 +207,13 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 	vlineHTML.vDivCardBody.appendChild(vlineHTML.vDivContainer);
 	vlineHTML.vDivContainer.setAttribute('class', 'container px-1');
 
-	vlineHTML.vDivRow = window.document.createElement('div');
-	vlineHTML.vDivContainer.appendChild(vlineHTML.vDivRow);
-	vlineHTML.vDivRow.setAttribute('class', 'row m-0');
-	vlineHTML.vDivRow.setAttribute('style', 'overflow-x: hidden;');
+	vlineHTML.vDivRow1 = window.document.createElement('div');
+	vlineHTML.vDivContainer.appendChild(vlineHTML.vDivRow1);
+	vlineHTML.vDivRow1.setAttribute('class', 'row m-0');
+	vlineHTML.vDivRow1.setAttribute('style', 'overflow-x: hidden;');
 
 	vlineHTML.vH5Subject = window.document.createElement('h5');
-	vlineHTML.vDivRow.appendChild(vlineHTML.vH5Subject);
+	vlineHTML.vDivRow1.appendChild(vlineHTML.vH5Subject);
 	vlineHTML.vH5Subject.setAttribute('class', 'col-auto p-0 m-0');
 	if (!pPostToPublish.postTitle){
 		vlineHTML.vH5Subject.innerHTML = 'Sans titre';
@@ -205,29 +225,141 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 	vlineHTML.vDivContainer.appendChild(vlineHTML.vTextAreaPost);
 	vlineHTML.vTextAreaPost.setAttribute('id', 'idPublishedPostArea' + pActiveProfile + this.lastPublishedPost);
 	vlineHTML.vTextAreaPost.setAttribute('class', 'form-control bg-light mt-2 px-0 pb-0 textAreaAutoResizable');
-	vlineHTML.vTextAreaPost.setAttribute('name', 'publishedPostArea'+pActiveProfile);
+	vlineHTML.vTextAreaPost.setAttribute('name', 'publishedPostArea'+pActiveProfile + this.lastPublishedPost);
 	vlineHTML.vTextAreaPost.setAttribute('readonly', '');
 	vlineHTML.vTextAreaPost.setAttribute('style', 'box-shadow: none; border-top: 1px darkGray solid; border-right: none; border-bottom: none; border-left: none; border-radius: unset; resize: none;');
 	vlineHTML.vTextAreaPost.value = pPostToPublish.postMsg;
 	vToolBox.autoResizeElem(vlineHTML.vTextAreaPost.id);						// Redimensionnement automatique (mais limité) du champs
 
+	// Card Footer
 	vlineHTML.vDivFooter = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivFooter);
-	vlineHTML.vDivFooter.setAttribute('class', 'card-footer row justify-content-between border py-1 px-0 mx-0 mt-1');
+	vlineHTML.vDivFooter.setAttribute('class', 'card-footer border mt-1 py-1');
 
+	vlineHTML.vDivRow2 = window.document.createElement('div');
+	vlineHTML.vDivFooter.appendChild(vlineHTML.vDivRow2);
+	vlineHTML.vDivRow2.setAttribute('class', 'row justify-content-between mx-0 px-0');
+
+	vlineHTML.vBtnCommentL1 = window.document.createElement('button');
+	vlineHTML.vDivRow2.appendChild(vlineHTML.vBtnCommentL1);
+	vlineHTML.vBtnCommentL1.setAttribute('id', 'idBtnCommentL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vBtnCommentL1.setAttribute('type', 'button');
+	vlineHTML.vBtnCommentL1.setAttribute('data-toggle', 'collapse');
+	vlineHTML.vBtnCommentL1.setAttribute('data-target', '#idDivCollapseL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vBtnCommentL1.setAttribute('aria-expanded', 'false');
+	vlineHTML.vBtnCommentL1.setAttribute('aria-controls', 'idDivCollapseL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vBtnCommentL1.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters border-success');
+
+	vlineHTML.vICommentL1 = window.document.createElement('i');
+	vlineHTML.vBtnCommentL1.appendChild(vlineHTML.vICommentL1);
+	vlineHTML.vICommentL1.setAttribute('id', 'idICommentL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vICommentL1.setAttribute('class', 'fa fa-comments fa-2x text-dark');
+	
 	vlineHTML.vBtnDeletePost = window.document.createElement('button');
-	vlineHTML.vDivFooter.appendChild(vlineHTML.vBtnDeletePost);
+	vlineHTML.vDivRow2.appendChild(vlineHTML.vBtnDeletePost);
 	vlineHTML.vBtnDeletePost.setAttribute('id', 'idBtnDeletePost' + pActiveProfile + this.lastPublishedPost);
 	vlineHTML.vBtnDeletePost.setAttribute('type', 'button');
-	vlineHTML.vBtnDeletePost.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters mr-4 border-danger');
+	vlineHTML.vBtnDeletePost.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters border-danger');
 	vlineHTML.vBtnDeletePost.setAttribute('style', 'visibility: hidden;');
 	vlineHTML.vBtnDeletePost.innerHTML = 'Supprimer';
-
-	if 	((vMemberClient.member.pseudo === vlineHTML.vH5Header.innerHTML) ||  		// Si le propriétaire du mur principal est l'auteur du post, il peut effacer son Post
-			(pActiveProfile === cstMainProfileActive)){
-		vlineHTML.vBtnDeletePost.style.visibility='visible';											// Alors Affichage du bouton de supppression du Post
+	if 	((vMemberClient.member.pseudo === vlineHTML.vH5Header.innerHTML) || // Si je suis l'auteur du post, je peux effacer mon Post
+			(pActiveProfile === cstMainProfileActive)){													// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
+		vlineHTML.vBtnDeletePost.style.visibility='visible';									// Alors Affichage du bouton de suppression du Post
 		vlineHTML.vBtnDeletePost.addEventListener('click', this.deletePublishedPost.bind(this),false);
 	}
+
+
+	// Gestion du "Collapse"
+	vlineHTML.vDivRow3 = window.document.createElement('div');
+	vlineHTML.vDivFooter.appendChild(vlineHTML.vDivRow3);
+	vlineHTML.vDivRow3.setAttribute('class', 'row');
+
+	vlineHTML.vdivColCollapse = window.document.createElement('div');
+	vlineHTML.vDivRow3.appendChild(vlineHTML.vdivColCollapse);
+	vlineHTML.vdivColCollapse.setAttribute('class', 'col');
+
+	vlineHTML.vDivCollapse = window.document.createElement('div');
+	vlineHTML.vdivColCollapse.appendChild(vlineHTML.vDivCollapse);
+	vlineHTML.vDivCollapse.setAttribute('id', 'idDivCollapseL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vDivCollapse.setAttribute('class', 'collapse mt-2');
+
+
+	// Groupe d'éléments pour la création de commentaires de niveau 1
+	vlineHTML.vGroupCommentL1 = window.document.createElement('div');
+	vlineHTML.vDivCollapse.appendChild(vlineHTML.vGroupCommentL1);
+	vlineHTML.vGroupCommentL1.setAttribute('class', 'input-group input-group-sm border rounded');
+
+	vlineHTML.vInputCommentL1 = window.document.createElement('input');
+	vlineHTML.vGroupCommentL1.appendChild(vlineHTML.vInputCommentL1);
+	vlineHTML.vInputCommentL1.setAttribute('id', 'idInputCommentL1'+pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vInputCommentL1.setAttribute('type', 'text');
+	vlineHTML.vInputCommentL1.setAttribute('placeholder', 'Ajouter un commentaire...');
+	vlineHTML.vInputCommentL1.setAttribute('class', 'form-control');
+	vlineHTML.vInputCommentL1.setAttribute('name', 'inputCommentL1'+pActiveProfile + this.lastPublishedPost);
+	// XXXXX
+	// vlineHTML.vInputCommentL1.setAttribute('style', 'border: none !important; box-shadow: none; outline: none;');
+
+	vlineHTML.vClearCommentL1 = window.document.createElement('div');
+	vlineHTML.vGroupCommentL1.appendChild(vlineHTML.vClearCommentL1);
+	vlineHTML.vClearCommentL1.setAttribute('class', 'input-group-append');
+
+	vlineHTML.vBtnClearCommentL1 = window.document.createElement('button');
+	vlineHTML.vClearCommentL1.appendChild(vlineHTML.vBtnClearCommentL1);
+	vlineHTML.vBtnClearCommentL1.setAttribute('id', 'idBtnClearCommentL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vBtnClearCommentL1.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+
+	vlineHTML.vIIconClearCommentL1 = window.document.createElement('i');
+	vlineHTML.vBtnClearCommentL1.appendChild(vlineHTML.vIIconClearCommentL1);
+	vlineHTML.vIIconClearCommentL1.setAttribute('class', 'fa fa-fw fa-times');
+
+	vlineHTML.vBtnAddCommentL1 = window.document.createElement('button');
+	vlineHTML.vClearCommentL1.appendChild(vlineHTML.vBtnAddCommentL1);
+	vlineHTML.vBtnAddCommentL1.setAttribute('id', 'idBtnAddCommentL1' + pActiveProfile + this.lastPublishedPost);
+	vlineHTML.vBtnAddCommentL1.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+
+	vlineHTML.vIIconAddCommentL1 = window.document.createElement('i');
+	vlineHTML.vBtnAddCommentL1.appendChild(vlineHTML.vIIconAddCommentL1);
+	vlineHTML.vIIconAddCommentL1.setAttribute('class', 'fa fa-fw fa-search');
+
+  vDataToTransmit = 
+  {
+    // myPseudo            : pSearchFilterParams.myPseudo,
+		// msgRestoreFullList	: pSearchFilterParams.msgRestoreFullList,
+		// msgFilteredList			: pSearchFilterParams.msgFilteredList,
+		// thisContext					: this,
+	}
+
+	vlineHTML.vBtnAddCommentL1.addEventListener('click', this.addCommentL1.bind(this),false);
+	vlineHTML.vBtnAddCommentL1.datas = vDataToTransmit;
+	vlineHTML.vIIconAddCommentL1.datas = vDataToTransmit;
+
+	vlineHTML.vBtnClearCommentL1.addEventListener('click', this.clearCommentL1.bind(this),false);
+	vlineHTML.vBtnClearCommentL1.datas = vDataToTransmit;
+  vlineHTML.vIIconClearCommentL1.datas = vDataToTransmit;	
+
+	console.log('displayPublishedPosts - "#idDivCollapseL1" + pActiveProfile + this.lastPublishedPost : ','#idDivCollapseL1' + pActiveProfile + this.lastPublishedPost)
+	console.log('displayPublishedPosts - "#idInputCommentL1" + pActiveProfile + this.lastPublishedPost : ','#idInputCommentL1' + pActiveProfile + this.lastPublishedPost)
+	
+
+	$('#idDivCollapseL1' + pActiveProfile + this.lastPublishedPost).on('shown.bs.collapse', (event) => {
+		var vFocusId = event.target.id;
+		var vFocusNumber = vFocusId.slice(('idDivCollapseL1' + pActiveProfile).length, vFocusId.length)
+		$('#idInputCommentL1'+pActiveProfile + vFocusNumber).focus();
+	})
+}
+
+// -----------------------------------------------------------------------------
+// Cette méthode publie un nouveau commentaire de Niveau 1 (L1)
+// -----------------------------------------------------------------------------
+PostsClient.prototype.addCommentL1 = function(){
+alert('Commentaire L1 ajouté')
+}
+
+// -----------------------------------------------------------------------------
+// Cette méthode efface le champ du nouveau commentaire de Niveau 1 (L1)
+// -----------------------------------------------------------------------------
+PostsClient.prototype.clearCommentL1 = function(){
+	document.getElementById('idInputCommentL1'+vActiveProfile + this.lastPublishedPost).value = '';
 }
 
 // -----------------------------------------------------------------------------
@@ -326,6 +458,12 @@ PostsClient.prototype.deletePost = function(pPostToDelete, pActiveProfile){
 			document.getElementById('idDivTimeStampMoment'+ pActiveProfile + (i + 1)).setAttribute('id', 'idDivTimeStampMoment'+ pActiveProfile + i);
 			document.getElementById('idPublishedPostArea'+ pActiveProfile + (i + 1)).setAttribute('id', 'idPublishedPostArea'+ pActiveProfile + i);
 			document.getElementById('idBtnDeletePost'+ pActiveProfile + (i + 1)).setAttribute('id', 'idBtnDeletePost'+ pActiveProfile + i);
+			document.getElementById('idBtnCommentL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idBtnCommentL1'+ pActiveProfile + i);
+			document.getElementById('idICommentL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idICommentL1'+ pActiveProfile + i);
+			document.getElementById('idInputCommentL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idInputCommentL1'+ pActiveProfile + i);
+			document.getElementById('idDivCollapseL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idDivCollapseL1'+ pActiveProfile + i);
+			document.getElementById('idBtnClearCommentL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idBtnClearCommentL1'+ pActiveProfile + i);
+			document.getElementById('idBtnAddCommentL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idBtnAddCommentL1'+ pActiveProfile + i);
 			i++;
 		}
 	}
