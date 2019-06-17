@@ -253,7 +253,7 @@ console.log('displayPublishedPosts  1 - this.lastPublishedPost : ',this.lastPubl
 	vlineHTML.vICommentL1 = window.document.createElement('i');
 	vlineHTML.vBtnCommentL1.appendChild(vlineHTML.vICommentL1);
 	vlineHTML.vICommentL1.setAttribute('id', 'idICommentL1' + pActiveProfile + this.lastPublishedPost);
-	vlineHTML.vICommentL1.setAttribute('class', 'fa fa-comments fa-2x text-dark');
+	vlineHTML.vICommentL1.setAttribute('class', 'fa fa-commenting-o fa-2x text-dark');
 	
 	vlineHTML.vBtnDeletePost = window.document.createElement('button');
 	vlineHTML.vDivRow2.appendChild(vlineHTML.vBtnDeletePost);
@@ -319,7 +319,7 @@ console.log('displayPublishedPosts  1 - this.lastPublishedPost : ',this.lastPubl
 
 	vlineHTML.vIIconAddCommentL1 = window.document.createElement('i');
 	vlineHTML.vBtnAddCommentL1.appendChild(vlineHTML.vIIconAddCommentL1);
-	vlineHTML.vIIconAddCommentL1.setAttribute('class', 'fa fa-fw fa-search');
+	vlineHTML.vIIconAddCommentL1.setAttribute('class', 'fa fa-fw fa-check');
 
   vDataToTransmit = 
   {
