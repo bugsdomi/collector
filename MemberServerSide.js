@@ -42,7 +42,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		[
 		// {
 			// idSocket        	: 0,						// N° de socket "WebSocketConnection.id"
-			// isMember        	: false,				// Permet de savoir si la personne connectée est un visiteurr ou un membre
+			// isMember        	: false,				// Permet de savoir si la personne connectée est un visiteur ou un membre
 			// email           	: '',
 			// pseudo          	: '',
 			// role						 	: 0,
@@ -1463,7 +1463,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Dans le cadre de laa vision du profil d'un ami, je vais lire TOUTES ses infos
+	// Dans le cadre de la vision du profil d'un ami, je vais lire TOUTES ses infos
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.getCompleteRecordOfMyFriend = function(pFriendToView, pWebSocketConnection){
 		// Lecture de la totalité des infos du membre (Etat Civil, relations amicales, et messages) 
@@ -1818,8 +1818,10 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// -------------------------------------------------------------------------
 	MemberServer.prototype.checkDBConnect = function(){
 		this.vDBMgr.checkDBConnect()
-		.then((valeur) => {
-			this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
+		.then((ok) => {
+			if (ok){
+				this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
+			}
 		});
 	};
 	// ------------------------------------------- Fin du module -------------------------------------------------------------------------

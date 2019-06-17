@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
 	vInvitationsCard			= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
-	vPostsClientSide			= new PostsClient(vMemberClient);						// Instanciation de l'objet affichant les Posts
+	vPostsClientSideMain	= new PostsClient(vMemberClient);						// Instanciation de l'objet affichant les Posts
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 	moment.locale('fr');	// Choisit le Preset "France" pour les dates et heures (Mode global)
@@ -128,6 +128,12 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Demande au serveur d'afficher les membres qui ont envoyé une invitation pour devenir ami
 		webSocketConnection.emit('listInvitations', vMemberClient.member.email);  
 	});
+
+	// Affiche une Div "Espace de travail" qui vient s'intercaler entre le bas du menu principal 
+	// et le haut du Footer, pour aavoir une scrollBar intégrale QUE sur l'Espace de travail util et que rien ne soit caché par la barre de menu principal et le footer
+	var vWorkingSpace = document.getElementById('idWorkingSpace');
+	vWorkingSpace.style.height = document.getElementById('idFooter').offsetTop - vWorkingSpace.offsetTop + 'px';
+
 
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
 	// et le haut du Footer, pour que le fond d'écran ne soit pas interrompu lorsque 
@@ -688,6 +694,11 @@ window.addEventListener('DOMContentLoaded', function(){
 		vAccountConfirmPassword,
 	}
 
+
+
+
+
+
 	// ****************************************************************************************************************************** 
 	// ****************************************************************************************************************************** 
 	// ****************************************************************************************************************************** 
@@ -699,7 +710,53 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
+	// --------------------------------------------------------------
+	// Le serveur a envoyé un Post à supprimer
+	// Adaptation du contexte "Main / Friend" selon que l'auteur est 
+	// aussi le propriétaire, ou que le destinataire est mode "Friend", 
+	// on supprime le Post qui lui est distiné en Mode "Main" donc en 
+	// dessous de la fiche Profil de son ami qu'il est en train de consulter
+	// --------------------------------------------------------------
+	webSocketConnection.on('deletePost', function(pPostToDelete){
+		if (pPostToDelete.postOwnerPseudo === vMemberClient.member.pseudo){	// Si le post m'est adressé ==> J'ajoute le Post en Mode "Main"
+			vPostsClientSideMain.deletePost(pPostToDelete, cstMainProfileActive);
+		} else {
+			if 	((vActiveProfile === cstFriendProfileActive) && 							// Si je suis en mode "Friend"
+					(pPostToDelete.postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on ajoute un nouveau Post
+				vPostsClientSideFriend.deletePost(pPostToDelete, cstFriendProfileActive);			
+			}
+		}
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur a envoyé un Post à afficher
+	// Adaptation du contexte "Main / Friend" selon que l'auteur est 
+	// aussi le propriétaire, ou que le destinataire est mode "Friend", 
+	// on affiche le Post qui lui est destiné en Mode "Main" donc en 
+	// dessous de la fiche Profil de son ami qu'il est en train de consulter
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayPost', function(pPostToAdd){
+		if (pPostToAdd[0].postOwnerPseudo === vMemberClient.member.pseudo){	// Si le post m'est adressé ==> J'ajoute le Post en Mode "Main"
+			vPostsClientSideMain.displayStoredPosts(pPostToAdd, cstMainProfileActive);
+		} else {
+			if 	((vActiveProfile === cstFriendProfileActive) && 							// Si je suis en mode "Friend"
+					(pPostToAdd[0].postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on ajoute un nouveau Post
+					vPostsClientSideFriend.displayStoredPosts(pPostToAdd, cstFriendProfileActive);			
+			}
+		}
+	});
 	
+	// --------------------------------------------------------------
+	// Le serveur a envoyé une liste de Posts à afficher
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayPostsList', function(pPostsList){
+		if (vActiveProfile === cstMainProfileActive){
+			vPostsClientSideMain.displayStoredPosts(pPostsList, cstMainProfileActive);
+		} else {
+			vPostsClientSideFriend.displayStoredPosts(pPostsList, cstFriendProfileActive);
+		}
+	});
+
 	// --------------------------------------------------------------
 	// Le membre a demandé à voir la fiche d'un ami
 	// ==> Ouverture de la page de profil

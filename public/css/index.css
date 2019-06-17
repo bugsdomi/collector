@@ -47,9 +47,13 @@ body {
                         url("../images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png"),
                         url("../images/FondVert-60.png");          /* DH+ */
     background-attachment: fixed;
-    overflow-x:hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
+.workingSpace{
+    overflow-x: hidden;
+}
 
 .cOpacity{
     /* background-color: rgba(1, 44, 1, 0.9); */
@@ -353,8 +357,6 @@ body {
     left: 0;
     right: 0;
     /* transform-origin: center; */
-    /* width: 50px; */
-    /* height: 50px; */
     border-radius: 50%;
     border: 1px black solid;
     margin: 0 5px;
@@ -368,12 +370,15 @@ body {
 .tokenSize32{
     width: 32px;
     height: 32px;
+
+}
+.tokenSize16{
+    width: 16px;
+    height: 16px;
 }
 
 /* ********************************** */
-/* Affiche les boutons de preferences */
-/* dans la card "Presentation", mais  */
-/* sans pouvoir les modifier          */
+/* Formatage des champs               */
 /* ********************************** */
 .presentationCard {
     border: 1px black solid;
@@ -394,23 +399,13 @@ body {
 
 /* ********************************** */
 /* Change la taille des caractères    */
-/* a 1.20rem pour un usage général    */
 /* ********************************** */
 .font-size-120{
     font-size: 1.2rem;
 }
-/* ********************************** */
-/* Change la taille des caractères    */
-/* a 0.8rem pour un usage général    */
-/* ********************************** */
 .font-size-80{
     font-size: 0.8rem;
 }
-
-/* ********************************** */
-/* Change la taille des caractères    */
-/* a 0.8rem pour un usage général    */
-/* ********************************** */
 .font-size-70{
     font-size: 0.7rem;
 }
@@ -420,7 +415,6 @@ body {
 /* en attente                         */
 /* ********************************** */
 #idNbrWaitingInvit{
-    /* display: none; */
     visibility: hidden;
 }
 
@@ -436,8 +430,6 @@ body {
 
 .friendList img{
     border: 1px solid black; 
-    /* width: 50px; 
-    height: 50px; */
     margin: 0 0 5px 6px;
 }
 
@@ -497,7 +489,7 @@ a, a:hover {
 
 
 /* ******************************************* */
-/* Animation des boutons "Clear Filter"        */ 
+/* Animation des boutons                       */ 
 /* ******************************************* */
 .pushBtnFilters:hover{
     color: #222;
@@ -583,7 +575,7 @@ a, a:hover {
 /* ********************************************************************************************** */
 /* Permet de définir les dimensions des text-Area lorsqu elles sont auto-redimensionnées          */
 /* ********************************************************************************************** */
-.textareaAutoResizable {
+.textAreaAutoResizable {
 	/* min-height: 5em; */
 	max-height: 50vh;
 	width: 100%;

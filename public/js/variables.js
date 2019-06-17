@@ -19,9 +19,10 @@ var vRecommendFriendsMgr;           // Instanciation de l'objet gestionnaire des
 var vInvitationsCard;               // Instanciation de l'objet "carte des invitations" pour le profil principal
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var vViewFriendProfile; 			      // Instanciation de l'objet de présentation du profil d'un ami
-var vPostsClientSide; 			        // Instanciation de l'objet de Postage
+var vPostsClientSideMain; 			    // Instanciation de l'objet de Postage du profil principal
+var vPostsClientSideFriend; 			  // Instanciation de l'objet de Postage du profil d'un ami
 var webSocketConnection;            // Variable pour la connexion WebSocket
-
+var vFriendProfileViewed;           // Nom du profil en cours de visualisation (Nécessaire pour la MAJ en BroadCast des Post sur différents membres regardant le même profil)
 var cstSuperAdmin = 1;        // Statut du Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 var cstAdmin = 2;       			// Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
 var cstMembre = 4;      			// Membre standard qui ne peut qu'utiliser la partie publique de l'application 

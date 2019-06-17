@@ -1,4 +1,4 @@
-// ************************************************************************
+// ======================================================================**
 // ***      ViewFriendProfile : Affichage de la page de profil d'un ami ***
 // ***                                                                  ***
 // *** Objet : ViewFriendProfile                                        ***
@@ -14,17 +14,21 @@
 // ***      FriendsCard			                                            ***
 // ***      InvitationsCard                                             ***
 // ***                                                                  ***
-// ************************************************************************
+// ======================================================================**
 
 function ViewFriendProfile(pMemberClient){                              // Fonction constructeur exportée
   this.memberClient = pMemberClient;
 };   						
 
 // -----------------------------------------------------------------------------
-// Suppression de tous les éléments contenus dans la modale "FriendPrrofile"
+// Suppression de tous les éléments contenus dans la modale "FriendProfile"
 // -----------------------------------------------------------------------------
 	$('#idModalFriendProfilePage').on('hidden.bs.modal', () => {
+		vFriendProfileViewed = null;
+console.log('hidden.bs.modal - vFriendProfileViewed : ',vFriendProfileViewed)
+
 		vActiveProfile = cstMainProfileActive;
+		vPostsClientSideFriend = null;
 
 		var parent = document.getElementById('idDivMountPointFriendProfile');
 		while (parent.firstChild){
@@ -34,11 +38,15 @@ function ViewFriendProfile(pMemberClient){                              // Fonct
 		while (parent.firstChild){
 			parent.removeChild(parent.firstChild);
 		}
-})
+	})
 // -----------------------------------------------------------------------------
 // Option de menu "Voir le Profil d'un ami"
 // -----------------------------------------------------------------------------
 ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
+	vFriendProfileViewed = pMyFriend;
+console.log('ViewFriendProfile.displayFriendProfile - vFriendProfileViewed : ',vFriendProfileViewed)
+
+
 	vActiveProfile = cstFriendProfileActive;					// Indique que l'on vient de passer en "Vue du profil de mon ami" et on va utiliser le jeu d'identifiants aletrnatifs
 	var vModalHeaderColorParams = 
 	{
@@ -54,5 +62,7 @@ ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 	new FriendsCard(pMyFriend).displayFriendsCard();												// - Affiche les amis dans la carte "Amis"
 	pMyFriend.vMyInvitSentList = [];
 	new InvitationsCard(pMyFriend).displayInvitSentCard();									// - Affiche les invitations lancées dans la carte "Invitation lancées"
-	new PostsClient(pMyFriend).displayPosts();													// - Affiche les Posts et le PostEdit
+
+	vPostsClientSideFriend = new PostsClient(pMyFriend);
+	vPostsClientSideFriend.displayPosts();																	// - Affiche les Posts du profil de mon ami
 }

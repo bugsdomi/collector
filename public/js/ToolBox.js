@@ -272,7 +272,7 @@ ToolBox.prototype.InitPopOverAndToolTipAndDropDown = function(){
 	});
 }
 // -----------------------------------------------------------------------------
-//  Cette fonction formate al date en JJ/MM/AA
+//  Cette fonction formate la date en JJ/MM/AA
 // -----------------------------------------------------------------------------
 ToolBox.prototype.setFormatDateJJMMAAA  = function(pDate){
 	var myDate 	= new Date(pDate);

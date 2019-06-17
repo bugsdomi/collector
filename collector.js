@@ -1,3 +1,25 @@
+// *************************************************************************
+// *** Collector : Programme principal coté serveur        							 ***
+// ***                                                                   ***
+// *** Objet : Collector                                              	 ***
+// ***                                                                   ***
+// *** Cet objet sert à gérer :                                          ***
+// ***   - Les éléments de bas niveau (BDD, Mails, UpLoader, Exprss...)  ***
+// ***   - Les échanges avec les clients (Réception, dispatching)				 ***
+// ***                                                                   ***
+// ***  Nécessite :                                                      ***
+// *** - Le module express																							 ***	
+// *** - Le module path																									 ***
+// *** - Le module SocketIo 																						 ***
+// *** - Le module MemberServer 																				 ***
+// *** - Le module PostsServer			        														 ***
+// *** - Le module SocketIOFileUpload																		 ***
+// *** - Le module DBMgr																								 ***
+// *** - Le module sgMail																								 ***
+// ***                                                                   ***
+// *************************************************************************
+// -------------------------------------------------------------------------
+
 const express = require('express');
 const path = require('path');
 const SocketIo = require('socket.io');
@@ -11,18 +33,13 @@ const sgMail = require('@sendgrid/mail');
 // -------------------------------------------------------------------------
 // Initilisations des variables, structures, constantes...
 // -------------------------------------------------------------------------
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-let vDBMgr = new DBMgr();       									// Instanciation de la base de données
-let vMemberServer = new MemberServer(vDBMgr, sgMail);   // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
-let vPostsServer = new PostsServer(vDBMgr, sgMail, vMemberServer);     // Instanciation de l'objet decrivant l'ensemble des membres et les méthodes de gestion de ces membres
-// -------------------------------------------------------------------------
-// Verification de l'accessibilité de la base - Je ne le fais qu'au debut du jeu, 
-// mais en tout état de cause, normalement, professionnellement, je devrais 
-// m'assurer qu'elle est toujours accessible en cours de partie, mais dans le 
-// contexte ultra-limité de cet atelier, ce n'est pas nécessaire
-// Si elle ne fonctionne pas, je sors du jeu, après avoir envoyé un message à la console
-// -------------------------------------------------------------------------
-vMemberServer.checkDBConnect();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);														// Initialisation de la clé de sécurité de SendGrid
+
+let vDBMgr = new DBMgr();      																						// Instanciation de la base de données
+let vMemberServer = new MemberServer(vDBMgr, sgMail);   									// Instanciation de l'objet de gestion des membres
+let vPostsServer = new PostsServer(vDBMgr, sgMail, vMemberServer);     		// Instanciation de l'objet de gestion des Posts
+
+vMemberServer.checkDBConnect();																						// Verification de l'accessibilité de la base  
 
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
@@ -31,7 +48,7 @@ vMemberServer.checkDBConnect();
 // l'affichage
 // -------------------------------------------------------------------------
 const app = express();
-app.use(SocketIOFileUpload.router);     // Gestionnaire de téléchargement des photos du client vers le serveur
+app.use(SocketIOFileUpload.router);     																	// Gestionnaire de téléchargement des photos du client vers le serveur
 app.set('view engine', 'pug');
 app.use('/static', express.static(__dirname + '/public'));
 app.use('/staticNodeModules', express.static(__dirname + '/node_modules'));
@@ -191,7 +208,6 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 
 
 
-
 	// ------------------------------------
 	// Gestion des recommandations
 	// ------------------------------------
@@ -210,12 +226,20 @@ socketIo.on('connection', function(webSocketConnection){        // Une connexion
 	// ------------------------------------
 	// Gestion des Posts
 	// ------------------------------------
+	// On a reçu un nouveau Post à stocker en BDD
 	webSocketConnection.on('addNewPost', function(vPostToAdd){
-		vPostsServer.addNewPost(vPostToAdd, socketIo);
+		vPostsServer.addNewPost(vPostToAdd, webSocketConnection, socketIo);
 	});   						
 
+	// On a reçu une demande de liste des Posts pour le propriétaire du mur passé en paramètre
+	webSocketConnection.on('askPostsList', function(vPostToSearch){
+		vPostsServer.askPostsList(vPostToSearch, webSocketConnection);
+	});   						
 
-
+		// On a reçu un nouveau Post à stocker en BDD
+		webSocketConnection.on('deletePost', function(vPostToDelete){
+			vPostsServer.deletePost(vPostToDelete, webSocketConnection, socketIo);
+		});   						
 
 
 
