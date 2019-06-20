@@ -127,7 +127,7 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
   // Affichage sur tous les membres connectés pour MAJ le Nbre de messages
   // Si le propriétaire du mur à qui est adressé le Post est connecté, on MAJ son affichage en temps réel avec le nouveau Post
   // ---------------------------------------------------------------------------------------------------------------------------
-  PostsServer.prototype.addNewPost = function(pPostToAdd, pWebSocketConnection, pSocketIo){
+  PostsServer.prototype.addNewPost = function(pPostToAdd, pSocketIo){
     this.addPostInDatabase(pPostToAdd)
     .then(() => {
       this.sendEMail(
@@ -185,7 +185,7 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
   // Affichage sur tous les membres connectés pour MAJ le Nbre de messages
   // Si le propriétaire du mur à qui est adressé le Post est connecté, on MAJ son affichage en temps réel avec la supppression du Post
   // ---------------------------------------------------------------------------------------------------------------------------
-  PostsServer.prototype.deletePost = function(pPostToDelete, pWebSocketConnection, pSocketIo){
+  PostsServer.prototype.deletePost = function(pPostToDelete, pSocketIo){
     this.deletePostInDatabase(pPostToDelete)
     .then(() => {
       this.memberServer.nbrPublicMsgs--;
@@ -231,6 +231,59 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
       pWebSocketConnection.emit('displayPostsList',documents);            // Affichage des Posts 
 		});
   };
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Ajout physique d'un commentaire de Niveau 1 sur un Post pré-existant
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.addNewCommentL1InBDD = function(pCommentL1ToAdd){
+  return new Promise((resolve, reject) => {
+
+    let vCommentL1ToAdd = {
+      commentL1Date   		: pCommentL1ToAdd.commentL1Date,													// Récupération de la date et heure actuelle de rédaction Commentaire
+      commentL1Msg				: pCommentL1ToAdd.commentL1Msg,
+      commentAuthorPseudo : pCommentL1ToAdd.commentAuthorPseudo,				// C'est toujours le membre principal qui écrit
+      commentAuthorPhoto	:	pCommentL1ToAdd.commentAuthorPhoto,
+    }
+
+    this.vDBMgr.collectionMessages.updateOne(
+    { 
+      postOwnerMail : pCommentL1ToAdd.postOwnerMail, 
+      postDate      : pCommentL1ToAdd.postDate
+    },
+    { $push: { commentL1 : vCommentL1ToAdd, } }, 
+    (error) => {
+      if (error) {
+        console.log('-------------------------------------------------------------');
+        console.log('addNewCommentL1InBDD - Erreur de Lecture dans la collection \'Posts\' : ',error);   // Si erreur technique... Message et Plantage
+        console.log('addNewCommentL1InBDD - postOwnerMail : ',postOwnerMail);
+        console.log('addNewCommentL1InBDD - postDate : ',postDate);
+        console.log('-------------------------------------------------------------');
+        reject(error);
+        throw error;
+      } 
+      resolve(true)
+    })
+  });
+};
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Ajout d'un commentaire de Niveau 1 sur un Post pré-existant
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.addNewCommentL1 = function(pCommentL1ToAdd, pSocketIo){
+    this.addNewCommentL1InBDD(pCommentL1ToAdd)
+    .then(() => {
+      let commentL1 = [{
+        commentL1Date   		: pCommentL1ToAdd.commentL1Date,			      // Récupération de la date et heure actuelle de rédaction Commentaire
+        commentL1Msg				: pCommentL1ToAdd.commentL1Msg,
+        commentAuthorPseudo : pCommentL1ToAdd.commentAuthorPseudo,			// C'est toujours le membre principal qui écrit
+        commentAuthorPhoto	:	pCommentL1ToAdd.commentAuthorPhoto,
+        postOwnerPseudo     : pCommentL1ToAdd.postOwnerPseudo,
+        postIndex           : pCommentL1ToAdd.postIndex,
+      }];
+
+      pSocketIo.emit('addCommentL1',commentL1); 
+    })
+  }
 
 	// ------------------------------------------- Fin du module -------------------------------------------------------------------------
 };

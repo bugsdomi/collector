@@ -39,7 +39,6 @@ let vDBMgr = new DBMgr();      																						// Instanciation de la base
 let vMemberServer = new MemberServer(vDBMgr, sgMail);   									// Instanciation de l'objet de gestion des membres
 let vPostsServer = new PostsServer(vDBMgr, sgMail, vMemberServer);     		// Instanciation de l'objet de gestion des Posts
 
-vMemberServer.checkDBConnect();																						// Verification de l'accessibilité de la base  
 
 // -------------------------------------------------------------------------
 // Création de l'application ExpressJS
@@ -71,186 +70,198 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // -------------------------------------------------------------------------
 let socketIo = new SocketIo(server);
 
-socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
-	console.log('Connexion')        
-	
-	// ------------------------------------
-	// Gestion de l'Upload des Avatars
-	// ------------------------------------
-	const uploader = new SocketIOFileUpload();
-	uploader.dir = path.join(__dirname, '/public/images/members');
-	console.log('===============================================================================================================')
-	console.log('File Upload - uploader : ',uploader)
-	console.log('===============================================================================================================')
-	console.log('File Upload - uploader.dir : ',uploader.dir)
-	console.log('===============================================================================================================')
-	
-	uploader.listen(webSocketConnection);
+vMemberServer.checkDBConnect()																		// Verification de l'accessibilité de la base  
+.then( () => {
+	socketIo.on('connection', function(webSocketConnection){        // Une connexion au serveur vient d être faite
+		console.log('Connexion')        
+		
+		// ------------------------------------
+		// Gestion de l'Upload des Avatars
+		// ------------------------------------
+		const uploader = new SocketIOFileUpload();
+		uploader.dir = path.join(__dirname, '/public/images/members');
+		console.log('===============================================================================================================')
+		console.log('File Upload - uploader : ',uploader)
+		console.log('===============================================================================================================')
+		console.log('File Upload - uploader.dir : ',uploader.dir)
+		console.log('===============================================================================================================')
+		
+		uploader.listen(webSocketConnection);
 
-	uploader.on('start', function(event){
-		console.log('File Upload - Start - event.file', event.file);
-		console.log('===============================================================================================================')
-	});
-	
-	uploader.on('progress', function(event){
-		console.log('File Upload - Progress - event.buffer', event.buffer);
-		console.log('===============================================================================================================')
-	});
-	
-	uploader.on('complete', function(event){
-		console.log('File Upload - Complete - event.interrupt', event.interrupt);
-		console.log('===============================================================================================================')
-	});
-	
-	uploader.on('saved', function(event){
-		console.log('File Upload - Saved - event.file.success', event.file.success);
-		console.log('===============================================================================================================')
-	});
-	
-	uploader.on('error', function(event){
-		console.log('File Upload - Error event.errorr', event.error);
-		console.log('===============================================================================================================')
-	});
-	
-	// ------------------------------------
-	// Connexion, création et contrôles de connexion
-	// ------------------------------------
-	vMemberServer.initVisiteur(webSocketConnection, socketIo);    
-	
-	// On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
-	webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-		vMemberServer.visitorLogin(pVisiteurLoginData, webSocketConnection, socketIo);
-	});
-
-	// On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
-	webSocketConnection.on('visitorSignInData',function(pVisitorSignInData){
-		vMemberServer.visitorSignIn(pVisitorSignInData, webSocketConnection, socketIo);
-	});    
-
-	// On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
-	webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
-		vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
-		uploader.on('saved', function(event){
-			// On demande au client d'afficher l'avatar à tous les endroits nécessaires après que l'image ait été téléchargée sur le serveur
-			webSocketConnection.emit('displayAvatarOnProfile');     
+		uploader.on('start', function(event){
+			console.log('File Upload - Start - event.file', event.file);
+			console.log('===============================================================================================================')
 		});
-	});    
+		
+		uploader.on('progress', function(event){
+			console.log('File Upload - Progress - event.buffer', event.buffer);
+			console.log('===============================================================================================================')
+		});
+		
+		uploader.on('complete', function(event){
+			console.log('File Upload - Complete - event.interrupt', event.interrupt);
+			console.log('===============================================================================================================')
+		});
+		
+		uploader.on('saved', function(event){
+			console.log('File Upload - Saved - event.file.success', event.file.success);
+			console.log('===============================================================================================================')
+		});
+		
+		uploader.on('error', function(event){
+			console.log('File Upload - Error event.errorr', event.error);
+			console.log('===============================================================================================================')
+		});
+		
 
-	// On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
-	webSocketConnection.on('lostPWDMgr',function(pLostPWDEmail){
-		vMemberServer.lostPWDMgr(pLostPWDEmail, webSocketConnection);
-	});
+		// ------------------------------------
+		// Connexion, création et contrôles de connexion
+		// ------------------------------------
+		vMemberServer.initVisiteur(webSocketConnection, socketIo);    
+		
+		// On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
+		webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
+			vMemberServer.visitorLogin(pVisiteurLoginData, webSocketConnection, socketIo);
+		});
 
+		// On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
+		webSocketConnection.on('visitorSignInData',function(pVisitorSignInData){
+			vMemberServer.visitorSignIn(pVisitorSignInData, webSocketConnection, socketIo);
+		});    
 
+		// On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
+		webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
+			vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
+			uploader.on('saved', function(event){
+				// On demande au client d'afficher l'avatar à tous les endroits nécessaires après que l'image ait été téléchargée sur le serveur
+				webSocketConnection.emit('displayAvatarOnProfile');     
+			});
+		});    
 
-	// ------------------------------------
-	// Gestion des amis
-	// ------------------------------------
-	// On a reçu une demande de la liste d'amis potentiels
-	webSocketConnection.on('askAddFriend', function(pDataToTransmit){
-		vMemberServer.askAddFriend(pDataToTransmit, webSocketConnection);
-	});   						
-
-	// On a reçu une demande de liste d'amis potentiels filtrés
-	webSocketConnection.on('searchFilteredPotentialFriends', function(pSearchMembersParams){
-		vMemberServer.searchFilteredPotentialFriends(pSearchMembersParams, webSocketConnection);
-	});   				
-
-	// On a reçu une demande de la liste des membres
-	webSocketConnection.on('askMemberList', function(pDataToTransmit){
-		vMemberServer.askMemberList(pDataToTransmit, webSocketConnection);
-	});   						
-
-	// On a reçu une demande de liste de membres filtrés
-	webSocketConnection.on('searchFilteredMembers', function(pSearchMembersParams){
-		vMemberServer.searchFilteredMembers(pSearchMembersParams, webSocketConnection);
-	});   				
-
-	// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
-	webSocketConnection.on('invitationSent', function(pFriendToAdd){
-		vMemberServer.invitationSent(pFriendToAdd, webSocketConnection, socketIo);
-	});   						
-
-	// On a reçu une annulation d'invitation --> retrait des amis potentiels de nos listes d'amis mutuelles
-	webSocketConnection.on('cancelInvitation', function(pInvitSentToDelete){
-		vMemberServer.cancelInvitation(pInvitSentToDelete, webSocketConnection, socketIo);
-	});   						
-
-	// On a reçu une demande de la liste des invitations à valider
-	webSocketConnection.on('listInvitations', function(pMyEmail){
-		vMemberServer.listInvitations(pMyEmail, webSocketConnection);
-	});   						
-
-	// On a reçu une validation d'ami
-	webSocketConnection.on('acceptInvitation', function(pSelectedInvit){
-		vMemberServer.acceptInvitation(pSelectedInvit, webSocketConnection, socketIo);
-	});   						
-
-	// On a reçu un refus d'ami
-	webSocketConnection.on('refuseInvitation', function(pSelectedInvit){
-		vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection, socketIo);
-	});   				
-
-	// On a reçu une suppression d'ami
-	webSocketConnection.on('deleteFriendOfMine', function(pFriendToDelete){
-		vMemberServer.deleteFriendOfMine(pFriendToDelete, webSocketConnection, socketIo);
-	});   				
-
-	// On a reçu une demande de liste d'amis
-	webSocketConnection.on('getFriendsOfMember', function(pFriendsOfMember){
-		vMemberServer.getFriendsOfMember(pFriendsOfMember, webSocketConnection);
-	});   				
-
-	// On a reçu une demande de vision du profil d'un ami
-	webSocketConnection.on('getCompleteRecordOfMyFriend', function(pFriendToView){
-		vMemberServer.getCompleteRecordOfMyFriend(pFriendToView, webSocketConnection);
-	});   				
+		// On a reçu des données de récupération de mot de passe --> Vérification dans la BDD que le mail existe bien
+		webSocketConnection.on('lostPWDMgr',function(pLostPWDEmail){
+			vMemberServer.lostPWDMgr(pLostPWDEmail, webSocketConnection);
+		});
 
 
 
-	// ------------------------------------
-	// Gestion des recommandations
-	// ------------------------------------
-	// On a reçu une demande  de liste d'amis dont la recommandabilité est à vérifier
-	webSocketConnection.on('searchFriendsNotAlreadyInvitWithTargetFriend', function(pRecommendFriendsList){
-		vMemberServer.searchFriendsNotAlreadyInvitWithTargetFriend(pRecommendFriendsList, webSocketConnection);
-	}); 
+		// ------------------------------------
+		// Gestion des amis
+		// ------------------------------------
+		// On a reçu une demande de la liste d'amis potentiels
+		webSocketConnection.on('askAddFriend', function(pDataToTransmit){
+			vMemberServer.askAddFriend(pDataToTransmit, webSocketConnection);
+		});   						
 
-	// On a reçu une recommandation d'amis --> Ajout des relations ami-recommandé et ami-cible
-	webSocketConnection.on('recommendationSent', function(pFriendToAdd){
-		vMemberServer.recommendationSent(pFriendToAdd, webSocketConnection, socketIo);
-	});   						
+		// On a reçu une demande de liste d'amis potentiels filtrés
+		webSocketConnection.on('searchFilteredPotentialFriends', function(pSearchMembersParams){
+			vMemberServer.searchFilteredPotentialFriends(pSearchMembersParams, webSocketConnection);
+		});   				
+
+		// On a reçu une demande de la liste des membres
+		webSocketConnection.on('askMemberList', function(pDataToTransmit){
+			vMemberServer.askMemberList(pDataToTransmit, webSocketConnection);
+		});   						
+
+		// On a reçu une demande de liste de membres filtrés
+		webSocketConnection.on('searchFilteredMembers', function(pSearchMembersParams){
+			vMemberServer.searchFilteredMembers(pSearchMembersParams, webSocketConnection);
+		});   				
+
+		// On a reçu une demande d'ajout d'amis --> Ajout du futur ami dans ma liste d'amis, mais en statut "Non confirmé"
+		webSocketConnection.on('invitationSent', function(pFriendToAdd){
+			vMemberServer.invitationSent(pFriendToAdd, webSocketConnection, socketIo);
+		});   						
+
+		// On a reçu une annulation d'invitation --> retrait des amis potentiels de nos listes d'amis mutuelles
+		webSocketConnection.on('cancelInvitation', function(pInvitSentToDelete){
+			vMemberServer.cancelInvitation(pInvitSentToDelete, webSocketConnection, socketIo);
+		});   						
+
+		// On a reçu une demande de la liste des invitations à valider
+		webSocketConnection.on('listInvitations', function(pMyEmail){
+			vMemberServer.listInvitations(pMyEmail, webSocketConnection);
+		});   						
+
+		// On a reçu une validation d'ami
+		webSocketConnection.on('acceptInvitation', function(pSelectedInvit){
+			vMemberServer.acceptInvitation(pSelectedInvit, webSocketConnection, socketIo);
+		});   						
+
+		// On a reçu un refus d'ami
+		webSocketConnection.on('refuseInvitation', function(pSelectedInvit){
+			vMemberServer.refuseInvitation(pSelectedInvit, webSocketConnection, socketIo);
+		});   				
+
+		// On a reçu une suppression d'ami
+		webSocketConnection.on('deleteFriendOfMine', function(pFriendToDelete){
+			vMemberServer.deleteFriendOfMine(pFriendToDelete, webSocketConnection, socketIo);
+		});   				
+
+		// On a reçu une demande de liste d'amis
+		webSocketConnection.on('getFriendsOfMember', function(pFriendsOfMember){
+			vMemberServer.getFriendsOfMember(pFriendsOfMember, webSocketConnection);
+		});   				
+
+		// On a reçu une demande de vision du profil d'un ami
+		webSocketConnection.on('getCompleteRecordOfMyFriend', function(pFriendToView){
+			vMemberServer.getCompleteRecordOfMyFriend(pFriendToView, webSocketConnection);
+		});   				
 
 
 
-	// ------------------------------------
-	// Gestion des Posts
-	// ------------------------------------
-	// On a reçu un nouveau Post à stocker en BDD
-	webSocketConnection.on('addNewPost', function(vPostToAdd){
-		vPostsServer.addNewPost(vPostToAdd, webSocketConnection, socketIo);
-	});   						
+		// ------------------------------------
+		// Gestion des recommandations
+		// ------------------------------------
+		// On a reçu une demande  de liste d'amis dont la recommandabilité est à vérifier
+		webSocketConnection.on('searchFriendsNotAlreadyInvitWithTargetFriend', function(pRecommendFriendsList){
+			vMemberServer.searchFriendsNotAlreadyInvitWithTargetFriend(pRecommendFriendsList, webSocketConnection);
+		}); 
 
-	// On a reçu une demande de liste des Posts pour le propriétaire du mur passé en paramètre
-	webSocketConnection.on('askPostsList', function(vPostToSearch){
-		vPostsServer.askPostsList(vPostToSearch, webSocketConnection);
-	});   						
-
-		// On a reçu un nouveau Post à stocker en BDD
-		webSocketConnection.on('deletePost', function(vPostToDelete){
-			vPostsServer.deletePost(vPostToDelete, webSocketConnection, socketIo);
+		// On a reçu une recommandation d'amis --> Ajout des relations ami-recommandé et ami-cible
+		webSocketConnection.on('recommendationSent', function(pFriendToAdd){
+			vMemberServer.recommendationSent(pFriendToAdd, webSocketConnection, socketIo);
 		});   						
 
 
 
-	// ------------------------------------
-	// Déconnexion
-	// ------------------------------------
+		// ------------------------------------
+		// Gestion des Posts
+		// ------------------------------------
+		// On a reçu un nouveau Post à stocker en BDD
+		webSocketConnection.on('addNewPost', function(vPostToAdd){
+			vPostsServer.addNewPost(vPostToAdd, socketIo);
+		});   						
 
-	// Un membre se déconnecte
-	webSocketConnection.on('disconnect', function() {
-		console.log('Déconnexion')        
-		vMemberServer.disconnectMember(webSocketConnection, socketIo);
+		// On a reçu une demande de liste des Posts pour le propriétaire du mur passé en paramètre
+		webSocketConnection.on('askPostsList', function(vPostToSearch){
+			vPostsServer.askPostsList(vPostToSearch, webSocketConnection);
+		});   						
+
+			// On a reçu un nouveau Post à stocker en BDD
+			webSocketConnection.on('deletePost', function(vPostToDelete){
+				vPostsServer.deletePost(vPostToDelete, socketIo);
+			});   						
+
+		// ------------------------------------
+		// Gestion des commentaires
+		// ------------------------------------
+		// On a reçu un nouveau commentaire de Niveau 1 à stocker en BDD
+		webSocketConnection.on('addNewCommentL1', function(pCommentL1ToAdd){
+			vPostsServer.addNewCommentL1(pCommentL1ToAdd, socketIo);
+		});   						
+
+
+
+		// ------------------------------------
+		// Déconnexion
+		// ------------------------------------
+
+		// Un membre se déconnecte
+		webSocketConnection.on('disconnect', function() {
+			console.log('Déconnexion')        
+			vMemberServer.disconnectMember(webSocketConnection, socketIo);
+		});
 	});
 });
 

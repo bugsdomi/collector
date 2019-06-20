@@ -111,7 +111,6 @@ function AddPotentialFriendLines(item, index, pMicroFiche, pModalMgrFriendListGr
 	};
 
 	pMicroFiche.displayMicroFicheMember(this.lineHTML.vDivMicroFiche, vMicroFicheParams);
-
 }
 
 // --------------------------------------------------------------

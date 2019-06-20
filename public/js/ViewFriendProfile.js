@@ -25,7 +25,6 @@ function ViewFriendProfile(pMemberClient){                              // Fonct
 // -----------------------------------------------------------------------------
 	$('#idModalFriendProfilePage').on('hidden.bs.modal', () => {
 		vFriendProfileViewed = null;
-console.log('hidden.bs.modal - vFriendProfileViewed : ',vFriendProfileViewed)
 
 		vActiveProfile = cstMainProfileActive;
 		vPostsClientSideFriend = null;
@@ -44,8 +43,6 @@ console.log('hidden.bs.modal - vFriendProfileViewed : ',vFriendProfileViewed)
 // -----------------------------------------------------------------------------
 ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 	vFriendProfileViewed = pMyFriend;
-console.log('ViewFriendProfile.displayFriendProfile - vFriendProfileViewed : ',vFriendProfileViewed)
-
 
 	vActiveProfile = cstFriendProfileActive;					// Indique que l'on vient de passer en "Vue du profil de mon ami" et on va utiliser le jeu d'identifiants aletrnatifs
 	var vModalHeaderColorParams = 

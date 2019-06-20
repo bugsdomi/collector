@@ -520,6 +520,11 @@ a, a:hover {
     background-color: #e0e0e0;
 }
 
+.bg-gray {
+    color: #1b1e21;
+    background-color: #c6c8ca;
+}
+
 /* ******************************************* */
 /* Annimaions des différents blocs du profil   */ 
 /* ******************************************* */

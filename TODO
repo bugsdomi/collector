@@ -18,7 +18,8 @@ Todo:
     - Structure de données
     - displayxxx
     - updateProfile
-
+    
+    ☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
     ☐ Ajouter une modale de confirmation pour la suppression des amis, invitations et Posts
     ☐ Faire une MAJ en temps réel des cartes Presentation, Amis, et Invitation quand on est dans le profiil d'un ami
     ☐ Faire une MAJ en temps réel des avatars chez mes amis ou futurs amis

@@ -710,6 +710,30 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
+
+	// --------------------------------------------------------------
+	// Le serveur a envoyé un Commentaire L1 à afficher
+	// Adaptation du contexte "Main / Friend" selon que l'auteur est 
+	// aussi le propriétaire, ou que le destinataire est mode "Friend", 
+	// on affiche le Post qui lui est destiné en Mode "Main" donc en 
+	// dessous de la fiche Profil de son ami qu'il est en train de consulter
+	// --------------------------------------------------------------
+	webSocketConnection.on('addCommentL1', function(pCommentL1ToAdd){
+
+console.log('SPAM.addCommentL1 0 - pCommentL1ToAdd : ',pCommentL1ToAdd)
+		if (pCommentL1ToAdd[0].postOwnerPseudo === vMemberClient.member.pseudo){	// Si le post m'est adressé ==> J'ajoute le Post en Mode "Main"
+console.log('SPAM.addCommentL1 1')
+
+			vPostsClientSideMain.displayStoredCommentL1(pCommentL1ToAdd, cstMainProfileActive);
+		} else {
+			if 	((vActiveProfile === cstFriendProfileActive) && 							// Si je suis en mode "Friend"
+					(pCommentL1ToAdd[0].postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on ajoute un nouveau Post
+console.log('SPAM.addCommentL1 2')
+					vPostsClientSideFriend.displayStoredCommentL1(pCommentL1ToAdd, cstFriendProfileActive);			
+			}
+		}
+	});
+
 	// --------------------------------------------------------------
 	// Le serveur a envoyé un Post à supprimer
 	// Adaptation du contexte "Main / Friend" selon que l'auteur est 
@@ -718,11 +742,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	// dessous de la fiche Profil de son ami qu'il est en train de consulter
 	// --------------------------------------------------------------
 	webSocketConnection.on('deletePost', function(pPostToDelete){
-		if (pPostToDelete.postOwnerPseudo === vMemberClient.member.pseudo){	// Si le post m'est adressé ==> J'ajoute le Post en Mode "Main"
+		if (pPostToDelete.postOwnerPseudo === vMemberClient.member.pseudo){	// Si le post m'appartient ==> je supprime le Post en Mode "Main"
 			vPostsClientSideMain.deletePost(pPostToDelete, cstMainProfileActive);
 		} else {
-			if 	((vActiveProfile === cstFriendProfileActive) && 							// Si je suis en mode "Friend"
-					(pPostToDelete.postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on ajoute un nouveau Post
+			if 	((vActiveProfile === cstFriendProfileActive) && 														// Si je suis en mode "Friend"
+					(pPostToDelete.postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on supprime un Post
 				vPostsClientSideFriend.deletePost(pPostToDelete, cstFriendProfileActive);			
 			}
 		}

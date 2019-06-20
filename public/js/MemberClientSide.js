@@ -238,7 +238,7 @@ MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, 
 	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
 	vFriendsCard.displayFriendsCard();																			// - Affiche les amis dans la carte "Amis"
 	vInvitationsCard.displayInvitSentCard();																// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
-	vPostsClientSideMain.displayPosts();																				// - Affiche les Posts appartenant au membre
+	vPostsClientSideMain.displayPosts();																		// - Affiche les Posts appartenant au membre
 }
 
 // -----------------------------------------------------------------------------
@@ -286,7 +286,6 @@ MemberClient.prototype.initModalSignIn = function(pSignInParameters){
 // boutons, en blanc
 // --------------------------------------------------------------
 MemberClient.prototype.changeBtnTxtColOver = function(event){
-console.log('changeBtnTxtColOver - event : ',event)
 	document.getElementById(event.target.datas.actionBtn).classList.replace('text-dark','text-light');
 }
 

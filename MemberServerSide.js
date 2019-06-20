@@ -414,7 +414,6 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// Prépare les données de population et les envoie à tous clients connectés
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.UpdateDisplayPopulation = function(pSocketIo){
-
 		this.getNbrPublicsMsgs()
 		.then((document) => {
 			this.nbrPublicMsgs = document.nbrPublicMsgs;
@@ -427,6 +426,9 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			}
 
 			pSocketIo.emit('displayNbrConnectedMembers', population); // Affichage sur tous les clients de la MAJ du nombre de membres connectés
+		})
+		.catch((error) =>{
+			throw error;
 		});
 	};
 
@@ -1774,19 +1776,27 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.getNbrPublicsMsgs = function(){
 		return new Promise((resolve, reject) => {
-			this.vDBMgr.collectionTechnical.find()
+			
+
+			this.vDBMgr.collectionTechnical.find(
+				{},
+				{
+					nbrPublicMsgs : 1,
+				}
+				)
 			.limit(1)
 			.toArray((error, documents) => {
 				if (error) {
 					console.log('-------------------------------------------------------------');
-					console.log('initNbrPublicMsgs - Erreur de lecture dans la collection \'technical\' : ',error);   // Si erreur technique... Message et Plantage
-					console.log('initNbrPublicMsgs - Pas de clé --> Normal');
+					console.log('getNbrPublicsMsgs - Erreur de lecture dans la collection \'technical\' : ',error);   // Si erreur technique... Message et Plantage
+					console.log('getNbrPublicsMsgs - Pas de clé --> Normal');
 					console.log('-------------------------------------------------------------');
 					reject(error);
-					throw error;
-				};
-
-				resolve(documents[0]);
+// XXXXX
+// throw error;
+				} else {
+					resolve(documents[0]);
+				}
 			});
 		});
 	}	
@@ -1807,6 +1817,9 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			this.objectPopulation.nbrMembersInSession = 0;
 			this.objectPopulation.nbrAdminsInSessions = 0;
 		})
+		.catch((error) =>{
+			throw error;
+		});
 	};
 	
 	// -------------------------------------------------------------------------
@@ -1817,11 +1830,18 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// Si elle ne fonctionne pas, je sors de l'application, après avoir envoyé un message à la console
 	// -------------------------------------------------------------------------
 	MemberServer.prototype.checkDBConnect = function(){
-		this.vDBMgr.checkDBConnect()
-		.then((ok) => {
-			if (ok){
-				this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
-			}
+		return new Promise((resolve, reject) => {
+
+			this.vDBMgr.checkDBConnect()
+			.then((ok) => {
+				resolve(true);
+
+					this.initNbrPublicMsgs();                // Mise en mémoire du Nbre de messages publics stockés en BDD
+			})
+			.catch(() => {
+				reject(false)
+				console.log('Erreur au "Check DB-Connect"')
+			})
 		});
 	};
 	// ------------------------------------------- Fin du module -------------------------------------------------------------------------

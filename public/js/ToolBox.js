@@ -357,13 +357,13 @@ ToolBox.prototype.calcRelativeMouseCursorPos = function(element, event) {
 // Cette fonction redimensionne automatiquement des elements du DOM sur la base 
 // d'un event de saisie dans l'élément
 // -----------------------------------------------------------------------------
-ToolBox.prototype.autoResizeElem = function(pIElemToResize) {
+ToolBox.prototype.autoResizeElem = function(pIdElemToResize) {
   var event = new MouseEvent('input', {
     'view': window,
     'bubbles': true,
     'cancelable': true
   });
-	document.getElementById(pIElemToResize).dispatchEvent(event); 
+	document.getElementById(pIdElemToResize).dispatchEvent(event); 
 }
 
 // -----------------------------------------------------------------------------
