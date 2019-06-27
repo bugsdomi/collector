@@ -355,7 +355,8 @@ ToolBox.prototype.calcRelativeMouseCursorPos = function(element, event) {
 
 // -----------------------------------------------------------------------------
 // Cette fonction redimensionne automatiquement des elements du DOM sur la base 
-// d'un event de saisie dans l'élément
+// d'un event de saisie généré artificiellement dans l'élément et qui exécute 
+// la méthode "autoExpand"
 // -----------------------------------------------------------------------------
 ToolBox.prototype.autoResizeElem = function(pIdElemToResize) {
   var event = new MouseEvent('input', {
@@ -373,14 +374,24 @@ ToolBox.prototype.autoResizeElem = function(pIdElemToResize) {
 ToolBox.prototype.autoExpand = function(pElem) {
 	pElem.style.height = 'inherit';
 	var computed = window.getComputedStyle(pElem);			// Récupère les caractéristiques CSS de l'élément
-	
+
+// console.log('******************************************************************************************')
+// console.log('autoExpand - pElem : ',pElem)
+// console.log('autoExpand - border-top-width : ',parseInt(computed.getPropertyValue('border-top-width')))
+// console.log('autoExpand - padding-top : ',parseInt(computed.getPropertyValue('padding-top')))
+// console.log('autoExpand - border-bottom-width : ',parseInt(computed.getPropertyValue('border-bottom-width')))
+// console.log('autoExpand - padding-bottom : ',parseInt(computed.getPropertyValue('padding-bottom')))
+// console.log('autoExpand - pElem.scrollHeight : ',pElem.scrollHeight)
+// console.log('autoExpand - pElem.scrollHeight : ',pElem.clientHeight)
+
 		// Calcule la hauteur
-		var height	= parseInt(computed.getPropertyValue('border-top-width'), 10)
-								+ parseInt(computed.getPropertyValue('padding-top'), 10)
-								+ pElem.scrollHeight
-								+ parseInt(computed.getPropertyValue('padding-bottom'), 10)
-								+ parseInt(computed.getPropertyValue('border-bottom-width'), 10);
-	
+		// var height	= parseInt(computed.getPropertyValue('border-top-width'), 10)
+		// 						+ parseInt(computed.getPropertyValue('padding-top'), 10)
+		// 						+ pElem.scrollHeight
+		// 						+ parseInt(computed.getPropertyValue('padding-bottom'), 10)
+		// 						+ parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+		var height	= pElem.scrollHeight;
+								
 		pElem.style.height = height + 'px';
 	};
 	

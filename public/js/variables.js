@@ -53,4 +53,3 @@ var cstWithNoScaling = 'withNoScaling';     // Définit si un avatar va avoir l'
 
 
 
-

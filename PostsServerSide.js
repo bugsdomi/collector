@@ -62,8 +62,8 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
       (error) => {
         if (error) {
           console.log('-------------------------------------------------------------');
-          console.log('updateDataInBDD - Erreur de MAJ dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
-          console.log('updateDataInBDD - Pas de clé - Normal ');
+          console.log('updateTechnicalRecord - Erreur de MAJ dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
+          console.log('updateTechnicalRecord - Pas de clé - Normal ');
           console.log('-------------------------------------------------------------');
           reject(error);
           throw error;
@@ -165,9 +165,9 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
         (error) => {
         if (error){
           console.log('-------------------------------------------------------------');
-          console.log('addPostInDatabase - Erreur de suppression dans la collection \'messages\' : ',error);   // Si erreur technique... Message et Plantage
-          console.log('addPostInDatabase - pPostToDelete.postOwnerMail : ',pPostToDelete.postOwnerMail);
-          console.log('addPostInDatabase - pPostToDelete.postDate : ',pPostToDelete.postDate);
+          console.log('deletePostInDatabase - Erreur de suppression dans la collection \'messages\' : ',error);   // Si erreur technique... Message et Plantage
+          console.log('deletePostInDatabase - pPostToDelete.postOwnerMail : ',pPostToDelete.postOwnerMail);
+          console.log('deletePostInDatabase - pPostToDelete.postDate : ',pPostToDelete.postDate);
           console.log('-------------------------------------------------------------');
           reject(error);
           throw error;
@@ -197,7 +197,103 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
       pSocketIo.emit('deletePost',pPostToDelete); 
     });
   }
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Suppression d'un Commentaire L1  dans la BDD
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.deleteCommentL1InDatabase = function(pCommentL1ToDelete){
+    return new Promise((resolve, reject) => {
+      this.vDBMgr.collectionMessages.updateOne(
+        { 
+          postOwnerMail : pCommentL1ToDelete.postOwnerMail,
+          postDate      : pCommentL1ToDelete.postDate,
+        },
+        { $pull: 
+          { commentL1: 
+            { commentL1Date: pCommentL1ToDelete.commentL1Date }
+          }
+        },(error) => {
+          if (error){
+            console.log('-------------------------------------------------------------');
+            console.log('deleteCommentL1InDatabase - Erreur de suppression dans la collection \'messages\' : ',error);   // Si erreur technique... Message et Plantage
+            console.log('deleteCommentL1InDatabase - pCommentL1ToDelete.postOwnerMail : ',pCommentL1ToDelete.postOwnerMail);
+            console.log('deleteCommentL1InDatabase - pCommentL1ToDelete.postDate : ',pCommentL1ToDelete.postDate);
+            console.log('-------------------------------------------------------------');
+            reject(error);
+            throw error;
+          } 
+
+        resolve('Suppression du Commentaire L1 --> Ok');
+      });
+    });
+  };
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Suppression d'un Post dans la BDD
+  // MAj du record technique 
+  // Affichage sur tous les membres connectés pour MAJ le Nbre de messages
+  // Si le propriétaire du mur à qui est adressé le Post est connecté, on MAJ son affichage en temps réel avec la supppression du Post
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.deleteCommentL1 = function(pCommentL1ToDelete, pSocketIo){
+    this.deleteCommentL1InDatabase(pCommentL1ToDelete)
+    .then(() => {
+      pSocketIo.emit('deleteCommentL1',pCommentL1ToDelete); 
+    });
+  }
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Suppression d'un Commentaire L2  dans la BDD
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.deleteCommentL2InDatabase = function(pCommentL2ToDelete){
+    return new Promise((resolve, reject) => {
+      this.vDBMgr.collectionMessages.updateOne(
+        { 
+          postOwnerMail             : pCommentL2ToDelete.postOwnerMail,
+          postDate                  : pCommentL2ToDelete.postDate,
+          "commentL1.commentL1Date" : pCommentL2ToDelete.commentL1Date,
+        },
+        { 
+          $pull: {"commentL1.$.commentL2"  : {commentL2Date : pCommentL2ToDelete.commentL2Date}, }
+        },(error) => {
+          if (error){
+            console.log('-------------------------------------------------------------');
+            console.log('deleteCommentL2InDatabase - Erreur de suppression dans la collection \'messages\' : ',error);   // Si erreur technique... Message et Plantage
+            console.log('deleteCommentL2InDatabase - pCommentL2ToDelete.postOwnerMail : ',pCommentL2ToDelete.postOwnerMail);
+            console.log('deleteCommentL2InDatabase - pCommentL2ToDelete.postDate : ',pCommentL2ToDelete.postDate);
+            console.log('-------------------------------------------------------------');
+            reject(error);
+            throw error;
+          } 
+
+        resolve('Suppression du Commentaire L2 --> Ok');
+      });
+    });
+  };
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Suppression d'un Post dans la BDD
+  // MAj du record technique 
+  // Affichage sur tous les membres connectés pour MAJ le Nbre de messages
+  // Si le propriétaire du mur à qui est adressé le Post est connecté, on MAJ son affichage en temps réel avec la supppression du Post
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.deleteCommentL2 = function(pCommentL2ToDelete, pSocketIo){
+    this.deleteCommentL2InDatabase(pCommentL2ToDelete)
+    .then(() => {
+      pSocketIo.emit('deleteCommentL2',pCommentL2ToDelete); 
+    });
+  }
   
+
+
+
+
+
+
+
+
+
+
+
   // ---------------------------------------------------------------------------------------------------------------------------
 	// Lecture de tous les Posts de la BDD
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -239,10 +335,11 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
   return new Promise((resolve, reject) => {
 
     let vCommentL1ToAdd = {
-      commentL1Date   		: pCommentL1ToAdd.commentL1Date,													// Récupération de la date et heure actuelle de rédaction Commentaire
-      commentL1Msg				: pCommentL1ToAdd.commentL1Msg,
-      commentAuthorPseudo : pCommentL1ToAdd.commentAuthorPseudo,				// C'est toujours le membre principal qui écrit
-      commentAuthorPhoto	:	pCommentL1ToAdd.commentAuthorPhoto,
+      commentL1Date   		  : pCommentL1ToAdd.commentL1Date,													// Récupération de la date et heure actuelle de rédaction Commentaire
+      commentL1Msg				  : pCommentL1ToAdd.commentL1Msg,
+      commentL1AuthorPseudo : pCommentL1ToAdd.commentL1AuthorPseudo,				// C'est toujours le membre principal qui écrit
+      commentL1AuthorPhoto	:	pCommentL1ToAdd.commentL1AuthorPhoto,
+      // commentL2             : [],
     }
 
     this.vDBMgr.collectionMessages.updateOne(
@@ -273,15 +370,71 @@ module.exports = function PostsServer(pDBMgr, pSGMail, pMemberServer){  // Fonct
     this.addNewCommentL1InBDD(pCommentL1ToAdd)
     .then(() => {
       let commentL1 = [{
-        commentL1Date   		: pCommentL1ToAdd.commentL1Date,			      // Récupération de la date et heure actuelle de rédaction Commentaire
-        commentL1Msg				: pCommentL1ToAdd.commentL1Msg,
-        commentAuthorPseudo : pCommentL1ToAdd.commentAuthorPseudo,			// C'est toujours le membre principal qui écrit
-        commentAuthorPhoto	:	pCommentL1ToAdd.commentAuthorPhoto,
-        postOwnerPseudo     : pCommentL1ToAdd.postOwnerPseudo,
-        postIndex           : pCommentL1ToAdd.postIndex,
+        commentL1Date   		  : pCommentL1ToAdd.commentL1Date,			      // Récupération de la date et heure actuelle de rédaction Commentaire
+        commentL1Msg				  : pCommentL1ToAdd.commentL1Msg,
+        commentL1AuthorPseudo : pCommentL1ToAdd.commentL1AuthorPseudo,			// C'est toujours le membre principal qui écrit
+        commentL1AuthorPhoto	:	pCommentL1ToAdd.commentL1AuthorPhoto,
+        postOwnerPseudo       : pCommentL1ToAdd.postOwnerPseudo,
+        postIndex             : pCommentL1ToAdd.postIndex,
       }];
 
       pSocketIo.emit('addCommentL1',commentL1); 
+    })
+  }
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Ajout physique d'un commentaire de Niveau 2 sur un commentaire de Niveau 1 pré-existant
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.addNewCommentL2InBDD = function(pCommentL2ToAdd){
+    return new Promise((resolve, reject) => {
+      let vCommentL2ToAdd = {
+        commentL2Date   		  : pCommentL2ToAdd.commentL2Date,								// Récupération de la date et heure actuelle de rédaction Commentaire
+        commentL2Msg				  : pCommentL2ToAdd.commentL2Msg,
+        commentL2AuthorPseudo : pCommentL2ToAdd.commentL2AuthorPseudo,				// C'est toujours le membre principal qui écrit
+        commentL2AuthorPhoto	:	pCommentL2ToAdd.commentL2AuthorPhoto,
+      }
+
+      this.vDBMgr.collectionMessages.updateOne(
+      { 
+        postOwnerMail             : pCommentL2ToAdd.postOwnerMail, 
+        postDate                  : pCommentL2ToAdd.postDate,
+        "commentL1.commentL1Date" : pCommentL2ToAdd.commentL1Date,
+      },
+      { $push: 
+        {"commentL1.$.commentL2"  : vCommentL2ToAdd, }
+      }, 
+      (error) => {
+        if (error) {
+          console.log('-------------------------------------------------------------');
+          console.log('addNewCommentL2InBDD - Erreur de Lecture dans la collection \'Posts\' : ',error);   // Si erreur technique... Message et Plantage
+          console.log('addNewCommentL2InBDD - postOwnerMail : ',pCommentL2ToAdd.postOwnerMail);
+          console.log('addNewCommentL2InBDD - postDate : ',pCommentL2ToAdd.postDate);
+          console.log('-------------------------------------------------------------');
+          reject(error);
+          throw error;
+        } 
+        resolve(true)
+      })
+    });
+  };
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  // Ajout d'un commentaire de Niveau 2 sur un commentaire L1 pré-existant
+  // ---------------------------------------------------------------------------------------------------------------------------
+  PostsServer.prototype.addNewCommentL2 = function(pCommentL2ToAdd, pSocketIo){
+    this.addNewCommentL2InBDD(pCommentL2ToAdd)
+    .then(() => {
+      let commentL2 = [{
+        postOwnerPseudo			  : pCommentL2ToAdd.postOwnerPseudo,
+        commentL2Date   		  : pCommentL2ToAdd.commentL2Date,					
+        commentL2Msg				  : pCommentL2ToAdd.commentL2Msg,
+        commentL2AuthorPseudo : pCommentL2ToAdd.commentL2AuthorPseudo,
+        commentL2AuthorPhoto	:	pCommentL2ToAdd.commentL2AuthorPhoto,
+        postIndex						  : pCommentL2ToAdd.postIndex,							
+        commentL1Index			  :	pCommentL2ToAdd.commentL1Index,					
+      }];
+
+      pSocketIo.emit('addCommentL2',commentL2); 
     })
   }
 

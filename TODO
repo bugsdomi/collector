@@ -20,12 +20,15 @@ Todo:
     - updateProfile
     
     ☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
-    ☐ Ajouter une modale de confirmation pour la suppression des amis, invitations et Posts
-    ☐ Faire une MAJ en temps réel des cartes Presentation, Amis, et Invitation quand on est dans le profiil d'un ami
+    ☐ Ajouter une modale de confirmation pour la suppression des amis, invitations Posts, et commentaires
+    ☐ Mettre un bouton "like" et partager dans les Posts / commentaires
+    ☐ Faire une MAJ en temps réel des cartes Presentation, Amis, et Invitation quand on est dans le profil d'un ami
     ☐ Faire une MAJ en temps réel des avatars chez mes amis ou futurs amis
+    ☐ Mettre une puce avec le Nbre de commentaires sur les Posts et les commentaires L1
+
     ☐ Dans la fiche de renseignements, blinder les controles (Nom, prénom, Date naissance, département, adresse, ville
     ☐ Ajouter la version du produit en bas a droite de l'écran
-    ☐ Voir Toastr
+    ☐ MOE Toastr
     ☐ Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo

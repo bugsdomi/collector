@@ -238,20 +238,36 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 			vPostsServer.askPostsList(vPostToSearch, webSocketConnection);
 		});   						
 
-			// On a reçu un nouveau Post à stocker en BDD
+			// On a reçu un Post à supprimer en BDD
 			webSocketConnection.on('deletePost', function(vPostToDelete){
 				vPostsServer.deletePost(vPostToDelete, socketIo);
 			});   						
 
 		// ------------------------------------
-		// Gestion des commentaires
+		// Gestion des commentaires L1
 		// ------------------------------------
 		// On a reçu un nouveau commentaire de Niveau 1 à stocker en BDD
 		webSocketConnection.on('addNewCommentL1', function(pCommentL1ToAdd){
 			vPostsServer.addNewCommentL1(pCommentL1ToAdd, socketIo);
 		});   						
 
+		// On a reçu un commentaire L1 à supprimer en BDD
+		webSocketConnection.on('deleteCommentL1', function(vCommentL1ToDelete){
+			vPostsServer.deleteCommentL1(vCommentL1ToDelete, socketIo);
+		});   						
+			
+		// ------------------------------------
+		// Gestion des commentaires L2
+		// ------------------------------------
+		// On a reçu un nouveau commentaire de Niveau 2 à stocker en BDD
+		webSocketConnection.on('addNewCommentL2', function(pCommentL2ToAdd){
+			vPostsServer.addNewCommentL2(pCommentL2ToAdd, socketIo);
+		});   						
 
+		// On a reçu un commentaire L2 à supprimer en BDD
+		webSocketConnection.on('deleteCommentL2', function(vCommentL2ToDelete){
+			vPostsServer.deleteCommentL2(vCommentL2ToDelete, socketIo);
+		});   						
 
 		// ------------------------------------
 		// Déconnexion
