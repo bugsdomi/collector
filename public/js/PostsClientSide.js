@@ -248,9 +248,12 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 		vlineHTML.vDivContFooterL1.appendChild(vlineHTML.vDivRow2L1);
 		vlineHTML.vDivRow2L1.setAttribute('class', 'row justify-content-between my-2 mx-0 px-0');
 
+		vlineHTML.vDivBtnAndPuceL1 = window.document.createElement('div');
+		vlineHTML.vDivRow2L1.appendChild(vlineHTML.vDivBtnAndPuceL1);
+
 			// Bouton "Ajouter un commentaire L1" et son icône
 			vlineHTML.vBtnCommentL1 = window.document.createElement('button');
-			vlineHTML.vDivRow2L1.appendChild(vlineHTML.vBtnCommentL1);
+			vlineHTML.vDivBtnAndPuceL1.appendChild(vlineHTML.vBtnCommentL1);
 			vlineHTML.vBtnCommentL1.setAttribute('id', 'idBtnCommentL1' + pActiveProfile + vPublishedPostIndex);
 			vlineHTML.vBtnCommentL1.setAttribute('type', 'button');
 			vlineHTML.vBtnCommentL1.setAttribute('data-toggle', 'collapse');
@@ -262,6 +265,12 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 				vlineHTML.vIIconCommentL1 = window.document.createElement('i');
 				vlineHTML.vBtnCommentL1.appendChild(vlineHTML.vIIconCommentL1);
 				vlineHTML.vIIconCommentL1.setAttribute('class', 'fa fa-commenting-o fa-2x text-dark');
+
+			//<span id="idNbrWaitingInvit" class="badge badge-danger"></span>
+			vlineHTML.vSpanNbCommentL1 = window.document.createElement('span');
+			vlineHTML.vDivBtnAndPuceL1.appendChild(vlineHTML.vSpanNbCommentL1);
+			vlineHTML.vSpanNbCommentL1.setAttribute('id', 'idNbCommentsL1' + pActiveProfile + vPublishedPostIndex);
+			vlineHTML.vSpanNbCommentL1.setAttribute('class', 'badge badge-danger ml-1 invisible');
 
 			// Bouton "Suppression" + Gestion affichage de ce bouton en fonction du statut d'affichage du "Collapse"
 			vlineHTML.vBtnDeletePost = window.document.createElement('button');
@@ -590,6 +599,7 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 	var vMountPointCommentL1 = document.getElementById('idDivMountPointCommentL1' + pActiveProfile + pCommentL1.postIndex);
 	var vLastCommentL1Id;
 	var vLastCommentL1Number;
+	var vPuceNbCommentsL1 = document.getElementById('idNbCommentsL1' + pActiveProfile + pCommentL1.postIndex);
 
 	vMountPointCommentL1.classList.replace('d-none','d-block');
 
@@ -601,6 +611,13 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 		vlastPublishedCommentL1 = parseInt(vLastCommentL1Number) + 1;
 	} else {																																			// Il n'y a aucun Post
 		vlastPublishedCommentL1 = 0;
+	}
+
+	if (vlastPublishedCommentL1 + 1 > 0){
+		vPuceNbCommentsL1.innerHTML = vlastPublishedCommentL1 + 1;
+		vPuceNbCommentsL1.classList.replace('invisible','visible');
+	} else {
+		vPuceNbCommentsL1.classList.replace('visible','invisible');
 	}
 
 	// Ecriture du Commentaire proprement dit
@@ -665,9 +682,12 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 		vlineHTML.vDivContFooterL2.appendChild(vlineHTML.vDivRow2L2);
 		vlineHTML.vDivRow2L2.setAttribute('class', 'row justify-content-between my-2 mx-0 px-0');
 
+		vlineHTML.vDivBtnAndPuceL2 = window.document.createElement('div');
+		vlineHTML.vDivRow2L2.appendChild(vlineHTML.vDivBtnAndPuceL2);
+
 			// Bouton "Ajouter un commentaire L1" et son icône
 			vlineHTML.vBtnCommentL2 = window.document.createElement('button');
-			vlineHTML.vDivRow2L2.appendChild(vlineHTML.vBtnCommentL2);
+			vlineHTML.vDivBtnAndPuceL2.appendChild(vlineHTML.vBtnCommentL2);
 			vlineHTML.vBtnCommentL2.setAttribute('id', 'idBtnCommentL2' + pActiveProfile + pCommentL1.postIndex + '-' + vlastPublishedCommentL1);
 			vlineHTML.vBtnCommentL2.setAttribute('type', 'button');
 			vlineHTML.vBtnCommentL2.setAttribute('data-toggle', 'collapse');
@@ -679,6 +699,12 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 				vlineHTML.vIIconCommentL2 = window.document.createElement('i');
 				vlineHTML.vBtnCommentL2.appendChild(vlineHTML.vIIconCommentL2);
 				vlineHTML.vIIconCommentL2.setAttribute('class', 'fa fa-commenting-o fa-2x text-dark');
+
+			//<span id="idNbrWaitingInvit" class="badge badge-danger"></span>
+			vlineHTML.vSpanNbCommentL2 = window.document.createElement('span');
+			vlineHTML.vDivBtnAndPuceL2.appendChild(vlineHTML.vSpanNbCommentL2);
+			vlineHTML.vSpanNbCommentL2.setAttribute('id', 'idNbCommentsL2' + pActiveProfile + pCommentL1.postIndex + '-' + vlastPublishedCommentL1);
+			vlineHTML.vSpanNbCommentL2.setAttribute('class', 'badge badge-danger ml-1 invisible');
 
 			// Bouton "Suppression" + Gestion affichage de ce bouton en fonction du statut d'affichage du "Collapse"
 			vlineHTML.vBtnDeleteCommentL1 = window.document.createElement('button');
@@ -812,7 +838,7 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 
 // -----------------------------------------------------------------------------
 // Cette méthode affiche les commentaires de Niveau 1 stockés en BDD à l'affichage 
-// des commentaires du post concerné
+// du post concerné
 // -----------------------------------------------------------------------------
 PostsClient.prototype.displayStoredCommentL1 = function(pCommentL1List, pActiveProfile){
 	pCommentL1List.forEach((item) => {															// Pour chacun des posts du membre
@@ -871,6 +897,14 @@ PostsClient.prototype.deleteCommentL1 = function(pCommentL1ToDelete, pActiveProf
 
 	// Décalage des N° de Commentaires L1 supérieurs à celui qui vient d'être supprimé et de leurs L2
 	this.renumberCommentsL1(0, 1, 0, vParentNode, pActiveProfile, pCommentL1ToDelete.postIndex, pCommentL1ToDelete.commentL1Index);
+
+	var vPuceNbCommentsL1 = document.getElementById('idNbCommentsL1' + pActiveProfile + pCommentL1ToDelete.postIndex);
+	var vNbCommentsL1 = parseInt(vPuceNbCommentsL1.innerHTML) - 1;
+	vPuceNbCommentsL1.innerHTML = vNbCommentsL1;
+
+	if (vNbCommentsL1 === 0){
+		vPuceNbCommentsL1.classList.replace('visible','invisible');
+	}
 }
 
 
@@ -1008,7 +1042,7 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 	var vlineHTML = {};		
 	var vlastPublishedCommentL2 = 0;
 	var vMountPointCommentL2 = document.getElementById('idDivMountPointCommentL2' + pActiveProfile + pCommentL2.postIndex + '-' + pCommentL2.commentL1Index);
-
+	var vPuceNbCommentsL2 = document.getElementById('idNbCommentsL2' + pActiveProfile + pCommentL2.postIndex + '-' + pCommentL2.commentL1Index);
 	var vLastCommentL2Id;
 	var vLastCommentL2Number;
 	vMountPointCommentL2.classList.replace('d-none','d-block');
@@ -1023,6 +1057,15 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 	} else {																																			// Il n'y a aucun Post
 		vlastPublishedCommentL2 = 0;
 	}
+
+	if (vlastPublishedCommentL2 + 1 > 0){
+		vPuceNbCommentsL2.innerHTML = vlastPublishedCommentL2 + 1;
+		vPuceNbCommentsL2.classList.replace('invisible','visible');
+	} else {
+		vPuceNbCommentsL2.classList.replace('visible','invisible');
+	}
+
+
 
 	// Ecriture du Commentaire proprement dit
 	// <div class="media">
@@ -1202,6 +1245,14 @@ PostsClient.prototype.deleteCommentL2 = function(pCommentL2ToDelete, pActiveProf
 
 	// Décalage des N° de Commentaires L2 supérieurs à celui qui vient d'être supprimé 
 	this.renumberCommentsL2(0, 0, 1, vParentNode, pActiveProfile, pCommentL2ToDelete.postIndex, pCommentL2ToDelete.commentL1Index, pCommentL2ToDelete.commentL2Index);
+
+	var vPuceNbCommentsL2 = document.getElementById('idNbCommentsL2' + pActiveProfile + pCommentL2ToDelete.postIndex + '-' + pCommentL2ToDelete.commentL1Index);
+	var vNbCommentsL2 = parseInt(vPuceNbCommentsL2.innerHTML) - 1;
+	vPuceNbCommentsL2.innerHTML = vNbCommentsL2;
+
+	if (vNbCommentsL2 === 0){
+		vPuceNbCommentsL2.classList.replace('visible','invisible');
+	}
 }
 
 
