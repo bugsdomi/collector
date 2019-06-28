@@ -1346,6 +1346,11 @@ PostsClient.prototype.renumberCommentsL1 = function(pCalledFromPost, pCalledFrom
 			vElem.setAttribute('aria-controls','idDivCollapseL2' + pActiveProfile + pPostIndex + '-' + j);	
 			vElem.setAttribute('id', vElemRoot + pPostIndex + '-' + j);																
 		
+			vElemId = 'idNbCommentsL2'+ pActiveProfile + (pPostIndex + pCalledFromPost) + '-' + (j + pCalledFromL1);										
+			vElem = document.getElementById(vElemId);																									
+			vElemRoot = vElemId.slice(0, ('idNbCommentsL2'+pActiveProfile).length); 									
+			vElem.setAttribute('id', vElemRoot + pPostIndex + '-' + j);																
+		
 			vElemId = 'idBtnDeleteCommentL1'+ pActiveProfile + (pPostIndex + pCalledFromPost) + '-' + (j + pCalledFromL1);							
 			vElem = document.getElementById(vElemId);																									
 			vElemRoot = vElemId.slice(0, ('idBtnDeleteCommentL1'+pActiveProfile).length); 						
@@ -1419,7 +1424,8 @@ PostsClient.prototype.renumberPosts = function(pParentNode, pPostToDelete, pActi
 			document.getElementById('idBtnCommentL1'+ pActiveProfile + (i + 1)).setAttribute('aria-controls', 'idDivCollapseL1'+ pActiveProfile + i);
 			document.getElementById('idBtnCommentL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idBtnCommentL1'+ pActiveProfile + i);
 			document.getElementById('idDivCollapseL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idDivCollapseL1'+ pActiveProfile + i);
-			
+
+			document.getElementById('idNbCommentsL1'+ pActiveProfile + (i + 1)).setAttribute('id', 'idNbCommentsL1'+ pActiveProfile + i);
 			document.getElementById('idBtnDeletePost'+ pActiveProfile + (i + 1)).setAttribute('id', 'idBtnDeletePost'+ pActiveProfile + i);
 			
 			document.getElementById('idTextAreaCommentL1'+ pActiveProfile + (i + 1)).setAttribute('name', 'textAreaCommentL1'+ pActiveProfile + i);
