@@ -27,7 +27,9 @@ function ViewFriendProfile(pMemberClient){                              // Fonct
 		vFriendProfileViewed = null;
 
 		vActiveProfile = cstMainProfileActive;
-		vPostsClientSideFriend = null;
+		vPostsClientSideFriend 	= null;
+		vPresentationCardFriend	= null;
+	
 
 		var parent = document.getElementById('idDivMountPointFriendProfile');
 		while (parent.firstChild){
@@ -62,4 +64,6 @@ ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 
 	vPostsClientSideFriend = new PostsClient(pMyFriend);
 	vPostsClientSideFriend.displayPosts();																	// - Affiche les Posts du profil de mon ami
+
+	vPresentationCardFriend	= new PresentationCard(pMyFriend);							// Instanciation de l'objet "Carte de présentations"
 }

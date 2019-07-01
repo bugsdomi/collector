@@ -57,7 +57,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	vAccountModal 				= new AccountModal(vMemberClient);							// Instanciation de la méga-modale de saisie des infos personnelles;
 	vFriendPopUpMenu 			= new FriendPopUpMenu(vMemberClient);						// Instanciation de l'objet affichant le PopUp Menu;
 	vFriendRequestMgr			= new FriendRequestMgr(vMemberClient);					// Instanciation de l'objet gérant les demandes d'amis
-	vPresentationCard			= new PresentationCard(vMemberClient);					// Instanciation de l'objet "Carte de présentations"
+	vPresentationCardMain	= new PresentationCard(vMemberClient);					// Instanciation de l'objet "Carte de présentations"
 	vFriendsCard					= new FriendsCard(vMemberClient);								// Instanciation de l'objet "Carte des amis"
 	vInvitationsMgr				= new InvitationsMgr(vMemberClient);						// Instanciation de l'objet gérant les invitations
 	vMembersMgr						= new MembersMgr(vMemberClient);								// Instanciation de l'objet gérant les membres
@@ -721,7 +721,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		if (pCommentL2ToDelete.postOwnerPseudo === vMemberClient.member.pseudo){								// Si le post m'appartient ==> je supprime le Post en Mode "Main"
 			vPostsClientSideMain.deleteCommentL2(pCommentL2ToDelete, cstMainProfileActive);
 		} else {
-			if 	((vActiveProfile === cstFriendProfileActive) && 														// Si je suis en mode "Friend"
+			if 	((vActiveProfile === cstFriendProfileActive) && 																// Si je suis en mode "Friend"
 					(pCommentL2ToDelete.postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on supprime un Post
 				vPostsClientSideFriend.deleteCommentL2(pCommentL2ToDelete, cstFriendProfileActive);			
 			}
@@ -759,7 +759,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		} else {
 			if 	((vActiveProfile === cstFriendProfileActive) && 							// Si je suis en mode "Friend"
 					(pCommentL1ToAdd[0].postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on ajoute un nouveau Post
-					vPostsClientSideFriend.displayStoredCommentL1(pCommentL1ToAdd, cstFriendProfileActive);			
+				vPostsClientSideFriend.displayStoredCommentL1(pCommentL1ToAdd, cstFriendProfileActive);			
 			}
 		}
 	});
@@ -813,7 +813,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		} else {
 			if 	((vActiveProfile === cstFriendProfileActive) && 							// Si je suis en mode "Friend"
 					(pPostToAdd[0].postOwnerPseudo === vFriendProfileViewed.member.pseudo)){		// et que l'ami que je consulte est est celui pour lequel on ajoute un nouveau Post
-					vPostsClientSideFriend.displayStoredPosts(pPostToAdd, cstFriendProfileActive);			
+				vPostsClientSideFriend.displayStoredPosts(pPostToAdd, cstFriendProfileActive);			
 			}
 		}
 	});
@@ -1273,6 +1273,69 @@ console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 	webSocketConnection.on('displayAvatarOnProfile', function(){ 
 		vMemberClient.displayAvatar(vAvatarInfo)
 	});
+
+	// --------------------------------------------------------------
+	// MAJ des données du membre sur l'écran du membre, qu'iil soit 
+	// en direct, ou vu sur un écran de profil "Ami"
+	// --------------------------------------------------------------
+	webSocketConnection.on('updateProfile', function(pDataProfilMembre){ 
+		var vFriendToUpdateIndex;
+		var vInvitToUpdateIndex;
+
+		// Si c'est mon profil qui est MAJ, je répercute les modifs sur mon propre écran
+		if (pDataProfilMembre.pseudo === vMemberClient.member.pseudo){					
+			vPresentationCardMain.fillPresentationCard(pDataProfilMembre);				// MAJ des informations du compte
+		} else {																																
+			// Sinon c'est peut-être un ami à moi qui a MAJ son profil ==> Vérification dans la table de mes amis
+			vFriendToUpdateIndex = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pDataProfilMembre.pseudo);
+
+			if (vFriendToUpdateIndex > -1){																				// Si le membre est un de mes amis, je mets à jours son Avatar sur mon écran
+				// MAJ de l'avatar dans ma liste d'amis, et dans la carte de mes amis
+				vMemberClient.vMyFriendList[vFriendToUpdateIndex].friendPhoto = pDataProfilMembre.etatCivil.photo;
+				document.getElementById('idImgFriendAvatar'+cstMainProfileActive+vFriendToUpdateIndex).setAttribute('src','static/images/members/'+pDataProfilMembre.etatCivil.photo);
+			} else { // Si ce n'est pas un ami...
+				// ... c'est peut-être un membre à qui j'ai envoyé une invitation qui a MAJ son profil ==> Vérification dans la table de mes invitations
+				vInvitToUpdateIndex = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pDataProfilMembre.pseudo);
+	
+			if (vInvitToUpdateIndex > -1){									// Si le membre est le destinataire d'une de mes invitations, je mets à jours son Avatar sur mon écran
+					// MAJ de l'avatar dans ma liste d'amis, et dans la carte de mes invitations lancées
+					vMemberClient.vMyInvitSentList[vInvitToUpdateIndex].friendPhoto = pDataProfilMembre.etatCivil.photo;
+					document.getElementById('idImgInvitAvatar'+cstMainProfileActive+vInvitToUpdateIndex).setAttribute('src','static/images/members/'+pDataProfilMembre.etatCivil.photo);
+				}
+			}
+		}
+
+
+
+		// MAJ des données et des avatars lorsque l'on est sur la page "Profil d'un Ami"
+		// Si c'est le profil de l'ami que je suis en train de consulter qui est MAJ, je répercute les modifs sur mon écran en temps réel
+		if (vActiveProfile === cstFriendProfileActive){
+			if (pDataProfilMembre.pseudo === vFriendProfileViewed.member.pseudo){					
+				document.getElementById('idModalFriendAvatarToken').setAttribute('src','static/images/members/'+pDataProfilMembre.etatCivil.photo);
+
+				vPresentationCardFriend.fillPresentationCard(pDataProfilMembre);
+			} else {																																
+			// Sinon c'est peut-être un ami du profil que je consulte qui a MAJ son profil ==> Vérification dans la table de ses amis
+				vFriendToUpdateIndex = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pDataProfilMembre.pseudo);
+
+			if (vFriendToUpdateIndex > -1){																				// Si le membre est un de mes amis, je mets à jours son Avatar sur mon écran
+				// MAJ de l'avatar dans la carte des amis de l'ami dont je consulte le profil
+				vFriendProfileViewed.vMyFriendList[vFriendToUpdateIndex].friendPhoto = pDataProfilMembre.etatCivil.photo;
+				document.getElementById('idImgFriendAvatar'+vActiveProfile+vFriendToUpdateIndex).setAttribute('src','static/images/members/'+pDataProfilMembre.etatCivil.photo);
+			} else { // Si ce n'est pas un ami...
+				// ... c'est peut-être un membre à qui j'ai envoyé une invitation qui a MAJ son profil ==> Vérification dans la table de mes invitations
+				vInvitToUpdateIndex = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyInvitSentList, 'friendPseudo', pDataProfilMembre.pseudo);
+	
+				if (vInvitToUpdateIndex > -1){									// Si le membre est le destinataire d'une de mes invitations, je mets à jours son Avatar sur mon écran
+					// MAJ de l'avatar dans ma liste d'amis, et dans la carte de mes invitations lancées
+					vFriendProfileViewed.vMyInvitSentList[vInvitToUpdateIndex].friendPhoto = pDataProfilMembre.etatCivil.photo;
+					document.getElementById('idImgInvitAvatar'+vActiveProfile+vInvitToUpdateIndex).setAttribute('src','static/images/members/'+pDataProfilMembre.etatCivil.photo);
+				}
+			}
+		}
+	}
+});
+
 
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------

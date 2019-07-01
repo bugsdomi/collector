@@ -226,6 +226,7 @@ InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSe
 
 	vlineHTML.vImg = window.document.createElement('img');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
+	vlineHTML.vImg .setAttribute('id', 'idImgInvitAvatar'+vActiveProfile+index);
 	vlineHTML.vImg.setAttribute('class', 'avatarToken tokenSize50');
 	vlineHTML.vImg.setAttribute('alt', 'Ami');
 	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
@@ -294,6 +295,7 @@ InvitationsCard.prototype.addInvitSentIntoCardWithoutDropDown = function(pMyInvi
 
 	vlineHTML.vImg = window.document.createElement('img');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
+	vlineHTML.vImg .setAttribute('id', 'idImgInvitAvatar'+vActiveProfile+index);
 	vlineHTML.vImg.setAttribute('class', 'avatarToken tokenSize50');
 	vlineHTML.vImg.setAttribute('alt', 'Ami');
 	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);

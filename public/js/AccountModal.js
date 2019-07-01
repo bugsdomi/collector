@@ -313,9 +313,7 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
 
 		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
-			this.memberClient.displayAvatar(pAvatarInfo);
-			document.getElementById('idAvatarToken'+cstMainProfileActive).setAttribute('src', 'static/images/members/'+this.memberClient.member.etatCivil.photo);
+			this.memberClient.displayAvatar(pAvatarInfo);	// MAJ L'avatar sur la barre de menu, et l'avatar principal du profile
 		};
-		vPresentationCard.fillPresentationCard(this.memberClient.member);
 	}
 }

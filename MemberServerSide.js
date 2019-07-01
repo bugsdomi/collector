@@ -1657,7 +1657,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// On MAJ la Bdd avec les données de profil du membre saisies dans la fiche "renseignements"
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.updateDataProfilMembre = function(pDataProfilMembre, pWebSocketConnection){
+	MemberServer.prototype.updateDataProfilMembre = function(pDataProfilMembre, pWebSocketConnection, pSocketIo){
 
 		// On MAJ l'ensemble des données générales de la fiche de renseignement SAUF l'éventuel Chgt de PWD
 		let myDataSet = 
@@ -1706,6 +1706,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 					'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
 			};
+
+			pSocketIo.emit('updateProfile',pDataProfilMembre); 
 		});
 	};
 

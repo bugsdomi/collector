@@ -632,36 +632,36 @@ PresentationCard.prototype.fillPresentationCard = function(pMember){
 // pProfileInfo.vAboutDepartmentName.innerHTML = this.memberClient.member.etatCivil.address.departmentName;
 	document.getElementById('idAboutDepartmentName'+vActiveProfile).innerHTML = pMember.etatCivil.address.departmentName;
 
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefGravures','idAboutPrefGravuresLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefLivres','idAboutPrefLivresLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFilms','idAboutPrefFilmsLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefJeux','idAboutPrefJeuxLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefMaquettes','idAboutPrefMaquettesLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFigurines','idAboutPrefFigurinesLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefBlindes','idAboutPrefBlindesLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAvions','idAboutPrefAvionsLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefBateaux','idAboutPrefBateauxLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefDioramas','idAboutPrefDioramasLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefPrehistoire','idAboutPrefPrehistoireLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAntiquite','idAboutPrefAntiquiteLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefMoyenAge','idAboutPrefMoyenAgeLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefRenaissance','idAboutPrefRenaissanceLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefDentelles','idAboutPrefDentellesLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAncienRegime','idAboutPrefAncienRegimeLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefRevolution','idAboutPrefRevolutionLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('pref1erEmpire','idAboutPref1erEmpireLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('pref2ndEmpire','idAboutPref2ndEmpireLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefSecession','idAboutPrefSecessionLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFarWest','idAboutPrefFarWestLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW1','idAboutPrefWW1Label'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW2','idAboutPrefWW2Label'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefContemporain','idAboutPrefContemporainLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFuturiste','idAboutPrefFuturisteLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefFantastique','idAboutPrefFantastiqueLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefHFrancaise','idAboutPrefHFrancaiseLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefHAmericaine','idAboutPrefHAmericaineLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefHInternationale','idAboutPrefHInternationaleLabel'+vActiveProfile);
-	this.activeButtonOfSelectedCheckBoxReadOnly('prefAutre','idAboutPrefAutreLabel'+vActiveProfile);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefGravures','idAboutPrefGravuresLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefLivres','idAboutPrefLivresLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFilms','idAboutPrefFilmsLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefJeux','idAboutPrefJeuxLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefMaquettes','idAboutPrefMaquettesLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFigurines','idAboutPrefFigurinesLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefBlindes','idAboutPrefBlindesLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAvions','idAboutPrefAvionsLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefBateaux','idAboutPrefBateauxLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefDioramas','idAboutPrefDioramasLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefPrehistoire','idAboutPrefPrehistoireLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAntiquite','idAboutPrefAntiquiteLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefMoyenAge','idAboutPrefMoyenAgeLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefRenaissance','idAboutPrefRenaissanceLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefDentelles','idAboutPrefDentellesLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAncienRegime','idAboutPrefAncienRegimeLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefRevolution','idAboutPrefRevolutionLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('pref1erEmpire','idAboutPref1erEmpireLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('pref2ndEmpire','idAboutPref2ndEmpireLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefSecession','idAboutPrefSecessionLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFarWest','idAboutPrefFarWestLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW1','idAboutPrefWW1Label'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefWW2','idAboutPrefWW2Label'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefContemporain','idAboutPrefContemporainLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFuturiste','idAboutPrefFuturisteLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefFantastique','idAboutPrefFantastiqueLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefHFrancaise','idAboutPrefHFrancaiseLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefHAmericaine','idAboutPrefHAmericaineLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefHInternationale','idAboutPrefHInternationaleLabel'+vActiveProfile, pMember);
+	this.activeButtonOfSelectedCheckBoxReadOnly('prefAutre','idAboutPrefAutreLabel'+vActiveProfile, pMember);
 
 	document.getElementById('idAboutPresentation'+vActiveProfile).value = pMember.presentation;
 }
@@ -672,7 +672,10 @@ PresentationCard.prototype.fillPresentationCard = function(pMember){
 // - Elle ajoute ou retire la classe "active" du label
 // - Comme cette fonction est "Read-Only", on ne change pas le statut réel des check-box sous-jacents
 // -----------------------------------------------------------------------------
-PresentationCard.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel){
-	this.memberClient.member.preferences[pIndex]	? document.getElementById(pPrefLabel).classList.add('active')
-																								: document.getElementById(pPrefLabel).classList.remove('active')
+PresentationCard.prototype.activeButtonOfSelectedCheckBoxReadOnly = function(pIndex, pPrefLabel, pMember){
+	if (pMember.preferences[pIndex]){
+		document.getElementById(pPrefLabel).classList.add('active')
+	} else {
+		document.getElementById(pPrefLabel).classList.remove('active')
+	}
 }

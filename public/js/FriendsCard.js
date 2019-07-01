@@ -175,6 +175,7 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 
 	vlineHTML.vImg = window.document.createElement('img');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vImg);
+	vlineHTML.vImg.setAttribute('id', 'idImgFriendAvatar'+vActiveProfile+index);
 	vlineHTML.vImg.setAttribute('class', 'avatarToken tokenSize50');
 	vlineHTML.vImg.setAttribute('alt', 'Ami');
 	vlineHTML.vImg.setAttribute('src', 'static/images/members/'+pMyFriend.friendPhoto);

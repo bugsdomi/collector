@@ -131,7 +131,7 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 
 		// On a reçu des renseignements de profil de membre --> MAJ de ces infos dans la BDD
 		webSocketConnection.on('dataProfilMembre',function(pDataProfilMembre){
-			vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection);
+			vMemberServer.updateDataProfilMembre(pDataProfilMembre, webSocketConnection, socketIo);
 			uploader.on('saved', function(event){
 				// On demande au client d'afficher l'avatar à tous les endroits nécessaires après que l'image ait été téléchargée sur le serveur
 				webSocketConnection.emit('displayAvatarOnProfile');     
