@@ -58,11 +58,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	vFriendPopUpMenu 			= new FriendPopUpMenu(vMemberClient);						// Instanciation de l'objet affichant le PopUp Menu;
 	vFriendRequestMgr			= new FriendRequestMgr(vMemberClient);					// Instanciation de l'objet gérant les demandes d'amis
 	vPresentationCardMain	= new PresentationCard(vMemberClient);					// Instanciation de l'objet "Carte de présentations"
-	vFriendsCard					= new FriendsCard(vMemberClient);								// Instanciation de l'objet "Carte des amis"
+	vFriendsCardMain			= new FriendsCard(vMemberClient);								// Instanciation de l'objet "Carte des amis"
 	vInvitationsMgr				= new InvitationsMgr(vMemberClient);						// Instanciation de l'objet gérant les invitations
 	vMembersMgr						= new MembersMgr(vMemberClient);								// Instanciation de l'objet gérant les membres
 	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
-	vInvitationsCard			= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
+	vInvitationsCardMain	= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
 	vPostsClientSideMain	= new PostsClient(vMemberClient);						// Instanciation de l'objet affichant les Posts
 
@@ -860,7 +860,20 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pCancelInvitSent){ 
 		pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
-		vInvitationsCard.removeInvitSentFromMyInvitSentList(pCancelInvitSent);
+		vInvitationsCardMain.removeInvitSentFromMyInvitSentList(pCancelInvitSent);
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur a supprimé le membre à qui j'avais envoyé une 
+	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
+	// --------------------------------------------------------------
+	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentListFriend', function(pCancelInvitSent){ 
+		if (vActiveProfile === cstFriendProfileActive){
+			if (vFriendProfileViewed.member.pseudo === pCancelInvitSent.myPseudo){
+				pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
+				vInvitationsCardFriend.refreshMyInvitList(pCancelInvitSent);
+			}
+		}
 	});
 
 	// --------------------------------------------------------------
@@ -869,7 +882,20 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentList', function(pCancelInvitSent){ 
 		pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
-		vInvitationsCard.refreshMyInvitList(pCancelInvitSent);
+		vInvitationsCardMain.refreshMyInvitList(pCancelInvitSent);
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur a supprimé le membre à qui j'avais envoyé une 
+	// invitation, et je dois donc l'effacer de ma carte "Invitations lancées"
+	// --------------------------------------------------------------
+	webSocketConnection.on('deleteInvitedMemberFromMyInvitSentListFriend', function(pCancelInvitSent){ 
+		if (vActiveProfile === cstFriendProfileActive){
+			if (vFriendProfileViewed.member.pseudo === pCancelInvitSent.friendPseudo){
+				pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.myPseudo);	
+				vInvitationsCardFriend.refreshMyInvitList(pCancelInvitSent);
+			}
+		}
 	});
 
 	// --------------------------------------------------------------
@@ -878,7 +904,28 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vFriendPopUpMenu.removeFriendFromMyFriendList(pFriendToDelete);
+// XXXXX
+// vFriendPopUpMenu.removeFriendFromMyFriendList(pFriendToDelete);
+		vFriendsCardMain.removeFriendFromMyFriendList(pFriendToDelete);
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur a supprimé mon ex-ami, et je dois donc l'effacer 
+	// de ma carte "Liste d'amis"
+	// --------------------------------------------------------------
+	webSocketConnection.on('deleteFriendFromMyFriendListFriend', function(pFriendToDelete){ 
+		if (vActiveProfile === cstFriendProfileActive){
+			if ((vFriendProfileViewed.member.pseudo === pFriendToDelete.myPseudo) ||			// Si un profil consulté est concerné par la suppression d'un ami
+					(vFriendProfileViewed.member.pseudo === pFriendToDelete.friendPseudo)){		// je le laiisse entrer dans la procvedure de suppression de l'Avatar
+
+				if (vFriendProfileViewed.member.pseudo === pFriendToDelete.friendPseudo) {
+					pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pFriendToDelete.myPseudo);
+				} else {
+					pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
+				}
+				vFriendsCardFriend.refreshMyFriendList(pFriendToDelete);
+			}
+		}
 	});
 
 	// --------------------------------------------------------------
@@ -888,7 +935,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vFriendPopUpMenu.refreshMyFriendList(pFriendToDelete);
+		vFriendsCardMain.refreshMyFriendList(pFriendToDelete);
 	});
 
 	// --------------------------------------------------------------
@@ -960,12 +1007,44 @@ window.addEventListener('DOMContentLoaded', function(){
 		pMyFriend.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pMyFriend.friendPseudo);
 
 		// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
-		vInvitationsCard.refreshMyInvitList(pMyFriend);		
+		vInvitationsCardMain.refreshMyInvitList(pMyFriend);		
 
 		// Ajout de l'avatar sujet de l'invitation dans ma liste d'amis
 		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
-		vFriendsCard.addFriendIntoCard(pMyFriend, vULFriend);
+		vFriendsCardMain.addFriendIntoCard(pMyFriend, vULFriend);
 	});
+
+	// --------------------------------------------------------------
+	// Suppression de l'invitation que j avais lancée à mon nouvel ami
+	// et ajout de mon Avatar sur la liste de mon nouvel ami
+	// --------------------------------------------------------------
+	webSocketConnection.on('addFriendIntoHisListFriend', function(pMyFriend){ 
+		if (vActiveProfile === cstFriendProfileActive){
+			if ((vFriendProfileViewed.member.pseudo === pMyFriend.myPseudo) ||				// Si un profil consulté est concerné par la validation d'un ami
+					(vFriendProfileViewed.member.pseudo === pMyFriend.friendPseudo)){			// je le laisse entrer dans la procedure d'ajout de l'Avatar
+
+				// Suppression de l'avatar sujet de l'invitation de la carte des invitations en attente
+				if (vFriendProfileViewed.member.pseudo === pMyFriend.myPseudo){ 				// Si un profil consulté est concerné par la validation d'un ami
+					pMyFriend.indexInvitToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyInvitSentList, 'friendPseudo', pMyFriend.friendPseudo);	
+					vInvitationsCardFriend.refreshMyInvitList(pMyFriend);		
+				} else {
+					let vReversedRoles = {
+						myEmail 			: pMyFriend.friendEmail,
+						myPseudo			:	pMyFriend.friendPseudo,
+						myPhoto				: pMyFriend.friendPhoto,
+						friendEmail  	: pMyFriend.myEmail,
+						friendPseudo 	: pMyFriend.myPseudo,
+						friendPhoto 	: pMyFriend.myPhoto,
+						indexInvitation	: pMyFriend.indexInvitation,			 
+					}
+					pMyFriend = vReversedRoles;
+				}
+
+				vULFriend = document.getElementById('idFriendUL'+cstFriendProfileActive);
+				vFriendsCardFriend.addFriendIntoCard(pMyFriend, vULFriend);						// Ajout de mon nouvel ami dans la carte "Mes amis"
+			}
+		}
+	});	
 
 	// --------------------------------------------------------------
 	// Affichage d'une Notification d'acceptation d'ami envoyée par 
@@ -1087,11 +1166,25 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Affichage d'une Notification d'envoi d'invitation envoyée par 
 	// le serveur après les MAJ réussies de la BDD et l'envoi du mail
 	// --------------------------------------------------------------
-	webSocketConnection.on('displayNotifInvitationSent', function(pFriendToAdd){  
+	webSocketConnection.on('displayNotifInvitSent', function(pFriendToAdd){  
 		var vDisplayNotifInvitationSentData = {
 			modalListGroup : vModalMgrFriendListGroup,
 		}
 		vFriendRequestMgr.displayNotifInvitationSent(pFriendToAdd, vDisplayNotifInvitationSentData);
+	});
+	// --------------------------------------------------------------
+	// Affichage d'une Notification d'envoi d'invitation envoyée par 
+	// le serveur après les MAJ réussies de la BDD et l'envoi du mail
+	// pour MMAj sur les Profils en mode "Friend"
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayNotifInvitSentFriend', function(pFriendToAdd){  
+		if (vActiveProfile === cstFriendProfileActive){
+			if(vFriendProfileViewed.member.pseudo === pFriendToAdd.myPseudo){
+				// Comme il y a au moins une invitation en attente, affiche la carte des invitations en attente
+				document.getElementById('idInvitSentCard'+cstFriendProfileActive).style.display = 'block';	
+				vInvitationsCardFriend.addInvitSentIntoCard(pFriendToAdd);
+			}
+		}
 	});
 
 	// --------------------------------------------------------------

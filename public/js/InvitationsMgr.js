@@ -220,7 +220,7 @@ InvitationsMgr.prototype.displayNotifInvitationValided = function(pSelectedInvit
 	},cstDelayClosingPopover+500);																	// Supprime la ligne après un délai de quelques secondes
 
 	vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
-	vFriendsCard.addFriendIntoCard(pSelectedInvit, vULFriend);						// Ajout de mon nouvel ami dans la carte "Mes amis"
+	vFriendsCardMain.addFriendIntoCard(pSelectedInvit, vULFriend);						// Ajout de mon nouvel ami dans la carte "Mes amis"
 };
 
 // --------------------------------------------------------------

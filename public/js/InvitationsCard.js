@@ -349,7 +349,6 @@ InvitationsCard.prototype.cancelInvitation = function(event){
 // -----------------------------------------------------------------------------
 InvitationsCard.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete){
 	// Tant que j'ai une opération d'annulation d'invitation encours, je neutralise tous les autres avatars pour ne pas lancer plusieurs annulations simultanement
-
 	this.memberClient.vMyInvitSentList.forEach((item, index) => {
 		if (index !== pInvitToDelete.indexInvitToDelete){
 			document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.add('disabled')
@@ -420,9 +419,11 @@ InvitationsCard.prototype.refreshMyInvitList = function(pInvitToDelete){
 		}
 	}
 
-	// Réactivation de ligne de menu permettant d'annuler une invitation
-	this.memberClient.vMyInvitSentList.forEach((item, index) => {
-		document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.remove('disabled')
-	})
+	if (vActiveProfile === cstMainProfileActive){
+		// Réactivation de ligne de menu permettant d'annuler une invitation
+		this.memberClient.vMyInvitSentList.forEach((item, index) => {
+			document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.remove('disabled')
+		})
+	}
 	vToolBox.clearAllOpenedPopOverAndToolTip();
 }

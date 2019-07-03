@@ -15,9 +15,11 @@ var vInvitationsMgr;                // Instanciation de l'objet gestionnaire des
 var vMembersMgr;                    // Instanciation de l'objet gestionnaire des membres
 var vPresentationCardMain;          // Instanciation de l'objet "Carte de présentation" pour le profil principal
 var vPresentationCardFriend;        // Instanciation de l'objet "Carte de présentation" pour le profil d'un ami
-var vFriendsCard;                   // Instanciation de l'objet "Carte des invitations"
+var vFriendsCardMain;               // Instanciation de l'objet "Carte des amis"
+var vFriendsCardFriend;             // Instanciation de l'objet "Carte des amis" pour le profil d'un ami
 var vRecommendFriendsMgr;           // Instanciation de l'objet gestionnaire des recommandations
-var vInvitationsCard;               // Instanciation de l'objet "carte des invitations" pour le profil principal
+var vInvitationsCardMain;           // Instanciation de l'objet "carte des invitations" pour le profil principal
+var vInvitationsCardFriend;         // Instanciation de l'objet "carte des invitations" pour le profil d'un am
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var vViewFriendProfile; 			      // Instanciation de l'objet de présentation du profil d'un ami
 var vPostsClientSideMain; 			    // Instanciation de l'objet de Postage du profil principal

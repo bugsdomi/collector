@@ -1014,7 +1014,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 				}
 				
 				// Envoi au client de la demande d'affichage de la notification d'envoi de la demande d'ami
-				pWebSocketConnection.emit('displayNotifInvitationSent',pFriendToAdd); 			
+				pWebSocketConnection.emit('displayNotifInvitSent',pFriendToAdd); 
+				pWebSocketConnection.broadcast.emit('displayNotifInvitSentFriend',pFriendToAdd); 
 			});
 		});
 	};
@@ -1160,29 +1161,31 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		
 				// Si membre trouvé dans la table des membres actuellement connectés
 				// Envoi à ce membre seul, de la demande d'ajout de mon Avatar dans sa liste d'amis
+				let vReversedRoles = {
+					myEmail 					: pSelectedInvit.friendEmail,
+					myPseudo					:	pSelectedInvit.friendPseudo,
+					myPhoto						: pSelectedInvit.friendPhoto,
+					friendEmail  			: pSelectedInvit.myEmail,
+					friendPseudo 			: pSelectedInvit.myPseudo,
+					friendPhoto 			: pSelectedInvit.myPhoto,
+					friendFirstName		: this.member.etatCivil.firstName,			// Ajout du complément des mes infos personnelles pour que mon nouvel Ami puisse les afficher
+					friendName 				: this.member.etatCivil.name,						//		""						""					""					""					""					""					""					""
+					friendsOfMyFriend	: this.member.amis,
+					indexInvitation		: pSelectedInvit.indexInvitation,			 
+				}
+
 				if (myIndex !== -1){  																													
-					let vReversedRoles = {
-						myEmail 					: pSelectedInvit.friendEmail,
-						myPseudo					:	pSelectedInvit.friendPseudo,
-						myPhoto						: pSelectedInvit.friendPhoto,
-						friendEmail  			: pSelectedInvit.myEmail,
-						friendPseudo 			: pSelectedInvit.myPseudo,
-						friendPhoto 			: pSelectedInvit.myPhoto,
-						friendFirstName		: this.member.etatCivil.firstName,			// Ajout du complément des mes infos personnelles pour que mon nouvel Ami puisse les afficher
-						friendName 				: this.member.etatCivil.name,						//		""						""					""					""					""					""					""					""
-						friendsOfMyFriend	: this.member.amis,
-						indexInvitation		: pSelectedInvit.indexInvitation,			 
-					}
-		
 					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('addFriendIntoHisList',vReversedRoles);     
 				};
-		
+
+				pWebSocketConnection.broadcast.emit('addFriendIntoHisListFriend',vReversedRoles); 	
+
 				this.sendEMail(
-					pSelectedInvit.friendEmail, 
-					'Collect\'Or - Acceptation de votre demande d\'ami', 
-					'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
-					'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
-					'<br /><br /><br /><i>Vil-Coyote Products</i>'
+				pSelectedInvit.friendEmail, 
+				'Collect\'Or - Acceptation de votre demande d\'ami', 
+				'<h1 style="color: black;">Vous avez un nouvel ami</h1><br />' +
+				'<p><strong>'+pSelectedInvit.myPseudo+'</strong> a accepté de devenir votre ami sur le site Collect\'Or.<p><br />'+
+				'<br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
 			});
 		});
@@ -1285,6 +1288,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 					pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('deleteInvitedMemberFromMyInvitSentList',vReversedRoles);     
 				};
 
+				pWebSocketConnection.broadcast.emit('deleteInvitedMemberFromMyInvitSentListFriend',pSelectedInvit); 	
+
 				this.sendEMail(
 					pSelectedInvit.friendEmail, 
 					'Collect\'Or - Rejet de votre demande d\'ami', 
@@ -1310,6 +1315,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 
 				// Envoi à moi-même de la demande de suppression de l'Avatar de mon ex-ami dans ma liste d'amis
 				pWebSocketConnection.emit('deleteFriendFromMyFriendList',pFriendToDelete);     
+				pWebSocketConnection.broadcast.emit('deleteFriendFromMyFriendListFriend',pFriendToDelete);     
 
 				// Recherche du pseudo de mon ex-ami dans le tableau des membres connectés car s'il est connecté, je supprime mon Avatar dans sa Carte "Liste d'Amis" en temps réel
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pFriendToDelete.friendPseudo);
@@ -1339,7 +1345,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Annulation d'une invitatiion
+	// Annulation d'une invitation
 	// Suppression du membre dans ma propre liste d'amis potentiels
 	// Suppression de moi-même dans la liste d'amis du membre qui avait été invité
 	// Envoi d'une Notification d'opération effectuée
@@ -1351,7 +1357,9 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			.then(() => {
 
 				// Envoi à moi-même de la demande de suppression de l'Avatar du membre qui avait reçu l'invitation
-				pWebSocketConnection.emit('cancelInvitedMemberFromMyInvitSentList',pcancelInvitSent);     
+				pWebSocketConnection.emit('cancelInvitedMemberFromMyInvitSentList',pcancelInvitSent);    
+				pWebSocketConnection.broadcast.emit('cancelInvitedMemberFromMyInvitSentListFriend',pcancelInvitSent); 
+ 
 
 				// Recherche du pseudo du membre dans le tableau des membres connectés car s'il est connecté, je déduis 1 de son nombre d'invitations reçues à traiter
 				myIndex = this.searchMemberInTableOfMembers('pseudo', pcancelInvitSent.friendPseudo);

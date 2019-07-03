@@ -24,12 +24,12 @@ function ViewFriendProfile(pMemberClient){                              // Fonct
 // Suppression de tous les éléments contenus dans la modale "FriendProfile"
 // -----------------------------------------------------------------------------
 	$('#idModalFriendProfilePage').on('hidden.bs.modal', () => {
-		vFriendProfileViewed = null;
-
 		vActiveProfile = cstMainProfileActive;
+		vFriendProfileViewed 		= null;
 		vPostsClientSideFriend 	= null;
 		vPresentationCardFriend	= null;
-	
+		vInvitationsCardFriend	= null;
+		vFriendsCardFriend			= null;
 
 		var parent = document.getElementById('idDivMountPointFriendProfile');
 		while (parent.firstChild){
@@ -57,13 +57,17 @@ ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 	document.getElementById('idModalFriendProfilePageTitle').innerHTML = ' Profil de ' + pMyFriend.member.pseudo;
 	$('#idModalFriendProfilePage').modal('show');     // Ouverture de la modale                                     
 
-	new PresentationCard(pMyFriend).displayPresentationCard();							// - Affiche les informations du profil dans la carte "Présentation"
-	new FriendsCard(pMyFriend).displayFriendsCard();												// - Affiche les amis dans la carte "Amis"
+	vPresentationCardFriend	= new PresentationCard(pMyFriend);							// Instanciation de l'objet "Carte de présentations"
+	vPresentationCardFriend.displayPresentationCard();							// - Affiche les informations du profil dans la carte "Présentation"
+
+	vFriendsCardFriend = new FriendsCard(pMyFriend);
+	vFriendsCardFriend.displayFriendsCard();												// - Affiche les amis dans la carte "Amis"
+
 	pMyFriend.vMyInvitSentList = [];
-	new InvitationsCard(pMyFriend).displayInvitSentCard();									// - Affiche les invitations lancées dans la carte "Invitation lancées"
+	vInvitationsCardFriend = new InvitationsCard(pMyFriend);
+	vInvitationsCardFriend.displayInvitSentCard();									// - Affiche les invitations lancées dans la carte "Invitation lancées"
 
 	vPostsClientSideFriend = new PostsClient(pMyFriend);
 	vPostsClientSideFriend.displayPosts();																	// - Affiche les Posts du profil de mon ami
 
-	vPresentationCardFriend	= new PresentationCard(pMyFriend);							// Instanciation de l'objet "Carte de présentations"
 }

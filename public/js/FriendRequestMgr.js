@@ -278,20 +278,20 @@ FriendRequestMgr.prototype.deleteLineInvitSent = function(pFriendToAdd, pModalMg
 // --------------------------------------------------------------
 FriendRequestMgr.prototype.displayNotifInvitationSent = function(pFriendToAdd, pDisplayNotifInvitationSentData){   
 	// Ferme la notif après un délai de quelques secondes
-	$('#'+'idImgPotentialFriends'+pFriendToAdd.index).popover('show');										// Affiche la notification d'envoi de la demande d'ami
+	$('#'+'idImgPotentialFriends'+pFriendToAdd.index).popover('show');	// Affiche la notification d'envoi de la demande d'ami
 
 	setTimeout(function(){
 		$('#'+'idImgPotentialFriends'+pFriendToAdd.index).popover('hide');
-	},cstDelayClosingPopover);																				// Ferme la notif après un délai de quelques secondes
+	},cstDelayClosingPopover);																					// Ferme la notif après un délai de quelques secondes
 
 	setTimeout(() => {
 		this.deleteLineInvitSent(pFriendToAdd, pDisplayNotifInvitationSentData.modalListGroup)
-	},cstDelayClosingPopover + 500);																	// Supprime la ligne après un délai de quelques secondes
+	},cstDelayClosingPopover + 500);																		// Supprime la ligne après un délai de quelques secondes
 
 	if (!this.memberClient.vInvitSentCardVisible){
 		document.getElementById('idInvitSentCard'+vActiveProfile).style.display = 'block';	// S'il y a des invitations en attente, affiche la carte des invitations en attente
 		this.memberClient.vInvitSentCardVisible = true;
 	}
 
-	vInvitationsCard.addInvitSentIntoCard(pFriendToAdd);
+	vInvitationsCardMain.addInvitSentIntoCard(pFriendToAdd);
 }

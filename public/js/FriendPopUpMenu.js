@@ -97,7 +97,7 @@ FriendPopUpMenu.prototype.viewFriend = function(event){
 }
 
 // -----------------------------------------------------------------------------
-// Option de menu "Supprimer un ami"
+// "Supprimer un ami"
 // -----------------------------------------------------------------------------
 FriendPopUpMenu.prototype.prepareMenuDeleteFriend = function(pFriend, pDivDropDown){
   var vlineHTML = {};						
@@ -188,71 +188,76 @@ FriendPopUpMenu.prototype.deleteFriend = function(event){
 	webSocketConnection.emit('deleteFriendOfMine',vFriendToDelete);
 }
 
-// -----------------------------------------------------------------------------
-// Suppression d'un Ami
-// - 1) Affichage d'une notification
-// - Suppression de mon ex-ami du tableau de mes amis
-// - Fermeture définitive de la PopUp Menu
-// - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
-// -----------------------------------------------------------------------------
-FriendPopUpMenu.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
-	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
-	$('#'+idImg).popover('show');
+// XXXXX
+// // -----------------------------------------------------------------------------
+// // Suppression d'un Ami
+// // - 1) Affichage d'une notification
+// // - Suppression de mon ex-ami du tableau de mes amis
+// // - Fermeture définitive de la PopUp Menu
+// // - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
+// // -----------------------------------------------------------------------------
+// FriendPopUpMenu.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
+// 	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
+// 	$('#'+idImg).popover('show');
 
-	setTimeout(function(){
-		$('#'+idImg).popover('hide');
-	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
+// 	setTimeout(function(){
+// 		$('#'+idImg).popover('hide');
+// 	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
 
-	setTimeout(() => {
-		this.refreshMyFriendList(pFriendToDelete);
-	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
-};
+// 	setTimeout(() => {
+// 		this.refreshMyFriendList(pFriendToDelete);
+// 	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
+// };
 
-// -----------------------------------------------------------------------------
-// Suppression d'un Ami (suite)
-// - Apres l'affichage d'une notification
-// - 2) Suppression de mon ex-ami du tableau de mes amis
-// - 3) Fermeture définitive de la PopUp Menu
-// - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
-// -----------------------------------------------------------------------------
-FriendPopUpMenu.prototype.refreshMyFriendList = function(pFriendToDelete){
-	this.memberClient.vMyFriendList.splice(pFriendToDelete.indexFriendToDelete, 1);   									// Efface l'occurence de mon ami du tableau de mes amis
+// // -----------------------------------------------------------------------------
+// // Suppression d'un Ami (suite)
+// // - Apres l'affichage d'une notification
+// // - 2) Suppression de mon ex-ami du tableau de mes amis
+// // - 3) Fermeture définitive de la PopUp Menu
+// // - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
+// // -----------------------------------------------------------------------------
+// FriendPopUpMenu.prototype.refreshMyFriendList = function(pFriendToDelete){
+// 	this.memberClient.vMyFriendList.splice(pFriendToDelete.indexFriendToDelete, 1);   									// Efface l'occurence de mon ami du tableau de mes amis
 
-	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
-	// Suppression de tous les avatars affichés
-	var vElem = document.getElementById('idMyFriendLi'+vActiveProfile+0); // Je régénère ma liste d'amis pour recaler les indexes
+// 	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
+// 	// Suppression de tous les avatars affichés
+// 	var vElem = document.getElementById('idMyFriendLi'+vActiveProfile+0); // Je régénère ma liste d'amis pour recaler les indexes
 
-	if (vElem){
-		var vParentNode = vElem.parentNode;
+// 	if (vElem){
+// 		var vParentNode = vElem.parentNode;
 
-		// Effacement des tokens de tous mes amis
-		while (vParentNode.firstChild) {
-			vParentNode.removeChild(vParentNode.firstChild);
-		}
+// 		// Effacement des tokens de tous mes amis
+// 		while (vParentNode.firstChild) {
+// 			vParentNode.removeChild(vParentNode.firstChild);
+// 		}
 
-		var vMyFriend = 
-		{
-			friendEmail  			: null,
-			friendPseudo 			: null,
-			friendPhoto 			: null,
-		}
+// 		var vMyFriend = 
+// 		{
+// 			friendEmail  			: null,
+// 			friendPseudo 			: null,
+// 			friendPhoto 			: null,
+// 		}
 
-		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
-		vSaveMyFriendList = this.memberClient.vMyFriendList.splice(0,this.memberClient.vMyFriendList.length);		
+// 		// Vidage et sauvegarde simultanée de ma liste d'amis (moins celui que je viens de supprimer plus haut)
+// 		vSaveMyFriendList = this.memberClient.vMyFriendList.splice(0,this.memberClient.vMyFriendList.length);		
 
-		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
+// 		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
 
-		// Recréation des avatars de mes amis dans ma carte d'amis
-		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
-			vMyFriend.friendEmail 			= item.friendEmail;
-			vMyFriend.friendPseudo 			= item.friendPseudo;
-			vMyFriend.friendPhoto 			= item.friendPhoto;
+// 		// Recréation des avatars de mes amis dans ma carte d'amis
+// 		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
+// 			vMyFriend.friendEmail 			= item.friendEmail;
+// 			vMyFriend.friendPseudo 			= item.friendPseudo;
+// 			vMyFriend.friendPhoto 			= item.friendPhoto;
 
-			vFriendsCard.addFriendIntoCard(vMyFriend, vULFriend);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
-		});
-	}
-	vToolBox.clearAllOpenedPopOverAndToolTip();
-}
+// 			if (vActiveProfile === cstMainProfileActive ){
+// 				vFriendsCardMain.addFriendIntoCard(vMyFriend, vULFriend);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
+// 			} else {
+// 				vFriendsCardFriend.addFriendIntoCard(vMyFriend, vULFriend);							// Ajout de l'avatar de l'ami en cours dans ma carte d'amis
+// 			}
+// 		});
+// 	}
+// 	vToolBox.clearAllOpenedPopOverAndToolTip();
+// }
 
 
 // -----------------------------------------------------------------------------

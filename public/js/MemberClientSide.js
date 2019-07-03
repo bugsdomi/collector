@@ -236,8 +236,8 @@ MemberClient.prototype.displayProfilePage = function(pContextInfo, pAvatarInfo, 
 	document.getElementById('idMainProfilePage').classList.replace('d-none','d-block');	// Affichage du bloc du profil complet (Fiche d'identité, conversations, liste d'amis...)
 	vPresentationCardMain.displayPresentationCard();														// - Affiche les informations du profil dans la carte "Présentation"
 	this.displayAvatar(pAvatarInfo);																				// - Affiche la photo de l'avatar et son nom sur le carroussel et la carte "Présentation"
-	vFriendsCard.displayFriendsCard();																			// - Affiche les amis dans la carte "Amis"
-	vInvitationsCard.displayInvitSentCard();																// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
+	vFriendsCardMain.displayFriendsCard();																			// - Affiche les amis dans la carte "Amis"
+	vInvitationsCardMain.displayInvitSentCard();																// - Affiche les invitations lancées dans la carte "Invitation lancéesé"
 	vPostsClientSideMain.displayPosts();																		// - Affiche les Posts appartenant au membre
 }
 
