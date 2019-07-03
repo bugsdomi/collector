@@ -34,6 +34,8 @@ InvitationsCard.prototype.displayInvitSentCard = function(){
 	vDivMountPointProfile.appendChild(vlineHTML.vDivCardBorder);
 	vlineHTML.vDivCardBorder.setAttribute('id', 'idInvitSentCard'+vActiveProfile);
 	vlineHTML.vDivCardBorder.setAttribute('class', 'card border-warning mb-4');
+	vlineHTML.vDivCardBorder.setAttribute('style', 'display: none;');
+
 
 // ------------------------------------------------------------------------------
 //                      Entête de la carte "Invitations lancées"                        
@@ -197,7 +199,7 @@ InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSe
 	vlineHTML.vImgCancelInvit.setAttribute('data-toggle', 'popover');
 	vlineHTML.vImgCancelInvit.setAttribute('data-placement', 'right');
 	vlineHTML.vImgCancelInvit.setAttribute('title', 'Suppression d\'une invitation');
-	vlineHTML.vImgCancelInvit.setAttribute('data-content', 'Vous supprimé l\'invitation envoyée à '+pMyInvitSent.friendPseudo);
+	vlineHTML.vImgCancelInvit.setAttribute('data-content', 'Vous avez supprimé l\'invitation envoyée à '+pMyInvitSent.friendPseudo);
 	vlineHTML.vImgCancelInvit.setAttribute('data-boundary', 'viewport');
 
 	vlineHTML.vDivCancelInvit = window.document.createElement('div');
