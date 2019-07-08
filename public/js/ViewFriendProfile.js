@@ -55,19 +55,20 @@ ViewFriendProfile.prototype.displayFriendProfile = function(pMyFriend){
 	new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
 	document.getElementById('idModalFriendAvatarToken').setAttribute('src','static/images/members/'+pMyFriend.member.etatCivil.photo);
 	document.getElementById('idModalFriendProfilePageTitle').innerHTML = ' Profil de ' + pMyFriend.member.pseudo;
-	$('#idModalFriendProfilePage').modal('show');     // Ouverture de la modale                                     
+	$('#idModalFriendProfilePage').modal('show');     							// Ouverture de la modale                                     
 
-	vPresentationCardFriend	= new PresentationCard(pMyFriend);							// Instanciation de l'objet "Carte de présentations"
+	vPresentationCardFriend	= new PresentationCard(pMyFriend);			// Instanciation de l'objet "Carte de présentations"
 	vPresentationCardFriend.displayPresentationCard();							// - Affiche les informations du profil dans la carte "Présentation"
 
+	pMyFriend.vMyFriendList = [];
 	vFriendsCardFriend = new FriendsCard(pMyFriend);
 	vFriendsCardFriend.displayFriendsCard();												// - Affiche les amis dans la carte "Amis"
+	webSocketConnection.emit('whichFriendsOfMyFriendAreConnected', pMyFriend)		// Dans la liste d'amis du profil que je consulte, je regarde ceux qui sont connectés
 
 	pMyFriend.vMyInvitSentList = [];
 	vInvitationsCardFriend = new InvitationsCard(pMyFriend);
 	vInvitationsCardFriend.displayInvitSentCard();									// - Affiche les invitations lancées dans la carte "Invitation lancées"
 
 	vPostsClientSideFriend = new PostsClient(pMyFriend);
-	vPostsClientSideFriend.displayPosts();																	// - Affiche les Posts du profil de mon ami
-
+	vPostsClientSideFriend.displayPosts();													// - Affiche les Posts du profil de mon ami
 }

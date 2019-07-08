@@ -148,7 +148,8 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	pULFriend.appendChild(vlineHTML.vLi);
 	vlineHTML.vLi.setAttribute('id', 'idMyFriendLi'+vActiveProfile+index);
 	vlineHTML.vLi.setAttribute('class', 'dropdown dropright friendList withScaling');
-
+	vlineHTML.vLi.setAttribute('style', 'width: 60px; height: 60px');
+	
 	vlineHTML.vA = window.document.createElement('a');
 	vlineHTML.vLi.appendChild(vlineHTML.vA);
 	vlineHTML.vA.setAttribute('href', '#');
@@ -183,6 +184,12 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	vlineHTML.vImg.setAttribute('data-toggle', 'tooltip');
 	vlineHTML.vImg.setAttribute('data-placement', 'top');
 	vlineHTML.vImg.setAttribute('data-title', pMyFriend.friendPseudo);
+
+	vlineHTML.vIConnectedStatus = window.document.createElement('span');
+	vlineHTML.vDivAvatar.appendChild(vlineHTML.vIConnectedStatus);
+	vlineHTML.vIConnectedStatus.setAttribute('id', 'idConnectedLed'+vActiveProfile+index);
+	vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-warning');
+	vlineHTML.vIConnectedStatus.setAttribute('style', 'display: inline-block; position: relative; top: -23px; left: 8px; width: 12px; height: 12px; border: 1px black solid; border-radius: 50%;');
 
 	// Pour empêcher la fermeture de DropDownMenu lorsque l'on clique quelque part dedans (Comportement par défaut)
 	$('#'+vlineHTML.vDivDropDown.id).on("click.bs.dropdown", (event) => { 

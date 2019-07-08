@@ -137,7 +137,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		return Math.round(((pValSup - pValInf) * Math.random()) + pValInf);
 	}
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Cette fonction recherche dans la table des membres connectés, celui qui a la propriété passée en parametre
+	// Cette fonction recherche dans la table des membres connectés, celui qui a la propriété passée en parametre et renvoie sa position dans le tableau
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.searchMemberInTableOfMembers = (pProperty, pValue) => {
 		return this.objectPopulation.members.map((propertyFilter) => {
@@ -145,6 +145,17 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		})
 		.indexOf(pValue);
 	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Cette fonction recherche dans la table des membres connectés, toutes les données du membre connecté sur la propriété passée en parametre
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.getMemberInTableOfMembers = (pProperty, pValue) => {
+		function customFilter(member) {
+			return member[pProperty] == pValue;
+		}
+		return this.objectPopulation.members.filter(customFilter);
+	}
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Cette fonction recherche dans le tableau des amis d'un membre, si un record "friendPseudo" non vide existe
 	// et s'il trouve dans ce tableau le pseudo envoyé en parametre
@@ -283,6 +294,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		}
 
 		pWebSocketConnection.emit('welcomeMember',dataToTransmit);                    	// On transmet au client les données du membre 
+		pSocketIo.emit('memberConnected',this.member)		
 	};
 
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1719,11 +1731,78 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		});
 	};
 
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Vérifie qu'un ami est connecté
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.whichFriendsAreConnected = function(pMember, pWebSocketConnection){
+		let myIndex;
+		pMember.amis.forEach((item, index) => {
+console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo)
+			myIndex = this.searchMemberInTableOfMembers('pseudo', item.friendPseudo);
+
+			if (myIndex > -1){
+				pMember.amis[index].connected = true;
+console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo, ' connecté')
+			} else {
+				pMember.amis[index].connected = false;
+console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo, ' non connecté')
+			};
+		});
+
+		pWebSocketConnection.emit('myFriendsConnectedStatus',pMember);  // Je renvoie la liste de mes amis avec leur statut de connexion
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Vérifie que les amis de mon ami sont connectés
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.whichFriendsOfMyFriendAreConnected = function(pMyFriend, pWebSocketConnection){
+		let myIndex;
+		pMyFriend.member.amis.forEach((item, index) => {
+
+console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.friendPseudo)
+
+			myIndex = this.searchMemberInTableOfMembers('pseudo', item.friendPseudo);
+
+			if (myIndex > -1){
+				pMyFriend.member.amis[index].connected = true;
+console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.friendPseudo, ' connecté')
+			} else {
+				pMyFriend.member.amis[index].connected = false;
+				console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.friendPseudo, ' non connecté')
+			};
+		});
+
+		pWebSocketConnection.emit('friendsOfMyFriendsConnectedStatus',pMyFriend);  // Je renvoie la liste des amis de mon ami avec leur statut de connexion
+	};
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Vérifie qu'un nouvel ami est connecté
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.isNewFriendConnected = function(pMyFriend, pWebSocketConnection){
+		let myIndex;
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pMyFriend.friendPseudo);
+console.log('isNewFriendConnected - myIndex : ',myIndex,' --- pMyFriend.friendPseudo : ',pMyFriend.friendPseudo)
+
+		if (myIndex > -1){
+			pMyFriend.connected = true;
+console.log('isNewFriendConnected - ',pMyFriend.friendPseudo,' est connecté')
+			} else {
+				pMyFriend.connected = false;
+console.log('isNewFriendConnected - ',pMyFriend.friendPseudo,' n\'est pas connecté')
+			};
+
+		pWebSocketConnection.emit('newFriendConnectedStatus',pMyFriend);  // Je renvoie le statut de connexion de mon nouvel ami pour l'afficher dans ma liste d'amis
+		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatusMain',pMyFriend)		
+		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatusFriend',pMyFriend)		
+	}; 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Deconnexion d'un visiteur et eventuellement d'un membre  :
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){
+		let disconnectMember = this.getMemberInTableOfMembers('idSocket' ,pWebSocketConnection.id);
+		pSocketIo.emit('disconnectMember',disconnectMember[0].pseudo);
+
 		let myIndex = this.searchMemberInTableOfMembers('idSocket' ,pWebSocketConnection.id);
 
 		if (this.objectPopulation.members[myIndex].isMember){                 // Le visiteur qui se deconnecte était un membre
@@ -1802,8 +1881,6 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 					console.log('getNbrPublicsMsgs - Pas de clé --> Normal');
 					console.log('-------------------------------------------------------------');
 					reject(error);
-// XXXXX
-// throw error;
 				} else {
 					resolve(documents[0]);
 				}

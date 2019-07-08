@@ -88,11 +88,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vSpanAvatarDropDownMenu = document.getElementById('idSpanAvatarDropDownMenu');
 	var vNbrPopulation = document.getElementById('idNbrPopulation');
 	
-// XXXXX MembersConnected.onclick =  function(event) {
-//	console.log('vMembersConnected - click')
-//  $('.chat-sidebar').toggleClass('focus');
-// }
-
 // -------------------------------------------------------------------------
 //
 // Eléments de la page "Profil"
@@ -130,7 +125,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 	// Affiche une Div "Espace de travail" qui vient s'intercaler entre le bas du menu principal 
-	// et le haut du Footer, pour aavoir une scrollBar intégrale QUE sur l'Espace de travail util et que rien ne soit caché par la barre de menu principal et le footer
+	// et le haut du Footer, pour avoir une scrollBar intégrale QUE sur l'Espace de travail utile et que rien ne soit caché par la barre de menu principale et le footer
 	var vWorkingSpace = document.getElementById('idWorkingSpace');
 	vWorkingSpace.style.height = document.getElementById('idFooter').offsetTop - vWorkingSpace.offsetTop + 'px';
 
@@ -710,6 +705,168 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
+
+
+
+
+	// --------------------------------------------------------------
+	// Un membre vient de se déconnecter, je vériifie que c'est un 
+	// ami à moi, et si oui, j'éteinds sa puce de connexion
+	// Idem, si je suis en mode "Friend"
+	// --------------------------------------------------------------
+	webSocketConnection.on('disconnectMember',function(disconnectMember){
+		var myIndex;
+		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
+			myIndex = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', disconnectMember);	
+
+			if (myIndex > -1){
+				vMemberClient.vMyFriendList[myIndex].connected = false;
+				document.getElementById('idConnectedLed'+cstMainProfileActive+myIndex).classList.replace('bg-success', 'bg-warning');
+			}
+
+			if (vActiveProfile === cstFriendProfileActive){
+				if (vFriendProfileViewed.member.pseudo !== disconnectMember){	// Est ce que le membre qui vient de se connecter est celui dont je regarde le profil ?
+					myIndex = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', disconnectMember);	
+					
+					if (myIndex > -1){
+						vFriendProfileViewed.vMyFriendList[myIndex].connected = false;
+						document.getElementById('idConnectedLed'+cstFriendProfileActive+myIndex).classList.replace('bg-success', 'bg-warning');
+					}
+				}
+			}
+		}
+	});
+	// --------------------------------------------------------------
+	// Le serveur me renvoie le statut de connexion de mon nouvel ami
+	// --------------------------------------------------------------
+	webSocketConnection.on('newFriendConnectedStatus', function(pMyFriend){
+		var myIndex = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pMyFriend.friendPseudo);	
+
+		vMemberClient.vMyFriendList[myIndex].connected = pMyFriend.connected;
+		if (vMemberClient.vMyFriendList[myIndex].connected){
+			document.getElementById('idConnectedLed'+cstMainProfileActive+myIndex).classList.replace('bg-warning', 'bg-success');
+		}
+	});
+	// --------------------------------------------------------------
+	// Le serveur me renvoie la liste de mes amis avec leur statut de connexion
+	// --------------------------------------------------------------
+	webSocketConnection.on('myFriendsConnectedStatus', function(pMember){
+		var myIndex = -1;
+
+		pMember.amis.forEach((item, index) => {
+			// Je ne prends que les amis confirmés, car le tableau des amis contient également les demandes d'amis en cours
+			if (item.pendingFriendRequest === cstAmiConfirme ){			
+				myIndex++;
+				vMemberClient.vMyFriendList[myIndex].connected = item.connected;
+				if (vMemberClient.vMyFriendList[myIndex].connected){
+					document.getElementById('idConnectedLed'+cstMainProfileActive+myIndex).classList.replace('bg-warning', 'bg-success');
+				}
+			}
+		});
+	});
+
+	// --------------------------------------------------------------
+	// Le serveur me renvoie la liste des amis de mon ami avec leur statut de connexion
+	// --------------------------------------------------------------
+	webSocketConnection.on('friendsOfMyFriendsConnectedStatus', function(pMyFriend){
+		var myIndex = -1;
+
+		pMyFriend.member.amis.forEach((item, index) => {
+			// Je ne prends que les amis confirmés, car le tableau des amis contient également les demandes d'amis en cours
+			if (item.pendingFriendRequest === cstAmiConfirme ){			
+				myIndex++;
+				vFriendProfileViewed.vMyFriendList[myIndex].connected = item.connected;
+				if (vFriendProfileViewed.vMyFriendList[myIndex].connected){
+					document.getElementById('idConnectedLed'+cstFriendProfileActive+myIndex).classList.replace('bg-warning', 'bg-success');
+				}
+			}
+		});
+	});
+
+	// --------------------------------------------------------------
+	// Un nouvel ami vient d etre accepté par quelqu'un
+	// Je vérifie que c'est l'ami d'un de mes amis dont je consulte le profil, 
+	// et si oui, j'allume sa puce de connexion en "vert"
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayNewFriendConnectedStatusFriend', function(pMember){
+		var indexFriendOfMine;
+
+		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
+			if (vActiveProfile === cstFriendProfileActive){
+				if (vFriendProfileViewed.member.pseudo !== pMember.friendPseudo){	
+					// Est ce que le nouvel ami qui vient d'être accepté est un ami de celui dont je regarde le profil ?
+					indexFriendOfMine = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pMember.friendPseudo);	
+				} else {
+					// Est ce que le nouvel ami qui vient d'être accepté est un ami de celui dont je regarde le profil ?
+					if (vFriendProfileViewed.member.pseudo !== pMember.pseudo){	
+						indexFriendOfMine = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pMember.pseudo);	
+					}
+				}
+
+				if (indexFriendOfMine > -1){
+					vFriendProfileViewed.vMyFriendList[indexFriendOfMine].connected = true;
+					document.getElementById('idConnectedLed'+cstFriendProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success');
+				}
+			}
+		}
+	});
+
+	// --------------------------------------------------------------
+	// Un nouvel ami vient d etre accepté par quelqu'un
+	// si c'est un ami à moi, j'allume sa puce de connexion en "vert"
+	// --------------------------------------------------------------
+	webSocketConnection.on('displayNewFriendConnectedStatusMain', function(pMember){
+		var indexFriendOfMine;
+	
+		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
+			// S'il ne s'agit pas de moi qui vient de se connecter, je regarde si c'est un ami a moi qui vient de se connecter
+			if (pMember.pseudo !== vMemberClient.member.pseudo){	
+				indexFriendOfMine = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pMember.pseudo);	
+
+				if (indexFriendOfMine > -1){
+					vMemberClient.vMyFriendList[indexFriendOfMine].connected = true;
+					document.getElementById('idConnectedLed'+cstMainProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success')
+				}
+			} else {
+				// Il s'agit de moi-même qui vient de me connecter et je vais demander à mes amis lesquels sont déjà connectés
+				webSocketConnection.emit('whichFriendsAreConnected', pMember)
+			}
+		}
+	});
+	// --------------------------------------------------------------
+	// Un membre vient de se connecter
+	// Je vérifie que c'est un ami, et si oui, j'allume sa puce de connexion en "vert"
+	// --------------------------------------------------------------
+	webSocketConnection.on('memberConnected', function(pMember){
+		var indexFriendOfMine;
+	
+		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
+			// S'il ne s'agit pas de moi qui vient de se connecter, je regarde si c'est un ami a moi qui vient de se connecter
+			if (pMember.pseudo !== vMemberClient.member.pseudo){	
+				indexFriendOfMine = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pMember.pseudo);	
+
+				if (indexFriendOfMine > -1){
+					vMemberClient.vMyFriendList[indexFriendOfMine].connected = true;
+					document.getElementById('idConnectedLed'+cstMainProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success')
+				}
+			} else {
+				// Il s'agit de moi-même qui vient de me connecter et je vais demander à mes amis lesquels sont déjà connectés
+				webSocketConnection.emit('whichFriendsAreConnected', pMember)
+			}
+			
+			if (vActiveProfile === cstFriendProfileActive){
+				if (vFriendProfileViewed.member.pseudo !== pMember.pseudo){	// Est ce que le membre qui vient de se connecter est celui dont je regarde le profil ?
+					indexFriendOfMine = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pMember.pseudo);	
+					
+					if (indexFriendOfMine > -1){
+						vFriendProfileViewed.vMyFriendList[indexFriendOfMine].connected = true;
+						document.getElementById('idConnectedLed'+cstFriendProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success');
+					}
+				}
+			}
+		}
+	});
+
 	// --------------------------------------------------------------
 	// Le serveur a envoyé un Commentaire L2 à supprimer
 	// Adaptation du contexte "Main / Friend" selon que l'auteur est 
@@ -834,7 +991,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ==> Ouverture de la page de profil
 	// --------------------------------------------------------------
 	webSocketConnection.on('displayFriendProfile', function(pMyFriend){
-		pMyFriend.vMyFriendList = [];
 		vViewFriendProfile.displayFriendProfile(pMyFriend);
 	});
 
@@ -1012,6 +1168,16 @@ window.addEventListener('DOMContentLoaded', function(){
 		// Ajout de l'avatar sujet de l'invitation dans ma liste d'amis
 		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
 		vFriendsCardMain.addFriendIntoCard(pMyFriend, vULFriend);
+
+			// Checker le statut de la connexion
+console.log('addFriendIntoHisList - pMyFriend : ',pMyFriend)
+
+		var vMyFriend = {
+			friendPseudo	: pMyFriend.friendPseudo,
+			pseudo				: pMyFriend.myPseudo,
+		}
+
+		webSocketConnection.emit('isNewFriendConnected', vMyFriend)
 	});
 
 	// --------------------------------------------------------------
@@ -1043,6 +1209,14 @@ window.addEventListener('DOMContentLoaded', function(){
 				vULFriend = document.getElementById('idFriendUL'+cstFriendProfileActive);
 				vFriendsCardFriend.addFriendIntoCard(pMyFriend, vULFriend);						// Ajout de mon nouvel ami dans la carte "Mes amis"
 			}
+
+console.log('addFriendIntoHisListFriend - pMyFriend : ',pMyFriend)
+
+
+// 	// Checker le statut de la connexion
+// console.log('addFriendIntoCard - pMyFriend : ',pMyFriend)
+// 	webSocketConnection.emit('isNewFriendConnected', pMyFriend)
+
 		}
 	});	
 
@@ -1256,11 +1430,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ==> MAJ du badge du Nbre d'invitations en attente
 	// --------------------------------------------------------------
 	webSocketConnection.on('welcomeMember', function(pDataTransmitted){   
-		vMemberClient.member = pDataTransmitted.member;    
-		var askingMembers = pDataTransmitted.askingMembers;
-		var myFriendsInfo = pDataTransmitted.myFriendsInfos;
+		console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted);
+		vMemberClient.member 	= pDataTransmitted.member;  
+		var askingMembers 		= pDataTransmitted.askingMembers;
 
-console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted)
 		if (pDataTransmitted.welcomeMessage === 'Hello') {
 			vMemberClient.initModalHelloText(vGenericModalTitle, vGenericModalBodyText);  	// Affiche la fenêtre de bienvenue
 		} else {

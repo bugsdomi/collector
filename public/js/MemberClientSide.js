@@ -215,12 +215,16 @@ MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pA
 // Cette fonction réinitialise complétement l'écran et ferme le socket
 // -----------------------------------------------------------------------------
 MemberClient.prototype.unsetMemberContext = function(){
+
+	webSocketConnection.emit('UserDisconnect');
+
 	// Régénération de l'écran from scratch;
 	window.location.reload(true);
 	
 	// Fermeture du socket
 	webSocketConnection.close();
 }
+
 
 // -----------------------------------------------------------------------------
 // Cette fonction affiche la page de profil complète :
@@ -296,6 +300,14 @@ MemberClient.prototype.changeBtnTxtColOver = function(event){
 MemberClient.prototype.changeBtnTxtColOut = function(event){
 	document.getElementById(event.target.datas.actionBtn).classList.replace('text-light','text-dark');	
 }
+
+// --------------------------------------------------------------
+// Interroge le serveur pour savoir quels sontt mes amis connectés
+// --------------------------------------------------------------
+MemberClient.prototype.whoIsConnected = function(event){
+	document.getElementById(event.target.datas.actionBtn).classList.replace('text-light','text-dark');	
+}
+
 
 // --------------------------------------------------------------------------------------------------------------
 // -------------------------- Fin du module ---------------------------------------------------------------------

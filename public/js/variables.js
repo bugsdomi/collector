@@ -26,6 +26,7 @@ var vPostsClientSideMain; 			    // Instanciation de l'objet de Postage du profi
 var vPostsClientSideFriend; 			  // Instanciation de l'objet de Postage du profil d'un ami
 var webSocketConnection;            // Variable pour la connexion WebSocket
 var vFriendProfileViewed;           // Nom du profil en cours de visualisation (Nécessaire pour la MAJ en BroadCast des Post sur différents membres regardant le même profil)
+
 var cstSuperAdmin = 1;    // Statut du Super-Admin - Il n'y a qu'un seul SuperAdmin. il est créé lors de l'enregistrement du 1er membre - lui seul peut créer les autres Admin
 var cstAdmin = 2;       	// Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
 var cstMembre = 4;      	// Membre standard qui ne peut qu'utiliser la partie publique de l'application 
@@ -33,6 +34,7 @@ var cstMembre = 4;      	// Membre standard qui ne peut qu'utiliser la partie pu
 var cstDelayClosingMicroFiche = 10000;  // Délai en msec avant la fermeture des Micro-Fiches
 var cstDelayClosingPopover = 3000;  // Délai en msec avant la fermeture des notifications diverses
 var cstDelayToggleModal = 300;      // Délai nécessaire pour réouvrir des modales 
+var cstIntervalConnectedFriends = 10000;  // Intervalle de scrutattion des amiis connectés
 
 var cstAmiConfirme    = 0; 				  // Statut pour un ami confirmé
 var cstInvitEncours   = 1;				  // Invitation pour devenir ami lancée							(Ajouté à la liste du membre demandeur)

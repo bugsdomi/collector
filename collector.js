@@ -269,13 +269,40 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 			vPostsServer.deleteCommentL2(vCommentL2ToDelete, socketIo);
 		});   						
 
+
+		// ------------------------------------
+		// Gestion des statuts de connnexion
+		// ------------------------------------
+		// ------------------------------------
+		// Interrogation de mes amis connectés
+		// ------------------------------------
+		webSocketConnection.on('whichFriendsAreConnected', function(pMember) {
+			vMemberServer.whichFriendsAreConnected(pMember, webSocketConnection);
+		});
+
+		// ------------------------------------
+		// Interrogation des amis de mon ami qui sont connectés
+		// ------------------------------------
+		webSocketConnection.on('whichFriendsOfMyFriendAreConnected', function(pMember) {
+			vMemberServer.whichFriendsOfMyFriendAreConnected(pMember, webSocketConnection);
+		});
+
+		// ------------------------------------
+		// Interrogation unitaire du statut de connexion d'un nouvel ami
+		// ------------------------------------
+		webSocketConnection.on('isNewFriendConnected', function(pMember) {
+			vMemberServer.isNewFriendConnected(pMember, webSocketConnection);
+		});
+
+		
 		// ------------------------------------
 		// Déconnexion
 		// ------------------------------------
 
 		// Un membre se déconnecte
-		webSocketConnection.on('disconnect', function() {
-			console.log('Déconnexion')        
+// webSocketConnection.on('disconnect', function() {
+		webSocketConnection.on('UserDisconnect', function() {
+			console.log('Déconnexion d\'un visiteur ou d\'un membre')        
 			vMemberServer.disconnectMember(webSocketConnection, socketIo);
 		});
 	});
