@@ -17,9 +17,10 @@ var vPresentationCardMain;          // Instanciation de l'objet "Carte de prése
 var vPresentationCardFriend;        // Instanciation de l'objet "Carte de présentation" pour le profil d'un ami
 var vFriendsCardMain;               // Instanciation de l'objet "Carte des amis"
 var vFriendsCardFriend;             // Instanciation de l'objet "Carte des amis" pour le profil d'un ami
+var vChatLoungesMgr;                // Instanciation de l'objet gestionnaire des salons de tchat
 var vRecommendFriendsMgr;           // Instanciation de l'objet gestionnaire des recommandations
 var vInvitationsCardMain;           // Instanciation de l'objet "carte des invitations" pour le profil principal
-var vInvitationsCardFriend;         // Instanciation de l'objet "carte des invitations" pour le profil d'un am
+var vInvitationsCardFriend;         // Instanciation de l'objet "carte des invitations" pour le profil d'un ami
 var vAccountModal; 			            // Instanciation de la méga-modale de saisie des infos personnelles;
 var vViewFriendProfile; 			      // Instanciation de l'objet de présentation du profil d'un ami
 var vPostsClientSideMain; 			    // Instanciation de l'objet de Postage du profil principal
@@ -31,9 +32,9 @@ var cstSuperAdmin = 1;    // Statut du Super-Admin - Il n'y a qu'un seul SuperAd
 var cstAdmin = 2;       	// Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
 var cstMembre = 4;      	// Membre standard qui ne peut qu'utiliser la partie publique de l'application 
 
-var cstDelayClosingMicroFiche = 10000;  // Délai en msec avant la fermeture des Micro-Fiches
-var cstDelayClosingPopover = 3000;  // Délai en msec avant la fermeture des notifications diverses
-var cstDelayToggleModal = 300;      // Délai nécessaire pour réouvrir des modales 
+var cstDelayClosingMicroFiche = 10000;    // Délai en msec avant la fermeture des Micro-Fiches
+var cstDelayClosingPopover = 3000;        // Délai en msec avant la fermeture des notifications diverses
+var cstDelayToggleModal = 300;            // Délai nécessaire pour réouvrir des modales 
 var cstIntervalConnectedFriends = 10000;  // Intervalle de scrutattion des amiis connectés
 
 var cstAmiConfirme    = 0; 				  // Statut pour un ami confirmé
@@ -49,12 +50,13 @@ var cstWithNewModal 		= true;		  // Dans le cadre de l'affichage non filtré des
 var cstSimpleMicroFiche	= true;		  // Affichage d'une Micro-fiche simple (sans empilement, ni delai de fermeture)
 var cstStackableMicroFiche = false;	// Affichage d'une Micro-fiche empilable et delai de fermeture automatique
 
-var cstMainProfileActive = 'Main';          // Indique si c'est le profil du membre principal qui est affiché ou celui d'un de ses amis
-var cstFriendProfileActive = 'Friend';      // Indique si c'est le profil d membre principal qui est affiché ou celui d'un de ses amis
-var vActiveProfile = cstMainProfileActive;  // Par défaut, c'est le profil du membre principal qui est affiché
+var cstMainProfileActive   = 'Main';                // Indique si c'est le profil du membre principal qui est affiché ou celui d'un de ses amis
+var cstFriendProfileActive = 'Friend';              // Indique si c'est le profil d membre principal qui est affiché ou celui d'un de ses amis
+var vActiveProfile         = cstMainProfileActive;  // Par défaut, c'est le profil du membre principal qui est affiché
 
-var cstWithScaling = 'withScaling';         // Définit si un avatar va avoir l'Effet "Zoom" au survol de la souris (Dans ce cas --> Oui)
-var cstWithNoScaling = 'withNoScaling';     // Définit si un avatar va avoir l'Effet "Zoom" au survol de la souris (Dans ce cas --> Non)
+var cstWithScaling    = 'withScaling';      // Définit si un avatar va avoir l'Effet "Zoom" au survol de la souris (Dans ce cas --> Oui)
+var cstWithNoScaling  = 'withNoScaling';    // Définit si un avatar va avoir l'Effet "Zoom" au survol de la souris (Dans ce cas --> Non)
 
-
-
+var cstInProgress = 0;                      // Salon de Chat : en cours de discussion
+var cstWaiting    = 1;                      // Salon de chat : en attente de réponse due l'Ami invité
+var cstJoin       = 2;                      // Salon de Chat : en attente de réponse à la proposition de discussion

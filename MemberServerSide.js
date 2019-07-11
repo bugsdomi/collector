@@ -491,7 +491,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			console.log('sendEMail - error.code : ',error.code);
 			console.log('sendEMail - error.message : ',error.message);
 			console.log('--------------------------------------------------------------------------');
-		});;
+		});
 	}
 	
 	// ---------------------------------------------------------------------------------------------------------------------------
@@ -1737,15 +1737,12 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	MemberServer.prototype.whichFriendsAreConnected = function(pMember, pWebSocketConnection){
 		let myIndex;
 		pMember.amis.forEach((item, index) => {
-console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo)
 			myIndex = this.searchMemberInTableOfMembers('pseudo', item.friendPseudo);
 
 			if (myIndex > -1){
 				pMember.amis[index].connected = true;
-console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo, ' connecté')
 			} else {
 				pMember.amis[index].connected = false;
-console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo, ' non connecté')
 			};
 		});
 
@@ -1758,17 +1755,12 @@ console.log('whichFriendsAreConnected - item.friendPseudo : ',item.friendPseudo,
 	MemberServer.prototype.whichFriendsOfMyFriendAreConnected = function(pMyFriend, pWebSocketConnection){
 		let myIndex;
 		pMyFriend.member.amis.forEach((item, index) => {
-
-console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.friendPseudo)
-
 			myIndex = this.searchMemberInTableOfMembers('pseudo', item.friendPseudo);
 
 			if (myIndex > -1){
 				pMyFriend.member.amis[index].connected = true;
-console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.friendPseudo, ' connecté')
 			} else {
 				pMyFriend.member.amis[index].connected = false;
-				console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.friendPseudo, ' non connecté')
 			};
 		});
 
@@ -1781,27 +1773,50 @@ console.log('whichFriendsOfMyFriendAreConnected - item.friendPseudo : ',item.fri
 	MemberServer.prototype.isNewFriendConnected = function(pMyFriend, pWebSocketConnection){
 		let myIndex;
 		myIndex = this.searchMemberInTableOfMembers('pseudo', pMyFriend.friendPseudo);
-console.log('isNewFriendConnected - myIndex : ',myIndex,' --- pMyFriend.friendPseudo : ',pMyFriend.friendPseudo)
 
 		if (myIndex > -1){
 			pMyFriend.connected = true;
-console.log('isNewFriendConnected - ',pMyFriend.friendPseudo,' est connecté')
-			} else {
-				pMyFriend.connected = false;
-console.log('isNewFriendConnected - ',pMyFriend.friendPseudo,' n\'est pas connecté')
-			};
+		} else {
+			pMyFriend.connected = false;
+		};
 
 		pWebSocketConnection.emit('newFriendConnectedStatus',pMyFriend);  // Je renvoie le statut de connexion de mon nouvel ami pour l'afficher dans ma liste d'amis
-		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatusMain',pMyFriend)		
-		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatusFriend',pMyFriend)		
+		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatus',pMyFriend)		
 	}; 
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Réception d'une invitation à Tchatter
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.invitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
+		let myIndex;
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+
+		if (myIndex > -1){
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('invitToChat', pInvitChat);
+
+			this.sendEMail(
+				this.objectPopulation.members[myIndex].email, 
+				'Vous avez reçu une invitation à un TChat', 
+				'<h1 style="color: black;">Invitation à un TChat ...</h1><p><h2>Vous avez été invité à une discussion :</h2><br />' +
+				pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo +' vous a invité à discuter avec lui dans le salon de discussion N°'+ pInvitChat.vLoungeNumber +'<br /'+
+				'<p>Vous êtes libre d\'accepter ou de refuser...</p>'+
+				'<br /><br /><br /><i>Vil-Coyote Products</i>'
+			);
+		} else {
+			// Le destinataire a deconnecté entre-temps, l'invitation devient caduque, et on prévient l'inviteur
+			pWebSocketConnection.emit('invitDestChatHasdisconnect',pInvitChat)		
+		};
+	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Deconnexion d'un visiteur et eventuellement d'un membre  :
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){
 		let disconnectMember = this.getMemberInTableOfMembers('idSocket' ,pWebSocketConnection.id);
-		pSocketIo.emit('disconnectMember',disconnectMember[0].pseudo);
+
+		if (disconnectMember[0]){
+			pSocketIo.emit('disconnectMember',disconnectMember[0].pseudo);
+		}
 
 		let myIndex = this.searchMemberInTableOfMembers('idSocket' ,pWebSocketConnection.id);
 
@@ -1865,8 +1880,6 @@ console.log('isNewFriendConnected - ',pMyFriend.friendPseudo,' n\'est pas connec
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.getNbrPublicsMsgs = function(){
 		return new Promise((resolve, reject) => {
-			
-
 			this.vDBMgr.collectionTechnical.find(
 				{},
 				{

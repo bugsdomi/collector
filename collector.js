@@ -243,6 +243,8 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 				vPostsServer.deletePost(vPostToDelete, socketIo);
 			});   						
 
+
+
 		// ------------------------------------
 		// Gestion des commentaires L1
 		// ------------------------------------
@@ -255,7 +257,9 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		webSocketConnection.on('deleteCommentL1', function(vCommentL1ToDelete){
 			vPostsServer.deleteCommentL1(vCommentL1ToDelete, socketIo);
 		});   						
-			
+
+
+
 		// ------------------------------------
 		// Gestion des commentaires L2
 		// ------------------------------------
@@ -268,6 +272,7 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		webSocketConnection.on('deleteCommentL2', function(vCommentL2ToDelete){
 			vPostsServer.deleteCommentL2(vCommentL2ToDelete, socketIo);
 		});   						
+
 
 
 		// ------------------------------------
@@ -294,17 +299,32 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 			vMemberServer.isNewFriendConnected(pMember, webSocketConnection);
 		});
 
-		
+
+
 		// ------------------------------------
+		// Gestion des Chat
+		// ------------------------------------
+		webSocketConnection.on('invitToChat', function(pInvitChat){
+			vMemberServer.invitToChat(pInvitChat, webSocketConnection, socketIo);
+		}); 
+
+
+		// -----------------------------------
 		// Déconnexion
 		// ------------------------------------
 
 		// Un membre se déconnecte
-// webSocketConnection.on('disconnect', function() {
-		webSocketConnection.on('UserDisconnect', function() {
+			webSocketConnection.on('disconnect', function() {
 			console.log('Déconnexion d\'un visiteur ou d\'un membre')        
 			vMemberServer.disconnectMember(webSocketConnection, socketIo);
 		});
+
+// XXXXX
+// Un membre se déconnecte
+// 	webSocketConnection.on('UserDisconnect', function() {
+// 		console.log('Déconnexion d\'un visiteur ou d\'un membre')        
+// 		vMemberServer.disconnectMember(webSocketConnection, socketIo);
+// 	});
 	});
 });
 

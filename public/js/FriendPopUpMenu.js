@@ -208,7 +208,6 @@ FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
 	if (vActiveProfile === cstMainProfileActive){							// Si on est sur la page du profil principal, j'affiche le Menu popUp complet
 		this.prepareMenuviewFriend(pFriend, vDivDropDown);
 		this.prepareMenuDeleteFriend(pFriend, vDivDropDown);
-		vRecommendFriendsMgr.displayHeaderRecommendations(pFriend, vDivDropDown);
 
 		vlineHTML.vDivContain = window.document.createElement('div');
 		vDivDropDown.appendChild(vlineHTML.vDivContain);
@@ -217,7 +216,7 @@ FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
 
 		return vlineHTML.vDivContain;
 	} else {
-			vDivDropDown.style.visibility='visible';
+		vDivDropDown.style.visibility='visible';
 	}
 }
 
@@ -231,11 +230,18 @@ FriendPopUpMenu.prototype.preparePopupHeader = function(pFriend){
 // - L'ami dont je vais envoyer les recommandations
 // - ceux qui n'ont pas déjà une recommandation par moi-même en cours pour cet ami
 // -----------------------------------------------------------------------------
-FriendPopUpMenu.prototype.displayPopUpOfMyFriend = function(pRecommendableFriends){
+FriendPopUpMenu.prototype.displayPopUpOfMyFriend = function(pFriend){
 	// Préparation de l'entête du menu Popup
-	var vDivContain = this.preparePopupHeader(pRecommendableFriends);
+	var vDivContain = this.preparePopupHeader(pFriend);
 
 	if (vActiveProfile === cstMainProfileActive){
-		vRecommendFriendsMgr.displayRecommendationLines(pRecommendableFriends, vDivContain);
+		if (this.memberClient.vMyFriendList[pFriend.indexFriendToRecommend].connected){ // Si ami connecté, on rajoute l'opion permettant de l'inviter a Tchatter
+			vChatLoungesMgr.displayHeaderChatLounge(pFriend, vDivContain);
+			vChatLoungesMgr.menuCreateNewLounge(pFriend, vDivContain);
+			vChatLoungesMgr.displayLoungesLines(pFriend, vDivContain);
+		}
+
+		vRecommendFriendsMgr.displayHeaderRecommendations(pFriend, vDivContain);
+		vRecommendFriendsMgr.displayRecommendationLines(pFriend, vDivContain);
 	}
 }

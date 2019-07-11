@@ -192,7 +192,7 @@ SearchFilter.prototype.displayFilter = function(pFilterParams){
 	vlineHTML.vSpanInputGroupPrepend = window.document.createElement('span');
 	vlineHTML.vDivInputGroupPrepend.appendChild(vlineHTML.vSpanInputGroupPrepend);
 	vlineHTML.vSpanInputGroupPrepend.setAttribute('class', 'input-group-text');
-	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter"></i>';
+	vlineHTML.vSpanInputGroupPrepend.innerHTML='<i class="fa fa-fw fa-filter text-dark"></i>';
 
 	// 						<input class="form-control" id="idFilteredFriends" type="text" placeholder="Filtrer des amis">
 	vlineHTML.vDivFiltered = window.document.createElement('input');

@@ -61,10 +61,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	vFriendsCardMain			= new FriendsCard(vMemberClient);								// Instanciation de l'objet "Carte des amis"
 	vInvitationsMgr				= new InvitationsMgr(vMemberClient);						// Instanciation de l'objet gérant les invitations
 	vMembersMgr						= new MembersMgr(vMemberClient);								// Instanciation de l'objet gérant les membres
+	vChatLoungesMgr				= new ChatLoungesMgr(vMemberClient);						// Instanciation de l'objet gérant les Salons de Tchat
 	vRecommendFriendsMgr	= new RecommendFriendsMgr(vMemberClient);				// Instanciation de l'objet gérant les recommandations
 	vInvitationsCardMain	= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
-	vPostsClientSideMain	= new PostsClient(vMemberClient);						// Instanciation de l'objet affichant les Posts
+	vPostsClientSideMain	= new PostsClient(vMemberClient);								// Instanciation de l'objet affichant les Posts
 
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 	moment.locale('fr');	// Choisit le Preset "France" pour les dates et heures (Mode global)
@@ -706,11 +707,55 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
 
+	// --------------------------------------------------------------
+	// On a reçu une invitation
+	// Emission d'un Toast associé à une fonction pour accepter ou 
+	// refuser l'invitation
+	// --------------------------------------------------------------
+	webSocketConnection.on('invitToChat',function(pInvitChat){
+		toastr.options = {
+			"closeButton": false,
+			"debug": false,
+			"newestOnTop": false,
+			"progressBar": false,
+			"positionClass": "toast-top-right",
+			"preventDuplicates": false,
+			"showDuration": 500,
+			"hideDuration": 500,
+			"timeOut": 0,
+			"extendedTimeOut": 0,
+			"showEasing": "swing",
+			"hideEasing": "swing",
+			"showMethod": "show",
+			"hideMethod": "slideUp",
+			"tapToDismiss": false,
+		}
+		
+		toastr.options.onclick = function() { alert('clicked'); },
 
-
+		toastr['info'](pInvitChat.vInvited[0].myPseudo+' vous invite à Tchatter<br /><br /><button type="button" class="btn clear">En savoir plus...</button>', 'Invitation à discuter');
+		
+	});
 
 	// --------------------------------------------------------------
-	// Un membre vient de se déconnecter, je vériifie que c'est un 
+	// L''ami qu'on a invité, s'est déconnecté entre-temps,
+	// On prévient donc l'inviteur et on annule l'invation au Tchat
+	// --------------------------------------------------------------
+	webSocketConnection.on('invitDestChatHasdisconnect',function(pInvitChat){
+		vMemberClient.initModalInvitDestChatHasdisconnect(vGenericModalTitle, vGenericModalBodyText);     // Affiche la fenêtre de bienvenue
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+		$('#idGenericModal').modal('show');                                     // ouverture de la fenêtre modale de notification d'a nnulation de l'invittation au Tchat
+
+		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited.splice(-1,1);   // Efface l'occurence de la dernière invitation des Tchats du tableau
+	});
+
+	// --------------------------------------------------------------
+	// Un membre vient de se déconnecter, je vérifie que c'est un 
 	// ami à moi, et si oui, j'éteinds sa puce de connexion
 	// Idem, si je suis en mode "Friend"
 	// --------------------------------------------------------------
@@ -783,15 +828,23 @@ window.addEventListener('DOMContentLoaded', function(){
 		});
 	});
 
-	// --------------------------------------------------------------
-	// Un nouvel ami vient d etre accepté par quelqu'un
-	// Je vérifie que c'est l'ami d'un de mes amis dont je consulte le profil, 
-	// et si oui, j'allume sa puce de connexion en "vert"
-	// --------------------------------------------------------------
-	webSocketConnection.on('displayNewFriendConnectedStatusFriend', function(pMember){
+	webSocketConnection.on('displayNewFriendConnectedStatus', function(pMember){
 		var indexFriendOfMine;
-
+	
 		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
+			// S'il ne s'agit pas de moi qui vient de se connecter, je regarde si c'est un ami a moi qui vient de se connecter
+			if (pMember.pseudo !== vMemberClient.member.pseudo){	
+				indexFriendOfMine = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pMember.pseudo);	
+
+				if (indexFriendOfMine > -1){
+					vMemberClient.vMyFriendList[indexFriendOfMine].connected = true;
+					document.getElementById('idConnectedLed'+cstMainProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success')
+				}
+			} else {
+				// Il s'agit de moi-même qui vient de me connecter et je vais demander à mes amis lesquels sont déjà connectés
+				webSocketConnection.emit('whichFriendsAreConnected', pMember)
+			}
+
 			if (vActiveProfile === cstFriendProfileActive){
 				if (vFriendProfileViewed.member.pseudo !== pMember.friendPseudo){	
 					// Est ce que le nouvel ami qui vient d'être accepté est un ami de celui dont je regarde le profil ?
@@ -808,29 +861,7 @@ window.addEventListener('DOMContentLoaded', function(){
 					document.getElementById('idConnectedLed'+cstFriendProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success');
 				}
 			}
-		}
-	});
 
-	// --------------------------------------------------------------
-	// Un nouvel ami vient d etre accepté par quelqu'un
-	// si c'est un ami à moi, j'allume sa puce de connexion en "vert"
-	// --------------------------------------------------------------
-	webSocketConnection.on('displayNewFriendConnectedStatusMain', function(pMember){
-		var indexFriendOfMine;
-	
-		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
-			// S'il ne s'agit pas de moi qui vient de se connecter, je regarde si c'est un ami a moi qui vient de se connecter
-			if (pMember.pseudo !== vMemberClient.member.pseudo){	
-				indexFriendOfMine = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pMember.pseudo);	
-
-				if (indexFriendOfMine > -1){
-					vMemberClient.vMyFriendList[indexFriendOfMine].connected = true;
-					document.getElementById('idConnectedLed'+cstMainProfileActive+indexFriendOfMine).classList.replace('bg-warning', 'bg-success')
-				}
-			} else {
-				// Il s'agit de moi-même qui vient de me connecter et je vais demander à mes amis lesquels sont déjà connectés
-				webSocketConnection.emit('whichFriendsAreConnected', pMember)
-			}
 		}
 	});
 	// --------------------------------------------------------------
@@ -851,7 +882,7 @@ window.addEventListener('DOMContentLoaded', function(){
 				}
 			} else {
 				// Il s'agit de moi-même qui vient de me connecter et je vais demander à mes amis lesquels sont déjà connectés
-				webSocketConnection.emit('whichFriendsAreConnected', pMember)
+				webSocketConnection.emit('whichFriendsAreConnected', pMember);
 			}
 			
 			if (vActiveProfile === cstFriendProfileActive){
@@ -1060,8 +1091,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-// XXXXX
-// vFriendPopUpMenu.removeFriendFromMyFriendList(pFriendToDelete);
 		vFriendsCardMain.removeFriendFromMyFriendList(pFriendToDelete);
 	});
 
@@ -1571,8 +1600,6 @@ console.log('addFriendIntoHisListFriend - pMyFriend : ',pMyFriend)
 			}
 		}
 
-
-
 		// MAJ des données et des avatars lorsque l'on est sur la page "Profil d'un Ami"
 		// Si c'est le profil de l'ami que je suis en train de consulter qui est MAJ, je répercute les modifs sur mon écran en temps réel
 		if (vActiveProfile === cstFriendProfileActive){
@@ -1601,7 +1628,6 @@ console.log('addFriendIntoHisListFriend - pMyFriend : ',pMyFriend)
 		}
 	}
 });
-
 
 // -------------------------------------------------------------------------
 // -------------------------------------------------------------------------

@@ -3,13 +3,45 @@
 // d'y accéder pour travailler dessus (Modifier, supprimer, ajouter, etc...)
 // -------------------------------------------------------------------------
 
-function MemberClient(){   							// Fonction constructeur exportée
-	this.newPasswordKO 					= false;	// Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
-	this.vMyFriendList					= [];			// Ma liste d'amis
-	this.vMyInvitSentList 			= [];			// Ma liste d'invitations envoyées
-	this.vInvitSentCardVisible 	= false;	// Indicateur de visibilité de la carte des invitations en attente
+function MemberClient(){   								// Fonction constructeur exportée
+	this.newPasswordKO 					= false;		// Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
+	this.vInvitSentCardVisible 	= false;		// Indicateur de visibilité de la carte des invitations en attente
 
-	this.member =                 // Structure de stockage provisoire du membre
+	this.vMyFriendList	= 									// Ma liste d'amis
+	[
+		// {
+		// 	friendEmail  			
+		// 	friendPseudo 			
+		// 	friendPhoto 			
+		// }
+	];			
+
+	this.vMyInvitSentList = 								// Ma liste d'invitations envoyées
+	[
+		// {
+		// 	friendEmail  	
+		// 	friendPseudo 	
+		// 	friendPhoto 	
+		// }
+	];			
+
+	this.vMyLounges	= 
+	[
+		// {
+		// 	vLoungeName		: 'Salon N° ' + vLoungeNumber,										// Nom du salon
+		// 	vLoungeOwner	: this.memberClient.member.pseudo,								// Pseudo du membre qui a créé le salon
+		// 	vInvited			: 
+		// 	[
+		// 		// {
+		// 		// myPseudo			: this.memberClient.member.pseudo,
+		// 		// myStatus			: cstWaiting, 
+		// 		// friendPseudo	: event.target.datas.pFriend.friendPseudo,
+		// 		// friendstatus	: cstJoin
+		// 		// }
+		// 	],
+		// };
+		]
+	this.member =                 					// Structure de stockage provisoire du membre
 	{   
 		email           : '',
 		pseudo          : '',
@@ -210,13 +242,23 @@ MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pA
 	this.displayPuceNbrWaitingInvit(pContextInfo, pAskingMembers.length);		// S'il y a des invitations en attente ==> Affichage de la puce avec le Nbre d'invitations
 	pContextInfo.vPad.style.display = 'none';																// Masquage de la "div" de padding du profil
 }
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale stipulant la 
+// deconnexion d'un ami qu'on avait invité à un Tchat
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalInvitDestChatHasdisconnect = function(pModalTitle, pModalBodyText){
+	pModalTitle.innerHTML = '<i class="fa fa-user-times"></i> Collect\'Or';
+	pModalBodyText.innerHTML = '<h5>Invitation à un Tchat annulée</h5>';
+	pModalBodyText.innerHTML += '<br /><p>L\'ami à qui vous aviez envoyé une invitation pour Tchatter a déconnecté entre-temps et l\'invitation est annulée.</p>';
+}
 
 // -----------------------------------------------------------------------------
 // Cette fonction réinitialise complétement l'écran et ferme le socket
 // -----------------------------------------------------------------------------
 MemberClient.prototype.unsetMemberContext = function(){
 
-	webSocketConnection.emit('UserDisconnect');
+	webSocketConnection.emit('disconnect');
+	// webSocketConnection.emit('UserDisconnect');
 
 	// Régénération de l'écran from scratch;
 	window.location.reload(true);

@@ -29,9 +29,9 @@ RecommendFriendsMgr.prototype.displayHeaderRecommendations= function(pFriend, pD
 
 	vlineHTML.vHdrARecoFriend = window.document.createElement('a');
 	pDivDropDown.appendChild(vlineHTML.vHdrARecoFriend);
+	vlineHTML.vHdrARecoFriend.setAttribute('id', 'idHdrAnchorRecoFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrARecoFriend.setAttribute('href', '#');
 	vlineHTML.vHdrARecoFriend.setAttribute('class', 'container list-group-item m-0 py-0');
-	vlineHTML.vHdrARecoFriend.setAttribute('style', 'border-bottom: 1px solid black;');
 
 	vlineHTML.vHdrDivRowRecoFriend = window.document.createElement('div');
 	vlineHTML.vHdrARecoFriend.appendChild(vlineHTML.vHdrDivRowRecoFriend);

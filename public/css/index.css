@@ -394,6 +394,7 @@ body {
 /* ********************************** */
 .neutralPointer{
 	cursor: default;
+	/* cursor: context-menu; */
 	pointer-events: none;
 }
 

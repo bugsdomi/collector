@@ -21,7 +21,7 @@
 		<!-- Styles -->
 		<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css">
 		<link href="static/css/index.css" rel="stylesheet" >
-
+		<link href="staticNodeModules/toastr/toastr.css" rel="stylesheet">
 
 <!-- XXXXX -->
 		<link href="static/css/timeline.css" rel="stylesheet">
@@ -882,10 +882,16 @@
 		<!--        Vérification Javascript activé + chargement des librairies         -->
 		<!-- ************************************************************************* -->
 		<noscript><p>Veuillez activer JavaScript</p></noscript>    
-
-		<script src="static/js/jquery-3.4.1.slim.min.js"></script>
+<!-- XXXXX -->
+		<!-- <script src="static/js/jquery-3.4.1.slim.min.js"></script> -->
+		<script src="staticNodeModules/jquery/dist/jquery.min.js"></script>
 		<script src="static/js/popper.min.js"></script>
 		<script src="static/js/bootstrap.min.js"></script>
+		<!-- <script src="static/js/moment-with-locales.js"></script> -->
+		<!-- <script src="staticNodeModules/moment/moment.js"></script> -->
+		<script src="staticNodeModules/moment-with-locales/moment-with-locales.js"></script>
+		<script src="staticNodeModules/toastr/toastr.js"></script>
+
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="static/js/ToolBox.js"></script>
 		<script src="static/js/variables.js"></script>
@@ -898,6 +904,7 @@
 		<script src="static/js/InvitationsMgr.js"></script>
 		<script src="static/js/MicroFicheMember.js"></script>
 		<script src="static/js/FriendPopUpMenu.js"></script>
+		<script src="static/js/ChatLoungesMgr.js"></script>
 		<script src="static/js/RecommendFriendsMgr.js"></script>
 		<script src="static/js/InvitationsCard.js"></script>
 		<script src="static/js/InitHeaderColor.js"></script>
@@ -907,7 +914,6 @@
 		<script src="static/js/ViewFriendProfile.js"></script>
 		<script src="static/js/PostsClientSide.js"></script>
 		<script src="siofu/client.js"></script>
-		<script src="static/js/moment-with-locales.js"></script>
 
 		<!-- XXXXX A virer "custom.js"-->
 		<script src="static/js/custom.js"></script>

@@ -18,6 +18,7 @@ head
   // Styles
   link(href='static/css/bootstrap.css' rel='stylesheet' type='text/css')
   link(href='static/css/index.css' rel='stylesheet')
+  link(href='staticNodeModules/toastr/toastr.css' rel='stylesheet')
   // XXXXX
   link(href='static/css/timeline.css' rel='stylesheet')
   link(href='static/css/cover.css' rel='stylesheet')
@@ -698,9 +699,15 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   // *************************************************************************
   noscript
     p Veuillez activer JavaScript
-  script(src='static/js/jquery-3.4.1.slim.min.js')
+  // XXXXX
+  // <script src="static/js/jquery-3.4.1.slim.min.js"></script>
+  script(src='staticNodeModules/jquery/dist/jquery.min.js')
   script(src='static/js/popper.min.js')
   script(src='static/js/bootstrap.min.js')
+  // <script src="static/js/moment-with-locales.js"></script>
+  // <script src="staticNodeModules/moment/moment.js"></script>
+  script(src='staticNodeModules/moment-with-locales/moment-with-locales.js')
+  script(src='staticNodeModules/toastr/toastr.js')
   script(src='/socket.io/socket.io.js')
   script(src='static/js/ToolBox.js')
   script(src='static/js/variables.js')
@@ -713,6 +720,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   script(src='static/js/InvitationsMgr.js')
   script(src='static/js/MicroFicheMember.js')
   script(src='static/js/FriendPopUpMenu.js')
+  script(src='static/js/ChatLoungesMgr.js')
   script(src='static/js/RecommendFriendsMgr.js')
   script(src='static/js/InvitationsCard.js')
   script(src='static/js/InitHeaderColor.js')
@@ -722,6 +730,5 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   script(src='static/js/ViewFriendProfile.js')
   script(src='static/js/PostsClientSide.js')
   script(src='siofu/client.js')
-  script(src='static/js/moment-with-locales.js')
   // XXXXX A virer "custom.js"
   script(src='static/js/custom.js')

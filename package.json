@@ -15,7 +15,8 @@
     "popper.js": "^1.14.7",
     "pug": "^2.0.3",
     "socket.io": "^2.1.1",
-    "socketio-file-upload": "^0.6.4"
+    "socketio-file-upload": "^0.6.4",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {},
   "scripts": {
