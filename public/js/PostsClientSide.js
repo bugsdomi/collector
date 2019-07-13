@@ -47,8 +47,19 @@ PostsClient.prototype.displayPostEdit = function(){
 	vlineHTML.vH5PostEditTitle = window.document.createElement('h5');
 	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vH5PostEditTitle);
 	vlineHTML.vH5PostEditTitle.setAttribute('class', 'card-title text-dark ml-0');
-	vlineHTML.vH5PostEditTitle.innerHTML = 'Postez vos idées et informations...';
+// XXXXXXX
+// vlineHTML.vH5PostEditTitle.innerHTML = 'Postez vos idées et informations...';
 
+	vlineHTML.vILightBulb = window.document.createElement('i');
+	vlineHTML.vH5PostEditTitle.appendChild(vlineHTML.vILightBulb);
+	vlineHTML.vILightBulb.setAttribute('class', 'fa fa-lightbulb-o');
+	vlineHTML.vH5PostEditTitle.innerHTML += ' ';
+	
+	vlineHTML.vIBullHorn = window.document.createElement('i');
+	vlineHTML.vH5PostEditTitle.appendChild(vlineHTML.vIBullHorn);
+	vlineHTML.vIBullHorn.setAttribute('class', 'fa fa-bullhorn');
+	vlineHTML.vH5PostEditTitle.innerHTML += ' Postez vos idées et informations...';
+	
 
 	// Card Body
 	vlineHTML.vDivCardBody = window.document.createElement('div');

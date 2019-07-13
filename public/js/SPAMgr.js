@@ -70,7 +70,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 	moment.locale('fr');	// Choisit le Preset "France" pour les dates et heures (Mode global)
 
-
 	// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal (Header Menu)
@@ -706,52 +705,76 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
-
 	// --------------------------------------------------------------
-	// On a reçu une invitation
-	// Emission d'un Toast associé à une fonction pour accepter ou 
-	// refuser l'invitation
+	// On a refusé invitation au chat
+	// suppression de l'occurence de l'invitation dans le tableau des room
+	// et suppression de l'avatar dans la liste
 	// --------------------------------------------------------------
-	webSocketConnection.on('invitToChat',function(pInvitChat){
-		toastr.options = {
-			"closeButton": false,
-			"debug": false,
-			"newestOnTop": false,
-			"progressBar": false,
-			"positionClass": "toast-top-right",
-			"preventDuplicates": false,
-			"showDuration": 500,
-			"hideDuration": 500,
-			"timeOut": 0,
-			"extendedTimeOut": 0,
-			"showEasing": "swing",
-			"hideEasing": "swing",
-			"showMethod": "show",
-			"hideMethod": "slideUp",
-			"tapToDismiss": false,
-		}
-		
-		toastr.options.onclick = function() { alert('clicked'); },
-
-		toastr['info'](pInvitChat.vInvited[0].myPseudo+' vous invite à Tchatter<br /><br /><button type="button" class="btn clear">En savoir plus...</button>', 'Invitation à discuter');
-		
-	});
-
-	// --------------------------------------------------------------
-	// L''ami qu'on a invité, s'est déconnecté entre-temps,
-	// On prévient donc l'inviteur et on annule l'invation au Tchat
-	// --------------------------------------------------------------
-	webSocketConnection.on('invitDestChatHasdisconnect',function(pInvitChat){
-		vMemberClient.initModalInvitDestChatHasdisconnect(vGenericModalTitle, vGenericModalBodyText);     // Affiche la fenêtre de bienvenue
+	webSocketConnection.on('refuseInvitToChat',function(pInvitChat){
+		vMemberClient.initModalRefuseInvitToChat(vGenericModalTitle, vGenericModalBodyText, pInvitChat);     // Affiche la fenêtre de bienvenue
 		var vModalHeaderColorParams = 
 		{
 			activeColor : 'bg-danger',
 			modalHeader : vGenericModalHeader,
 		}
 		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
-		$('#idGenericModal').modal('show');                                     // ouverture de la fenêtre modale de notification d'a nnulation de l'invittation au Tchat
+		$('#idGenericModal').modal('show');                                     // ouverture de la fenêtre modale de notification d'annulation de l'invittation au Tchat
 
 		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited.splice(-1,1);   // Efface l'occurence de la dernière invitation des Tchats du tableau
+		var vTextAreaChatArea = document.getElementById('idChatArea'+ pInvitChat.vLoungeNumber);
+		vTextAreaChatArea.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' a refusé l\'invitation....'
+		vToolBox.autoResizeElem(vTextAreaChatArea.id);						// Redimensionnement automatique (mais limité) du champs
+
+		var elem = document.getElementById('idIChatInvitedFriendAvatar' + pInvitChat.vLoungeNumber + pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+		if (elem){
+			var vParentNode = elem.parentNode;
+			elem.parentNode.removeChild(elem);
+
+			if (!vParentNode.firstChild) {					// S'il n'y a plus d'avatars alors
+				vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
+			}
+		}
+	});
+	
+	// --------------------------------------------------------------
+	// On a reçu une invitation
+	// Affiichage d'une modale pour accepter ou refuser l'invitation
+	// --------------------------------------------------------------
+	webSocketConnection.on('createRoomAndInvitToChat',function(pInvitChat){
+		vChatLoungesMgr.answerToChatInvit(pInvitChat);
+	});
+
+	// --------------------------------------------------------------
+	// L''ami qu'on a invité, s'est déconnecté entre-temps,
+	// On prévient donc l'inviteur et on annule l'invation au Tchat
+	// et suppression de l'avatar dans la liste
+	// --------------------------------------------------------------
+	webSocketConnection.on('invitDestChatHasdisconnect',function(pInvitChat){
+		vMemberClient.initModalInvitDestChatHasdisconnect(vGenericModalTitle, vGenericModalBodyText, pInvitChat);     // Affiche la fenêtre de messsage d'avertissement
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-danger',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+		$('#idGenericModal').modal('show');                                     // ouverture de la fenêtre modale de notification d'annulation de l'invittation au Tchat
+
+		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited.splice(-1,1);   // Efface l'occurence de la dernière invitation des Tchats du tableau
+
+		var vTextAreaChatArea = document.getElementById('idChatArea'+ pInvitChat.vLoungeNumber);
+		vTextAreaChatArea.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' n\'est plus connecté....'
+		vToolBox.autoResizeElem(vTextAreaChatArea.id);						// Redimensionnement automatique (mais limité) du champs
+
+
+		var elem = document.getElementById('idIChatInvitedFriendAvatar' + pInvitChat.vLoungeNumber + pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+		if (elem){
+			var vParentNode = elem.parentNode;
+			elem.parentNode.removeChild(elem);
+
+			if (!vParentNode.firstChild) {					// S'il n'y a plus d'avatars alors
+				vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
+			}
+		}
 	});
 
 	// --------------------------------------------------------------
@@ -781,6 +804,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			}
 		}
 	});
+
 	// --------------------------------------------------------------
 	// Le serveur me renvoie le statut de connexion de mon nouvel ami
 	// --------------------------------------------------------------

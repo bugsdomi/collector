@@ -302,12 +302,20 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 
 
 		// ------------------------------------
-		// Gestion des Chat
+		// Gestion des TChat
 		// ------------------------------------
-		webSocketConnection.on('invitToChat', function(pInvitChat){
-			vMemberServer.invitToChat(pInvitChat, webSocketConnection, socketIo);
+		webSocketConnection.on('createRoomAndInvitToChat', function(pInvitChat){
+			let vRoom = 'Room-'+pInvitChat.vInvited[0].myPseudo+'-'+pInvitChat.vLoungeNumber;
+console.log('createRoomAndInvitToChat -- vRoom : ', vRoom)
+			webSocketConnection.join(vRoom);
+			vMemberServer.createRoomAndInvitToChat(pInvitChat, webSocketConnection, socketIo);
 		}); 
 
+
+		webSocketConnection.on('refuseInvitToChat', function(pInvitChat){
+			vMemberServer.refuseInvitToChat(pInvitChat, webSocketConnection, socketIo);
+		}); 
+		
 
 		// -----------------------------------
 		// Déconnexion

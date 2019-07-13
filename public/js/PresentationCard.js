@@ -55,7 +55,7 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 		<h5 class="card-title">Présentation</h5>
 	vlineHTML.vH5 = window.document.createElement('h5');
 	vlineHTML.vDivCardHeader.appendChild(vlineHTML.vH5);
-	vlineHTML.vH5.setAttribute('class', 'card-title');
+	vlineHTML.vH5.setAttribute('class', 'card-title mb-0');
 	vlineHTML.vH5.innerHTML='Présentation';
 
 	// ------------------------------------------------------------------------------ 

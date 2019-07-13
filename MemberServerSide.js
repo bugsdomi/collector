@@ -1785,14 +1785,14 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	}; 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Réception d'une invitation à Tchatter
+	// Réception d'une invitation à Tchatter et transmission de l'invitation àà l'ami invité
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.invitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
+	MemberServer.prototype.createRoomAndInvitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
 		let myIndex;
 		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
 
 		if (myIndex > -1){
-			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('invitToChat', pInvitChat);
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('createRoomAndInvitToChat', pInvitChat);	// Envoie au membre invité l'invitation quii lui est faite
 
 			this.sendEMail(
 				this.objectPopulation.members[myIndex].email, 
@@ -1806,6 +1806,20 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			// Le destinataire a deconnecté entre-temps, l'invitation devient caduque, et on prévient l'inviteur
 			pWebSocketConnection.emit('invitDestChatHasdisconnect',pInvitChat)		
 		};
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// L'ami invité à refusé l'invitation à Tchatter
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.refuseInvitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
+	
+		let myIndex;
+		// Je vérifie que l'inviteur est toujours en ligne, car j'ai très bien répondre qu'au bout de 30mn par exemple et qu'il se soit deconnecté dans l'intervalle
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo);
+
+		if (myIndex > -1){ // Si l'inviteur est encore en ligne, envoie au membre inviteur le refus à l'invitation qu'il a envoyé
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('refuseInvitToChat', pInvitChat);	
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------

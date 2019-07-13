@@ -253,6 +253,9 @@ body {
 	max-width: 30vw;
 }
 
+.form-ChatInvit{
+
+}
 
 
 /* ******************************* */
@@ -370,8 +373,13 @@ body {
 .tokenSize32{
 	width: 32px;
 	height: 32px;
-
 }
+
+.tokenSize25{
+	width: 25px;
+	height: 25px;
+}
+
 .tokenSize16{
 	width: 16px;
 	height: 16px;
@@ -688,4 +696,24 @@ a, a:hover {
 
 ul li:last-child {
 	border: none 0; /* Annule toutes les bordures pour le dernier li */
+}
+
+/* ********************************************************************************************** */
+/* Gestion fine des modales                                                                       */
+/* ********************************************************************************************** */
+/* Change l'opacite du fond d'écran lorsqu'une modale est affichée                                */
+/* ********************************************************************************************** */
+.modal-backdrop{
+	opacity:	0; 
+	transition:opacity .2s;
+}
+.modal-backdrop.show{
+  opacity: 0.1;
+}
+
+/* ********************************************************************************************** */
+/* Opacification de l'avatar de l'invité en attente de réponse                                    */
+/* ********************************************************************************************** */
+.waitingChatInvited{
+	filter: grayscale(1);
 }

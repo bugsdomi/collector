@@ -28,7 +28,9 @@ InitHeaderColor.prototype.initHeaderColor = function(pModalHeaderColorParams){
 	if (pModalHeaderColorParams.activeColor === "bg-warning"){
 		pModalHeaderColorParams.modalHeader.classList.remove('bg-danger');
 		pModalHeaderColorParams.modalHeader.classList.remove('bg-success');
+		pModalHeaderColorParams.modalHeader.classList.remove('bg-info');
 		pModalHeaderColorParams.modalHeader.classList.remove('text-warning');
+		pModalHeaderColorParams.modalHeader.classList.remove('text-light');
 		pModalHeaderColorParams.modalHeader.classList.add('bg-warning');    	    
 		pModalHeaderColorParams.modalHeader.classList.add('text-dark');
 		return
@@ -37,7 +39,9 @@ InitHeaderColor.prototype.initHeaderColor = function(pModalHeaderColorParams){
 	if (pModalHeaderColorParams.activeColor === 'bg-danger'){
 		pModalHeaderColorParams.modalHeader.classList.remove('bg-success');
 		pModalHeaderColorParams.modalHeader.classList.remove('bg-warning');                  
+		pModalHeaderColorParams.modalHeader.classList.remove('bg-info');
 		pModalHeaderColorParams.modalHeader.classList.remove('text-dark');
+		pModalHeaderColorParams.modalHeader.classList.remove('text-light');
 		pModalHeaderColorParams.modalHeader.classList.add('bg-danger');
 		pModalHeaderColorParams.modalHeader.classList.add('text-warning');
 		return
@@ -46,9 +50,21 @@ InitHeaderColor.prototype.initHeaderColor = function(pModalHeaderColorParams){
 	if (pModalHeaderColorParams.activeColor === 'bg-success'){
 		pModalHeaderColorParams.modalHeader.classList.remove('bg-danger');
 		pModalHeaderColorParams.modalHeader.classList.remove('bg-warning');                  
+		pModalHeaderColorParams.modalHeader.classList.remove('bg-info');
 		pModalHeaderColorParams.modalHeader.classList.remove('text-dark');
+		pModalHeaderColorParams.modalHeader.classList.remove('text-light');
 		pModalHeaderColorParams.modalHeader.classList.add('bg-success');
 		pModalHeaderColorParams.modalHeader.classList.add('text-warning');
+		return
+	}
+	if (pModalHeaderColorParams.activeColor === "bg-info"){
+		pModalHeaderColorParams.modalHeader.classList.remove('bg-danger');
+		pModalHeaderColorParams.modalHeader.classList.remove('bg-success');
+		pModalHeaderColorParams.modalHeader.classList.remove('bg-warning');
+		pModalHeaderColorParams.modalHeader.classList.remove('text-dark');
+		pModalHeaderColorParams.modalHeader.classList.remove('text-warning');
+		pModalHeaderColorParams.modalHeader.classList.add('bg-info');    	    
+		pModalHeaderColorParams.modalHeader.classList.add('text-light');
 		return
 	}
 }

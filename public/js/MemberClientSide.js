@@ -246,10 +246,22 @@ MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pA
 // Cette fonction initialise le contenu de la fenetre modale stipulant la 
 // deconnexion d'un ami qu'on avait invité à un Tchat
 // -----------------------------------------------------------------------------
-MemberClient.prototype.initModalInvitDestChatHasdisconnect = function(pModalTitle, pModalBodyText){
+MemberClient.prototype.initModalInvitDestChatHasdisconnect = function(pModalTitle, pModalBodyText, pInvitChat){
 	pModalTitle.innerHTML = '<i class="fa fa-user-times"></i> Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Invitation à un Tchat annulée</h5>';
-	pModalBodyText.innerHTML += '<br /><p>L\'ami à qui vous aviez envoyé une invitation pour Tchatter a déconnecté entre-temps et l\'invitation est annulée.</p>';
+	pModalBodyText.innerHTML += '<br /><p>'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo +
+	', à qui vous aviez envoyé une invitation pour Tchatter a déconnecté entre-temps et l\'invitation est annulée.</p>';
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction initialise le contenu de la fenetre modale stipulant le fait
+// que l'ami invité à décliné l'invitation à Tchatter
+// -----------------------------------------------------------------------------
+MemberClient.prototype.initModalRefuseInvitToChat = function(pModalTitle, pModalBodyText, pInvitChat){
+	pModalTitle.innerHTML = '<i class="fa fa-user-times"></i> Collect\'Or';
+	pModalBodyText.innerHTML = '<h5>L\'Invitation à un Tchat a été refusée</h5>';
+	pModalBodyText.innerHTML += '<br /><p>'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo +
+	', à qui vous aviez envoyé une invitation pour Tchatter a refusée votre invitation.</p>';
 }
 
 // -----------------------------------------------------------------------------

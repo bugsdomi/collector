@@ -201,9 +201,6 @@ function AddLoungesLines(pItem, pIndex, pDivContain, pFriend) {
 ChatLoungesMgr.prototype.displayLoungeCard = function(pFriend){
 	var vLineHTML = {};						
 	var vDivMountPointProfile = document.getElementById('idDivMountPointMainProfile');
-	// ------------------------------------------------------------------------------ 
-	//                               Carte "Lounge"                             
-	// ------------------------------------------------------------------------------ 
 
 	//* <div class="card border-warning mb-4">
 	vLineHTML.vDivCardBorder = window.document.createElement('div');
@@ -218,19 +215,42 @@ ChatLoungesMgr.prototype.displayLoungeCard = function(pFriend){
 	vLineHTML.vDivCardBorder.appendChild(vLineHTML.vDivCardHeader);
 	vLineHTML.vDivCardHeader.setAttribute('class', 'card-header bg-warning border-bottom border-warning py-0 pb-1');
 
+	vLineHTML.vDivCardHeaderContainer = window.document.createElement('div');
+	vLineHTML.vDivCardHeader.appendChild(vLineHTML.vDivCardHeaderContainer);
+	vLineHTML.vDivCardHeaderContainer.setAttribute('class', 'container');
+
+	vLineHTML.vDivCardHeaderRow = window.document.createElement('div');
+	vLineHTML.vDivCardHeaderContainer.appendChild(vLineHTML.vDivCardHeaderRow);
+	vLineHTML.vDivCardHeaderRow.setAttribute('class', 'row');
+
 	// 			<img id="idAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="">
 	vLineHTML.vImgAvatToken = window.document.createElement('img');
-	vLineHTML.vDivCardHeader.appendChild(vLineHTML.vImgAvatToken);
+	// vLineHTML.vDivCardHeader.appendChild(vLineHTML.vImgAvatToken);
+	vLineHTML.vDivCardHeaderRow.appendChild(vLineHTML.vImgAvatToken);
 	vLineHTML.vImgAvatToken.setAttribute('class', 'avatarToken tokenSize50 ml-0');
 	vLineHTML.vImgAvatToken.setAttribute('alt', 'Avatar');
 	vLineHTML.vImgAvatToken.setAttribute('src', 'static/images/members/'+this.memberClient.member.etatCivil.photo);
 
-// 		<h5 class="card-title">Présentation</h5>
+	// 		<h5 class="card-title">Présentation</h5>
 	vLineHTML.vH5 = window.document.createElement('h5');
-	vLineHTML.vDivCardHeader.appendChild(vLineHTML.vH5);
-	vLineHTML.vH5.setAttribute('class', 'card-title');
+	vLineHTML.vDivCardHeaderRow.appendChild(vLineHTML.vH5);
+	vLineHTML.vH5.setAttribute('class', 'card-title align-self-center mb-0');
 	vLineHTML.vH5.innerHTML='Salon de discussion N°'+ this.vLoungeMenuLine.length;
 
+	vLineHTML.vDivCardHeaderRowAvatar = window.document.createElement('div');
+	vLineHTML.vDivCardHeaderContainer.appendChild(vLineHTML.vDivCardHeaderRowAvatar);
+	vLineHTML.vDivCardHeaderRowAvatar.setAttribute('class', 'row bg-white border border-dark rounded mt-1 visible');
+
+	vLineHTML.vImgAvatInvitedToken = window.document.createElement('img');
+	vLineHTML.vDivCardHeaderRowAvatar.appendChild(vLineHTML.vImgAvatInvitedToken);
+	vLineHTML.vImgAvatInvitedToken.setAttribute('id', 'idIChatInvitedFriendAvatar'+ this.vLoungeMenuLine.length + pFriend.friendPseudo);
+	vLineHTML.vImgAvatInvitedToken.setAttribute('class', 'avatarToken tokenSize32 ml-1 my-1 waitingChatInvited');
+	vLineHTML.vImgAvatInvitedToken.setAttribute('alt', 'Avatar');
+	vLineHTML.vImgAvatInvitedToken.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
+	vLineHTML.vImgAvatInvitedToken.setAttribute('data-toggle', 'tooltip');
+	vLineHTML.vImgAvatInvitedToken.setAttribute('data-placement', 'top');
+	vLineHTML.vImgAvatInvitedToken.setAttribute('data-title', pFriend.friendPseudo);
+	
 	// ------------------------------------------------------------------------------ 
 	//                       Corps de la carte "Lounge"                          
 	// ------------------------------------------------------------------------------ 
@@ -245,23 +265,21 @@ ChatLoungesMgr.prototype.displayLoungeCard = function(pFriend){
 	//                       Zone de texte du Tchat                        
 	// ------------------------------------------------------------------------------ 
 
-// 				<div class="row">
+	// 				<div class="row">
 	vLineHTML.vDivRow6 = window.document.createElement('div');
 	vLineHTML.vDivCardBody.appendChild(vLineHTML.vDivRow6);
 	vLineHTML.vDivRow6.setAttribute('class', 'row');
 
-// 					<div class="col-sm-12 text-dark mb-2">Présentation</div>
+	// 					<div class="col-sm-12 text-dark mb-2">Présentation</div>
 	vLineHTML.vDivCol11 = window.document.createElement('div');
 	vLineHTML.vDivRow6.appendChild(vLineHTML.vDivCol11);
 	vLineHTML.vDivCol11.setAttribute('class', 'col-sm-12 text-dark my-0');
-// vLineHTML.vDivCol11.innerHTML='Présentation';
 
-// 					<textarea class="col-sm-12 presentationCard font-weight-bold" rows="2"  id="idAboutPresentation" disabled></textarea>
+	// 					<textarea class="col-sm-12 presentationCard font-weight-bold" rows="2"  id="idAboutPresentation" disabled></textarea>
 	vLineHTML.vTextAreaChatArea = window.document.createElement('textarea');
 	vLineHTML.vDivRow6.appendChild(vLineHTML.vTextAreaChatArea);
 	vLineHTML.vTextAreaChatArea.setAttribute('id', 'idChatArea'+ this.vLoungeMenuLine.length);
-// vLineHTML.vTextAreaChatArea.setAttribute('class', 'col-sm-12 presentationCard font-weight-bold border-0');
-	vLineHTML.vTextAreaChatArea.setAttribute('class', 'col-sm-12 presentationCard border-0');
+	vLineHTML.vTextAreaChatArea.setAttribute('class', 'col-sm-12 presentationCard border-0 textAreaAutoResizable');
 	vLineHTML.vTextAreaChatArea.setAttribute('rows', '8');
 	vLineHTML.vTextAreaChatArea.setAttribute('disabled', '');
 	vLineHTML.vTextAreaChatArea.setAttribute('style', 'box-shadow: none; border-top: 1px darkGray solid; border-right: none; border-bottom: none; border-left: none; border-radius: unset; resize: none;');
@@ -289,7 +307,7 @@ ChatLoungesMgr.prototype.displayLoungeCard = function(pFriend){
 	vLineHTML.vDivRow3Chat.appendChild(vLineHTML.vTextAreaChatEdit);
 	vLineHTML.vTextAreaChatEdit.setAttribute('id', 'idTextAreaChatEdit'+ this.vLoungeMenuLine.length);
 	vLineHTML.vTextAreaChatEdit.setAttribute('placeholder', 'Ecrire un message...');
-	vLineHTML.vTextAreaChatEdit.setAttribute('class', 'form-control mt-1 ml-0 mr-3 px-1 border textAreaAutoResizable');
+	vLineHTML.vTextAreaChatEdit.setAttribute('class', 'form-control mt-1 ml-0 mr-3 px-1 border');
 	vLineHTML.vTextAreaChatEdit.setAttribute('name', 'textAreaChatEdit'+ this.vLoungeMenuLine.length);
 	vLineHTML.vTextAreaChatEdit.setAttribute('rows', '1');
 	vLineHTML.vTextAreaChatEdit.setAttribute('style', 'box-shadow: none; resize: none;');
@@ -336,6 +354,9 @@ ChatLoungesMgr.prototype.displayLoungeCard = function(pFriend){
 			vToolBox.autoExpand(event.target);
 		}
 	}, false);
+
+	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
+	vToolBox.InitPopOverAndToolTipAndDropDown();
 }
 
 // --------------------------------------------------------------
@@ -363,11 +384,6 @@ ChatLoungesMgr.prototype.clearChatEdit = function(event){
 // l'affecter à mon invité
 // -----------------------------------------------------------------------------
 ChatLoungesMgr.prototype.createNewChatLounge = function(event){
-	// Suppression des Listeners
-	event.target.datas.dataToTransmit.vBtnCreateNewLounge.removeEventListener('click', this.createNewChatLounge,false);
-	event.target.datas.dataToTransmit.vBtnCreateNewLounge.removeEventListener('mouseover', this.memberClient.changeBtnTxtColOver,false);
-	event.target.datas.dataToTransmit.vBtnCreateNewLounge.removeEventListener('mouseout', this.memberClient.changeBtnTxtColOut,false);
-
 	var vFriend 			= event.target.datas.pFriend;
 	var vLoungeLocal 	=  
 	{
@@ -387,8 +403,10 @@ ChatLoungesMgr.prototype.createNewChatLounge = function(event){
 	vLoungeLocal.vInvited.push
 	(
 		{	myPseudo			: this.memberClient.member.pseudo,
+			myPhoto				: this.memberClient.member.etatCivil.photo,
 			myStatus			: cstWaiting, 
 			friendPseudo	: vFriend.friendPseudo,
+			friendPhoto		: vFriend.friendPhoto,
 			friendStatus	: cstJoin
 		}
 	);
@@ -396,28 +414,7 @@ ChatLoungesMgr.prototype.createNewChatLounge = function(event){
 	this.vLoungeMenuLine.push(new AddLoungesLines(vLoungeLocal, this.memberClient.vMyLounges.length, null, vFriend));
 	this.memberClient.vMyLounges.push(vLoungeLocal);			// Ajout du nouveau salon dans ma liste de salons
 	this.openChatLounge(event);
-
 	this.sendInvitToChat(vLoungeLocal);
-
-	toastr.options = {
-		"closeButton": false,
-		"debug": false,
-		"newestOnTop": false,
-		"progressBar": false,
-		"positionClass": "toast-top-right",
-		"preventDuplicates": false,
-		"onclick": null,
-		"showDuration": 1000,
-		"hideDuration": 1000,
-		"timeOut": 5000,
-		"extendedTimeOut": 2500,
-		"showEasing": "swing",
-		"hideEasing": "swing",
-		"showMethod": "show",
-		"hideMethod": "slideUp"
-	}
-	
-	toastr['success']('Invitation envoyée avec succès', 'Invitation envoyée à '+vLoungeLocal.vInvited[0].friendPseudo);
 }
 
 // -----------------------------------------------------------------------------
@@ -433,7 +430,8 @@ ChatLoungesMgr.prototype.displayLoungesLines = function(pFriend, pDivContain){
 };
 
 // --------------------------------------------------------------
-// Ouverture physique d'un salon de discussion
+// Ouverture physique d'un salon de discussion (donc on a qu'un 
+// seul invité au départ)
 // Fermeture du DropDownMenu
 // --------------------------------------------------------------
 ChatLoungesMgr.prototype.openChatLounge = function(event){
@@ -444,8 +442,163 @@ ChatLoungesMgr.prototype.openChatLounge = function(event){
 }
 
 // --------------------------------------------------------------
-// Ennvoie l'invitation pour participer au Tchat
+// Envoie l'invitation pour participer au Tchat
 // --------------------------------------------------------------
 ChatLoungesMgr.prototype.sendInvitToChat = function(pInvit){
-	webSocketConnection.emit('invitToChat', pInvit); 
+	webSocketConnection.emit('createRoomAndInvitToChat', pInvit); 
 } 
+
+// --------------------------------------------------------------
+// Création de la modale de réponse à l'invitation du TChat
+// --------------------------------------------------------------
+ChatLoungesMgr.prototype.displayModalChatInvitAnswer = function(pInvitChat){
+	var vLineHTML = {};					
+	var vWorkingSpace = document.getElementById('idWorkingSpace');
+
+	// 	<div class="modal px-0" tabindex="-1" role="dialog" id="idModalChatInvit" aria-labelledby="idAriaModalChatInvitTitle" data-backdrop="static" aria-hidden="true" style="z-index: 1060;">
+	vLineHTML.vDivModalChatInvit = window.document.createElement('div');
+	vWorkingSpace.appendChild(vLineHTML.vDivModalChatInvit);
+	vLineHTML.vDivModalChatInvit.setAttribute('id', 'idModalChatInvit'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber);
+	vLineHTML.vDivModalChatInvit.setAttribute('class', 'modal px-0');
+	vLineHTML.vDivModalChatInvit.setAttribute('data-keyboard', 'false');
+	vLineHTML.vDivModalChatInvit.setAttribute('data-focus', 'true');
+	vLineHTML.vDivModalChatInvit.setAttribute('tabindex', '-1');
+	vLineHTML.vDivModalChatInvit.setAttribute('role', 'dialog');
+	vLineHTML.vDivModalChatInvit.setAttribute('data-backdrop', 'static');
+	vLineHTML.vDivModalChatInvit.setAttribute('aria-labelledby', 'idAriaModalChatInvitTitle'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber);
+	vLineHTML.vDivModalChatInvit.setAttribute('aria-hidden', 'true');
+	vLineHTML.vDivModalChatInvit.setAttribute('style', 'z-index: 1060;');
+
+	// 		<div class="modal-dialog modal-dialog-centered" role="document">
+	vLineHTML.vDivModalDialogChatInvit = window.document.createElement('div');
+	vLineHTML.vDivModalChatInvit.appendChild(vLineHTML.vDivModalDialogChatInvit);
+	vLineHTML.vDivModalDialogChatInvit.setAttribute('class', 'modal-dialog modal-dialog-centered');
+	vLineHTML.vDivModalDialogChatInvit.setAttribute('role', 'document');
+	
+	// 			<div class="modal-content">
+	vLineHTML.vDivModalContentChatInvit = window.document.createElement('div');
+	vLineHTML.vDivModalDialogChatInvit.appendChild(vLineHTML.vDivModalContentChatInvit);
+	vLineHTML.vDivModalContentChatInvit.setAttribute('class', 'modal-content');
+
+	// 				<div class="modal-header border-bottom" id="idModalChatInvitHeader">
+	vLineHTML.vModalChatInvitHeader = window.document.createElement('div');
+	vLineHTML.vDivModalContentChatInvit.appendChild(vLineHTML.vModalChatInvitHeader);
+	vLineHTML.vModalChatInvitHeader.setAttribute('id', 'idModalChatInvitHeader'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber);
+	vLineHTML.vModalChatInvitHeader.setAttribute('class', 'modal-header border-bottom bg-warning text-dark');
+
+	// 					<h5 class="modal-title"><i class="fa fa-comments"></i> Invitation à un Tchat</h5>
+	vLineHTML.vH5ModalHeaderChatInvit = window.document.createElement('h5');
+	vLineHTML.vModalChatInvitHeader.appendChild(vLineHTML.vH5ModalHeaderChatInvit);
+	vLineHTML.vH5ModalHeaderChatInvit.setAttribute('class', 'modal-title');
+	
+	// <i class="fa fa-comments"></i>
+	vLineHTML.vIModalHeaderChatInvit = window.document.createElement('i');
+	vLineHTML.vH5ModalHeaderChatInvit.appendChild(vLineHTML.vIModalHeaderChatInvit);
+	vLineHTML.vIModalHeaderChatInvit.setAttribute('class', 'fa fa-comments');
+	vLineHTML.vH5ModalHeaderChatInvit.innerHTML += ' Invitation à un Tchat';
+	
+	// 				<div class="modal-body">
+	vLineHTML.vDivModalBodyChatInvit = window.document.createElement('div');
+	vLineHTML.vDivModalContentChatInvit.appendChild(vLineHTML.vDivModalBodyChatInvit);
+	vLineHTML.vDivModalBodyChatInvit.setAttribute('class', 'modal-body');
+	
+	// 					<form class="form-ChatInvit" id="idChatInvitForm">
+	vLineHTML.vFormModalBodyChatInvit = window.document.createElement('form');
+	vLineHTML.vDivModalBodyChatInvit.appendChild(vLineHTML.vFormModalBodyChatInvit);
+	vLineHTML.vFormModalBodyChatInvit.setAttribute('id', 'idChatInvitForm'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber);
+	vLineHTML.vFormModalBodyChatInvit.setAttribute('class', 'mb-4 mx-auto d-block');
+
+	// 						<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+	vLineHTML.vImgModalBodyChatInvit = window.document.createElement('img');
+	vLineHTML.vDivModalBodyChatInvit.appendChild(vLineHTML.vImgModalBodyChatInvit);
+	vLineHTML.vImgModalBodyChatInvit.setAttribute('src', 'static/images/favicon.png');
+	vLineHTML.vImgModalBodyChatInvit.setAttribute('class', 'mb-4 mx-auto d-block');
+	vLineHTML.vImgModalBodyChatInvit.setAttribute('alt', 'Logo du site \'Collect\'Or');
+	vLineHTML.vImgModalBodyChatInvit.setAttribute('width', 'auto');
+	vLineHTML.vImgModalBodyChatInvit.setAttribute('height', '72px');
+
+// 						<h1 class="h3 mb-3 font-weight-normal">Acceptez-vous de rejoindre le salon</h1>
+	vLineHTML.vH3ModalBodyChatInvit = window.document.createElement('h5');
+	vLineHTML.vDivModalBodyChatInvit.appendChild(vLineHTML.vH3ModalBodyChatInvit);
+	vLineHTML.vH3ModalBodyChatInvit.setAttribute('class', 'h5 mb-3 font-weight-normal text-center');
+	vLineHTML.vH3ModalBodyChatInvit.innerHTML = 'Acceptez-vous de rejoindre le salon de discussion N°'+ 
+																								pInvitChat.vLoungeNumber + ' de '+
+																								pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo + ' ?';
+
+	// 				<div class="modal-footer">
+	vLineHTML.vDivModalFooterChatInvit = window.document.createElement('div');
+	vLineHTML.vDivModalContentChatInvit.appendChild(vLineHTML.vDivModalFooterChatInvit);
+	vLineHTML.vDivModalFooterChatInvit.setAttribute('class', 'modal-footer');
+
+// 					<button id='idChatInvitRefuseBtn' class="btn btn-lg btn-danger btn-block" type="submit">Refuser</button>
+	vLineHTML.vBtnRefuseChatInvit = window.document.createElement('button');
+	vLineHTML.vDivModalFooterChatInvit.appendChild(vLineHTML.vBtnRefuseChatInvit);
+	vLineHTML.vBtnRefuseChatInvit.setAttribute('id', 'idBtnRefuseChatInvitn'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber);
+	vLineHTML.vBtnRefuseChatInvit.setAttribute('class', 'btn btn-danger');
+	vLineHTML.vBtnRefuseChatInvit.innerHTML = 'Refuser';
+
+
+	// 					<button id='idChatInvitAcceptBtn' class="btn btn-lg btn-success btn-block" type="submit">Accepter</button>
+	vLineHTML.vBtnAcceptChatInvit = window.document.createElement('button');
+	vLineHTML.vDivModalFooterChatInvit.appendChild(vLineHTML.vBtnAcceptChatInvit);
+	vLineHTML.vBtnAcceptChatInvit.setAttribute('id', 'idBtnAcceptChatInvitn'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber);
+	vLineHTML.vBtnAcceptChatInvit.setAttribute('class', 'btn btn-success');
+	vLineHTML.vBtnAcceptChatInvit.innerHTML = 'Accepter';
+
+	vLineHTML.vBtnRefuseChatInvit.addEventListener('click', vChatLoungesMgr.refuseChatInvit.bind(this),false);
+	vLineHTML.vBtnRefuseChatInvit.datas = pInvitChat;
+
+	vLineHTML.vBtnAcceptChatInvit.addEventListener('click', vChatLoungesMgr.acceptChatInvit.bind(this),false);
+	vLineHTML.vBtnAcceptChatInvit.datas = pInvitChat;
+}
+
+// --------------------------------------------------------------
+// Refuse à l'invitation du TChat
+// Fermeture et destruction de la modale
+// Renvoie l'invitation refusée à l'inviteur
+// --------------------------------------------------------------
+ChatLoungesMgr.prototype.refuseChatInvit = function(event){
+	var vInvitChat = event.target.datas;
+	this.destroyAnswwerModal(vInvitChat);
+
+	webSocketConnection.emit('refuseInvitToChat', vInvitChat); 
+}
+
+// --------------------------------------------------------------
+// Accepte à l'invitation du TChat
+// --------------------------------------------------------------
+ChatLoungesMgr.prototype.acceptChatInvit = function(pInvitChat){
+	alert('Accepte l\'invitation du Tchat')
+}
+
+// --------------------------------------------------------------
+// Réponse à l'invitation du TChat
+// --------------------------------------------------------------
+ChatLoungesMgr.prototype.answerToChatInvit = function(pInvitChat){
+	this.displayModalChatInvitAnswer(pInvitChat);
+
+	var vModalHeaderColorParams = 
+	{
+		activeColor : 'bg-success',
+		modalHeader : document.getElementById('idModalChatInvitHeader'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber),
+	}
+	new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+	// ouverture de la fenêtre modale de réponse à l'invitation au TChat
+	$('#idModalChatInvit'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber).modal('show');                   
+}
+
+
+// --------------------------------------------------------------
+// Réponse à l'invitation du TChat
+// --------------------------------------------------------------
+ChatLoungesMgr.prototype.destroyAnswwerModal = function(pInvitChat){
+	var vRoomSuffix = pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo+pInvitChat.vLoungeNumber;
+	var vidModalChatInvit = 'idModalChatInvit' + vRoomSuffix;
+
+	$('#'+vidModalChatInvit).modal('hide');     // Fermeture de la modale                                     
+
+	var elem = document.getElementById(vidModalChatInvit);
+	if (elem){
+		elem.parentNode.removeChild(elem);
+	}
+}
