@@ -304,26 +304,66 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		// ------------------------------------
 		// Gestion des TChat
 		// ------------------------------------
+
+		// ------------------------------------
+		// On a reçu une demande de création d'un nouveau salon pour un nouvel invité
+		// ------------------------------------
 		webSocketConnection.on('createRoomAndInvitToChat', function(pInvitChat){
-			let vRoom = 'Room-'+pInvitChat.vInvited[0].myPseudo+'-'+pInvitChat.vLoungeNumber;
-console.log('createRoomAndInvitToChat -- vRoom : ', vRoom)
+			let vRoom = 'Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
 			webSocketConnection.join(vRoom);
+			
+console.log('*****************************************************************************************************************************')
+console.log('createRoomAndInvitToChat -- vRoom : ', vRoom)
+console.log('createRoomAndInvitToChat -- webSocketConnection.id : ', webSocketConnection.id)
+console.log('*****************************************************************************************************************************')
 			vMemberServer.createRoomAndInvitToChat(pInvitChat, webSocketConnection, socketIo);
 		}); 
 
-
+		// ------------------------------------
+		// L'invité au Tchat à refusé l'invitation --> 
+		// On previent l'inviteur
+		// + on supprime l'invitation dans le tableau des invitations 
+		// + suppression de l'avatar de l'invité dans le salon
+		// ------------------------------------
 		webSocketConnection.on('refuseInvitToChat', function(pInvitChat){
-			vMemberServer.refuseInvitToChat(pInvitChat, webSocketConnection, socketIo);
+			vMemberServer.refuseInvitToChat(pInvitChat, socketIo);
+		}); 
+
+		// ------------------------------------
+		// L'invité au Tchat à accepté l'invitation --> 
+		// On previent l'inviteur
+		// + MAj les status de l'invitation dans le tableau des invitations 
+		// + activation de l'avatar de l'invité dans le salon
+		// + abonnement au salon ici-même
+		// ------------------------------------
+		webSocketConnection.on('acceptInvitToChat', function(pInvitChat){
+			let vRoom = 'Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
+			webSocketConnection.join(vRoom);
+
+console.log('*****************************************************************************************************************************')
+console.log('acceptInvitToChat -- vRoom : ', vRoom)
+console.log('acceptInvitToChat -- webSocketConnection.id : ', webSocketConnection.id)
+console.log('*****************************************************************************************************************************')
+			vMemberServer.acceptInvitToChat(pInvitChat, socketIo);
 		}); 
 		
+
+		// ------------------------------------
+		// On a reçu un message Tchat
+		// Je le renvoie à tous les abonnés du TChattRoom
+		// ------------------------------------
+		webSocketConnection.on('message', function(pMessage){
+			socketIo.to(pMessage.vRoom).emit('broadcastsToSubscribers', pMessage);
+		});			
+
 
 		// -----------------------------------
 		// Déconnexion
 		// ------------------------------------
 
 		// Un membre se déconnecte
-			webSocketConnection.on('disconnect', function() {
-			console.log('Déconnexion d\'un visiteur ou d\'un membre')        
+		webSocketConnection.on('disconnect', function() {
+			console.log('Déconnexion d\'un visiteur ou d\'un membre')      
 			vMemberServer.disconnectMember(webSocketConnection, socketIo);
 		});
 

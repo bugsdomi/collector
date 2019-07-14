@@ -1811,7 +1811,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// L'ami invité à refusé l'invitation à Tchatter
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.refuseInvitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
+	MemberServer.prototype.refuseInvitToChat = function(pInvitChat, pSocketIo){
 	
 		let myIndex;
 		// Je vérifie que l'inviteur est toujours en ligne, car j'ai très bien répondre qu'au bout de 30mn par exemple et qu'il se soit deconnecté dans l'intervalle
@@ -1822,6 +1822,19 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		}
 	}
 
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// L'ami invité à accepté l'invitation à Tchatter
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.acceptInvitToChat = function(pInvitChat, pSocketIo){
+			let myIndex;
+		// Je vérifie que l'inviteur est toujours en ligne, car j'ai très bien répondre qu'au bout de 30mn par exemple et qu'il se soit deconnecté dans l'intervalle
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo);
+
+		if (myIndex > -1){ // Si l'inviteur est encore en ligne, envoie au membre inviteur l'acceptation à l'invitation qu'il a envoyé
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('acceptInvitToChat', pInvitChat);	
+		}
+	}
+	
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Deconnexion d'un visiteur et eventuellement d'un membre  :
 	// ---------------------------------------------------------------------------------------------------------------------------

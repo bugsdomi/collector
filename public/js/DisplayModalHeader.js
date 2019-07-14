@@ -33,16 +33,16 @@ DisplayModalHeader.prototype.displayModalHeader = function(pModalHeaderParams){
 
   $(pModalHeaderParams.modalId).modal('show');      // Ouverture de la modale                                     
 
-  var lineHTML = {};						      // Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
+  var vLineHTML = {};						      // Structure HTML générée pour le titre et la ligne de présentation de la fenêtre
 
-  lineHTML.vH5 = window.document.createElement('h5');
+  vLineHTML.vH5 = window.document.createElement('h5');
   var parentDiv1 = pModalHeaderParams.displayModalDatas.modalExitBtn.parentNode;
-  parentDiv1.insertBefore(lineHTML.vH5, pModalHeaderParams.displayModalDatas.modalExitBtn);
-  lineHTML.vH5.setAttribute('class', 'modal-title');
-  lineHTML.vH5.innerHTML = pModalHeaderParams.modalTitle;
+  parentDiv1.insertBefore(vLineHTML.vH5, pModalHeaderParams.displayModalDatas.modalExitBtn);
+  vLineHTML.vH5.setAttribute('class', 'modal-title');
+  vLineHTML.vH5.innerHTML = pModalHeaderParams.modalTitle;
 
-  lineHTML.vH6 = window.document.createElement('h6');
-  pModalHeaderParams.displayModalDatas.modalListTitle.appendChild(lineHTML.vH6);
-  lineHTML.vH6.setAttribute('class', 'text-center');
-  lineHTML.vH6.innerHTML = pModalHeaderParams.modalDesc;
+  vLineHTML.vH6 = window.document.createElement('h6');
+  pModalHeaderParams.displayModalDatas.modalListTitle.appendChild(vLineHTML.vH6);
+  vLineHTML.vH6.setAttribute('class', 'text-center');
+  vLineHTML.vH6.innerHTML = pModalHeaderParams.modalDesc;
 }

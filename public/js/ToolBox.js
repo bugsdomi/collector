@@ -395,6 +395,22 @@ ToolBox.prototype.autoExpand = function(pElem) {
 		pElem.style.height = height + 'px';
 	};
 	
+
+// -----------------------------------------------------------------------------
+// Cette fonction supprime dans le DOM l'element passé en paramètre 
+// S'il y a un 2eme et 3eme paramètre, on effectue en plus la fonction passée
+// en parametre (essentiellement pour fermer ou masquer le parent de l'element supprimé)
+// -----------------------------------------------------------------------------
+ToolBox.prototype.removeChildFromDOM = function(pElemToDelete, pParentTargetOfAction, pAction) {
+	var pElem = document.getElementById(pElemToDelete);
+	if (pElem){
+		pElem.parentNode.removeChild(pElem);
+
+		if(typeof(pParentTargetOfAction) !== 'undefined'){
+			pAction();
+		}
+	}
+}
 // -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

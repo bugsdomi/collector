@@ -706,31 +706,72 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
 	// --------------------------------------------------------------
+	// On a reçu un message Tchat Broadcasté aux abonnés du TchatRoom
+	// --------------------------------------------------------------
+	webSocketConnection.on('broadcastsToSubscribers',function(pMessage){
+console.log('broadcastsToSubscribers - pMessage.vRoom : ',pMessage.vRoom)
+console.log('broadcastsToSubscribers - pMessage.vMsg : ',pMessage.vMsg)
+
+
+		vChatLoungesMgr.publishChatMsg(pMessage)
+	});
+
+	// --------------------------------------------------------------
+	// On a accepté invitation au chat
+	// MAJ des statuts de l'occurence de l'invitation dans le tableau des room
+	// et activation de l'avatar dans la liste
+	// --------------------------------------------------------------
+	webSocketConnection.on('acceptInvitToChat',function(pInvitChat){
+		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
+
+		vMemberClient.initModalAcceptInvitToChat(vGenericModalTitle, vGenericModalBodyText, pInvitChat);     // Affiche la fenêtre de bienvenue
+		var vModalHeaderColorParams = 
+		{
+			activeColor : 'bg-success',
+			modalHeader : vGenericModalHeader,
+		}
+		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
+		$('#idGenericModal').modal('show');                           // ouverture de la fenêtre modale de notification d'acceptation de l'invitation au Tchat
+
+		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited[pInvitChat.vInvited.length-1].myStatus = cstChatInProgress;   
+		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited[pInvitChat.vInvited.length-1].friendStatus = cstChatInProgress;   
+
+		var vTextAreaChat = document.getElementById('idChatArea'+ vRoomSuffix);
+		vTextAreaChat.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' a rejoint le Tchat....\n'
+
+		vToolBox.autoResizeElem(vTextAreaChat.id);										// Redimensionnement automatique (mais limité) du champs
+
+		var vDivCardHeaderRowAvatar = document.getElementById('idIChatInvitedFriendAvatar' + vRoomSuffix + '-' + pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+		vDivCardHeaderRowAvatar.classList.remove('waitingChatInvited');
+	});
+	// --------------------------------------------------------------
 	// On a refusé invitation au chat
 	// suppression de l'occurence de l'invitation dans le tableau des room
 	// et suppression de l'avatar dans la liste
 	// --------------------------------------------------------------
 	webSocketConnection.on('refuseInvitToChat',function(pInvitChat){
-		vMemberClient.initModalRefuseInvitToChat(vGenericModalTitle, vGenericModalBodyText, pInvitChat);     // Affiche la fenêtre de bienvenue
+		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
+
+		vMemberClient.initModalRefuseInvitToChat(vGenericModalTitle, vGenericModalBodyText, pInvitChat);     // Affiche la fenêtre d'info de refus de l'invitation
 		var vModalHeaderColorParams = 
 		{
 			activeColor : 'bg-danger',
 			modalHeader : vGenericModalHeader,
 		}
 		new InitHeaderColor().initHeaderColor(vModalHeaderColorParams);
-		$('#idGenericModal').modal('show');                                     // ouverture de la fenêtre modale de notification d'annulation de l'invittation au Tchat
+		$('#idGenericModal').modal('show');                           // ouverture de la fenêtre modale de notification de refus de l'invitation au Tchat
 
 		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited.splice(-1,1);   // Efface l'occurence de la dernière invitation des Tchats du tableau
-		var vTextAreaChatArea = document.getElementById('idChatArea'+ pInvitChat.vLoungeNumber);
-		vTextAreaChatArea.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' a refusé l\'invitation....'
-		vToolBox.autoResizeElem(vTextAreaChatArea.id);						// Redimensionnement automatique (mais limité) du champs
+		var vTextAreaChat = document.getElementById('idChatArea'+ vRoomSuffix);
+		vTextAreaChat.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' a refusé l\'invitation....\n'
+		vToolBox.autoResizeElem(vTextAreaChat.id);										// Redimensionnement automatique (mais limité) du champs
 
-		var elem = document.getElementById('idIChatInvitedFriendAvatar' + pInvitChat.vLoungeNumber + pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+		var elem = document.getElementById('idIChatInvitedFriendAvatar' + vRoomSuffix + '-' +pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
 		if (elem){
 			var vParentNode = elem.parentNode;
 			elem.parentNode.removeChild(elem);
 
-			if (!vParentNode.firstChild) {					// S'il n'y a plus d'avatars alors
+			if (!vParentNode.firstChild) {															// S'il n'y a plus d'avatars alors
 				vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
 			}
 		}
@@ -741,7 +782,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Affiichage d'une modale pour accepter ou refuser l'invitation
 	// --------------------------------------------------------------
 	webSocketConnection.on('createRoomAndInvitToChat',function(pInvitChat){
-		vChatLoungesMgr.answerToChatInvit(pInvitChat);
+		vChatLoungesMgr.answerToChatInvit(pInvitChat);											// Affichage de la modale de choix d'acceptance ou de refus de l'invitation à Tchatter
 	});
 
 	// --------------------------------------------------------------
@@ -750,6 +791,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// et suppression de l'avatar dans la liste
 	// --------------------------------------------------------------
 	webSocketConnection.on('invitDestChatHasdisconnect',function(pInvitChat){
+		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
+
 		vMemberClient.initModalInvitDestChatHasdisconnect(vGenericModalTitle, vGenericModalBodyText, pInvitChat);     // Affiche la fenêtre de messsage d'avertissement
 		var vModalHeaderColorParams = 
 		{
@@ -760,13 +803,11 @@ window.addEventListener('DOMContentLoaded', function(){
 		$('#idGenericModal').modal('show');                                     // ouverture de la fenêtre modale de notification d'annulation de l'invittation au Tchat
 
 		vChatLoungesMgr.vLoungeMenuLine[pInvitChat.vLoungeNumber-1].vInvited.splice(-1,1);   // Efface l'occurence de la dernière invitation des Tchats du tableau
+		var vTextAreaChat = document.getElementById('idChatArea'+ vRoomSuffix);
+		vTextAreaChat.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' n\'est plus connecté....\n'
+		vToolBox.autoResizeElem(vTextAreaChat.id);						// Redimensionnement automatique (mais limité) du champs
 
-		var vTextAreaChatArea = document.getElementById('idChatArea'+ pInvitChat.vLoungeNumber);
-		vTextAreaChatArea.value += pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo + ' n\'est plus connecté....'
-		vToolBox.autoResizeElem(vTextAreaChatArea.id);						// Redimensionnement automatique (mais limité) du champs
-
-
-		var elem = document.getElementById('idIChatInvitedFriendAvatar' + pInvitChat.vLoungeNumber + pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+		var elem = document.getElementById('idIChatInvitedFriendAvatar' + vRoomSuffix + '-' + pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
 		if (elem){
 			var vParentNode = elem.parentNode;
 			elem.parentNode.removeChild(elem);

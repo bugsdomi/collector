@@ -29,72 +29,72 @@ function SearchFilter(){};        // Fonction constructeur exportée
 // des membres, d'amis ou autres listes du même type (Pseudo et/ou Prénom et/ou nom)
 // --------------------------------------------------------------
 SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){  
-	var lineHTML = {};
+	var vLineHTML = {};
 
-	lineHTML.vSearchContainer = window.document.createElement('div');
-	pSearchFilterParams.displayModalDatas.modalListTitle.appendChild(lineHTML.vSearchContainer);
+	vLineHTML.vSearchContainer = window.document.createElement('div');
+	pSearchFilterParams.displayModalDatas.modalListTitle.appendChild(vLineHTML.vSearchContainer);
 
-	lineHTML.vSearchContainer.setAttribute('id', 'idFilterFields');
-	lineHTML.vSearchContainer.setAttribute('class', 'container mb-2');
+	vLineHTML.vSearchContainer.setAttribute('id', 'idFilterFields');
+	vLineHTML.vSearchContainer.setAttribute('class', 'container mb-2');
 
-	lineHTML.vSearchRow = window.document.createElement('div');
-	lineHTML.vSearchContainer.appendChild(lineHTML.vSearchRow);
-	lineHTML.vSearchRow.setAttribute('class', 'row');
+	vLineHTML.vSearchRow = window.document.createElement('div');
+	vLineHTML.vSearchContainer.appendChild(vLineHTML.vSearchRow);
+	vLineHTML.vSearchRow.setAttribute('class', 'row');
 
-	lineHTML.vFieldSearch = window.document.createElement('div');
-	lineHTML.vSearchRow.appendChild(lineHTML.vFieldSearch);
-	lineHTML.vFieldSearch.setAttribute('class', 'col-12 px-0');
+	vLineHTML.vFieldSearch = window.document.createElement('div');
+	vLineHTML.vSearchRow.appendChild(vLineHTML.vFieldSearch);
+	vLineHTML.vFieldSearch.setAttribute('class', 'col-12 px-0');
 
-	lineHTML.vGroupSearch = window.document.createElement('div');
-	lineHTML.vFieldSearch.appendChild(lineHTML.vGroupSearch);
-	lineHTML.vGroupSearch.setAttribute('class', 'input-group input-group-sm border rounded');
+	vLineHTML.vGroupSearch = window.document.createElement('div');
+	vLineHTML.vFieldSearch.appendChild(vLineHTML.vGroupSearch);
+	vLineHTML.vGroupSearch.setAttribute('class', 'input-group input-group-sm border rounded');
 
-	lineHTML.vInputPseudo = window.document.createElement('input');
-	lineHTML.vGroupSearch.appendChild(lineHTML.vInputPseudo);
-	lineHTML.vInputPseudo.setAttribute('id', 'idSearchPseudo');
-	lineHTML.vInputPseudo.setAttribute('class', 'form-control');
-	lineHTML.vInputPseudo.setAttribute('type', 'text');
-	lineHTML.vInputPseudo.setAttribute('placeholder', 'Pseudo');
+	vLineHTML.vInputPseudo = window.document.createElement('input');
+	vLineHTML.vGroupSearch.appendChild(vLineHTML.vInputPseudo);
+	vLineHTML.vInputPseudo.setAttribute('id', 'idSearchPseudo');
+	vLineHTML.vInputPseudo.setAttribute('class', 'form-control');
+	vLineHTML.vInputPseudo.setAttribute('type', 'text');
+	vLineHTML.vInputPseudo.setAttribute('placeholder', 'Pseudo');
 
-	lineHTML.vInputFirstName = window.document.createElement('input');
-	lineHTML.vGroupSearch.appendChild(lineHTML.vInputFirstName);
-	lineHTML.vInputFirstName.setAttribute('id', 'idSearchFirstName');
-	lineHTML.vInputFirstName.setAttribute('class', 'form-control');
-	lineHTML.vInputFirstName.setAttribute('type', 'text');
-	lineHTML.vInputFirstName.setAttribute('placeholder', 'Prénom');
+	vLineHTML.vInputFirstName = window.document.createElement('input');
+	vLineHTML.vGroupSearch.appendChild(vLineHTML.vInputFirstName);
+	vLineHTML.vInputFirstName.setAttribute('id', 'idSearchFirstName');
+	vLineHTML.vInputFirstName.setAttribute('class', 'form-control');
+	vLineHTML.vInputFirstName.setAttribute('type', 'text');
+	vLineHTML.vInputFirstName.setAttribute('placeholder', 'Prénom');
 
-	lineHTML.vInputName = window.document.createElement('input');
-	lineHTML.vGroupSearch.appendChild(lineHTML.vInputName);
-	lineHTML.vInputName.setAttribute('id', 'idSearchName');
-	lineHTML.vInputName.setAttribute('class', 'form-control');
-	lineHTML.vInputName.setAttribute('type', 'text');
-	lineHTML.vInputName.setAttribute('placeholder', 'Nom');
+	vLineHTML.vInputName = window.document.createElement('input');
+	vLineHTML.vGroupSearch.appendChild(vLineHTML.vInputName);
+	vLineHTML.vInputName.setAttribute('id', 'idSearchName');
+	vLineHTML.vInputName.setAttribute('class', 'form-control');
+	vLineHTML.vInputName.setAttribute('type', 'text');
+	vLineHTML.vInputName.setAttribute('placeholder', 'Nom');
 
-	lineHTML.vClearSearch = window.document.createElement('div');
-	lineHTML.vGroupSearch.appendChild(lineHTML.vClearSearch);
-	lineHTML.vClearSearch.setAttribute('class', 'input-group-append');
+	vLineHTML.vClearSearch = window.document.createElement('div');
+	vLineHTML.vGroupSearch.appendChild(vLineHTML.vClearSearch);
+	vLineHTML.vClearSearch.setAttribute('class', 'input-group-append');
 
-	lineHTML.vBtnClearSearch = window.document.createElement('button');
-	lineHTML.vClearSearch.appendChild(lineHTML.vBtnClearSearch);
-	lineHTML.vBtnClearSearch.setAttribute('id', 'idClearFilterFields');
-	lineHTML.vBtnClearSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+	vLineHTML.vBtnClearSearch = window.document.createElement('button');
+	vLineHTML.vClearSearch.appendChild(vLineHTML.vBtnClearSearch);
+	vLineHTML.vBtnClearSearch.setAttribute('id', 'idClearFilterFields');
+	vLineHTML.vBtnClearSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
 
-	lineHTML.vIIconClearSearch = window.document.createElement('i');
-	lineHTML.vBtnClearSearch.appendChild(lineHTML.vIIconClearSearch);
-	lineHTML.vIIconClearSearch.setAttribute('class', 'fa fa-fw fa-times');
+	vLineHTML.vIIconClearSearch = window.document.createElement('i');
+	vLineHTML.vBtnClearSearch.appendChild(vLineHTML.vIIconClearSearch);
+	vLineHTML.vIIconClearSearch.setAttribute('class', 'fa fa-fw fa-times');
 
 // --------------------------------------------------------------
 // Option N°1 : avec bouton de validation au lieu de la saisie à la volée
 // --------------------------------------------------------------
 
-	lineHTML.vBtnRunSearch = window.document.createElement('button');
-	lineHTML.vClearSearch.appendChild(lineHTML.vBtnRunSearch);
-	lineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearch');
-	lineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
+	vLineHTML.vBtnRunSearch = window.document.createElement('button');
+	vLineHTML.vClearSearch.appendChild(vLineHTML.vBtnRunSearch);
+	vLineHTML.vBtnRunSearch.setAttribute('id', 'idRunSearch');
+	vLineHTML.vBtnRunSearch.setAttribute('class', 'btn btn-sm border pushBtnFilters');
 
-	lineHTML.vIIconRunSearch = window.document.createElement('i');
-	lineHTML.vBtnRunSearch.appendChild(lineHTML.vIIconRunSearch);
-	lineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
+	vLineHTML.vIIconRunSearch = window.document.createElement('i');
+	vLineHTML.vBtnRunSearch.appendChild(vLineHTML.vIIconRunSearch);
+	vLineHTML.vIIconRunSearch.setAttribute('class', 'fa fa-fw fa-search');
 
   vDataToTransmit = 
   {
@@ -108,22 +108,22 @@ SearchFilter.prototype.displaySearchFilter = function(pSearchFilterParams){
 // Option N°2 : Saisie des caractères à la volée
 // --------------------------------------------------------------
 
-	// lineHTML.vInputPseudo.addEventListener('keyup', this.searchFilteredList);
-	// lineHTML.vInputFirstName.addEventListener('keyup', this.searchFilteredList);
-	// lineHTML.vInputName.addEventListener('keyup', this.searchFilteredList);
-	// lineHTML.vInputPseudo.datas = vDataToTransmit;
-	// lineHTML.vInputFirstName.datas = vDataToTransmit;
-	// lineHTML.vInputName.datas = vDataToTransmit;
+	// vLineHTML.vInputPseudo.addEventListener('keyup', this.searchFilteredList);
+	// vLineHTML.vInputFirstName.addEventListener('keyup', this.searchFilteredList);
+	// vLineHTML.vInputName.addEventListener('keyup', this.searchFilteredList);
+	// vLineHTML.vInputPseudo.datas = vDataToTransmit;
+	// vLineHTML.vInputFirstName.datas = vDataToTransmit;
+	// vLineHTML.vInputName.datas = vDataToTransmit;
 
 
 
-	lineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredList);
-	lineHTML.vBtnRunSearch.datas = vDataToTransmit;
-	lineHTML.vIIconRunSearch.datas = vDataToTransmit;
+	vLineHTML.vBtnRunSearch.addEventListener('click', this.searchFilteredList);
+	vLineHTML.vBtnRunSearch.datas = vDataToTransmit;
+	vLineHTML.vIIconRunSearch.datas = vDataToTransmit;
 
-	lineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullList);
-	lineHTML.vBtnClearSearch.datas = vDataToTransmit;
-  lineHTML.vIIconClearSearch.datas = vDataToTransmit;
+	vLineHTML.vBtnClearSearch.addEventListener('click', this.restoreFullList);
+	vLineHTML.vBtnClearSearch.datas = vDataToTransmit;
+  vLineHTML.vIIconClearSearch.datas = vDataToTransmit;
 }
 
 // --------------------------------------------------------------
