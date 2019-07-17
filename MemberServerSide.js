@@ -1781,30 +1781,36 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		};
 
 		pWebSocketConnection.emit('newFriendConnectedStatus',pMyFriend);  // Je renvoie le statut de connexion de mon nouvel ami pour l'afficher dans ma liste d'amis
-		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatus',pMyFriend)		
+		pWebSocketConnection.broadcast.emit('displayNewFriendConnectedStatus',pMyFriend)		// Je diffuse à tous mes autres amis le statut de l'ami en cours
 	}; 
 
 	// ---------------------------------------------------------------------------------------------------------------------------
-	// Réception d'une invitation à Tchatter et transmission de l'invitation àà l'ami invité
+	// Réception d'une invitation à Tchatter et transmission de l'invitation à l'ami invité
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.createRoomAndInvitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
-		let myIndex;
-		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo);
+	MemberServer.prototype.invitToChat = function(pDataInvitChat, pWebSocketConnection, pSocketIo){
+		let vRoom = '-Room-'+pDataInvitChat.pInvitChat.vLoungeOwner+'_'+pDataInvitChat.pInvitChat.vLoungeNumber;
+		pWebSocketConnection.join(vRoom);
+		pSocketIo.to(vRoom).emit('broadcastAvatarInvitedToChat', pDataInvitChat.pInvitChat);	// On Broadcast l'invité aux autres participants pour notifier Invit et attente
 
+		let myIndex;
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pDataInvitChat.pInvitChat.vInvited[0].friendPseudo);
+		
 		if (myIndex > -1){
-			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('createRoomAndInvitToChat', pInvitChat);	// Envoie au membre invité l'invitation quii lui est faite
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('invitToChat', pDataInvitChat);	// Envoie au membre invité l'invitation qui lui est faite
 
 			this.sendEMail(
 				this.objectPopulation.members[myIndex].email, 
 				'Vous avez reçu une invitation à un TChat', 
 				'<h1 style="color: black;">Invitation à un TChat ...</h1><p><h2>Vous avez été invité à une discussion :</h2><br />' +
-				pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo +' vous a invité à discuter avec lui dans le salon de discussion N°'+ pInvitChat.vLoungeNumber +'<br /'+
+				pDataInvitChat.pInvitChat.vInvited[0].myPseudo +' vous a invité à discuter avec lui dans le ChatRoom N°'+ pDataInvitChat.pInvitChat.vLoungeNumber +'<br /'+
 				'<p>Vous êtes libre d\'accepter ou de refuser...</p>'+
 				'<br /><br /><br /><i>Vil-Coyote Products</i>'
 			);
+
+			// On affiche l'avatar de l'invité sur les salons
 		} else {
-			// Le destinataire a deconnecté entre-temps, l'invitation devient caduque, et on prévient l'inviteur
-			pWebSocketConnection.emit('invitDestChatHasdisconnect',pInvitChat)		
+			pWebSocketConnection.emit('invitDestChatHasdisconnect',pDataInvitChat);
+			pSocketIo.to(vRoom).emit('broadcastInvitDestChatHasDisconnect', pDataInvitChat);	// On Broadcast la deconnexion de l'invité pour virer l'avatar
 		};
 	}
 
@@ -1812,7 +1818,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// L'ami invité à refusé l'invitation à Tchatter
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.refuseInvitToChat = function(pInvitChat, pSocketIo){
-	
+		let vRoom = '-Room-'+pInvitChat.vLoungeOwner+'_'+pInvitChat.vLoungeNumber;
+
 		let myIndex;
 		// Je vérifie que l'inviteur est toujours en ligne, car j'ai très bien répondre qu'au bout de 30mn par exemple et qu'il se soit deconnecté dans l'intervalle
 		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo);
@@ -1820,21 +1827,26 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 		if (myIndex > -1){ // Si l'inviteur est encore en ligne, envoie au membre inviteur le refus à l'invitation qu'il a envoyé
 			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('refuseInvitToChat', pInvitChat);	
 		}
+		pSocketIo.to(vRoom).emit('broadcastRefuseInvitToChat', pInvitChat);		// On n'envoie la notif de refus à tous les abonnés
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// L'ami invité à accepté l'invitation à Tchatter
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.acceptInvitToChat = function(pInvitChat, pSocketIo){
+	MemberServer.prototype.acceptInvitToChat = function(pInvitChat, pWebSocketConnection, pSocketIo){
+		let vRoom = '-Room-'+pInvitChat.vLoungeOwner+'_'+pInvitChat.vLoungeNumber;
+		pWebSocketConnection.join(vRoom);
+
 			let myIndex;
-		// Je vérifie que l'inviteur est toujours en ligne, car j'ai très bien répondre qu'au bout de 30mn par exemple et qu'il se soit deconnecté dans l'intervalle
+		// Je vérifie que l'inviteur est toujours en ligne, car j'ai très bien pu répondre qu'au bout de 30mn par exemple et qu'il se soit deconnecté dans l'intervalle
 		myIndex = this.searchMemberInTableOfMembers('pseudo', pInvitChat.vInvited[pInvitChat.vInvited.length-1].myPseudo);
 
 		if (myIndex > -1){ // Si l'inviteur est encore en ligne, envoie au membre inviteur l'acceptation à l'invitation qu'il a envoyé
 			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('acceptInvitToChat', pInvitChat);	
 		}
+		pSocketIo.to(vRoom).emit('broadcastAcceptInvitToChat', pInvitChat);
 	}
-	
+
 	// ---------------------------------------------------------------------------------------------------------------------------
 	// Deconnexion d'un visiteur et eventuellement d'un membre  :
 	// ---------------------------------------------------------------------------------------------------------------------------
