@@ -68,7 +68,9 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // -------------------------------------------------------------------------
 // Création de la liaison socket.io sur la base du serveur HTTP déja déclaré précédement
 // -------------------------------------------------------------------------
-let socketIo = new SocketIo(server);
+// XXXXX
+// let socketIo = new SocketIo(server);
+let socketIo = new SocketIo(server,{ pingTimeout: 1000000 });
 
 vMemberServer.checkDBConnect()																		// Verification de l'accessibilité de la base  
 .then( () => {
@@ -308,15 +310,8 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		// ------------------------------------
 		// On a reçu une demande de création d'un nouveau salon pour un nouvel invité
 		// ------------------------------------
-		webSocketConnection.on('createRoomAndInvitToChat', function(pInvitChat){
-			let vRoom = 'Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
-			webSocketConnection.join(vRoom);
-			
-console.log('*****************************************************************************************************************************')
-console.log('createRoomAndInvitToChat -- vRoom : ', vRoom)
-console.log('createRoomAndInvitToChat -- webSocketConnection.id : ', webSocketConnection.id)
-console.log('*****************************************************************************************************************************')
-			vMemberServer.createRoomAndInvitToChat(pInvitChat, webSocketConnection, socketIo);
+		webSocketConnection.on('invitToChat', function(pDataInvitChat){
+			vMemberServer.invitToChat(pDataInvitChat, webSocketConnection, socketIo);
 		}); 
 
 		// ------------------------------------
@@ -337,14 +332,7 @@ console.log('*******************************************************************
 		// + abonnement au salon ici-même
 		// ------------------------------------
 		webSocketConnection.on('acceptInvitToChat', function(pInvitChat){
-			let vRoom = 'Room-'+pInvitChat.vLoungeOwner+'-'+pInvitChat.vLoungeNumber;
-			webSocketConnection.join(vRoom);
-
-console.log('*****************************************************************************************************************************')
-console.log('acceptInvitToChat -- vRoom : ', vRoom)
-console.log('acceptInvitToChat -- webSocketConnection.id : ', webSocketConnection.id)
-console.log('*****************************************************************************************************************************')
-			vMemberServer.acceptInvitToChat(pInvitChat, socketIo);
+			vMemberServer.acceptInvitToChat(pInvitChat, webSocketConnection, socketIo);
 		}); 
 		
 
@@ -353,7 +341,7 @@ console.log('*******************************************************************
 		// Je le renvoie à tous les abonnés du TChattRoom
 		// ------------------------------------
 		webSocketConnection.on('message', function(pMessage){
-			socketIo.to(pMessage.vRoom).emit('broadcastsToSubscribers', pMessage);
+			socketIo.to(pMessage.vRoom).emit('broadcastMsgToSubscribers', pMessage);
 		});			
 
 

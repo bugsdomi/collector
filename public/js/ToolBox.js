@@ -411,6 +411,32 @@ ToolBox.prototype.removeChildFromDOM = function(pElemToDelete, pParentTargetOfAc
 		}
 	}
 }
+
+// -----------------------------------------------------------------------------
+// Cette fonction choisit aléatoirement une paire de couleurs Background/Foreground
+// selon l'algorithme officel WS3 garantissant un contraste de lecture suffisament lisible, quel que soit la couleur du fond
+// -----------------------------------------------------------------------------
+ToolBox.prototype.pickPairColor = function() {
+	var rgb = [255, 0, 0];
+
+  rgb[0] = Math.round(Math.random() * 255);
+  rgb[1] = Math.round(Math.random() * 255);
+  rgb[2] = Math.round(Math.random() * 255);
+
+  // http://www.w3.org/TR/AERT#color-contrast
+  var o = Math.round(((parseInt(rgb[0]) * 299) +
+                      (parseInt(rgb[1]) * 587) +
+                      (parseInt(rgb[2]) * 114)) / 1000);
+  var fore = (o > 125) ? 'black' : 'white';
+	var back = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+	
+	var vPairOfColors = {
+		background : back,
+		textColor	 : fore
+	}
+	return vPairOfColors;
+}
+
 // -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

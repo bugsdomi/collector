@@ -18,22 +18,17 @@ Todo:
     - Structure de données
     - displayxxx
     - updateProfile
-    
+
+    ☐ Virer le TimeOut SocketIO mis en place pour le debuggage
     ☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
     ☐ Ajouter une modale de confirmation pour la suppression des amis, invitations Posts, et commentaires
     ☐ Mettre un bouton "like" et partager dans les Posts / commentaires
-    ☐ Faire une MAJ en temps réel des cartes Presentation, Amis, et Invitation quand on est dans le profil d'un ami
-    ☐ Faire une MAJ en temps réel des avatars chez mes amis ou futurs amis
-    ☐ Mettre une puce avec le Nbre de commentaires sur les Posts et les commentaires L1
-
     ☐ Dans la fiche de renseignements, blinder les controles (Nom, prénom, Date naissance, département, adresse, ville
     ☐ Ajouter la version du produit en bas a droite de l'écran
-    ☐ MOE Toastr
     ☐ Piquer le style wyylde
     ☐ Regex a affiner pour tous les champs
     ☐ Virer les contraintes (Majuscules initiales...) sur le pseudo
     ☐ Passer tous les champs a XS-4
-    
     ☐ Gerer le pseudo qui est illisible en mode réduit
     ☐ Gerer la photo de profil sur la fiche de renseignement qui est trop grande en mode reduit
     ☐ Corriger Bug du calcul de l âge dans la fiche de renseignement
@@ -48,7 +43,6 @@ Todo:
     ☐ Dans index.html, harmoniser col-sm et col-md
     ☐ Ne pas attendre l'upload de l image de l avatar pour l afficher sur le client
     ☐ Reviser completement le coté Responsive de l'application
-    ☐ Voir pour unifier le cadre et la bordure des modales sur le meme modele que la Carte "Presentation"
     ☐ Enlever le coté "Deformé" des AvatarsToken (Voir avec backgroundImage pour cadrer l image dans l"AvatarToken")
     ☐ Voir pourquoi la puce du Nbre d invits decale le menu suivant a son 1er affichage
     ☐ Passer les adresses email en minuscules
@@ -75,13 +69,11 @@ Todo:
     
     
     Rattrapé (A fusionner) :
-    ✔ Mettre un margin lateral sur les pils des preferences @done(19-05-11 13:09)
     ☐ Virer les contraintes de saisie du Pseudo (Initiale en majuscule, etc..)
     ☐ En mode Mobile, modifier le stroke du nom de l avatar
     ☐ En mode Mobile, modifier la largeur de la  modale de succes de connexion 
     ☐ Revérifier tous les ecrans en mode mobile
     ☐ Rajouter le cahier des charges dans le Header NavBar
-    ☐ Dans la fiche de renseignement, ajouter des check-box à chaque champ pour specifier si on veut rendre le contenu de ce champ dans la fiche "Profil"
     ☐ Virer les variables inutilisées dans SPAM.js et dans index.html
     ☐ Quand on clique sur photo ou pseudo du profil, ouvrir la fiche de renseignement
     ☐ Gerer le bug de calcul de l age
@@ -189,9 +181,15 @@ Todo:
     ✔ Convertir les fonctions anonymes en fonctions fleches @done(19-05-11 13:07)
     ✔ Ajouter une Popover ssur l'annulation d'une invitation @done(19-05-22 09:09)
     ✘ Mettre un Check sur tous les champs de la fiche renseignements pour choisir ceux que l on veut afficher @cancelled(19-05-22 09:10)
+    ✘ Dans la fiche de renseignement, ajouter des check-box à chaque champ pour specifier si on veut rendre le contenu de ce champ visible dans la fiche "Profil" @cancelled(19-07-17 08:28)
     ✔ Pourquoi les bordures des champs de saisie sont en rouge sur Firefox ? @done(19-06-12 11:02)
     ✔ Gerer le nombre de messages : @done(19-06-17 19:26)
         ✔ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire @done(19-06-17 19:26)
         ✔ A la fermeture, écrire le Nbre de Msg en BDD @done(19-06-17 19:26)
-        
-    
+    ✔ Faire une MAJ en temps réel des cartes Presentation, Amis, et Invitation quand on est dans le profil d'un ami @done(19-07-17 08:27)
+    ✔ Faire une MAJ en temps réel des avatars chez mes amis ou futurs amis @done(19-07-17 08:27)
+    ✔ Mettre une puce avec le Nbre de commentaires sur les Posts et les commentaires L1 @done(19-07-17 08:27)
+    ✔ Mettre un margin lateral sur les pils des preferences @done(19-05-11 13:09)
+    ✘ MOE Toastr @cancelled(19-07-17 08:30)
+    ✔ Voir pour unifier le cadre et la bordure des modales sur le meme modele que la Carte "Presentation" @done(19-07-17 08:31)
+

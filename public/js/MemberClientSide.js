@@ -25,22 +25,6 @@ function MemberClient(){   								// Fonction constructeur exportée
 		// }
 	];			
 
-	this.vMyLounges	= 
-	[
-		// {
-		// 	vLoungeName		: 'Salon N° ' + vLoungeNumber,										// Nom du salon
-		// 	vLoungeOwner	: this.memberClient.member.pseudo,								// Pseudo du membre qui a créé le salon
-		// 	vInvited			: 
-		// 	[
-		// 		// {
-		// 		// myPseudo			: this.memberClient.member.pseudo,
-		// 		// myStatus			: cstChatWaiting, 
-		// 		// friendPseudo	: event.target.datas.pFriend.friendPseudo,
-		// 		// friendstatus	: cstChatJoin,
-		// 		// }
-		// 	],
-		// };
-		]
 	this.member =                 					// Structure de stockage provisoire du membre
 	{   
 		email           : '',
@@ -223,7 +207,7 @@ MemberClient.prototype.initModalEmptyWaitingInvit = function(pModalTitle, pModal
 // Cette fonction initialise le contenu de la fenetre modale stipulant la 
 // deconnexion d'un ami qu'on avait invité à un Tchat
 // -----------------------------------------------------------------------------
-MemberClient.prototype.initModalInvitDestChatHasdisconnect = function(pModalTitle, pModalBodyText, pInvitChat){
+MemberClient.prototype.initModalInvitDestChatHasDisconnect = function(pModalTitle, pModalBodyText, pInvitChat){
 	pModalTitle.innerHTML = '<i class="fa fa-user-times"></i> Collect\'Or';
 	pModalBodyText.innerHTML = '<h5>Invitation à un Tchat annulée</h5>';
 	pModalBodyText.innerHTML += '<br /><p>'+pInvitChat.vInvited[pInvitChat.vInvited.length-1].friendPseudo +
