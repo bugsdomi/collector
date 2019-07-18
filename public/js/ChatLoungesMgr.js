@@ -188,7 +188,7 @@ function AddLoungesLine(pItem, pIndex, pDivContain, pFriend){
 	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivPseudo);
 	this.lineHTML.vDivPseudo.setAttribute('class', 'col-6 align-self-center px-0');
 	this.lineHTML.vDivPseudo.setAttribute('style', 'font-size: 0.8rem;');
-	this.lineHTML.vDivPseudo.innerHTML = 'dans le TChatRoom N° ' + pItem.vLoungeNumber;
+	this.lineHTML.vDivPseudo.innerHTML = 'dans le ChatRoom N° ' + pItem.vLoungeNumber;
 
 	this.lineHTML.vDivFA = window.document.createElement('div');
 	this.lineHTML.vDivRow.appendChild(this.lineHTML.vDivFA);
@@ -244,12 +244,12 @@ ChatLoungesMgr.prototype.displayLoungeCard = function(pWhichRole, pInvitChat){
 	vLineHTML.vH5 = window.document.createElement('h5');
 	vLineHTML.vDivCardHeaderRow.appendChild(vLineHTML.vH5);
 	vLineHTML.vH5.setAttribute('class', 'card-title align-self-center mb-0');
-	vLineHTML.vH5.innerHTML='TChatRoom N°'+pInvitChat.vLoungeNumber + ' de '+pInvitChat.vLoungeOwner;
+	vLineHTML.vH5.innerHTML='ChatRoom N°'+pInvitChat.vLoungeNumber + ' de '+pInvitChat.vLoungeOwner;
 
 	vLineHTML.vDivCardHeaderRowAvatar = window.document.createElement('div');
 	vLineHTML.vDivCardHeaderContainer.appendChild(vLineHTML.vDivCardHeaderRowAvatar);
 	vLineHTML.vDivCardHeaderRowAvatar.setAttribute('id', 'idDivCardHeaderRowAvatar' + vRoomSuffix);
-	vLineHTML.vDivCardHeaderRowAvatar.setAttribute('class', 'row bg-white border border-dark rounded mt-1 visible');
+	vLineHTML.vDivCardHeaderRowAvatar.setAttribute('class', 'row bg-white border border-dark rounded mt-1 invisible');
 	
 	// ------------------------------------------------------------------------------ 
 	//                       Corps de la carte "Lounge"                          
@@ -513,7 +513,6 @@ ChatLoungesMgr.prototype.addNewChatInvit = function(event){
 	}
 
 	vLoungeLocal.vInvited.push(vInvitedLocal);																				// Créationn de la 1ere invitation du nouveau salon
-	var vRoomSuffix = '-Room-' + vLoungeLocal.vLoungeOwner + '_' + vLoungeLocal.vLoungeNumber;
 
 	if (this.vMyLounges[vIndexLounge].vInvited){
 		this.vMyLounges[vIndexLounge].vInvited.push(vInvitedLocal);											// Ajout de l'invitation dans le tableau des invitations du nouveau salon
@@ -666,7 +665,7 @@ ChatLoungesMgr.prototype.displayModalChatInvitAnswer = function(pDataInvitChat){
 	vLineHTML.vH3ModalBodyChatInvit = window.document.createElement('h5');
 	vLineHTML.vDivModalBodyChatInvit.appendChild(vLineHTML.vH3ModalBodyChatInvit);
 	vLineHTML.vH3ModalBodyChatInvit.setAttribute('class', 'h5 mb-3 font-weight-normal text-center');
-	vLineHTML.vH3ModalBodyChatInvit.innerHTML = 'Acceptez-vous de rejoindre le TChatRoom N°'+ 
+	vLineHTML.vH3ModalBodyChatInvit.innerHTML = 'Acceptez-vous de rejoindre le ChatRoom N°'+ 
 																								pDataInvitChat.pInvitChat.vLoungeNumber + ' de '+
 																								pDataInvitChat.pInvitChat.vInvited[0].myPseudo + ' ?';
 
@@ -717,23 +716,6 @@ ChatLoungesMgr.prototype.acceptChatInvit = function(event){
 
 	this.displayLoungeCard(cstChatGuest, vInvitChat);						// L'invité affaiche la carte de TChat sur son écran
 	vRoomSuffix = '-Room-' + vInvitChat.vLoungeOwner + '_' + vInvitChat.vLoungeNumber;
-	
-console.log('acceptChatInvit - vInvitChat : ',vInvitChat)
-console.log('acceptChatInvit - vDataInvitChat : ',vDataInvitChat)
-console.log('acceptChatInvit - vDataInvitChat.pTableMyLounges[0] : ',vDataInvitChat.pTableMyLounges[0])
-console.log('acceptChatInvit - vDataInvitChat.pTableMyLounges[0].vInvited : ',vDataInvitChat.pTableMyLounges[0].vInvited)
-	// Affiche tous les avatars des amis deja présents dans le salon du Tchat
-	vDataInvitChat.pTableMyLounges[vInvitChat.vLoungeNumber - 1].vInvited.forEach((item) => 
-	{		
-console.log('acceptChatInvit - item : ',item)
-
-		var vFriendChatParam = {
-			vRoomSuffix : vRoomSuffix,
-			vInvitChat	: item,
-		};
-
-		this.displayChatingFriends(vFriendChatParam);
-	});
 
 	var vLoungesSubscribedByMeLocal = {
 		subscribedRoom 	: vRoomSuffix,
@@ -763,19 +745,27 @@ ChatLoungesMgr.prototype.answerToChatInvit = function(pDataInvitChat){
 }
 
 // --------------------------------------------------------------
-// Supprime un avatar de la liste des Avatars du TChatRoom
+// Supprime un avatar de la liste des Avatars du ChatRoom
 // détruit dans le DOM
 // --------------------------------------------------------------
 ChatLoungesMgr.prototype.deleteInvitChatAvatar = function(InvitChatAvatarName){
 	var elem = document.getElementById('idImgChatInvitedFriendAvatar' + InvitChatAvatarName);
 
+	// if (elem){
+	// 	var vParentNode = elem.parentNode;
+	// 	elem.parentNode.removeChild(elem);
+
+	// 	if (!vParentNode.firstChild) {															// S'il n'y a plus d'avatars alors
+	// 		vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
+	// 	}
+	// }
+
 	if (elem){
 		var vParentNode = elem.parentNode;
-		elem.parentNode.removeChild(elem);
-
-		if (!vParentNode.firstChild) {															// S'il n'y a plus d'avatars alors
-			vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
+		while (vParentNode.firstChild){
+			vParentNode.removeChild(vParentNode.firstChild);
 		}
+		vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
 	}
 }
 

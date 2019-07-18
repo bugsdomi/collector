@@ -1790,12 +1790,13 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	MemberServer.prototype.invitToChat = function(pDataInvitChat, pWebSocketConnection, pSocketIo){
 		let vRoom = '-Room-'+pDataInvitChat.pInvitChat.vLoungeOwner+'_'+pDataInvitChat.pInvitChat.vLoungeNumber;
 		pWebSocketConnection.join(vRoom);
-		pSocketIo.to(vRoom).emit('broadcastAvatarInvitedToChat', pDataInvitChat.pInvitChat);	// On Broadcast l'invité aux autres participants pour notifier Invit et attente
+		pSocketIo.to(vRoom).emit('broadcastNotifInvitedToChat', pDataInvitChat.pInvitChat);	// On Broadcast l'invité aux autres participants pour notifier Invit et attente
 
 		let myIndex;
 		myIndex = this.searchMemberInTableOfMembers('pseudo', pDataInvitChat.pInvitChat.vInvited[0].friendPseudo);
 		
 		if (myIndex > -1){
+			pWebSocketConnection.emit('addInvitedChatAvatar', pDataInvitChat.pInvitChat);												// Ajoute l'avatar de l'invité dans le salon
 			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('invitToChat', pDataInvitChat);	// Envoie au membre invité l'invitation qui lui est faite
 
 			this.sendEMail(
@@ -1809,8 +1810,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 
 			// On affiche l'avatar de l'invité sur les salons
 		} else {
-			pWebSocketConnection.emit('invitDestChatHasdisconnect',pDataInvitChat);
-			pSocketIo.to(vRoom).emit('broadcastInvitDestChatHasDisconnect', pDataInvitChat);	// On Broadcast la deconnexion de l'invité pour virer l'avatar
+			pWebSocketConnection.emit('invitDestChatHasdisconnect', pDataInvitChat);						// Retrait de l'invitation du tableau des Invits de l'inviteur
+			pSocketIo.to(vRoom).emit('broadcastInvitDestChatHasDisconnect', pDataInvitChat);		// On Broadcast la notif de deconnexion de l'invité 
 		};
 	}
 

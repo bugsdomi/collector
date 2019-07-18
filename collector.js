@@ -334,7 +334,6 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		webSocketConnection.on('acceptInvitToChat', function(pInvitChat){
 			vMemberServer.acceptInvitToChat(pInvitChat, webSocketConnection, socketIo);
 		}); 
-		
 
 		// ------------------------------------
 		// On a reçu un message Tchat
@@ -344,6 +343,14 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 			socketIo.to(pMessage.vRoom).emit('broadcastMsgToSubscribers', pMessage);
 		});			
 
+		// ------------------------------------
+		// On a reçu une demande de Refresh des avatars d'un salon donnné
+		// Je le renvoie à tous les abonnés du TChattRoom (sauf l'innviteur qui est déjà raffraîchit)
+		// ------------------------------------
+		webSocketConnection.on('askRefreshAvatarsInChatRoom', function(pMyLounge){
+console.log('******************************** pMyLounge.vRoom ******************************** pMyLounge.vRoom : ',pMyLounge.vRoom)
+			webSocketConnection.to(pMyLounge.vRoom).emit('refreshAvatarsInChatRoom', pMyLounge);
+		});			
 
 		// -----------------------------------
 		// Déconnexion
@@ -364,3 +371,54 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 	});
 });
 
+// Cheat Sheet
+// socketIo.on('connect', onConnect);
+
+// function onConnect(webSocketConnection){
+
+//   // sending to the client
+//   webSocketConnection.emit('hello', 'can you hear me?', 1, 2, 'abc');
+
+//   // sending to all clients except sender
+//   webSocketConnection.broadcast.emit('broadcast', 'hello friends!');
+
+//   // sending to all clients in 'game' room except sender
+//   webSocketConnection.to('game').emit('nice game', "let's play a game");
+
+//   // sending to all clients in 'game1' and/or in 'game2' room, except sender
+//   webSocketConnection.to('game1').to('game2').emit('nice game', "let's play a game (too)");
+
+//   // sending to all clients in 'game' room, including sender
+//   socketIo.in('game').emit('big-announcement', 'the game will start soon');
+
+//   // sending to all clients in namespace 'myNamespace', including sender
+//   socketIo.of('myNamespace').emit('bigger-announcement', 'the tournament will start soon');
+
+//   // sending to a specific room in a specific namespace, including sender
+//   socketIo.of('myNamespace').to('room').emit('event', 'message');
+
+//   // sending to individual socketid (private message)
+//   socketIo.to(`${socketId}`).emit('hey', 'I just met you');
+
+//   // WARNING: `webSocketConnection.to(webSocketConnection.id).emit()` will NOT work, as it will send to everyone in the room
+//   // named `webSocketConnection.id` but the sender. Please use the classic `webSocketConnection.emit()` instead.
+
+//   // sending with acknowledgement
+//   webSocketConnection.emit('question', 'do you think so?', function (answer) {});
+
+//   // sending without compression
+//   webSocketConnection.compress(false).emit('uncompressed', "that's rough");
+
+//   // sending a message that might be dropped if the client is not ready to receive messages
+//   webSocketConnection.volatile.emit('maybe', 'do you really need it?');
+
+//   // specifying whether the data to send has binary data
+//   webSocketConnection.binary(false).emit('what', 'I have no binaries!');
+
+//   // sending to all clients on this node (when using multiple nodes)
+//   socketIo.local.emit('hi', 'my lovely babies');
+
+//   // sending to all connected clients
+//   socketIo.emit('an event sent to all connected clients');
+
+// };

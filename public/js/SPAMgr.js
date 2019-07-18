@@ -706,28 +706,40 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
 	// --------------------------------------------------------------
-	// On a reçu un message Tchat Broadcasté aux abonnés du TchatRoom
-	// Géré coté inviteur + invités
+	// On a reçu un message Tchat Broadcasté aux abonnés du ChatRoom
+	// Géré coté inviteur + abonnéss
 	// --------------------------------------------------------------
 	webSocketConnection.on('broadcastMsgToSubscribers',function(pMessage){
 		vChatLoungesMgr.publishChatMsg(pMessage)
 	});
 
 	// --------------------------------------------------------------
-	// Il y a eu une nouvelle invitation à Tchatter pour un ami dans un salon
-	// donc on reçoit une demande d'affichage de son avatar (en mode inactif)
-	// a afficher dans les salons des autres invités de ce salon
-	// Géré coté inviteur + invités
+	// L'invité est bien connnecté
+	// donc j'affiche son avatar dans mon salon
+	// Géré coté inviteur
 	// --------------------------------------------------------------
-	webSocketConnection.on('broadcastAvatarInvitedToChat',function(pInvitChat){
+	webSocketConnection.on('addInvitedChatAvatar',function(pInvitChat){
 		var vRoomSuffix = '-Room-' + pInvitChat.vLoungeOwner + '_' + pInvitChat.vLoungeNumber;
 
 		// Ajout de l'avatar de l'invité de mon salon
 		var vFriendChatParam = {
 			vRoomSuffix 	: vRoomSuffix,
 			vInvitChat		: pInvitChat.vInvited[0],
-		};
+		};	
 		vChatLoungesMgr.displayChatingFriends(vFriendChatParam);						// Affichage de l'avatar du nouvel invité (pas forcément le mien)
+
+		// Envoie une demande de raffraîchissement des avatars dans le salon concerné
+		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1].vRoom = vRoomSuffix;
+		webSocketConnection.emit('askRefreshAvatarsInChatRoom', vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1]);
+	});
+
+	// --------------------------------------------------------------
+	// Il y a eu une nouvelle invitation à Tchatter pour un ami dans un salon
+	// donc on affiche les messages de notification
+	// Géré coté inviteur + abonnés
+	// --------------------------------------------------------------
+	webSocketConnection.on('broadcastNotifInvitedToChat',function(pInvitChat){
+		var vRoomSuffix = '-Room-' + pInvitChat.vLoungeOwner + '_' + pInvitChat.vLoungeNumber;
 
 		if (pInvitChat.vInvited[0].myPseudo === vMemberClient.member.pseudo){
 			var pMsg = '<span style="background: ' + 	
@@ -745,14 +757,11 @@ window.addEventListener('DOMContentLoaded', function(){
 	});
 
 	// --------------------------------------------------------------
-	// On a reçu une Acceptance de TChat Broadcasté aux abonnés du TchatRoom
-	// Géré coté inviteur + invités
+	// On a reçu une Acceptance de TChat Broadcasté aux abonnés du ChatRoom
+	// Géré coté inviteur + abonnés
 	// --------------------------------------------------------------
 	webSocketConnection.on('broadcastAcceptInvitToChat',function(pInvitChat){
 		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'_'+pInvitChat.vLoungeNumber;
-
-		var vDivCardHeaderRowAvatar = document.getElementById('idImgChatInvitedFriendAvatar' + vRoomSuffix + '-' + pInvitChat.vInvited[0].friendPseudo);
-		vDivCardHeaderRowAvatar.classList.remove('waitingChatInvited');			// Active l'Avatar qui était grisé jusqu'à présent
 
 		if (pInvitChat.vInvited[0].myPseudo === vMemberClient.member.pseudo){
 			var pMsg = '<span style="background: ' + 	
@@ -784,15 +793,57 @@ window.addEventListener('DOMContentLoaded', function(){
 			vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber-1].vInvited[myIndex].myStatus 		= cstChatInProgress;   
 			vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber-1].vInvited[myIndex].friendStatus = cstChatInProgress;   
 		}
+
+		var vRoomSuffix = '-Room-' + pInvitChat.vLoungeOwner + '_' + pInvitChat.vLoungeNumber;
+		// Avant de rafraîchir la liste d'avatars, je les efface tous d'abord
+		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber-1].vInvited.forEach((item) => {
+			vChatLoungesMgr.deleteInvitChatAvatar(vRoomSuffix + '-' + item.friendPseudo)
+		});
+
+		// Affiche tous les avatars des amis deja présents dans le salon du Tchat
+		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1].vInvited.forEach((item) => 
+		{		
+			var vFriendChatParam = {
+				vRoomSuffix : vRoomSuffix,
+				vInvitChat	: item,
+			};
+			vChatLoungesMgr.displayChatingFriends(vFriendChatParam);
+		});
+
+		// Envoie une demande de raffraîchissement des avatars dans le salon concerné
+		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1].vRoom = vRoomSuffix;
+		webSocketConnection.emit('askRefreshAvatarsInChatRoom', vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1]);
 	});
 
 	// --------------------------------------------------------------
-	// On a reçu un refus de TChat Broadcasté aux abonnés du TchatRoom
-	// Géré coté inviteur + invités
+	// On a reçu une demande rafrachissement des avatars dans le salon concerné
+	// Géré coté abonnés sauf inviteur
+	// --------------------------------------------------------------
+	webSocketConnection.on('refreshAvatarsInChatRoom',function(pMyLounge){
+		var vRoomSuffix = '-Room-'+pMyLounge.vLoungeOwner+'_'+pMyLounge.vLoungeNumber;
+
+		// Avant de rafraîchir la liste d'avatars, je les efface tous d'abord
+		pMyLounge.vInvited.forEach((item) => {
+			vChatLoungesMgr.deleteInvitChatAvatar(vRoomSuffix + '-' + item.friendPseudo)
+		});
+
+		// Affiche tous les avatars des amis deja présents dans le salon du Tchat
+		pMyLounge.vInvited.forEach((item) => 
+		{		
+			var vFriendChatParam = {
+				vRoomSuffix : vRoomSuffix,
+				vInvitChat	: item,
+			};
+			vChatLoungesMgr.displayChatingFriends(vFriendChatParam);
+		});
+	});
+
+	// --------------------------------------------------------------
+	// On a reçu un refus de TChat Broadcasté aux abonnés du ChatRoom
+	// Géré coté inviteur + abonnés
 	// --------------------------------------------------------------
 	webSocketConnection.on('broadcastRefuseInvitToChat',function(pInvitChat){
 		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'_'+pInvitChat.vLoungeNumber;
-		vChatLoungesMgr.deleteInvitChatAvatar(vRoomSuffix + '-' +pInvitChat.vInvited[0].friendPseudo);
 
 		if (pInvitChat.vInvited[0].myPseudo === vMemberClient.member.pseudo){
 			var pMsg = '<span style="background: ' + 	
@@ -823,6 +874,13 @@ window.addEventListener('DOMContentLoaded', function(){
 		if (myIndex > -1){
 			vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber-1].vInvited.splice(myIndex,1);   // Efface l'invitation des Tchats du tableau
 		}
+
+		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'_'+pInvitChat.vLoungeNumber;
+		vChatLoungesMgr.deleteInvitChatAvatar(vRoomSuffix + '-' +pInvitChat.vInvited[0].friendPseudo);
+
+		// Envoie une demande de raffraîchissement des avatars dans le salon concerné
+		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1].vRoom = vRoomSuffix;
+		webSocketConnection.emit('askRefreshAvatarsInChatRoom', vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1]);
 	});
 	
 	// --------------------------------------------------------------
@@ -838,11 +896,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	// L'ami qu'on a invité, s'est déconnecté entre-temps,
 	// On prévient donc l'inviteur et on annule l'invation au Tchat
 	// et suppression de l'avatar dans la liste
-	// Géré coté inviteur + invités
+	// Géré coté inviteur + abonnés
 	// --------------------------------------------------------------
 	webSocketConnection.on('broadcastInvitDestChatHasDisconnect',function(pDataInvitChat){
 		var vRoomSuffix = '-Room-'+pDataInvitChat.pInvitChat.vLoungeOwner+'_'+pDataInvitChat.pInvitChat.vLoungeNumber;
-		vChatLoungesMgr.deleteInvitChatAvatar(vRoomSuffix + '-' +pDataInvitChat.pInvitChat.vInvited[0].friendPseudo);
 
 		// Envoie un Msg de notification
 		vMemberClient.initModalInvitDestChatHasDisconnect(vGenericModalTitle, vGenericModalBodyText, pDataInvitChat.pInvitChat);  
@@ -858,12 +915,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	// L'ami qu'on a invité, s'est déconnecté entre-temps,
 	// On prévient donc l'inviteur et on annule l'invation au Tchat
-	// et suppression de l'avatar dans la liste
 	// Géré coté inviteur
 	// --------------------------------------------------------------
 	webSocketConnection.on('invitDestChatHasdisconnect',function(pDataInvitChat){
-		var vRoomSuffix = '-Room-'+pDataInvitChat.pInvitChat.vLoungeOwner+'_'+pDataInvitChat.pInvitChat.vLoungeNumber;
-
 		// Affiche la fenêtre de messsage d'avertissement
 		var vModalHeaderColorParams = 
 		{
@@ -876,7 +930,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		// Efface l'invitation des Tchats du tableau des invités
 		var myIndex = vToolBox.searchObjectInArray(vChatLoungesMgr.vMyLounges[pDataInvitChat.pInvitChat.vLoungeNumber-1].vInvited, 'friendPseudo', pDataInvitChat.pInvitChat.vInvited[0].friendPseudo);
 		if (myIndex > -1){
-			vChatLoungesMgr.vMyLounges[pDataInvitChat.pInvitChat.vLoungeNumber-1].vInvited.splice(myIndex,1);   
+			vChatLoungesMgr.vMyLounges[pDataInvitChat.pInvitChat.vLoungeNumber-1].vInvited.splice(myIndex,1);   // Retrait de l'invitationn du tableaau des invités
 		}
 	});
 
