@@ -1849,6 +1849,32 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------
+	// Demande de désabonnement d'un salon d'un membre (suite a une expulsion par exemple, ou une deconnexion)
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.askUnsubscribeMember = function(pExitFriendChatParam, pSocketIo){
+		let myIndex;
+		// Je vérifie que le membre est toujours en ligne
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pExitFriendChatParam.vMemberPseudo);
+		
+		if (myIndex > -1){ // Si le membre est encore en ligne, je lui demande de se désinscrire du ChatRoom concerné
+			pSocketIo.to(this.objectPopulation.members[myIndex].idSocket).emit('askUnsubscribeMeFromRoom', pExitFriendChatParam); // Envoi à ce membre seul
+		}
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------
+	// Désabonnement d'un salon d'un membre (suite a une expulsion par exemple, ou une deconnexion)
+	// ---------------------------------------------------------------------------------------------------------------------------
+	MemberServer.prototype.unsubscribeMeFromRoom = function(pExitFriendChatParam, pWebSocketConnection){
+		let myIndex;
+		// Je vérifie que le membre est toujours en ligne
+		myIndex = this.searchMemberInTableOfMembers('pseudo', pExitFriendChatParam.vMemberPseudo);
+		
+		if (myIndex > -1){ // Si le membre est encore en ligne, je le désinscris du ChatRoom concerné
+			pWebSocketConnection.leave(pExitFriendChatParam.vRoom);
+		}
+	}
+
+	// ---------------------------------------------------------------------------------------------------------------------------
 	// Deconnexion d'un visiteur et eventuellement d'un membre  :
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.disconnectMember = function(pWebSocketConnection, pSocketIo){

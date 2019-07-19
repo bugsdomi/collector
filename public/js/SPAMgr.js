@@ -706,6 +706,18 @@ window.addEventListener('DOMContentLoaded', function(){
 	// ****************************************************************************************************************************** 
 	// ******************************************************************************************************************************
 	// --------------------------------------------------------------
+	// On a reçu une demande de desinscription à un ChatRoom
+	// --------------------------------------------------------------
+	webSocketConnection.on('askUnsubscribeMeFromRoom',function(pExitFriendChatParam){
+		var elem = document.getElementById('idDivCardChat' + pExitFriendChatParam.vRoom);
+		if (elem){
+			elem.parentNode.removeChild(elem);
+		}
+	
+		webSocketConnection.emit('unsubscribeMeFromRoom', pExitFriendChatParam);
+	});
+
+	// --------------------------------------------------------------
 	// On a reçu un message Tchat Broadcasté aux abonnés du ChatRoom
 	// Géré coté inviteur + abonnéss
 	// --------------------------------------------------------------
@@ -878,6 +890,16 @@ window.addEventListener('DOMContentLoaded', function(){
 		var vRoomSuffix = '-Room-'+pInvitChat.vLoungeOwner+'_'+pInvitChat.vLoungeNumber;
 		vChatLoungesMgr.deleteInvitChatAvatar(vRoomSuffix + '-' +pInvitChat.vInvited[0].friendPseudo);
 
+		// Affiche tous les avatars des amis deja présents dans le salon du Tchat
+		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1].vInvited.forEach((item) => 
+		{		
+			var vFriendChatParam = {
+				vRoomSuffix : vRoomSuffix,
+				vInvitChat	: item,
+			};
+			vChatLoungesMgr.displayChatingFriends(vFriendChatParam);
+		});
+
 		// Envoie une demande de raffraîchissement des avatars dans le salon concerné
 		vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1].vRoom = vRoomSuffix;
 		webSocketConnection.emit('askRefreshAvatarsInChatRoom', vChatLoungesMgr.vMyLounges[pInvitChat.vLoungeNumber - 1]);
@@ -938,20 +960,23 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Un membre vient de se déconnecter, je vérifie que c'est un 
 	// ami à moi, et si oui, j'éteinds sa puce de connexion
 	// Idem, si je suis en mode "Friend"
+	// - Sortie des Tchats éventuels*
+	// - Géré par tout le monde
 	// --------------------------------------------------------------
-	webSocketConnection.on('disconnectMember',function(disconnectMember){
+	webSocketConnection.on('disconnectMember',function(disconnectMemberPseudo){
 		var myIndex;
 		if (vMemberClient.member.pseudo !== ''){									// Si je suis un visiteur, il n'est pas utile de d'effectuer cette fonction
-			myIndex = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', disconnectMember);	
+			myIndex = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', disconnectMemberPseudo);	
 
 			if (myIndex > -1){
 				vMemberClient.vMyFriendList[myIndex].connected = false;
 				document.getElementById('idConnectedLed'+cstMainProfileActive+myIndex).classList.replace('bg-success', 'bg-warning');
+				vChatLoungesMgr.CheckAndExitFriendFromChat(disconnectMemberPseudo, 's\'est deconnecté....');
 			}
 
 			if (vActiveProfile === cstFriendProfileActive){
-				if (vFriendProfileViewed.member.pseudo !== disconnectMember){	// Est ce que le membre qui vient de se connecter est celui dont je regarde le profil ?
-					myIndex = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', disconnectMember);	
+				if (vFriendProfileViewed.member.pseudo !== disconnectMemberPseudo){	// Est ce que le membre qui vient de se connecter est celui dont je regarde le profil ?
+					myIndex = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', disconnectMemberPseudo);	
 					
 					if (myIndex > -1){
 						vFriendProfileViewed.vMyFriendList[myIndex].connected = false;
@@ -1273,6 +1298,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('deleteFriendFromMyFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
 		vFriendsCardMain.removeFriendFromMyFriendList(pFriendToDelete);
+		vChatLoungesMgr.CheckAndExitFriendFromChat(pFriendToDelete.friendPseudo,'ne fait plus partie de mes amis');
 	});
 
 	// --------------------------------------------------------------

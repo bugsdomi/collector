@@ -345,11 +345,25 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 
 		// ------------------------------------
 		// On a reçu une demande de Refresh des avatars d'un salon donnné
-		// Je le renvoie à tous les abonnés du TChattRoom (sauf l'innviteur qui est déjà raffraîchit)
+		// Je le renvoie à tous les abonnés du TChattRoom (sauf l'inviteur qui est déjà raffraîchit)
 		// ------------------------------------
 		webSocketConnection.on('askRefreshAvatarsInChatRoom', function(pMyLounge){
-console.log('******************************** pMyLounge.vRoom ******************************** pMyLounge.vRoom : ',pMyLounge.vRoom)
 			webSocketConnection.to(pMyLounge.vRoom).emit('refreshAvatarsInChatRoom', pMyLounge);
+		});			
+
+		// ------------------------------------
+		// On a reçu une demande de d'expulsion du salon
+		// Je le renvoie à l'abonné que j'expulse
+		// ------------------------------------
+		webSocketConnection.on('unsubscribeMember', function(pExitFriendChatParam){
+			vMemberServer.askUnsubscribeMember(pExitFriendChatParam, socketIo);
+		});			
+
+		// ------------------------------------
+		// On execute une desincription venant de l'ex-abonné
+		// ------------------------------------
+		webSocketConnection.on('unsubscribeMeFromRoom', function(pExitFriendChatParam){
+			vMemberServer.unsubscribeMeFromRoom(pExitFriendChatParam, webSocketConnection);
 		});			
 
 		// -----------------------------------
@@ -371,11 +385,10 @@ console.log('******************************** pMyLounge.vRoom ******************
 	});
 });
 
-// Cheat Sheet
+// SocketIO Cheat Sheet
 // socketIo.on('connect', onConnect);
 
 // function onConnect(webSocketConnection){
-
 //   // sending to the client
 //   webSocketConnection.emit('hello', 'can you hear me?', 1, 2, 'abc');
 
@@ -420,5 +433,4 @@ console.log('******************************** pMyLounge.vRoom ******************
 
 //   // sending to all connected clients
 //   socketIo.emit('an event sent to all connected clients');
-
 // };

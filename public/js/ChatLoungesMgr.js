@@ -215,6 +215,7 @@ ChatLoungesMgr.prototype.displayLoungeCard = function(pWhichRole, pInvitChat){
 
 	vLineHTML.vDivCardBorder = window.document.createElement('div');
 	vDivMountPointProfile.appendChild(vLineHTML.vDivCardBorder);
+	vLineHTML.vDivCardBorder.setAttribute('id', 'idDivCardChat' + vRoomSuffix);
 	vLineHTML.vDivCardBorder.setAttribute('class', 'card border-warning mb-4');
 
 	// ------------------------------------------------------------------------------ 
@@ -376,7 +377,7 @@ ChatLoungesMgr.prototype.displayChatingFriends = function(pFriendChatParam){
 // Envoi du message dans les salons des autres participants
 // --------------------------------------------------------------
 ChatLoungesMgr.prototype.sendMsgToChatRoom = function(pRoom, pMsg){
-	var vLoungeNumber = pRoom.slice(pRoom.indexOf('_')+1);		// Renvoie le N° du salon
+	var vLoungeNumber = pRoom.slice(pRoom.indexOf('_')+1);										// Renvoie le N° du salon
 	var vLoungeOwner 	= pRoom.split('-').pop().split('_')[0]; 								// Renvoie le propriétaire du salon
 
 	if (vLoungeOwner === this.memberClient.member.pseudo){
@@ -384,7 +385,7 @@ ChatLoungesMgr.prototype.sendMsgToChatRoom = function(pRoom, pMsg){
 	} else {
 		var myIndex = vToolBox.searchObjectInArray(this.vLoungesSubscribedByMe, 'subscribedRoom', pRoom);
 		if (myIndex > -1){
-			vColors = this.vLoungesSubscribedByMe[myIndex].myColors;
+			vColors = this.vLoungesSubscribedByMe[myIndex].myColors;							// Tableau de mes abonnements
 		}
 	}
 
@@ -744,21 +745,63 @@ ChatLoungesMgr.prototype.answerToChatInvit = function(pDataInvitChat){
 	$('#idModalChatInvit'+vRoomSuffix).modal('show');                   
 }
 
+
+// --------------------------------------------------------------
+// Je vérifie que le membre qui se déconnecte n'est pas dans un mes salons
+// Si c'est le cas, je le supprime de mes invités, je supprime son 
+// avatar de mes salons et j'envoie une diffusion générale pour le 
+// supprimer dans les salons de mes invités
+// --------------------------------------------------------------
+ChatLoungesMgr.prototype.CheckAndExitFriendFromChat = function(exitFriendPseudo, pMotif){
+	if (exitFriendPseudo !== this.memberClient.member.pseudo){		 							// Si ce n'est pas moi qui me déconnecte
+		for (var index = 0; index < this.vMyLounges.length; index++) {									// Je vérifie dans chacun de mes salons, si le membre est un de mes invités
+			var myIndex = vToolBox.searchObjectInArray(this.vMyLounges[index].vInvited, 'friendPseudo', exitFriendPseudo);
+
+			if (myIndex > -1){
+				var vInvitChat = this.vMyLounges[index].vInvited[myIndex];
+				this.vMyLounges[index].vInvited.splice(myIndex,1);   												// J Efface l'invitation des Tchats du tableau de mes invités
+
+				var vRoomSuffix = '-Room-'+this.memberClient.member.pseudo+'_'+(index+1);		// J'efface son avatar de mon salon
+				this.deleteInvitChatAvatar(vRoomSuffix + '-' +exitFriendPseudo);
+
+				// Affiche tous les avatars des amis deja présents dans le salon du Tchat
+				this.vMyLounges[index].vInvited.forEach((item) => 
+				{		
+					var vFriendChatParam = {
+						vRoomSuffix : vRoomSuffix,
+						vInvitChat	: item,
+					};
+					this.displayChatingFriends(vFriendChatParam);
+				});
+
+				var vExitFriendChatParam = {
+					vRoom					: vRoomSuffix,
+					vMemberPseudo	: exitFriendPseudo,
+				};
+
+				webSocketConnection.emit('unsubscribeMember', vExitFriendChatParam);
+
+				// J'envoie une demande de raffraîchissement des avatars dans le salon concerné
+				this.vMyLounges[index].vRoom = vRoomSuffix;
+				webSocketConnection.emit('askRefreshAvatarsInChatRoom', this.vMyLounges[index]);
+
+				// J'envoie un msg de notif de deconnexion
+				var pMsg = '<span style="background: ' + 	
+				vInvitChat.friendColors.background+'; color: '+
+				vInvitChat.friendColors.textColor+';">&nbsp;' + 
+				vInvitChat.friendPseudo +' </span>&nbsp;'+pMotif+'<br />';
+				this.sendMsgToChatRoom(vRoomSuffix, pMsg);
+			};
+		};
+	};
+};
+
 // --------------------------------------------------------------
 // Supprime un avatar de la liste des Avatars du ChatRoom
 // détruit dans le DOM
 // --------------------------------------------------------------
 ChatLoungesMgr.prototype.deleteInvitChatAvatar = function(InvitChatAvatarName){
 	var elem = document.getElementById('idImgChatInvitedFriendAvatar' + InvitChatAvatarName);
-
-	// if (elem){
-	// 	var vParentNode = elem.parentNode;
-	// 	elem.parentNode.removeChild(elem);
-
-	// 	if (!vParentNode.firstChild) {															// S'il n'y a plus d'avatars alors
-	// 		vParentNode.classList.replace('visible','invisible');     // masquage de la zone d'accueil des avatars                                    
-	// 	}
-	// }
 
 	if (elem){
 		var vParentNode = elem.parentNode;
