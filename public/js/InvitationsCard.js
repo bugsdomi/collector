@@ -327,17 +327,31 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 // Si le receveur est connecté, son nombre d'invitations evoluera en temps réel
 // --------------------------------------------------------------
 InvitationsCard.prototype.cancelInvitation = function(event){
-	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', event.target.datas.thisContext.memberClient.ChangeBtnTxtColOver);						
-	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', event.target.datas.thisContext.memberClient.ChangeBtnTxtColOut);						
-	document.getElementById(event.target.datas.actionBtn).removeEventListener('click', event.target.datas.thisContext.cancelInvitation);					
+	// document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', event.target.datas.thisContext.memberClient.ChangeBtnTxtColOver);						
+	// document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', event.target.datas.thisContext.memberClient.ChangeBtnTxtColOut);						
+	// document.getElementById(event.target.datas.actionBtn).removeEventListener('click', event.target.datas.thisContext.cancelInvitation);					
 
-	var vInvitSentToDelete = {
-		myPseudo 			: event.target.datas.myPseudo,
-		myEmail 			: event.target.datas.myEmail,
-		friendPseudo 	: event.target.datas.friendPseudo,
-		friendEmail 	: event.target.datas.friendEmail,
-	}
-	webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
+	// vMemberClient.displayModalConfirm(
+	// 	' Confirmation', 
+	// 	'Vous allez supprimer une invitation', 
+	// 	'Êtes-sûr de vouloir supprimer l\'invitation que vous aviez lancée à '+event.target.datas.friendPseudo+' ?',
+	// 	() => {
+	// 		var vInvitSentToDelete = {
+	// 			myPseudo 			: event.target.datas.myPseudo,
+	// 			myEmail 			: event.target.datas.myEmail,
+	// 			friendPseudo 	: event.target.datas.friendPseudo,
+	// 			friendEmail 	: event.target.datas.friendEmail,
+	// 		}
+	// 		webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
+	// 	}
+	// );
+			var vInvitSentToDelete = {
+				myPseudo 			: event.target.datas.myPseudo,
+				myEmail 			: event.target.datas.myEmail,
+				friendPseudo 	: event.target.datas.friendPseudo,
+				friendEmail 	: event.target.datas.friendEmail,
+			}
+			webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
 }
 
 // -----------------------------------------------------------------------------

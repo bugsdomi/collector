@@ -28,6 +28,7 @@ const PostsServer = require('./PostsServerSide');
 const SocketIOFileUpload = require('socketio-file-upload');
 const DBMgr = require('./dbMgr');
 const sgMail = require('@sendgrid/mail');
+const AES = require("crypto-js/aes");
 
 
 // -------------------------------------------------------------------------
@@ -365,6 +366,8 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		webSocketConnection.on('unsubscribeMeFromRoom', function(pExitFriendChatParam){
 			vMemberServer.unsubscribeMeFromRoom(pExitFriendChatParam, webSocketConnection);
 		});			
+
+
 
 		// -----------------------------------
 		// Déconnexion

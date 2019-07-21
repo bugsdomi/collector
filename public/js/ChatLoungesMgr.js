@@ -449,7 +449,7 @@ ChatLoungesMgr.prototype.createNewChatLounge = function(event){
 	{
 		vLoungeNumber : (this.vMyLounges.length) + 1,
 		vLoungeOwner	: this.memberClient.member.pseudo,								// Pseudo du membre qui a créé le salon
-		vMyColors			: vToolBox.pickPairColor(),
+		vMyColors			: vToolBox.pickPairColor1(),
 		vInvited			: [],
 	};
 
@@ -461,7 +461,7 @@ ChatLoungesMgr.prototype.createNewChatLounge = function(event){
 			friendPseudo	: vFriend.friendPseudo,
 			friendPhoto		: vFriend.friendPhoto,
 			friendStatus	: cstChatJoin,
-			friendColors 	: vToolBox.pickPairColor(),
+			friendColors 	: vToolBox.pickPairColor1(),
 		}
 	);
 	var vRoomSuffix = '-Room-' + vLoungeLocal.vLoungeOwner + '_' + vLoungeLocal.vLoungeNumber;
@@ -510,7 +510,7 @@ ChatLoungesMgr.prototype.addNewChatInvit = function(event){
 		friendPseudo	: vFriend.friendPseudo,
 		friendPhoto		: vFriend.friendPhoto,
 		friendStatus	: cstChatJoin,
-		friendColors 	: vToolBox.pickPairColor(),
+		friendColors 	: vToolBox.pickPairColor1(),
 	}
 
 	vLoungeLocal.vInvited.push(vInvitedLocal);																				// Créationn de la 1ere invitation du nouveau salon

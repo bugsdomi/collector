@@ -135,9 +135,10 @@ FriendsCard.prototype.fillFriendsCard = function(){
 FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	var vFriendLocal = 
 	{
-		friendEmail  			: pMyFriend.friendEmail,
-		friendPseudo 			: pMyFriend.friendPseudo,
-		friendPhoto 			: pMyFriend.friendPhoto,
+		connected			: pMyFriend.connected,
+		friendEmail  	: pMyFriend.friendEmail,
+		friendPseudo 	: pMyFriend.friendPseudo,
+		friendPhoto 	: pMyFriend.friendPhoto,
 	}
 
 	this.memberClient.vMyFriendList.push(vFriendLocal);
@@ -186,8 +187,14 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	vlineHTML.vIConnectedStatus = window.document.createElement('span');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vIConnectedStatus);
 	vlineHTML.vIConnectedStatus.setAttribute('id', 'idConnectedLed'+vActiveProfile+index);
-	vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-warning');
+// XXXXX
+// vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-warning');
 	vlineHTML.vIConnectedStatus.setAttribute('style', 'display: inline-block; position: relative; top: -23px; left: 8px; width: 12px; height: 12px; border: 1px black solid; border-radius: 50%;');
+	if (pMyFriend.connected){
+		vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-success');
+	} else {
+		vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-warning');
+	};
 
 	// Pour empêcher la fermeture de DropDownMenu lorsque l'on clique quelque part dedans (Comportement par défaut)
 	$('#'+vlineHTML.vDivDropDown.id).on("click.bs.dropdown", (event) => { 
@@ -212,6 +219,7 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 
 
 
+// XXXXX
 // -----------------------------------------------------------------------------
 // Suppression d'un Ami
 // - 1) Affichage d'une notification
@@ -219,18 +227,19 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 // - Fermeture définitive de la PopUp Menu
 // - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
 // -----------------------------------------------------------------------------
-FriendsCard.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
-	var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
-	$('#'+idImg).popover('show');
+// FriendsCard.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
+// var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
+// $('#'+idImg).popover('show');
 
-	setTimeout(function(){
-		$('#'+idImg).popover('hide');
-	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
+// setTimeout(function(){
+// 	$('#'+idImg).popover('hide');
+// },cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
 
-	setTimeout(() => {
-		this.refreshMyFriendList(pFriendToDelete);
-	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
-};
+// setTimeout(() => {
+// 		this.refreshMyFriendList(pFriendToDelete);
+// },cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
+// 		this.refreshMyFriendList(pFriendToDelete);
+// };
 
 // -----------------------------------------------------------------------------
 // Suppression d'un Ami (suite)
@@ -239,7 +248,16 @@ FriendsCard.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
 // - 3) Fermeture définitive de la PopUp Menu
 // - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
 // -----------------------------------------------------------------------------
-FriendsCard.prototype.refreshMyFriendList = function(pFriendToDelete){
+// FriendsCard.prototype.refreshMyFriendList = function(pFriendToDelete){
+
+
+// -----------------------------------------------------------------------------
+// Suppression d'un Ami 
+// - 1) Suppression de mon ex-ami du tableau de mes amis
+// - 2) Fermeture définitive de la PopUp Menu
+// - 3) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
+// -----------------------------------------------------------------------------
+FriendsCard.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
 	this.memberClient.vMyFriendList.splice(pFriendToDelete.indexFriendToDelete, 1);   									// Efface l'occurence de mon ami du tableau de mes amis
 
 	// Je régénère ma liste d'amis pour recaler les indexes attachés à chaque amis et utilisés pour les "Id" HTML:
@@ -268,6 +286,7 @@ FriendsCard.prototype.refreshMyFriendList = function(pFriendToDelete){
 
 		// Recréation des avatars de mes amis dans ma carte d'amis
 		vSaveMyFriendList.forEach((item) => {													// Pour chacun de mes amis en déjà dans ma table d'amis
+			vMyFriend.connected 		= item.connected;
 			vMyFriend.friendEmail 	= item.friendEmail;
 			vMyFriend.friendPseudo	= item.friendPseudo;
 			vMyFriend.friendPhoto 	= item.friendPhoto;
@@ -276,4 +295,3 @@ FriendsCard.prototype.refreshMyFriendList = function(pFriendToDelete){
 	}
 	vToolBox.clearAllOpenedPopOverAndToolTip();
 }
-

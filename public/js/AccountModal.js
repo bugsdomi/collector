@@ -133,14 +133,16 @@ AccountModal.prototype.initModalAccount = function(pAccountParameters){
 	pAccountParameters.vAccountForm.idAccountPresentation.value = this.memberClient.member.presentation;
 
 	this.memberClient.newPasswordKO = false;
+	this.memberClient.birthDateKO 	= false;
 	pAccountParameters.vAccountForm.idAccountCurrentPassword.value = '';
 	pAccountParameters.vAccountForm.idAccountPassword.value = '';
 	pAccountParameters.vAccountForm.idAccountConfirmPassword.value = '';
 
 	pAccountParameters.vAccountPassword.setAttribute('disabled', 'true');
 	pAccountParameters.vAccountConfirmPassword.setAttribute('disabled', 'true');
-
-	pAccountParameters.vAccountAlertMsg.style.visibility = 'hidden';     
+// XXXXX
+// pAccountParameters.vAccountAlertMsg.style.visibility = 'hidden';     
+	pAccountParameters.vAccountAlertMsg.setAttribute('class', 'invisible');   
 	
 	var vModalHeaderColorParams = 
 	{
@@ -248,7 +250,9 @@ var myIdLabel = document.getElementById(pPrefLabel)
 AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 	var cstWaitForUpladToDisplayAvatar = false;
 
-	if (!this.memberClient.newPasswordKO){
+	var vFormValid = !(this.memberClient.newPasswordKO || this.memberClient.birthDateKO);										// On vérifie qu'il n'y a pas de c!(hamps en erreur
+
+	if (vFormValid){
 		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisi dans l explorateur windows
 			this.memberClient.member.etatCivil.photo = pAccountParams.vAccountPhotoFile.value.split('C:\\fakepath\\')[1];     // On ne garde que le nom de l'image pour la BDD
 			pAccountParams.vSIOFU.submitFiles(pAccountParams.vAccountPhotoFile.files);                           // Alors on la transfère vers le serveur 
@@ -302,7 +306,7 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 
 		this.memberClient.member.presentation  = pAccountParams.vAccountForm.idAccountPresentation.value;
 
-		if (pAccountParams.vAccountForm.idAccountCurrentPassword.value !==''){                                 
+		if (pAccountParams.vAccountForm.idAccountCurrentPassword.value !==''){       
 			this.memberClient.member.oldPassword = pAccountParams.vAccountForm.idAccountCurrentPassword.value;
 			this.memberClient.member.password = pAccountParams.vAccountForm.idAccountPassword.value;
 		}

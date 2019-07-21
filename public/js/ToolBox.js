@@ -87,31 +87,11 @@ ToolBox.prototype.simpleRefreshScreen = function(){
 // Si pAgeSeulement = true --> permet de ne retourner que l'age seulement
 // Sinon, c'est l'age concaténé avec 'ans'
 // -----------------------------------------------------------------------------
-ToolBox.prototype.calculeAge = function(pBirthDate, pAgeSeulement){
-    var today   = new Date();
-    var annee   = pBirthDate.substr(0,4); 
-    var mois    = pBirthDate.substr(5,2);
-    var day     = pBirthDate.substr(8,2); 
-    var age     = today.getFullYear() - annee; 
-
-    var nbreMois = today.getMonth() - mois; // On calcul  le mois de la date - le mois de la date de naissance
-
-    if (nbreMois < 0){
-        age--;
-    } else {
-        if(nbreMois === 0){
-            var nbreJours = today.getDay() - day;
-            if(nbreJours < 0){
-                age--;
-            }
-        }
-    }
-
-    if (!pAgeSeulement){
-        return age = age < 2 ? age += ' an' : age += ' ans';
-    } else {
-        return age;
-    }
+ToolBox.prototype.calculeAge = function(pBirthDate){
+	var ageInYears = moment().diff(pBirthDate, 'years',false);
+	return ageInYears = ageInYears < 2 
+										? ageInYears += ' an' 
+										: ageInYears += ' ans';
 }
 // --------------------------------------------------------------------------------------------------------------
 // elemOrId - jquery element or element id, defaults to $('<body>')'
@@ -416,7 +396,7 @@ ToolBox.prototype.removeChildFromDOM = function(pElemToDelete, pParentTargetOfAc
 // Cette fonction choisit aléatoirement une paire de couleurs Background/Foreground
 // selon l'algorithme officel WS3 garantissant un contraste de lecture suffisament lisible, quel que soit la couleur du fond
 // -----------------------------------------------------------------------------
-ToolBox.prototype.pickPairColor = function() {
+ToolBox.prototype.pickPairColor1 = function() {
 	var rgb = [255, 0, 0];
 
   rgb[0] = Math.round(Math.random() * 255);
@@ -437,6 +417,42 @@ ToolBox.prototype.pickPairColor = function() {
 	return vPairOfColors;
 }
 
+// -----------------------------------------------------------------------------
+// Cette fonction choisit aléatoirement une paire de couleurs Background/Foreground
+// selon l'algorithme officel WS3 garantissant un contraste de lecture suffisament lisible, quel que soit la couleur du fond
+// Methode 2 (Avantage, on peut jouer sur le parametre "Brightness", et on n'est pas limité qu'au texte blanc ou noir)
+// -----------------------------------------------------------------------------
+ToolBox.prototype.pickPairColor2 = function() {
+	var rgb = [255, 0, 0];
+
+  rgb[0] = Math.round(Math.random() * 255);
+  rgb[1] = Math.round(Math.random() * 255);
+  rgb[2] = Math.round(Math.random() * 255);
+
+	// var colors = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	var brightness = 1;
+
+	// var r = colors[1];
+	// var g = colors[2];
+	// var b = colors[3];
+	
+	var r = rgb[1];
+	var g = rgb[2];
+	var b = rgb[3];
+
+	var ir = Math.floor((255-r)*brightness);
+	var ig = Math.floor((255-g)*brightness);
+	var ib = Math.floor((255-b)*brightness);
+
+	back = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')'
+	fore = 'rgb('+ir+','+ig+','+ib+')';
+
+	var vPairOfColors = {
+		background : back,
+		textColor	 : fore
+	}
+	return vPairOfColors;
+}
 // -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

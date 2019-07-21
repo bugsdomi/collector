@@ -621,7 +621,7 @@ PresentationCard.prototype.fillPresentationCard = function(pMember){
 
 // pProfileInfo.vAboutAge.innerHTML = this.memberClient.member.etatCivil.birthDate 
 	document.getElementById('idAboutAge'+vActiveProfile).innerHTML 	= pMember.etatCivil.birthDate 
-																																	? vToolBox.calculeAge(pMember.etatCivil.birthDate, false)
+																																	? vToolBox.calculeAge(pMember.etatCivil.birthDate,)
 																																	: 'Non renseigné';
 
 // pProfileInfo.vAboutVille.innerHTML = this.memberClient.member.etatCivil.address.city

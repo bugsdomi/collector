@@ -212,10 +212,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	vLoginForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
 
-		var vVisiteurLoginData =                                     // Mise en forme pour transmission au serveur des données saisies
+		var vVisiteurLoginData =                                     					// Mise en forme pour transmission au serveur des données saisies
 			{
-				pseudo : vLoginForm.idLoginPseudo.value,
-				password : vLoginForm.idLoginPassword.value,
+				pseudo 		: vLoginForm.idLoginPseudo.value,
+				password 	: vLoginForm.idLoginPassword.value,
 			}
 
 		webSocketConnection.emit('visiteurLoginData', vVisiteurLoginData);   	// Transmission au serveur des infos saisies
@@ -517,12 +517,20 @@ window.addEventListener('DOMContentLoaded', function(){
 	};     
 
 	// -------------------------------------------------------------------------
+	// Validation champs de saisie de la date de naissance Fiche "Renseignements"
+	// -------------------------------------------------------------------------
+	vAccountBirthDate.addEventListener('blur', function (event){ 
+		vMemberClient.validateBirthDate(vAccountBirthDate);  					// Vérification que la date de naissance est valide
+	});
+				
+	// -------------------------------------------------------------------------
 	// Validation Modale  Fiche "Renseignements"
 	// -------------------------------------------------------------------------
-		vAccountForm.addEventListener('submit', function (event){ 
-			event.preventDefault();
-			vAccountModal.updateProfile(vAccountParams, vAvatarInfo);
-		});
+	vAccountForm.addEventListener('submit', function (event){ 
+		event.preventDefault();
+		vMemberClient.validateBirthDate(vAccountBirthDate);
+		vAccountModal.updateProfile(vAccountParams, vAvatarInfo);
+	});
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
@@ -1034,6 +1042,9 @@ window.addEventListener('DOMContentLoaded', function(){
 		});
 	});
 
+	// --------------------------------------------------------------
+	// Le serveur me renvoie le statut de connexion du membre concerné
+	// --------------------------------------------------------------
 	webSocketConnection.on('displayNewFriendConnectedStatus', function(pMember){
 		var indexFriendOfMine;
 	
@@ -1315,7 +1326,9 @@ window.addEventListener('DOMContentLoaded', function(){
 				} else {
 					pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
 				}
-				vFriendsCardFriend.refreshMyFriendList(pFriendToDelete);
+// XXXXX
+// vFriendsCardFriend.refreshMyFriendList(pFriendToDelete);
+				vFriendsCardFriend.removeFriendFromMyFriendList(pFriendToDelete);
 			}
 		}
 	});
@@ -1327,7 +1340,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-		vFriendsCardMain.refreshMyFriendList(pFriendToDelete);
+// XXXXX
+// vFriendsCardMain.refreshMyFriendList(pFriendToDelete);
+		vFriendsCardMain.removeFriendFromMyFriendList(pFriendToDelete);
 	});
 
 	// --------------------------------------------------------------
@@ -1445,14 +1460,6 @@ console.log('addFriendIntoHisList - pMyFriend : ',pMyFriend)
 				vULFriend = document.getElementById('idFriendUL'+cstFriendProfileActive);
 				vFriendsCardFriend.addFriendIntoCard(pMyFriend, vULFriend);						// Ajout de mon nouvel ami dans la carte "Mes amis"
 			}
-
-console.log('addFriendIntoHisListFriend - pMyFriend : ',pMyFriend)
-
-
-// 	// Checker le statut de la connexion
-// console.log('addFriendIntoCard - pMyFriend : ',pMyFriend)
-// 	webSocketConnection.emit('isNewFriendConnected', pMyFriend)
-
 		}
 	});	
 

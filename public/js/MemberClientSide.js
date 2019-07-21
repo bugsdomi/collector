@@ -5,6 +5,7 @@
 
 function MemberClient(){   								// Fonction constructeur exportée
 	this.newPasswordKO 					= false;		// Flag témoin de Nouveau mot de passe valide (True = KO, False = OK)
+	this.birthDateKO 						= false;		// Flag témoin de la date de naissance valide (True = KO, False = OK)
 	this.vInvitSentCardVisible 	= false;		// Indicateur de visibilité de la carte des invitations en attente
 
 	this.vMyFriendList	= 									// Ma liste d'amis
@@ -94,12 +95,39 @@ function MemberClient(){   								// Fonction constructeur exportée
 // -----------------------------------------------------------------------------
 MemberClient.prototype.validatePassword = function(pPassword, pConfirmPassword){
 	if (pPassword.value != pConfirmPassword.value){
+		pPassword.classList.add('is-invalid');
+		pConfirmPassword.classList.add('is-invalid');
 		pConfirmPassword.setCustomValidity('Les mots de passe ne correspondent pas');
 		this.newPasswordKO = true;
 	} else {
+		pPassword.classList.remove('is-invalid');
+		pConfirmPassword.classList.remove('is-invalid');
 		pConfirmPassword.setCustomValidity('');
 		this.newPasswordKO = false;
 	}
+}
+
+// -----------------------------------------------------------------------------
+// Cette fonction vérifie que la date de naissance est valide et non située dans le futur
+// -----------------------------------------------------------------------------
+MemberClient.prototype.validateBirthDate = function(pAccountBirthDate){
+	this.birthDateKO = false;
+
+	if (pAccountBirthDate){
+		var myDate 	= new Date(pAccountBirthDate.value);
+		var today 	= new Date();
+
+		if (myDate > today) { 
+			pAccountBirthDate.classList.add('is-invalid');
+			pAccountBirthDate.setCustomValidity('La date de naissance ne peut pas être située dans le futur');
+			this.birthDateKO = true;
+		} else {
+			pAccountBirthDate.classList.remove('is-invalid');
+			pAccountBirthDate.setCustomValidity('');
+			this.birthDateKO = false;
+		}
+	}
+	return this.birthDateKO;
 }
 
 // -----------------------------------------------------------------------------
@@ -357,7 +385,6 @@ MemberClient.prototype.changeBtnTxtColOut = function(event){
 MemberClient.prototype.whoIsConnected = function(event){
 	document.getElementById(event.target.datas.actionBtn).classList.replace('text-light','text-dark');	
 }
-
 
 // --------------------------------------------------------------------------------------------------------------
 // -------------------------- Fin du module ---------------------------------------------------------------------

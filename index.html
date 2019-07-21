@@ -92,7 +92,7 @@
 					</a>
 					<div class="dropdown-menu" aria-labelledby="templates-dropdown">
 						<a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount"><i class="fa fa-id-card-o"></i> Renseignements</a>
-						<a class="dropdown-item" href="template-4.html"><i class="fa fa-sliders"></i> Administration</a> 
+<!-- <a class="dropdown-item" href="template-4.html"><i class="fa fa-sliders"></i> Administration</a>  -->
 						<hr />
 						<a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><i class="fa fa-sign-out"></i> Déconnexion</a>
 					</div>
@@ -468,7 +468,8 @@
 						<!--                             Pseudo + Mail                                      --> 
 						<!-- ****************************************************************************** -->
 						<div class="text-center">
-							<form class="form-Account" id="idAccountForm">    
+<!-- <form class="form-Account" id="idAccountForm">     -->
+							<form class="form-Account novalidate" id="idAccountForm">    
 								<fieldset class="border rounded p-3">
 									<div class="row justify-content-around">
 										<div class="col-md-5 mb-3">
@@ -518,7 +519,7 @@
 											<label for="idAccountBirthDate">Date de naissance</label>
 											<input type="date" class="form-control" name="accountBirthdate" id="idAccountBirthDate">
 											<div class="invalid-feedback">
-												Une date valide est requise
+												Une date valide est requise et non située dans le futur
 											</div>
 										</div>
 
@@ -876,6 +877,7 @@
 		<script src="static/js/popper.min.js"></script>
 		<script src="static/js/bootstrap.min.js"></script>
 		<script src="staticNodeModules/moment/min/moment-with-locales.min.js"></script>
+		<script src="staticNodeModules/crypto-js/crypto-js.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="static/js/ToolBox.js"></script>
 		<script src="static/js/variables.js"></script>

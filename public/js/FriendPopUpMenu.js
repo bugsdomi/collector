@@ -124,11 +124,12 @@ FriendPopUpMenu.prototype.prepareMenuDeleteFriend = function(pFriend, pDivDropDo
 	vlineHTML.vHdrImgDelFriend.setAttribute('class', 'avatarToken tokenSize32 m-1');
 	vlineHTML.vHdrImgDelFriend.setAttribute('alt', 'Membre');
 	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
-	vlineHTML.vHdrImgDelFriend.setAttribute('data-toggle', 'popover');
-	vlineHTML.vHdrImgDelFriend.setAttribute('data-placement', 'right');
-	vlineHTML.vHdrImgDelFriend.setAttribute('title', 'Suppression d\'un ami');
-	vlineHTML.vHdrImgDelFriend.setAttribute('data-content', 'Vous n\'êtes plus ami avec '+pFriend.friendPseudo);
-	vlineHTML.vHdrImgDelFriend.setAttribute('data-boundary', 'viewport');
+//
+// vlineHTML.vHdrImgDelFriend.setAttribute('data-toggle', 'popover');
+// vlineHTML.vHdrImgDelFriend.setAttribute('data-placement', 'right');
+// vlineHTML.vHdrImgDelFriend.setAttribute('title', 'Suppression d\'un ami');
+// vlineHTML.vHdrImgDelFriend.setAttribute('data-content', 'Vous n\'êtes plus ami avec '+pFriend.friendPseudo);
+// vlineHTML.vHdrImgDelFriend.setAttribute('data-boundary', 'viewport');
 
 	vlineHTML.vHdrDivDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivDelFriend);
@@ -162,9 +163,121 @@ FriendPopUpMenu.prototype.prepareMenuDeleteFriend = function(pFriend, pDivDropDo
 
 	vlineHTML.vHdrBtnDelFriend.addEventListener('mouseover', this.memberClient.changeBtnTxtColOver);
 	vlineHTML.vHdrBtnDelFriend.addEventListener('mouseout', this.memberClient.changeBtnTxtColOut);
-	vlineHTML.vHdrBtnDelFriend.addEventListener('click', this.deleteFriend);						// Suppression d'un ami
+// XXXXX
+// vlineHTML.vHdrBtnDelFriend.addEventListener('click', this.deleteFriend);						// Suppression d'un ami
+	vlineHTML.vHdrBtnDelFriend.addEventListener('click', this.askConfirmDeleteFriend.bind(this));						// Suppression d'un ami
 	vlineHTML.vHdrBtnDelFriend.datas = vDataToTransmit;
 	vlineHTML.vHdrIFADelFriend.datas = vDataToTransmit;
+}
+
+// -----------------------------------------------------------------------------
+// Modale de confirmation de Suppression d'un Ami
+// -----------------------------------------------------------------------------
+FriendPopUpMenu.prototype.displayModalConfirmDeleteFriend = function(pMyEventDatas){
+	var vLineHTML = {};		
+	var vWorkingSpace = document.getElementById('idWorkingSpace');
+
+	// <div id="idModalConfirm" class="modal px-0" data-keyboard="false" data-focus="true" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="idAriaModalConfirm" aria-hidden="true" style="z-index: 1060;">
+	vLineHTML.vDivModalConfirmDeleteFriend = window.document.createElement('div');
+	vWorkingSpace.appendChild(vLineHTML.vDivModalConfirmDeleteFriend);
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('id', 'idModalConfirmDeleteFriend');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('class', 'modal px-0');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('data-keyboard', 'false');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('data-focus', 'true');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('tabindex', '-1');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('role', 'dialog');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('data-backdrop', 'static');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('aria-labelledby', 'idAriaModalConfirmDeleteFriend');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('aria-hidden', 'true');
+	vLineHTML.vDivModalConfirmDeleteFriend.setAttribute('style', 'z-index: 1060;');
+
+	// <div class="modal-dialog modal-dialog-centered" role="document">
+	vLineHTML.vDivModalDialogConfirmDeleteFriend = window.document.createElement('div');
+	vLineHTML.vDivModalConfirmDeleteFriend.appendChild(vLineHTML.vDivModalDialogConfirmDeleteFriend);
+	vLineHTML.vDivModalDialogConfirmDeleteFriend.setAttribute('class', 'modal-dialog modal-dialog-centered');
+	vLineHTML.vDivModalDialogConfirmDeleteFriend.setAttribute('role', 'document');
+	
+	// <div class="modal-content">
+	vLineHTML.vDivModalContentConfirmDeleteFriend = window.document.createElement('div');
+	vLineHTML.vDivModalDialogConfirmDeleteFriend.appendChild(vLineHTML.vDivModalContentConfirmDeleteFriend);
+	vLineHTML.vDivModalContentConfirmDeleteFriend.setAttribute('class', 'modal-content');
+
+	// <div id="idModalConfirmHeader" class="modal-header border-bottom bg-warning text-dark">
+	vLineHTML.vModalConfirmDeleteFriendHeader = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeleteFriend.appendChild(vLineHTML.vModalConfirmDeleteFriendHeader);
+// XXXXX
+// vLineHTML.vModalConfirmDeleteFriendHeader.setAttribute('id', 'idModalConfirmDeleteFriend');
+	vLineHTML.vModalConfirmDeleteFriendHeader.setAttribute('class', 'modal-header border-bottom bg-warning text-dark');
+
+	// <h5 id="idModalConfirmTitle" class="modal-title">
+	vLineHTML.vH5ModalHeaderConfirmDeleteFriend = window.document.createElement('h5');
+	vLineHTML.vModalConfirmDeleteFriendHeader.appendChild(vLineHTML.vH5ModalHeaderConfirmDeleteFriend);
+	vLineHTML.vH5ModalHeaderConfirmDeleteFriend.setAttribute('class', 'modal-title');
+	
+	// <i class="fa fa-question-circle"></i>
+	vLineHTML.vIModalHeaderConfirmDeleteFriend = window.document.createElement('i');
+	vLineHTML.vH5ModalHeaderConfirmDeleteFriend.appendChild(vLineHTML.vIModalHeaderConfirmDeleteFriend);
+	vLineHTML.vIModalHeaderConfirmDeleteFriend.setAttribute('class', 'fa fa-question-circle');
+	vLineHTML.vH5ModalHeaderConfirmDeleteFriend.innerHTML += ' Confirmation';
+	
+	// <div class="modal-body">
+	vLineHTML.vDivModalBodyConfirmDeleteFriend = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeleteFriend.appendChild(vLineHTML.vDivModalBodyConfirmDeleteFriend);
+	vLineHTML.vDivModalBodyConfirmDeleteFriend.setAttribute('class', 'modal-body');
+	
+	// <form id="idModalConfirmForm" class="mb-4 mx-auto d-block">
+	vLineHTML.vFormModalBodyConfirmDeleteFriend = window.document.createElement('form');
+	vLineHTML.vDivModalBodyConfirmDeleteFriend.appendChild(vLineHTML.vFormModalBodyConfirmDeleteFriend);
+	vLineHTML.vFormModalBodyConfirmDeleteFriend.setAttribute('id', 'idModalConfirmDeleteFriendForm');
+	vLineHTML.vFormModalBodyConfirmDeleteFriend.setAttribute('class', 'mb-4 mx-auto d-block');
+
+	// <img src="static/images/favicon.png" class="mb-4 mx-auto d-block" alt="Logo du site \'Collect\'Or" width="auto" height="72px">
+	vLineHTML.vImgModalBodyConfirmDeleteFriend = window.document.createElement('img');
+	vLineHTML.vDivModalBodyConfirmDeleteFriend.appendChild(vLineHTML.vImgModalBodyConfirmDeleteFriend);
+	vLineHTML.vImgModalBodyConfirmDeleteFriend.setAttribute('src', 'static/images/favicon.png');
+	vLineHTML.vImgModalBodyConfirmDeleteFriend.setAttribute('class', 'mb-4 mx-auto d-block');
+	vLineHTML.vImgModalBodyConfirmDeleteFriend.setAttribute('alt', 'Logo du site \'Collect\'Or');
+	vLineHTML.vImgModalBodyConfirmDeleteFriend.setAttribute('width', 'auto');
+	vLineHTML.vImgModalBodyConfirmDeleteFriend.setAttribute('height', '72px');
+
+	// <div id="idModalConfirmSubTitleAndText" class="mb-3 font-weight-normal text-center">
+	vLineHTML.vH3ModalBodyConfirmDeleteFriend = window.document.createElement('div');
+	vLineHTML.vDivModalBodyConfirmDeleteFriend.appendChild(vLineHTML.vH3ModalBodyConfirmDeleteFriend);
+	vLineHTML.vH3ModalBodyConfirmDeleteFriend.setAttribute('class', 'mb-3 font-weight-normal text-center');
+var toto = 	'<h5>Vous allez supprimer un ami</h5><br />'+ 
+						'<p>Êtes-sûr de vouloir supprimer '+pMyEventDatas.friendPseudo+' de vos amis ?</p>';
+	vLineHTML.vH3ModalBodyConfirmDeleteFriend.innerHTML = toto;
+
+	// <div class="modal-footer">
+	vLineHTML.vDivModalFooterConfirmDeleteFriend = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeleteFriend.appendChild(vLineHTML.vDivModalFooterConfirmDeleteFriend);
+	vLineHTML.vDivModalFooterConfirmDeleteFriend.setAttribute('class', 'modal-footer');
+
+	// <button id="idModalConfirmBtnRefuse" class="btn-danger">Refuser</button>
+	vLineHTML.vBtnRefuseConfirmDeleteFriend = window.document.createElement('button');
+	vLineHTML.vDivModalFooterConfirmDeleteFriend.appendChild(vLineHTML.vBtnRefuseConfirmDeleteFriend);
+	vLineHTML.vBtnRefuseConfirmDeleteFriend.setAttribute('id', 'idBtnRefuseConfirmDeleteFriend');
+	vLineHTML.vBtnRefuseConfirmDeleteFriend.setAttribute('class', 'btn btn-danger');
+	vLineHTML.vBtnRefuseConfirmDeleteFriend.innerHTML = 'Refuser';
+
+	// <button id="idModalConfirmBtnAccept" class="btn-success">Confirmer</button>
+	vLineHTML.vBtnAcceptConfirmDeleteFriend = window.document.createElement('button');
+	vLineHTML.vDivModalFooterConfirmDeleteFriend.appendChild(vLineHTML.vBtnAcceptConfirmDeleteFriend);
+	vLineHTML.vBtnAcceptConfirmDeleteFriend.setAttribute('id', 'idBtnAcceptConfirmDeleteFriend');
+	vLineHTML.vBtnAcceptConfirmDeleteFriend.setAttribute('class', 'btn btn-success');
+	vLineHTML.vBtnAcceptConfirmDeleteFriend.innerHTML = 'Accepter';
+
+	vLineHTML.vBtnRefuseConfirmDeleteFriend.addEventListener('click', this.refuseDeleteFriend.bind(this),false);
+
+	vLineHTML.vBtnAcceptConfirmDeleteFriend.addEventListener('click', this.acceptDeleteFriend.bind(this),false);
+	vLineHTML.vBtnAcceptConfirmDeleteFriend.datas = pMyEventDatas;
+}
+
+// -----------------------------------------------------------------------------
+// Refus de la Suppression d'un Ami
+// -----------------------------------------------------------------------------
+FriendPopUpMenu.prototype.refuseDeleteFriend = function(event){
+	this.destroyConfirmDeleteFriend();
 }
 
 // -----------------------------------------------------------------------------
@@ -173,19 +286,28 @@ FriendPopUpMenu.prototype.prepareMenuDeleteFriend = function(pFriend, pDivDropDo
 // - Suppression des avatars mutuels dans la liste des amis
 // - Fermeture définitive de la PopUp Menu
 // -----------------------------------------------------------------------------
-FriendPopUpMenu.prototype.deleteFriend = function(event){
-	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', event.target.datas.thisContext.memberClient.changeBtnTxtColOver);						
-	document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', event.target.datas.thisContext.memberClient.changeBtnTxtColOut);						
-	document.getElementById(event.target.datas.actionBtn).removeEventListener('click', event.target.datas.thisContext.deleteFriend);					
+FriendPopUpMenu.prototype.acceptDeleteFriend = function(event){
+	this.destroyConfirmDeleteFriend();
+
+	var myEventDatas = event.target.datas;
 
 	var vFriendToDelete = {
-		myPseudo 			: event.target.datas.myPseudo,
-		myEmail 			: event.target.datas.myEmail,
-		friendPseudo 	: event.target.datas.friendPseudo,
-		friendEmail 	: event.target.datas.friendEmail,
+		myPseudo 			: myEventDatas.myPseudo,
+		myEmail 			: myEventDatas.myEmail,
+		friendPseudo 	: myEventDatas.friendPseudo,
+		friendEmail 	: myEventDatas.friendEmail,
 	}
 
 	webSocketConnection.emit('deleteFriendOfMine',vFriendToDelete);
+}
+// -----------------------------------------------------------------------------
+// Ouvre la modale de confirmation de Suppression d'un Ami
+// -----------------------------------------------------------------------------
+FriendPopUpMenu.prototype.askConfirmDeleteFriend = function(event){
+	var myEventDatas = event.target.datas;
+
+	this.displayModalConfirmDeleteFriend(myEventDatas);
+	$('#idModalConfirmDeleteFriend').modal('show');      // Ouverture de la modale    
 }
 
 // -----------------------------------------------------------------------------
@@ -243,5 +365,19 @@ FriendPopUpMenu.prototype.displayPopUpOfMyFriend = function(pFriend){
 
 		vRecommendFriendsMgr.displayHeaderRecommendations(pFriend, vDivContain);
 		vRecommendFriendsMgr.displayRecommendationLines(pFriend, vDivContain);
+	}
+}
+// --------------------------------------------------------------
+// Ferme la modale de Réponse à l'invitation du TChat et la 
+// détruit dans le DOM
+// --------------------------------------------------------------
+FriendPopUpMenu.prototype.destroyConfirmDeleteFriend = function(){
+	var vModalConfirmDeleteFriend = 'idModalConfirmDeleteFriend';
+
+	$('#'+vModalConfirmDeleteFriend).modal('hide');     // Fermeture de la modale                                     
+
+	var elem = document.getElementById(vModalConfirmDeleteFriend);
+	if (elem){
+		elem.parentNode.removeChild(elem);
 	}
 }
