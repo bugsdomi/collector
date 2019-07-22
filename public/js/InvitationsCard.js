@@ -176,7 +176,6 @@ InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSe
 	// ----------------------------
 	vlineHTML.vACancelInvit = window.document.createElement('a');
 	vlineHTML.vDivDropDown.appendChild(vlineHTML.vACancelInvit);
-	vlineHTML.vACancelInvit.setAttribute('id', 'idAnchorCancelInvit'+vActiveProfile+index);
 	vlineHTML.vACancelInvit.setAttribute('href', '#');
 	vlineHTML.vACancelInvit.setAttribute('class', 'container list-group-item  list-group-item-action list-group-item-white m-0 py-0');
 	vlineHTML.vACancelInvit.setAttribute('style', 'border-bottom: 1px solid black;');
@@ -196,16 +195,13 @@ InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSe
 	vlineHTML.vImgCancelInvit.setAttribute('class', 'avatarToken tokenSize32 m-1');
 	vlineHTML.vImgCancelInvit.setAttribute('alt', 'Membre');
 	vlineHTML.vImgCancelInvit.setAttribute('src', 'static/images/members/'+pMyInvitSent.friendPhoto);
-	vlineHTML.vImgCancelInvit.setAttribute('data-toggle', 'popover');
-	vlineHTML.vImgCancelInvit.setAttribute('data-placement', 'right');
-	vlineHTML.vImgCancelInvit.setAttribute('title', 'Suppression d\'une invitation');
-	vlineHTML.vImgCancelInvit.setAttribute('data-content', 'Vous avez supprimé l\'invitation envoyée à '+pMyInvitSent.friendPseudo);
-	vlineHTML.vImgCancelInvit.setAttribute('data-boundary', 'viewport');
 
 	vlineHTML.vDivCancelInvit = window.document.createElement('div');
 	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivCancelInvit);
 	vlineHTML.vDivCancelInvit.setAttribute('class', 'col-7 align-self-center px-0');
-	vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+// XXXXX
+// vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
+	vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem;');
 	vlineHTML.vDivCancelInvit.innerHTML = ' Annuler l\'invit de '+pMyInvitSent.friendPseudo;
 
 	vlineHTML.vDivBtnCancelInvit = window.document.createElement('div');
@@ -248,7 +244,7 @@ InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSe
 
 	vlineHTML.vBtnCancelInvit.addEventListener('mouseover', vMemberClient.changeBtnTxtColOver);
 	vlineHTML.vBtnCancelInvit.addEventListener('mouseout', vMemberClient.changeBtnTxtColOut);
-	vlineHTML.vBtnCancelInvit.addEventListener('click', this.cancelInvitation);						// Suppression d'une invitation
+	vlineHTML.vBtnCancelInvit.addEventListener('click', this.askConfirmDeleteInvit.bind(this));						// Suppression d'une invitation
 	vlineHTML.vBtnCancelInvit.datas = vDataToTransmit;
 	vlineHTML.vIFACancelInvit.datas = vDataToTransmit;
 
@@ -322,36 +318,137 @@ InvitationsCard.prototype.addInvitSentIntoCard = function(pMyInvitSent){
 	}
 };
 
-// --------------------------------------------------------------
-// Annulation d'une invitation envoyée à un membre
-// Si le receveur est connecté, son nombre d'invitations evoluera en temps réel
-// --------------------------------------------------------------
-InvitationsCard.prototype.cancelInvitation = function(event){
-	// document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseover', event.target.datas.thisContext.memberClient.ChangeBtnTxtColOver);						
-	// document.getElementById(event.target.datas.actionBtn).removeEventListener('mouseout', event.target.datas.thisContext.memberClient.ChangeBtnTxtColOut);						
-	// document.getElementById(event.target.datas.actionBtn).removeEventListener('click', event.target.datas.thisContext.cancelInvitation);					
+// -----------------------------------------------------------------------------
+// Modale de confirmation de Suppression d'une invitation
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.displayModalConfirmDeleteInvit = function(pMyEventDatas){
+	var vLineHTML = {};		
+	var vWorkingSpace = document.getElementById('idWorkingSpace');
 
-	// vMemberClient.displayModalConfirm(
-	// 	' Confirmation', 
-	// 	'Vous allez supprimer une invitation', 
-	// 	'Êtes-sûr de vouloir supprimer l\'invitation que vous aviez lancée à '+event.target.datas.friendPseudo+' ?',
-	// 	() => {
-	// 		var vInvitSentToDelete = {
-	// 			myPseudo 			: event.target.datas.myPseudo,
-	// 			myEmail 			: event.target.datas.myEmail,
-	// 			friendPseudo 	: event.target.datas.friendPseudo,
-	// 			friendEmail 	: event.target.datas.friendEmail,
-	// 		}
-	// 		webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
-	// 	}
-	// );
-			var vInvitSentToDelete = {
-				myPseudo 			: event.target.datas.myPseudo,
-				myEmail 			: event.target.datas.myEmail,
-				friendPseudo 	: event.target.datas.friendPseudo,
-				friendEmail 	: event.target.datas.friendEmail,
-			}
-			webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
+	// <div id="idModalConfirm" class="modal px-0" data-keyboard="false" data-focus="true" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="idAriaModalConfirm" aria-hidden="true" style="z-index: 1060;">
+	vLineHTML.vDivModalConfirmDeleteInvit = window.document.createElement('div');
+	vWorkingSpace.appendChild(vLineHTML.vDivModalConfirmDeleteInvit);
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('id', 'idModalConfirmDeleteInvit');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('class', 'modal px-0');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('data-keyboard', 'false');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('data-focus', 'true');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('tabindex', '-1');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('role', 'dialog');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('data-backdrop', 'static');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('aria-labelledby', 'idAriaModalConfirmDeleteInvit');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('aria-hidden', 'true');
+	vLineHTML.vDivModalConfirmDeleteInvit.setAttribute('style', 'z-index: 1060;');
+
+	// <div class="modal-dialog modal-dialog-centered" role="document">
+	vLineHTML.vDivModalDialogConfirmDeleteInvit = window.document.createElement('div');
+	vLineHTML.vDivModalConfirmDeleteInvit.appendChild(vLineHTML.vDivModalDialogConfirmDeleteInvit);
+	vLineHTML.vDivModalDialogConfirmDeleteInvit.setAttribute('class', 'modal-dialog modal-dialog-centered');
+	vLineHTML.vDivModalDialogConfirmDeleteInvit.setAttribute('role', 'document');
+	
+	// <div class="modal-content">
+	vLineHTML.vDivModalContentConfirmDeleteInvit = window.document.createElement('div');
+	vLineHTML.vDivModalDialogConfirmDeleteInvit.appendChild(vLineHTML.vDivModalContentConfirmDeleteInvit);
+	vLineHTML.vDivModalContentConfirmDeleteInvit.setAttribute('class', 'modal-content');
+
+	// <div id="idModalConfirmHeader" class="modal-header border-bottom bg-warning text-dark">
+	vLineHTML.vModalConfirmDeleteInvitHeader = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeleteInvit.appendChild(vLineHTML.vModalConfirmDeleteInvitHeader);
+	vLineHTML.vModalConfirmDeleteInvitHeader.setAttribute('class', 'modal-header border-bottom bg-warning text-dark');
+
+	// <h5 id="idModalConfirmTitle" class="modal-title">
+	vLineHTML.vH5ModalHeaderConfirmDeleteInvit = window.document.createElement('h5');
+	vLineHTML.vModalConfirmDeleteInvitHeader.appendChild(vLineHTML.vH5ModalHeaderConfirmDeleteInvit);
+	vLineHTML.vH5ModalHeaderConfirmDeleteInvit.setAttribute('class', 'modal-title');
+	
+	// <i class="fa fa-question-circle"></i>
+	vLineHTML.vIModalHeaderConfirmDeleteInvit = window.document.createElement('i');
+	vLineHTML.vH5ModalHeaderConfirmDeleteInvit.appendChild(vLineHTML.vIModalHeaderConfirmDeleteInvit);
+	vLineHTML.vIModalHeaderConfirmDeleteInvit.setAttribute('class', 'fa fa-question-circle');
+	vLineHTML.vH5ModalHeaderConfirmDeleteInvit.innerHTML += ' Confirmation';
+	
+	// <div class="modal-body">
+	vLineHTML.vDivModalBodyConfirmDeleteInvit = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeleteInvit.appendChild(vLineHTML.vDivModalBodyConfirmDeleteInvit);
+	vLineHTML.vDivModalBodyConfirmDeleteInvit.setAttribute('class', 'modal-body');
+	
+	// <form id="idModalConfirmForm" class="mb-4 mx-auto d-block">
+	vLineHTML.vFormModalBodyConfirmDeleteInvit = window.document.createElement('form');
+	vLineHTML.vDivModalBodyConfirmDeleteInvit.appendChild(vLineHTML.vFormModalBodyConfirmDeleteInvit);
+	vLineHTML.vFormModalBodyConfirmDeleteInvit.setAttribute('id', 'idModalConfirmDeleteInvitForm');
+	vLineHTML.vFormModalBodyConfirmDeleteInvit.setAttribute('class', 'mb-4 mx-auto d-block');
+
+	// <img src="static/images/favicon.png" class="mb-4 mx-auto d-block" alt="Logo du site \'Collect\'Or" width="auto" height="72px">
+	vLineHTML.vImgModalBodyConfirmDeleteInvit = window.document.createElement('img');
+	vLineHTML.vDivModalBodyConfirmDeleteInvit.appendChild(vLineHTML.vImgModalBodyConfirmDeleteInvit);
+	vLineHTML.vImgModalBodyConfirmDeleteInvit.setAttribute('src', 'static/images/favicon.png');
+	vLineHTML.vImgModalBodyConfirmDeleteInvit.setAttribute('class', 'mb-4 mx-auto d-block');
+	vLineHTML.vImgModalBodyConfirmDeleteInvit.setAttribute('alt', 'Logo du site \'Collect\'Or');
+	vLineHTML.vImgModalBodyConfirmDeleteInvit.setAttribute('width', 'auto');
+	vLineHTML.vImgModalBodyConfirmDeleteInvit.setAttribute('height', '72px');
+
+	// <div id="idModalConfirmSubTitleAndText" class="mb-3 font-weight-normal text-center">
+	vLineHTML.vH3ModalBodyConfirmDeleteInvit = window.document.createElement('div');
+	vLineHTML.vDivModalBodyConfirmDeleteInvit.appendChild(vLineHTML.vH3ModalBodyConfirmDeleteInvit);
+	vLineHTML.vH3ModalBodyConfirmDeleteInvit.setAttribute('class', 'mb-3 font-weight-normal text-center');
+	vLineHTML.vH3ModalBodyConfirmDeleteInvit.innerHTML = 	'<h5>Vous allez supprimer une invitation</h5><br />'+ 
+																												'<p>Êtes-sûr de vouloir supprimer l\'invitation que vous avez faite à '+pMyEventDatas.friendPseudo+' ?</p>';
+
+	// <div class="modal-footer">
+	vLineHTML.vDivModalFooterConfirmDeleteInvit = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeleteInvit.appendChild(vLineHTML.vDivModalFooterConfirmDeleteInvit);
+	vLineHTML.vDivModalFooterConfirmDeleteInvit.setAttribute('class', 'modal-footer');
+
+	// <button id="idModalConfirmBtnRefuse" class="btn-danger">Refuser</button>
+	vLineHTML.vBtnRefuseConfirmDeleteInvit = window.document.createElement('button');
+	vLineHTML.vDivModalFooterConfirmDeleteInvit.appendChild(vLineHTML.vBtnRefuseConfirmDeleteInvit);
+	vLineHTML.vBtnRefuseConfirmDeleteInvit.setAttribute('id', 'idBtnRefuseConfirmDeleteInvit');
+	vLineHTML.vBtnRefuseConfirmDeleteInvit.setAttribute('class', 'btn btn-danger');
+	vLineHTML.vBtnRefuseConfirmDeleteInvit.innerHTML = 'Refuser';
+
+	// <button id="idModalConfirmBtnAccept" class="btn-success">Confirmer</button>
+	vLineHTML.vBtnAcceptConfirmDeleteInvit = window.document.createElement('button');
+	vLineHTML.vDivModalFooterConfirmDeleteInvit.appendChild(vLineHTML.vBtnAcceptConfirmDeleteInvit);
+	vLineHTML.vBtnAcceptConfirmDeleteInvit.setAttribute('id', 'idBtnAcceptConfirmDeleteInvit');
+	vLineHTML.vBtnAcceptConfirmDeleteInvit.setAttribute('class', 'btn btn-success');
+	vLineHTML.vBtnAcceptConfirmDeleteInvit.innerHTML = 'Accepter';
+
+	vLineHTML.vBtnRefuseConfirmDeleteInvit.addEventListener('click', this.refuseDeleteInvit.bind(this),false);
+	vLineHTML.vBtnAcceptConfirmDeleteInvit.addEventListener('click', this.acceptDeleteInvit.bind(this),false);
+	vLineHTML.vBtnAcceptConfirmDeleteInvit.datas = pMyEventDatas;
+}
+
+// -----------------------------------------------------------------------------
+// Refus de la Suppression d'une invitation
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.refuseDeleteInvit = function(event){
+	this.destroyConfirmDeleteInvit();
+}
+
+// -----------------------------------------------------------------------------
+// Suppression d'une invitation
+// - Dans la base de donnée
+// - Suppression des avatars mutuels dans la liste des amis
+// - Fermeture définitive de la PopUp Menu
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.acceptDeleteInvit = function(event){
+	this.destroyConfirmDeleteInvit();
+
+	var vInvitSentToDelete = {
+		myPseudo 			: event.target.datas.myPseudo,
+		myEmail 			: event.target.datas.myEmail,
+		friendPseudo 	: event.target.datas.friendPseudo,
+		friendEmail 	: event.target.datas.friendEmail,
+	}
+	webSocketConnection.emit('cancelInvitation',vInvitSentToDelete)
+}
+// -----------------------------------------------------------------------------
+// Ouvre la modale de confirmation de Suppression d'une invitation
+// -----------------------------------------------------------------------------
+InvitationsCard.prototype.askConfirmDeleteInvit = function(event){
+	var myEventDatas = event.target.datas;
+
+	this.displayModalConfirmDeleteInvit(myEventDatas);
+	$('#idModalConfirmDeleteInvit').modal('show');      // Ouverture de la modale    
 }
 
 // -----------------------------------------------------------------------------
@@ -360,38 +457,6 @@ InvitationsCard.prototype.cancelInvitation = function(event){
 // - Suppression de l'avatar à qui j'avais fait l'invitation et de tous ses 
 // sous-elements (Popup-Menu, Lignes de reco, etc...) de ma liste d'invitations en attente
 // Si plus d'invitation en attente, fermeture de la carte des invitations en attente
-// -----------------------------------------------------------------------------
-InvitationsCard.prototype.removeInvitSentFromMyInvitSentList = function(pInvitToDelete){
-	// Tant que j'ai une opération d'annulation d'invitation encours, je neutralise tous les autres avatars pour ne pas lancer plusieurs annulations simultanement
-	this.memberClient.vMyInvitSentList.forEach((item, index) => {
-		if (index !== pInvitToDelete.indexInvitToDelete){
-			document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.add('disabled')
-		}
-	})
-
-	this.displayNotifInvitCanceled(pInvitToDelete);			// Affiche la notification de suppression d'invitation avant la fermeture du PopUp Menu
-}
-
-// --------------------------------------------------------------
-// Affichage d'une Notification de suppression d'invitation envoyée
-// --------------------------------------------------------------
-InvitationsCard.prototype.displayNotifInvitCanceled = function(pInvitToDelete){
-	var idImg = 'idImgCancelInvit'+vActiveProfile + pInvitToDelete.indexInvitToDelete;
-	$('#'+idImg).popover('show');
-
-	setTimeout(function(){
-		$('#'+idImg).popover('hide')
-	},cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
-
-	setTimeout(() => {
-		this.refreshMyInvitList(pInvitToDelete)
-	},cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
-};
-
-// -----------------------------------------------------------------------------
-// Suppression d'une Invitation
-// - 1) Suppression de l'invitation du tableau de mes invitations
-// - 2) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon invitation de ma liste d'invitations
 // -----------------------------------------------------------------------------
 InvitationsCard.prototype.refreshMyInvitList = function(pInvitToDelete){
 	this.memberClient.vMyInvitSentList.splice(pInvitToDelete.indexInvitToDelete, 1);   // Efface l'occurence de mon invitation du tableau de mes invitations en attente
@@ -432,12 +497,19 @@ InvitationsCard.prototype.refreshMyInvitList = function(pInvitToDelete){
 			this.memberClient.vInvitSentCardVisible = false;
 		}
 	}
-
-	if (vActiveProfile === cstMainProfileActive){
-		// Réactivation de ligne de menu permettant d'annuler une invitation
-		this.memberClient.vMyInvitSentList.forEach((item, index) => {
-			document.getElementById('idAnchorCancelInvit'+vActiveProfile+index).classList.remove('disabled')
-		})
-	}
 	vToolBox.clearAllOpenedPopOverAndToolTip();
+}
+
+// --------------------------------------------------------------
+// Ferme la modale de confirmation et la 
+// détruit dans le DOM
+// --------------------------------------------------------------
+InvitationsCard.prototype.destroyConfirmDeleteInvit = function(){
+	var vModalConfirmDeleteInvit = 'idModalConfirmDeleteInvit';
+	$('#'+vModalConfirmDeleteInvit).modal('hide');     // Fermeture de la modale                                     
+
+	var elem = document.getElementById(vModalConfirmDeleteInvit);
+	if (elem){
+		elem.parentNode.removeChild(elem);
+	}
 }

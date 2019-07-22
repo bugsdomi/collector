@@ -187,8 +187,6 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	vlineHTML.vIConnectedStatus = window.document.createElement('span');
 	vlineHTML.vDivAvatar.appendChild(vlineHTML.vIConnectedStatus);
 	vlineHTML.vIConnectedStatus.setAttribute('id', 'idConnectedLed'+vActiveProfile+index);
-// XXXXX
-// vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-warning');
 	vlineHTML.vIConnectedStatus.setAttribute('style', 'display: inline-block; position: relative; top: -23px; left: 8px; width: 12px; height: 12px; border: 1px black solid; border-radius: 50%;');
 	if (pMyFriend.connected){
 		vlineHTML.vIConnectedStatus.setAttribute('class', 'bg-success');
@@ -216,40 +214,6 @@ FriendsCard.prototype.addFriendIntoCard = function(pMyFriend, pULFriend){
 	// Ajoute la déclaration d'évenements à chaque PopOver, ToolTip DropDown
 	vToolBox.InitPopOverAndToolTipAndDropDown();
 };
-
-
-
-// XXXXX
-// -----------------------------------------------------------------------------
-// Suppression d'un Ami
-// - 1) Affichage d'une notification
-// - Suppression de mon ex-ami du tableau de mes amis
-// - Fermeture définitive de la PopUp Menu
-// - Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
-// -----------------------------------------------------------------------------
-// FriendsCard.prototype.removeFriendFromMyFriendList = function(pFriendToDelete){
-// var idImg = 'idHdrImgDelFriend' + pFriendToDelete.indexFriendToDelete;
-// $('#'+idImg).popover('show');
-
-// setTimeout(function(){
-// 	$('#'+idImg).popover('hide');
-// },cstDelayClosingPopover);     																	// Fermeture temporisée de la PopOver
-
-// setTimeout(() => {
-// 		this.refreshMyFriendList(pFriendToDelete);
-// },cstDelayClosingPopover+500);																	// Supprime l'Avatar et ferme la PopUp après un délai de quelques secondes
-// 		this.refreshMyFriendList(pFriendToDelete);
-// };
-
-// -----------------------------------------------------------------------------
-// Suppression d'un Ami (suite)
-// - Apres l'affichage d'une notification
-// - 2) Suppression de mon ex-ami du tableau de mes amis
-// - 3) Fermeture définitive de la PopUp Menu
-// - 4) Suppression de l'avatar et de tous ses sous-elements (Popup-Menu, Lignes de reco, etc...) de mon ex-ami de ma liste d'amis
-// -----------------------------------------------------------------------------
-// FriendsCard.prototype.refreshMyFriendList = function(pFriendToDelete){
-
 
 // -----------------------------------------------------------------------------
 // Suppression d'un Ami 

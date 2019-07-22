@@ -101,13 +101,13 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	vlineHTML.vDivColFirstName = window.document.createElement('div');
 	vlineHTML.vDivRowFirstName.appendChild(vlineHTML.vDivColFirstName);
-	vlineHTML.vDivColFirstName.setAttribute('class', 'col-sm-4 mx-0 px-0 text-left');
-	vlineHTML.vDivColFirstName.setAttribute('style', 'font-size: 0.9rem; font-weight: normal;');
+	vlineHTML.vDivColFirstName.setAttribute('class', 'col-sm-4 mx-0 px-0 text-left font-weight-bold');
+	vlineHTML.vDivColFirstName.setAttribute('style', 'font-size: 0.9rem;');
 	vlineHTML.vDivColFirstName.innerHTML = 'Prénom :';
 
 	vlineHTML.vDivColFirstName = window.document.createElement('div');
 	vlineHTML.vDivRowFirstName.appendChild(vlineHTML.vDivColFirstName);
-	vlineHTML.vDivColFirstName.setAttribute('class', 'col-sm-8 font-weight-bold text-left px-0');
+	vlineHTML.vDivColFirstName.setAttribute('class', 'col-sm-8 text-left px-0');
 
 	if (!this.memberClient.friendFirstName){
 		vlineHTML.vDivColFirstName.innerHTML = 'Non renseigné';
@@ -121,13 +121,13 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	vlineHTML.vDivColName = window.document.createElement('div');
 	vlineHTML.vDivRowName.appendChild(vlineHTML.vDivColName);
-	vlineHTML.vDivColName.setAttribute('class', 'col-sm-4 mx-0 px-0 text-left');
-	vlineHTML.vDivColName.setAttribute('style', 'font-size: 0.9rem; font-weight: normal;');
+	vlineHTML.vDivColName.setAttribute('class', 'col-sm-4 mx-0 px-0 text-left font-weight-bold');
+	vlineHTML.vDivColName.setAttribute('style', 'font-size: 0.9rem;');
 	vlineHTML.vDivColName.innerHTML = 'Nom :';
 
 	vlineHTML.vDivColName = window.document.createElement('div');
 	vlineHTML.vDivRowName.appendChild(vlineHTML.vDivColName);
-	vlineHTML.vDivColName.setAttribute('class', 'col-sm-8 font-weight-bold text-left px-0');
+	vlineHTML.vDivColName.setAttribute('class', 'col-sm-8 text-left px-0');
 
 	if (!this.memberClient.friendName){
 		vlineHTML.vDivColName.innerHTML = 'Non renseigné';

@@ -89,14 +89,14 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-4 text-dark">Prénom</div>
 	vlineHTML.vDivCol1 = window.document.createElement('div');
 	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol1);
-	vlineHTML.vDivCol1.setAttribute('class', 'col-sm-4 text-dark');
+	vlineHTML.vDivCol1.setAttribute('class', 'col-sm-4 text-dark font-weight-bold');
 	vlineHTML.vDivCol1.innerHTML='Prénom';
 
 // 					<div class="col-sm-8 font-weight-bold" id="idAboutPrenom"></div>
 	vlineHTML.vDivCol2 = window.document.createElement('div');
 	vlineHTML.vDivRow1.appendChild(vlineHTML.vDivCol2);
 	vlineHTML.vDivCol2.setAttribute('id', 'idAboutPrenom'+vActiveProfile);
-	vlineHTML.vDivCol2.setAttribute('class', 'col-sm-8 font-weight-bold');
+	vlineHTML.vDivCol2.setAttribute('class', 'col-sm-8');
 
 // 			<li>
 	vlineHTML.vLi2 = window.document.createElement('li');
@@ -110,14 +110,14 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-4 text-dark">Nom</div>
 	vlineHTML.vDivCol3 = window.document.createElement('div');
 	vlineHTML.vDivRow2.appendChild(vlineHTML.vDivCol3);
-	vlineHTML.vDivCol3.setAttribute('class', 'col-sm-4 text-dark');
+	vlineHTML.vDivCol3.setAttribute('class', 'col-sm-4 text-dark font-weight-bold');
 	vlineHTML.vDivCol3.innerHTML='Nom';
 
 // 					<div class="col-sm-8 font-weight-bold" id="idAboutNom"></div>
 	vlineHTML.vDivCol4 = window.document.createElement('div');
 	vlineHTML.vDivRow2.appendChild(vlineHTML.vDivCol4);
 	vlineHTML.vDivCol4.setAttribute('id', 'idAboutNom'+vActiveProfile);
-	vlineHTML.vDivCol4.setAttribute('class', 'col-sm-8 font-weight-bold');
+	vlineHTML.vDivCol4.setAttribute('class', 'col-sm-8');
 
 // 			<li>
 	vlineHTML.vLi3 = window.document.createElement('li');
@@ -131,14 +131,14 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-4 text-dark">Âge</div>
 	vlineHTML.vDivCol5 = window.document.createElement('div');
 	vlineHTML.vDivRow3.appendChild(vlineHTML.vDivCol5);
-	vlineHTML.vDivCol5.setAttribute('class', 'col-sm-4 text-dark');
+	vlineHTML.vDivCol5.setAttribute('class', 'col-sm-4 text-dark font-weight-bold');
 	vlineHTML.vDivCol5.innerHTML='Âge';
 
 // 						<div class="col-sm-8 font-weight-bold" id="idAboutAge"></div>
 	vlineHTML.vDivCol6 = window.document.createElement('div');
 	vlineHTML.vDivRow3.appendChild(vlineHTML.vDivCol6);
 	vlineHTML.vDivCol6.setAttribute('id', 'idAboutAge'+vActiveProfile);
-	vlineHTML.vDivCol6.setAttribute('class', 'col-sm-8 font-weight-bold');
+	vlineHTML.vDivCol6.setAttribute('class', 'col-sm-8');
 
 // 			<li>
 	vlineHTML.vLi4 = window.document.createElement('li');
@@ -152,14 +152,14 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-4 text-dark">Ville</div>
 	vlineHTML.vDivCol7 = window.document.createElement('div');
 	vlineHTML.vDivRow4.appendChild(vlineHTML.vDivCol7);
-	vlineHTML.vDivCol7.setAttribute('class', 'col-sm-4 text-dark');
+	vlineHTML.vDivCol7.setAttribute('class', 'col-sm-4 text-dark font-weight-bold');
 	vlineHTML.vDivCol7.innerHTML='Ville';
 
 // 						<div class="col-sm-8 font-weight-bold" id="idAboutVille"></div>
 	vlineHTML.vDivCol8 = window.document.createElement('div');
 	vlineHTML.vDivRow4.appendChild(vlineHTML.vDivCol8);
 	vlineHTML.vDivCol8.setAttribute('id', 'idAboutVille'+vActiveProfile);
-	vlineHTML.vDivCol8.setAttribute('class', 'col-sm-8 font-weight-bold');
+	vlineHTML.vDivCol8.setAttribute('class', 'col-sm-8');
 
 // 			<li>
 	vlineHTML.vLi5 = window.document.createElement('li');
@@ -173,14 +173,14 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-4 text-dark">Département</div>
 	vlineHTML.vDivCol9 = window.document.createElement('div');
 	vlineHTML.vDivRow5.appendChild(vlineHTML.vDivCol9);
-	vlineHTML.vDivCol9.setAttribute('class', 'col-sm-4 text-dark');
+	vlineHTML.vDivCol9.setAttribute('class', 'col-sm-4 text-dark font-weight-bold');
 	vlineHTML.vDivCol9.innerHTML='Département';
 
 // 						<div class="col-sm-8 font-weight-bold" id="idAboutDepartmentName"></div>
 	vlineHTML.vDivCol10 = window.document.createElement('div');
 	vlineHTML.vDivRow5.appendChild(vlineHTML.vDivCol10);
 	vlineHTML.vDivCol10.setAttribute('id', 'idAboutDepartmentName'+vActiveProfile);
-	vlineHTML.vDivCol10.setAttribute('class', 'col-sm-8 font-weight-bold');
+	vlineHTML.vDivCol10.setAttribute('class', 'col-sm-8');
 	
 
 	// ------------------------------------------------------------------------------ 
@@ -198,14 +198,14 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-12 text-dark mb-2">Présentation</div>
 	vlineHTML.vDivCol11 = window.document.createElement('div');
 	vlineHTML.vDivRow6.appendChild(vlineHTML.vDivCol11);
-	vlineHTML.vDivCol11.setAttribute('class', 'col-sm-12 text-dark mb-2');
+	vlineHTML.vDivCol11.setAttribute('class', 'col-sm-12 text-dark mb-2 font-weight-bold');
 	vlineHTML.vDivCol11.innerHTML='Présentation';
 
 // 					<textarea class="col-sm-12 presentationCard font-weight-bold" rows="2"  id="idAboutPresentation" disabled></textarea>
 	vlineHTML.vDivCol12 = window.document.createElement('textarea');
 	vlineHTML.vDivRow6.appendChild(vlineHTML.vDivCol12);
 	vlineHTML.vDivCol12.setAttribute('id', 'idAboutPresentation'+vActiveProfile);
-	vlineHTML.vDivCol12.setAttribute('class', 'col-sm-12 presentationCard font-weight-bold');
+	vlineHTML.vDivCol12.setAttribute('class', 'col-sm-12 presentationCard');
 	vlineHTML.vDivCol12.setAttribute('rows', '2');
 	vlineHTML.vDivCol12.setAttribute('disabled', '');
 	vlineHTML.vDivCol12.setAttribute('style', 'border-color: darkGray;');
@@ -226,7 +226,7 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // 					<div class="col-sm-12 text-dark my-2">Mes préférences...</div>
 	vlineHTML.vDivCol13 = window.document.createElement('div');
 	vlineHTML.vDivRow7.appendChild(vlineHTML.vDivCol13);
-	vlineHTML.vDivCol13.setAttribute('class', 'col-sm-12 text-dark my-2');
+	vlineHTML.vDivCol13.setAttribute('class', 'col-sm-12 text-dark my-2 font-weight-bold');
 	vlineHTML.vDivCol13.innerHTML='Mes préférences...';
 
 // 					<div class="col-sm-12 presentationCard btn-group-toggle text-center">

@@ -1264,7 +1264,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('cancelInvitedMemberFromMyInvitSentList', function(pCancelInvitSent){ 
 		pCancelInvitSent.indexInvitToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyInvitSentList, 'friendPseudo', pCancelInvitSent.friendPseudo);	
-		vInvitationsCardMain.removeInvitSentFromMyInvitSentList(pCancelInvitSent);
+		vInvitationsCardMain.refreshMyInvitList(pCancelInvitSent);
 	});
 
 	// --------------------------------------------------------------
@@ -1326,8 +1326,6 @@ window.addEventListener('DOMContentLoaded', function(){
 				} else {
 					pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
 				}
-// XXXXX
-// vFriendsCardFriend.refreshMyFriendList(pFriendToDelete);
 				vFriendsCardFriend.removeFriendFromMyFriendList(pFriendToDelete);
 			}
 		}
@@ -1340,8 +1338,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	// --------------------------------------------------------------
 	webSocketConnection.on('deleteMeFromHisFriendList', function(pFriendToDelete){ 
 		pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vMemberClient.vMyFriendList, 'friendPseudo', pFriendToDelete.friendPseudo);
-// XXXXX
-// vFriendsCardMain.refreshMyFriendList(pFriendToDelete);
 		vFriendsCardMain.removeFriendFromMyFriendList(pFriendToDelete);
 	});
 

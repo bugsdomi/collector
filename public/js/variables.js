@@ -57,9 +57,13 @@ var vActiveProfile         = cstMainProfileActive;  // Par défaut, c'est le pro
 var cstWithScaling    = 'withScaling';      // Définit si un avatar va avoir l'Effet "Zoom" au survol de la souris (Dans ce cas --> Oui)
 var cstWithNoScaling  = 'withNoScaling';    // Définit si un avatar va avoir l'Effet "Zoom" au survol de la souris (Dans ce cas --> Non)
 
-var cstChatInProgress = 0;                  // Salon de Chat : en cours de discussion
-var cstChatWaiting    = 1;                  // Salon de chat : en attente de réponse due l'Ami invité
-var cstChatJoin       = 2;                  // Salon de Chat : en attente de réponse à la proposition de discussion
+var cstChatInProgress = 0;           // Salon de Chat : en cours de discussion
+var cstChatWaiting    = 1;           // Salon de chat : en attente de réponse due l'Ami invité
+var cstChatJoin       = 2;           // Salon de Chat : en attente de réponse à la proposition de discussion
 
-var cstChatInviteur   = 0;                  // Definit le statut du membre lors d'une invitation à Tchatter (ici, c'est l'inviteur)
-var cstChatGuest      = 1;                  // Definit le statut du membre lors d'une invitation à Tchatter (ici, c'est l'invité)
+var cstChatInviteur   = 0;           // Definit le statut du membre lors d'une invitation à Tchatter (ici, c'est l'inviteur)
+var cstChatGuest      = 1;           // Definit le statut du membre lors d'une invitation à Tchatter (ici, c'est l'invité)
+
+var cstPostToDelete   = 0;           // Pour définir le niveau "Post" a supprimer
+var cstL1ToDelete     = 1;           // Pour définir le niveau "Commentaire L1" a supprimer
+var cstL2ToDelete     = 2;           // Pour définir le niveau "Commentaire L2" a supprimer

@@ -146,10 +146,6 @@ PostsClient.prototype.displayPostEdit = function(){
 	}, false);
 }
 
-
-
-
-
 // -----------------------------------------------------------------------------
 // Cette méthode affiche les Posts publiés
 // -----------------------------------------------------------------------------
@@ -202,7 +198,7 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 	vlineHTML.vDivTimeStamp = window.document.createElement('div');
 	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vDivTimeStamp);
 	vlineHTML.vDivTimeStamp.setAttribute('class', 'text-dark p-0 ml-2 font-size-70 align-self-center');
-	vlineHTML.vDivTimeStamp.innerHTML = moment(pPostToPublish.postDate).format('[à publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
+	vlineHTML.vDivTimeStamp.innerHTML = moment(pPostToPublish.postDate).format('[a publié le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
 
 	vlineHTML.vDivPostTimeStampMoment = window.document.createElement('div');
 	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vDivPostTimeStampMoment);
@@ -295,10 +291,11 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 				vlineHTML.vBtnDeletePost.style.visibility='visible';											// Alors Affichage du bouton de suppression du Post
 
 				vDataToTransmit = {
-					activeProfile : pActiveProfile,
+					activeProfile 	: pActiveProfile,
+					vPostToPublish 	: pPostToPublish,
+					vPostId 				: vlineHTML.vH5PostPseudo.innerHTML + ' ' + vlineHTML.vDivTimeStamp.innerHTML,
 				}
-
-				vlineHTML.vBtnDeletePost.addEventListener('click', this.deletePublishedPost.bind(this),false);
+				vlineHTML.vBtnDeletePost.addEventListener('click', this.askConfirmDeletePost.bind(this),false);
 				vlineHTML.vBtnDeletePost.datas = vDataToTransmit;
 			}
 
@@ -473,7 +470,9 @@ PostsClient.prototype.publishPost = function(){
 // On obtient d'abord le N° d'index en exploitant l'indice liés aux objets du DOM
 // -----------------------------------------------------------------------------
 PostsClient.prototype.deletePublishedPost = function(event){
-	var vBtnClicked = event.target.id;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
+
+	// var vBtnClicked = event.target.id;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
+	var vBtnClicked = event.target.datas.targetId;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
 	index = vBtnClicked.slice(('idBtnDeletePost' + event.target.datas.activeProfile).length, vBtnClicked.length);
 
 	// On va lire la Date/Heure associée au Post
@@ -490,7 +489,6 @@ PostsClient.prototype.deletePublishedPost = function(event){
 
 	webSocketConnection.emit('deletePost',vPostToDelete);
 }
-
 
 // -----------------------------------------------------------------------------
 // Cette méthode va chercher les Posts à afficher au moment de l'affichage du profil
@@ -514,12 +512,6 @@ PostsClient.prototype.displayStoredPosts = function(pPostsList, pActiveProfile){
 }
 
 
-
-
-
-
-
-
 // *********************************************************************************************************
 // *********************************************************************************************************
 // *********************************************************************************************************
@@ -529,9 +521,6 @@ PostsClient.prototype.displayStoredPosts = function(pPostsList, pActiveProfile){
 // *********************************************************************************************************
 // *********************************************************************************************************
 // *********************************************************************************************************
-
-
-
 // -----------------------------------------------------------------------------
 // Cette méthode publie le nouveau Commentaire L1 et le stocke dans la BDD
 // -----------------------------------------------------------------------------
@@ -661,7 +650,7 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 			vlineHTML.vDivCommentL1TimeStamp = window.document.createElement('div');
 			vlineHTML.vDivCommentL1HeaderRow.appendChild(vlineHTML.vDivCommentL1TimeStamp);
 			vlineHTML.vDivCommentL1TimeStamp.setAttribute('class', 'text-dark p-0 ml-2 font-size-70 align-self-center');
-			vlineHTML.vDivCommentL1TimeStamp.innerHTML = moment(pCommentL1.commentL1Date).format('[à commenté le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
+			vlineHTML.vDivCommentL1TimeStamp.innerHTML = moment(pCommentL1.commentL1Date).format('[a commenté le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
 
 			vlineHTML.vDivCommentL1TimeStampMoment = window.document.createElement('div');
 			vlineHTML.vDivCommentL1HeaderRow.appendChild(vlineHTML.vDivCommentL1TimeStampMoment);
@@ -730,9 +719,10 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 
 				vDataToTransmit = {
 					activeProfile : pActiveProfile,
+					vCommentL1 		: pCommentL1,
+					vPostId 			: vlineHTML.vH5CommentL1Pseudo.innerHTML + ' ' + vlineHTML.vDivCommentL1TimeStamp.innerHTML,
 				}
-
-				vlineHTML.vBtnDeleteCommentL1.addEventListener('click', this.deletePublishedCommentL1.bind(this),false);
+				vlineHTML.vBtnDeleteCommentL1.addEventListener('click', this.askConfirmDeleteCommentL1.bind(this),false);
 				vlineHTML.vBtnDeleteCommentL1.datas = vDataToTransmit;
 			}
 
@@ -817,7 +807,6 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 				this.displayStoredCommentL2(pCommentL1.commentL2, pActiveProfile);
 			}
 
-
 	var vDataToTransmit = {
 		activeProfile 	: pActiveProfile,
 	}
@@ -861,7 +850,7 @@ PostsClient.prototype.displayStoredCommentL1 = function(pCommentL1List, pActiveP
 // Cette méthode supprime un commentaire de niveau 1
 // -----------------------------------------------------------------------------
 PostsClient.prototype.deletePublishedCommentL1 = function(event){
-var vBtnClicked = event.target.id;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
+var vBtnClicked = event.target.datas.targetId;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
 var vActiveProfile = event.target.datas.activeProfile;
 var vPostIndex;
 var vDivPostTimeStampMoment;
@@ -915,21 +904,6 @@ PostsClient.prototype.deleteCommentL1 = function(pCommentL1ToDelete, pActiveProf
 		vPuceNbCommentsL1.classList.replace('visible','invisible');
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // -----------------------------------------------------------------------------
 // Cette méthode publie le nouveau Commentaire L2 et le stocke dans la BDD
@@ -1074,8 +1048,6 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 		vPuceNbCommentsL2.classList.replace('visible','invisible');
 	}
 
-
-
 	// Ecriture du Commentaire proprement dit
 	// <div class="media">
 	vlineHTML.vDivMediaCommentL2 = window.document.createElement('div');
@@ -1108,7 +1080,7 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 			vlineHTML.vDivCommentL2TimeStamp = window.document.createElement('div');
 			vlineHTML.vDivCommentL2HeaderRow.appendChild(vlineHTML.vDivCommentL2TimeStamp);
 			vlineHTML.vDivCommentL2TimeStamp.setAttribute('class', 'text-dark p-0 ml-2 font-size-70 align-self-center');
-			vlineHTML.vDivCommentL2TimeStamp.innerHTML = moment(pCommentL2.commentL2Date).format('[à commenté le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
+			vlineHTML.vDivCommentL2TimeStamp.innerHTML = moment(pCommentL2.commentL2Date).format('[a commenté le ]dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');
 
 			vlineHTML.vDivCommentL2TimeStampMoment = window.document.createElement('div');
 			vlineHTML.vDivCommentL2HeaderRow.appendChild(vlineHTML.vDivCommentL2TimeStampMoment);
@@ -1163,9 +1135,10 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 
 				vDataToTransmit = {
 					activeProfile : pActiveProfile,
+					vCommentL1 		: pCommentL2,
+					vPostId 			: vlineHTML.vH5CommentL2Pseudo.innerHTML + ' ' + vlineHTML.vDivCommentL2TimeStamp.innerHTML,
 				}
-
-				vlineHTML.vBtnDeleteCommentL2.addEventListener('click', this.deletePublishedCommentL2.bind(this),false);
+				vlineHTML.vBtnDeleteCommentL2.addEventListener('click', this.askConfirmDeleteCommentL2.bind(this),false);
 				vlineHTML.vBtnDeleteCommentL2.datas = vDataToTransmit;
 			}
 }
@@ -1180,25 +1153,11 @@ PostsClient.prototype.displayStoredCommentL2 = function(pCommentL2List, pActiveP
 	});
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // -----------------------------------------------------------------------------
 // Cette méthode supprime un commentaire de niveau 2
 // -----------------------------------------------------------------------------
 PostsClient.prototype.deletePublishedCommentL2 = function(event){
-	var vBtnClicked = event.target.id;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
+	var vBtnClicked = event.target.datas.targetId;												// Obtient le N° d'indice du bouton "Supprimer" dans le DOM
 	var vActiveProfile = event.target.datas.activeProfile;
 	var vPostIndex;
 	var vDivPostTimeStampMoment;
@@ -1263,13 +1222,6 @@ PostsClient.prototype.deleteCommentL2 = function(pCommentL2ToDelete, pActiveProf
 		vPuceNbCommentsL2.classList.replace('visible','invisible');
 	}
 }
-
-
-
-
-
-
-
 
 // -----------------------------------------------------------------------------
 // Décalage des N° de commentaires L2 dans les commentaires L1 dans les Posts 
@@ -1470,4 +1422,194 @@ PostsClient.prototype.deletePost = function(pPostToDelete, pActiveProfile){
 	vParentNode.removeChild(vElem);
 	
 	this.renumberPosts(vParentNode, pPostToDelete, pActiveProfile);
+}
+
+// -----------------------------------------------------------------------------
+// Modale de confirmation de Suppression d'une invitation
+// -----------------------------------------------------------------------------
+PostsClient.prototype.displayModalConfirmDeletePost = function(pMyEventDatas){
+	var vLineHTML = {};		
+	var vWorkingSpace = document.getElementById('idWorkingSpace');
+
+	// <div id="idModalConfirm" class="modal px-0" data-keyboard="false" data-focus="true" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="idAriaModalConfirm" aria-hidden="true" style="z-index: 1060;">
+	vLineHTML.vDivModalConfirmDeletePost = window.document.createElement('div');
+	vWorkingSpace.appendChild(vLineHTML.vDivModalConfirmDeletePost);
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('id', 'idModalConfirmDeletePostOrComment');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('class', 'modal px-0');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('data-keyboard', 'false');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('data-focus', 'true');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('tabindex', '-1');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('role', 'dialog');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('data-backdrop', 'static');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('aria-labelledby', 'idAriaModalConfirmDeletePostOrComment');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('aria-hidden', 'true');
+	vLineHTML.vDivModalConfirmDeletePost.setAttribute('style', 'z-index: 1060;');
+
+	// <div class="modal-dialog modal-dialog-centered" role="document">
+	vLineHTML.vDivModalDialogConfirmDeletePost = window.document.createElement('div');
+	vLineHTML.vDivModalConfirmDeletePost.appendChild(vLineHTML.vDivModalDialogConfirmDeletePost);
+	vLineHTML.vDivModalDialogConfirmDeletePost.setAttribute('class', 'modal-dialog modal-dialog-centered');
+	vLineHTML.vDivModalDialogConfirmDeletePost.setAttribute('role', 'document');
+	
+	// <div class="modal-content">
+	vLineHTML.vDivModalContentConfirmDeletePost = window.document.createElement('div');
+	vLineHTML.vDivModalDialogConfirmDeletePost.appendChild(vLineHTML.vDivModalContentConfirmDeletePost);
+	vLineHTML.vDivModalContentConfirmDeletePost.setAttribute('class', 'modal-content');
+
+	// <div id="idModalConfirmHeader" class="modal-header border-bottom bg-warning text-dark">
+	vLineHTML.vModalConfirmDeletePostHeader = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeletePost.appendChild(vLineHTML.vModalConfirmDeletePostHeader);
+	vLineHTML.vModalConfirmDeletePostHeader.setAttribute('class', 'modal-header border-bottom bg-warning text-dark');
+
+	// <h5 id="idModalConfirmTitle" class="modal-title">
+	vLineHTML.vH5ModalHeaderConfirmDeletePost = window.document.createElement('h5');
+	vLineHTML.vModalConfirmDeletePostHeader.appendChild(vLineHTML.vH5ModalHeaderConfirmDeletePost);
+	vLineHTML.vH5ModalHeaderConfirmDeletePost.setAttribute('class', 'modal-title');
+	
+	// <i class="fa fa-question-circle"></i>
+	vLineHTML.vIModalHeaderConfirmDeletePost = window.document.createElement('i');
+	vLineHTML.vH5ModalHeaderConfirmDeletePost.appendChild(vLineHTML.vIModalHeaderConfirmDeletePost);
+	vLineHTML.vIModalHeaderConfirmDeletePost.setAttribute('class', 'fa fa-question-circle');
+	vLineHTML.vH5ModalHeaderConfirmDeletePost.innerHTML += ' Confirmation';
+	
+	// <div class="modal-body">
+	vLineHTML.vDivModalBodyConfirmDeletePost = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeletePost.appendChild(vLineHTML.vDivModalBodyConfirmDeletePost);
+	vLineHTML.vDivModalBodyConfirmDeletePost.setAttribute('class', 'modal-body');
+	
+	// <form id="idModalConfirmForm" class="mb-4 mx-auto d-block">
+	vLineHTML.vFormModalBodyConfirmDeletePost = window.document.createElement('form');
+	vLineHTML.vDivModalBodyConfirmDeletePost.appendChild(vLineHTML.vFormModalBodyConfirmDeletePost);
+	vLineHTML.vFormModalBodyConfirmDeletePost.setAttribute('id', 'idModalConfirmDeletePostForm');
+	vLineHTML.vFormModalBodyConfirmDeletePost.setAttribute('class', 'mb-4 mx-auto d-block');
+
+	// <img src="static/images/favicon.png" class="mb-4 mx-auto d-block" alt="Logo du site \'Collect\'Or" width="auto" height="72px">
+	vLineHTML.vImgModalBodyConfirmDeletePost = window.document.createElement('img');
+	vLineHTML.vDivModalBodyConfirmDeletePost.appendChild(vLineHTML.vImgModalBodyConfirmDeletePost);
+	vLineHTML.vImgModalBodyConfirmDeletePost.setAttribute('src', 'static/images/favicon.png');
+	vLineHTML.vImgModalBodyConfirmDeletePost.setAttribute('class', 'mb-4 mx-auto d-block');
+	vLineHTML.vImgModalBodyConfirmDeletePost.setAttribute('alt', 'Logo du site \'Collect\'Or');
+	vLineHTML.vImgModalBodyConfirmDeletePost.setAttribute('width', 'auto');
+	vLineHTML.vImgModalBodyConfirmDeletePost.setAttribute('height', '72px');
+
+	// <div id="idModalConfirmSubTitleAndText" class="mb-3 font-weight-normal text-center">
+	vLineHTML.vH3ModalBodyConfirmDeletePost = window.document.createElement('div');
+	vLineHTML.vDivModalBodyConfirmDeletePost.appendChild(vLineHTML.vH3ModalBodyConfirmDeletePost);
+	vLineHTML.vH3ModalBodyConfirmDeletePost.setAttribute('class', 'mb-3 font-weight-normal text-center');
+
+	switch (pMyEventDatas.postLevelToDelete){
+		case cstPostToDelete: 
+			vLineHTML.vH3ModalBodyConfirmDeletePost.innerHTML = '<h5>Vous allez supprimer un Post</h5><br />'+ 
+																													'<p>Êtes-sûr de vouloir supprimer le Post que '+pMyEventDatas.vPostId+' ?</p>';
+			break;
+		case cstL1ToDelete: 
+			vLineHTML.vH3ModalBodyConfirmDeletePost.innerHTML = '<h5>Vous allez supprimer un Commentaire</h5><br />'+ 
+																													'<p>Êtes-sûr de vouloir supprimer le commentaire que '+pMyEventDatas.vCommentL1.commentL1AuthorPseudo+' a publié le '+moment(pMyEventDatas.vCommentL1.commentL1Date).format('dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');+' ?</p>';
+			break;
+		case cstL2ToDelete: 
+			vLineHTML.vH3ModalBodyConfirmDeletePost.innerHTML = '<h5>Vous allez supprimer une réponse à un Commentaire</h5><br />'+ 
+																													'<p>Êtes-sûr de vouloir supprimer la réponse que '+pMyEventDatas.vCommentL1.commentL2AuthorPseudo+
+																													' a publié le '+moment(pMyEventDatas.vCommentL1.commentL2Date).format('dddd DD MMMM YYYY [à] HH[h ]mm[mn ]ss[sec.]');+' ?</p>';
+			break;
+	}
+
+
+	// <div class="modal-footer">
+	vLineHTML.vDivModalFooterConfirmDeletePost = window.document.createElement('div');
+	vLineHTML.vDivModalContentConfirmDeletePost.appendChild(vLineHTML.vDivModalFooterConfirmDeletePost);
+	vLineHTML.vDivModalFooterConfirmDeletePost.setAttribute('class', 'modal-footer');
+
+	// <button id="idModalConfirmBtnRefuse" class="btn-danger">Refuser</button>
+	vLineHTML.vBtnRefuseConfirmDeletePost = window.document.createElement('button');
+	vLineHTML.vDivModalFooterConfirmDeletePost.appendChild(vLineHTML.vBtnRefuseConfirmDeletePost);
+	vLineHTML.vBtnRefuseConfirmDeletePost.setAttribute('id', 'idBtnRefuseConfirmDeletePost');
+	vLineHTML.vBtnRefuseConfirmDeletePost.setAttribute('class', 'btn btn-danger');
+	vLineHTML.vBtnRefuseConfirmDeletePost.innerHTML = 'Refuser';
+
+	// <button id="idModalConfirmBtnAccept" class="btn-success">Confirmer</button>
+	vLineHTML.vBtnAcceptConfirmDeletePost = window.document.createElement('button');
+	vLineHTML.vDivModalFooterConfirmDeletePost.appendChild(vLineHTML.vBtnAcceptConfirmDeletePost);
+	vLineHTML.vBtnAcceptConfirmDeletePost.setAttribute('id', 'idBtnAcceptConfirmDeletePost');
+	vLineHTML.vBtnAcceptConfirmDeletePost.setAttribute('class', 'btn btn-success');
+	vLineHTML.vBtnAcceptConfirmDeletePost.innerHTML = 'Accepter';
+
+	vLineHTML.vBtnRefuseConfirmDeletePost.addEventListener('click', this.refuseDeletePostOrComment.bind(this),false);
+	vLineHTML.vBtnAcceptConfirmDeletePost.addEventListener('click', this.acceptDeletePostOrComment.bind(this),false);
+	vLineHTML.vBtnAcceptConfirmDeletePost.datas = pMyEventDatas;
+}
+
+// -----------------------------------------------------------------------------
+// Refus de la Suppression d'un Post
+// -----------------------------------------------------------------------------
+PostsClient.prototype.refuseDeletePostOrComment = function(event){
+	this.destroyConfirmDeletePostOrComment();
+}
+
+// -----------------------------------------------------------------------------
+// Cette méthode supprime un Post
+// On obtient d'abord le N° d'index en exploitant l'indice liés aux objets du DOM
+// -----------------------------------------------------------------------------
+PostsClient.prototype.acceptDeletePostOrComment = function(event){
+	this.destroyConfirmDeletePostOrComment();
+
+	switch (event.target.datas.postLevelToDelete){
+		case cstPostToDelete: 
+			this.deletePublishedPost(event);
+			break;
+		case cstL1ToDelete: 
+			this.deletePublishedCommentL1(event);
+			break;
+		case cstL2ToDelete: 
+			this.deletePublishedCommentL2(event);
+			break;
+	}
+}
+// -----------------------------------------------------------------------------
+// Ouvre la modale de confirmation de Suppression d'un Post
+// -----------------------------------------------------------------------------
+PostsClient.prototype.askConfirmDeletePost = function(event){
+	var myEventDatas = event.target.datas;
+	myEventDatas.targetId = event.target.id;
+	myEventDatas.postLevelToDelete = cstPostToDelete;
+
+	this.displayModalConfirmDeletePost(myEventDatas);
+	$('#idModalConfirmDeletePostOrComment').modal('show');      // Ouverture de la modale    
+}
+
+// -----------------------------------------------------------------------------
+// Ouvre la modale de confirmation de Suppression d'un commentaire L1
+// -----------------------------------------------------------------------------
+PostsClient.prototype.askConfirmDeleteCommentL1 = function(event){
+	var myEventDatas = event.target.datas;
+	myEventDatas.targetId = event.target.id;
+	myEventDatas.postLevelToDelete = cstL1ToDelete;
+
+	this.displayModalConfirmDeletePost(myEventDatas);
+	$('#idModalConfirmDeletePostOrComment').modal('show');      // Ouverture de la modale    
+}
+
+// -----------------------------------------------------------------------------
+// Ouvre la modale de confirmation de Suppression d'un commentaire L2
+// -----------------------------------------------------------------------------
+PostsClient.prototype.askConfirmDeleteCommentL2 = function(event){
+	var myEventDatas = event.target.datas;
+	myEventDatas.targetId = event.target.id;
+	myEventDatas.postLevelToDelete = cstL2ToDelete;
+
+	this.displayModalConfirmDeletePost(myEventDatas);
+	$('#idModalConfirmDeletePostOrComment').modal('show');      // Ouverture de la modale    
+}
+
+// --------------------------------------------------------------
+// Ferme la modale de confirmation et la 
+// détruit dans le DOM
+// --------------------------------------------------------------
+PostsClient.prototype.destroyConfirmDeletePostOrComment = function(){
+	var vModalConfirmDeletePostOrComment= 'idModalConfirmDeletePostOrComment';
+	$('#'+vModalConfirmDeletePostOrComment).modal('hide');     // Fermeture de la modale                                     
+
+	var elem = document.getElementById(vModalConfirmDeletePostOrComment);
+	if (elem){
+		elem.parentNode.removeChild(elem);
+	}
 }

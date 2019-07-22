@@ -140,8 +140,6 @@ AccountModal.prototype.initModalAccount = function(pAccountParameters){
 
 	pAccountParameters.vAccountPassword.setAttribute('disabled', 'true');
 	pAccountParameters.vAccountConfirmPassword.setAttribute('disabled', 'true');
-// XXXXX
-// pAccountParameters.vAccountAlertMsg.style.visibility = 'hidden';     
 	pAccountParameters.vAccountAlertMsg.setAttribute('class', 'invisible');   
 	
 	var vModalHeaderColorParams = 
