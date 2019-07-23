@@ -199,8 +199,6 @@ InvitationsCard.prototype.addInvitSentIntoCardWithDropDown = function(pMyInvitSe
 	vlineHTML.vDivCancelInvit = window.document.createElement('div');
 	vlineHTML.vDivRowCancelInvit.appendChild(vlineHTML.vDivCancelInvit);
 	vlineHTML.vDivCancelInvit.setAttribute('class', 'col-7 align-self-center px-0');
-// XXXXX
-// vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 	vlineHTML.vDivCancelInvit.setAttribute('style', 'font-size: 0.9rem;');
 	vlineHTML.vDivCancelInvit.innerHTML = ' Annuler l\'invit de '+pMyInvitSent.friendPseudo;
 

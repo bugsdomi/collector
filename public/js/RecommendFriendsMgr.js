@@ -59,8 +59,6 @@ RecommendFriendsMgr.prototype.displayHeaderRecommendations= function(pFriend, pD
 	vlineHTML.vHdrDivRowRecoFriend.appendChild(vlineHTML.vHdrDivRecoFriend);
 	vlineHTML.vHdrDivRecoFriend.setAttribute('id', 'idHdrDivRecoFriend'+pFriend.indexFriendToRecommend);
 	vlineHTML.vHdrDivRecoFriend.setAttribute('class', 'col-10 align-self-center px-0');
-// XXXXX
-// vlineHTML.vHdrDivRecoFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 	vlineHTML.vHdrDivRecoFriend.setAttribute('style', 'font-size: 0.9rem;');
 
 	if (pFriend.recommendableFriendsList.length > 0){

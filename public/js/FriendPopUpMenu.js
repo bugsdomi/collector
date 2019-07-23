@@ -49,8 +49,6 @@ FriendPopUpMenu.prototype.prepareMenuviewFriend = function(pFriend, pDivDropDown
 	vlineHTML.vHdrDivViewFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowViewFriend.appendChild(vlineHTML.vHdrDivViewFriend);
 	vlineHTML.vHdrDivViewFriend.setAttribute('class', 'col-7 align-self-center px-0');
-// XXXXX
-// vlineHTML.vHdrDivViewFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 	vlineHTML.vHdrDivViewFriend.setAttribute('style', 'font-size: 0.9rem;');
 	vlineHTML.vHdrDivViewFriend.innerHTML = ' Voir le profil de '+pFriend.friendPseudo;
 
@@ -126,18 +124,10 @@ FriendPopUpMenu.prototype.prepareMenuDeleteFriend = function(pFriend, pDivDropDo
 	vlineHTML.vHdrImgDelFriend.setAttribute('class', 'avatarToken tokenSize32 m-1');
 	vlineHTML.vHdrImgDelFriend.setAttribute('alt', 'Membre');
 	vlineHTML.vHdrImgDelFriend.setAttribute('src', 'static/images/members/'+pFriend.friendPhoto);
-//
-// vlineHTML.vHdrImgDelFriend.setAttribute('data-toggle', 'popover');
-// vlineHTML.vHdrImgDelFriend.setAttribute('data-placement', 'right');
-// vlineHTML.vHdrImgDelFriend.setAttribute('title', 'Suppression d\'un ami');
-// vlineHTML.vHdrImgDelFriend.setAttribute('data-content', 'Vous n\'êtes plus ami avec '+pFriend.friendPseudo);
-// vlineHTML.vHdrImgDelFriend.setAttribute('data-boundary', 'viewport');
 
 	vlineHTML.vHdrDivDelFriend = window.document.createElement('div');
 	vlineHTML.vHdrDivRowDelFriend.appendChild(vlineHTML.vHdrDivDelFriend);
 	vlineHTML.vHdrDivDelFriend.setAttribute('class', 'col-7 align-self-center px-0');
-// XXXXX
-// vlineHTML.vHdrDivDelFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 	vlineHTML.vHdrDivDelFriend.setAttribute('style', 'font-size: 0.9rem;');
 	vlineHTML.vHdrDivDelFriend.innerHTML = ' Supprimer '+pFriend.friendPseudo+' de mes amis';
 

@@ -3,34 +3,6 @@
 /* ------------------------------------------------------------ */
 /* @import url('https://fonts.googleapis.com/css?family=Faster+One'); */
 
-/* ------------------------------------------------------------------ */
-/* Keys de l'animation de glissade vers le haut de la page de profile */
-/* ------------------------------------------------------------------ */
-@keyframes scrollBlockToTop {
-	from{
-		-webkit-transform: translate3d(0, 100%, 0);
-		transform: translate3d(0, 100%, 0)
-	}  
-	to  {
-		-webkit-transform: none;
-		transform: none;
-	} 
-}
-
-/* ------------------------------------------------------------------ */
-/*Keys de l'animation de glissade vers la gauche de la page de profile*/
-/* ------------------------------------------------------------------ */
-@keyframes scrollBlockToLeft {
-	from{
-		-webkit-transform: translate3d(100%, 0, 0);
-		transform: translate3d(100%, 0, 0)
-	}  
-	to  {
-		-webkit-transform: none;
-		transform: none;
-	} 
-}
-
 body {
 	font-family: 'Roboto', sans-serif;
 	/* Pour empecher la sélection des objets statiques à l'écran  */
@@ -292,7 +264,7 @@ body {
 /* Gestion des radio-Button        */
 /* ******************************* */
 
-.vertical-radio-buttons div {
+/* .vertical-radio-buttons div {
 	display: block;
 	padding: 0 0 5px 5px;
 	clear: both;
@@ -312,10 +284,10 @@ body {
 	float: left;
 	width: 20px;
 	margin-left: -20px;
-	margin-top: 6px;            /* vertically align radio button with text */
+	margin-top: 6px;            
 	padding: 0;
 	-webkit-appearance: radio;
-}
+} */
 
 /* ******************************* */
 /* Personnalisation du jumbotron   */
@@ -363,6 +335,8 @@ body {
 	border-radius: 50%;
 	border: 1px black solid;
 	margin: 0 5px;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .tokenSize50{
@@ -534,41 +508,6 @@ a, a:hover {
 	background-color: #c6c8ca;
 }
 
-/* ******************************************* */
-/* Annimaions des différents blocs du profil   */ 
-/* ******************************************* */
-.slideBlockToTop {
-	-webkit-animation-duration: 1s;
-	-webkit-animation-fill-mode: both;
-	-webkit-animation-name: scrollBlockToTop;
-	-webkit-transition-timing-function: ease-out;
-	animation-duration: 1s;
-	animation-fill-mode: both;
-	animation-name: scrollBlockToTop;
-	transition-timing-function: ease-out;
-}
-
-.slideBlockToBottom {
-	-webkit-animation-duration: 15s;
-	-webkit-animation-fill-mode: both;
-	-webkit-animation-name: scrollBlockToBottom;
-	-webkit-transition-timing-function: ease-out;
-	animation-duration: 15s;
-	animation-fill-mode: both;
-	animation-name: scrollBlockToBottom;
-	transition-timing-function: ease-out;
-}
-
-.slideBlockToLeft {
-	-webkit-animation-duration: 2.5s;
-	-webkit-animation-fill-mode: both;
-	-webkit-animation-name: scrollBlockToLeft;
-	-webkit-transition-timing-function: ease-out;
-	animation-duration: 2.5s;
-	animation-fill-mode: both;
-	animation-name: scrollBlockToLeft;
-	transition-timing-function: ease-out;
-}
 
 /* ********************************************************************************************** */
 /* DH+ Création des différents formats de modales (pour surcharger la taille initiale des modales */

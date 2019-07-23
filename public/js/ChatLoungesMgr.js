@@ -78,8 +78,6 @@ ChatLoungesMgr.prototype.displayHeaderChatLounge= function(pFriend, pDivContain)
 	vLineHTML.vHdrDivRowChatFriend.appendChild(vLineHTML.vHdrDivChatFriend);
 	vLineHTML.vHdrDivChatFriend.setAttribute('id', 'idHdrDivChatFriend'+pFriend.indexFriendToRecommend);
 	vLineHTML.vHdrDivChatFriend.setAttribute('class', 'col-7 align-self-center px-0');
-// XXXXX
-// vLineHTML.vHdrDivChatFriend.setAttribute('style', 'font-size: 0.9rem; font-weight:bold;');
 	vLineHTML.vHdrDivChatFriend.setAttribute('style', 'font-size: 0.9rem;');
 	vLineHTML.vHdrDivChatFriend.innerHTML = ' Inviter '+pFriend.friendPseudo+' à discuter :';
 

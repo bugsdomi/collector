@@ -1,25 +1,15 @@
-
-Todo
-
-
 Todo:
-☐ Virer le TimeOut SocketIO mis en place pour le debuggage
-☐ Ajouter une modale de confirmation pour la suppression des amis, invitations, Posts, commentaires
 ☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
 ☐ Voir s'il est possible d'eliminer la duplication des images téléchargées
-☐ Mettre en place un cryptage des pseudo / MDP
 ☐ Dans index.html, harmoniser col-sm et col-md
 
 A la fin du Dev :
-    ☐ Virer les fichiers CSS, les outils et autres fichiers inutiles
     ☐ Virer tous les id et les variables associées inutilisées
-    ☐ Virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//"
-
-Non demandé mais qui serait pals :
+    
+    Non demandé mais qui serait pals :
     ☐ Mettre un bouton "like" et partager dans les Posts / commentaires
     ☐ Ajouter la version du produit en bas a droite de l'écran
     ☐ Piquer le style wyylde
-    ☐ Regex a affiner pour tous les champs
     ☐ Gérer un journal de tous les évenements (connexion/deconnexion, creation de cpte, chgt de PWd, messages envoyé de qui vers qui, etc...)
     ☐ Passer les adresses email en minuscules
 
@@ -83,11 +73,6 @@ Dans le DAT :
     ✔ Dans la card "Présentation" rajouter le nom du département en clair a la suite du N° de departement @done(19-03-26 12:11)
     ✔ Changer la couleur de texte des pills jaunes @done(19-04-02 15:55)
     
-    
-    
-    
-    
-    
     ✔ Gere le resolve Login KO (virer toto) @done(19-04-08 19:48)
     ✔ Pwd 1 a-zA-Z0-9 @done(19-04-08 19:48)
     ✔ Pwd 2-ee19 _-&#* @done(19-04-08 19:48)
@@ -145,7 +130,7 @@ Dans le DAT :
     ✔ Faire une MAJ en temps réel des avatars chez mes amis ou futurs amis @done(19-07-17 08:27)
     ✔ Mettre une puce avec le Nbre de commentaires sur les Posts et les commentaires L1 @done(19-07-17 08:27)
     ✔ Mettre un margin lateral sur les pils des preferences @done(19-05-11 13:09)
-   ✔ Voir pour unifier le cadre et la bordure des modales sur le meme modele que la Carte "Presentation" @done(19-07-17 08:31)
+    ✔ Voir pour unifier le cadre et la bordure des modales sur le meme modele que la Carte "Presentation" @done(19-07-17 08:31)
     ✔ Corriger Bug du calcul de l âge dans la fiche de renseignement @done(19-07-20 10:23)
     ✔ Empêcher de mettre une date future dans la date de naissance @done(19-07-20 10:23)
     ✔ Dans la fiche de renseignements, blinder les controles (Nom, prénom, Date naissance, département, adresse, ville @done(19-07-20 10:46)
@@ -164,9 +149,13 @@ Dans le DAT :
         ✔ async @done(19-07-20 11:00)
         ✔ await @done(19-07-20 11:00)
         ✔ ... @done(19-07-20 11:00)
-    ✔ Gerer bordures rouges qui² sont affichées par defaut sur les champs de saisie sous FF dès le lancement @done(19-07-20 11:00)
-
-    
+    ✔ Gerer bordures rouges qui sont affichées par defaut sur les champs de saisie sous FF dès le lancement @done(19-07-20 11:00)
+    ✔ Virer le TimeOut SocketIO mis en place pour le debuggage @done(19-07-23 10:05)
+    ✔ Ajouter une modale de confirmation pour la suppression des amis, invitations, Posts, commentaires @done(19-07-23 10:05)
+    ✔ Mettre en place un cryptage des pseudo / MDP @done(19-07-23 10:05)
+    ✔ Virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//" @done(19-07-23 16:27)
+    ✔ Regex a affiner pour tous les champs @done(19-07-23 16:27)
+    ✔ Virer les fichiers CSS, les outils et autres fichiers inutiles @done(19-07-23 16:28)
 
 
 ✔ Propager les champs entre le coté serveur et le coté client : @done(19-07-20 10:21)

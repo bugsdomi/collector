@@ -107,7 +107,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	vlineHTML.vDivColFirstName = window.document.createElement('div');
 	vlineHTML.vDivRowFirstName.appendChild(vlineHTML.vDivColFirstName);
-	vlineHTML.vDivColFirstName.setAttribute('class', 'col-sm-8 text-left px-0');
+	vlineHTML.vDivColFirstName.setAttribute('class', 'col-sm-8 text-left px-0 font-weight-normal');
 
 	if (!this.memberClient.friendFirstName){
 		vlineHTML.vDivColFirstName.innerHTML = 'Non renseigné';
@@ -127,7 +127,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	vlineHTML.vDivColName = window.document.createElement('div');
 	vlineHTML.vDivRowName.appendChild(vlineHTML.vDivColName);
-	vlineHTML.vDivColName.setAttribute('class', 'col-sm-8 text-left px-0');
+	vlineHTML.vDivColName.setAttribute('class', 'col-sm-8 text-left px-0 font-weight-normal');
 
 	if (!this.memberClient.friendName){
 		vlineHTML.vDivColName.innerHTML = 'Non renseigné';
@@ -152,7 +152,7 @@ MicroFicheMember.prototype.displayMicroFicheMember = function(pDivDropDown, pMic
 
 	vlineHTML.vDivTitleFriendOfmyFriend = window.document.createElement('h5');
 	vlineHTML.vDivHeaderFriendsOfmyFriend.appendChild(vlineHTML.vDivTitleFriendOfmyFriend);
-	vlineHTML.vDivTitleFriendOfmyFriend.setAttribute('class', 'card-title');
+	vlineHTML.vDivTitleFriendOfmyFriend.setAttribute('class', 'card-title ml-0');
 	vlineHTML.vDivTitleFriendOfmyFriend.setAttribute('style', 'color: black; font-size: 0.9rem; font-weight:bold;');
 	vlineHTML.vDivTitleFriendOfmyFriend.innerHTML = 'Amis de ' + this.memberClient.friendPseudo;
 

@@ -304,9 +304,9 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 
 		this.memberClient.member.presentation  = pAccountParams.vAccountForm.idAccountPresentation.value;
 
-		if (pAccountParams.vAccountForm.idAccountCurrentPassword.value !==''){       
-			this.memberClient.member.oldPassword = pAccountParams.vAccountForm.idAccountCurrentPassword.value;
-			this.memberClient.member.password = pAccountParams.vAccountForm.idAccountPassword.value;
+		if (pAccountParams.vAccountForm.idAccountCurrentPassword.value !==''){   
+			this.memberClient.member.oldPassword 	= vToolBox.encryptPWD(pAccountParams.vAccountForm.idAccountCurrentPassword.value);
+			this.memberClient.member.password 		= vToolBox.encryptPWD(pAccountParams.vAccountForm.idAccountPassword.value);
 		}
 
 		webSocketConnection.emit('dataProfilMembre', this.memberClient.member);   		// Transmission au serveur des infos saisies

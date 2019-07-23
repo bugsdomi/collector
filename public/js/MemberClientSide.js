@@ -276,6 +276,7 @@ MemberClient.prototype.initModalAcceptInvitToChat = function(pModalTitle, pModal
 MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pAskingMembers){
 	pContextInfo.vConnexion.style.display = 'none';         			// Désactivation du bouton 'Connexion'
 	pContextInfo.vCreation.style.display = 'none';          			// Désactivation du bouton 'Creation de compte'
+	pContextInfo.vDropDownDocs.style.display = 'none';          	// Désactivation du bouton 'Documentations'
 	pContextInfo.vDropDownProfilMenu.style.display = 'block';			// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
 	
 	// Affiche le nom et la photo du membre dans la NavBar d'entête
@@ -292,9 +293,7 @@ MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pA
 // Cette fonction réinitialise complétement l'écran et ferme le socket
 // -----------------------------------------------------------------------------
 MemberClient.prototype.unsetMemberContext = function(){
-
 	webSocketConnection.emit('disconnect');
-	// webSocketConnection.emit('UserDisconnect');
 
 	// Régénération de l'écran from scratch;
 	window.location.reload(true);

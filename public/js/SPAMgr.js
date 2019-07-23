@@ -80,7 +80,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vDeconnexion = document.getElementById('idDeconnexion');
 	var vAccount = document.getElementById('idAccount');
 	var vAbout = document.getElementById('idAbout');
-	// var vMembersConnected = document.getElementById('idMembersConnected');
+	var vDropDownDocs = document.getElementById('idDropDownDocs');
 	
 	var vGenericModal = document.getElementById('idGenericModal');
 	var vDropDownProfilMenu = document.getElementById('idDropDownProfilMenu');
@@ -212,13 +212,13 @@ window.addEventListener('DOMContentLoaded', function(){
 	vLoginForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
 
-		var vVisiteurLoginData =                                     					// Mise en forme pour transmission au serveur des données saisies
+		var vVisitorLoginData =                                     					// Mise en forme pour transmission au serveur des données saisies
 			{
 				pseudo 		: vLoginForm.idLoginPseudo.value,
-				password 	: vLoginForm.idLoginPassword.value,
+				password 	: vToolBox.encryptPWD(vLoginForm.idLoginPassword.value),
 			}
 
-		webSocketConnection.emit('visiteurLoginData', vVisiteurLoginData);   	// Transmission au serveur des infos saisies
+		webSocketConnection.emit('visitorLoginData', vVisitorLoginData);   	// Transmission au serveur des infos saisies
 		$('#idModalLogin').modal('hide');                                 		// Fermeture de la fenêtre modale de Login
 		vLoginAlertMsg.style.visibility = 'hidden';  
 	});
@@ -265,7 +265,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	// Validation Demande du Mot de passe
 	// Envoi des infos de récupération du Mot de Passe lorsque la saisie du mail 
-	// est validée syntaxiquement et par la validation globale de celle-ci
+	// est validée syntaxiquement 
 	// -------------------------------------------------------------------------
 	vLostPWDForm.addEventListener('submit', function (event){ 
 		event.preventDefault();                
@@ -312,7 +312,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		{
 			email    : vSignInForm.idSignInEmail.value,
 			pseudo   : vSignInForm.idSignInPseudo.value,
-			password : vSignInForm.idSignInPassword.value,
+			password : vToolBox.encryptPWD(vSignInForm.idSignInPassword.value),
 		}
 
 		webSocketConnection.emit('visitorSignInData', visitorSignInData);     // Transmission au serveur des infos saisies
@@ -637,7 +637,8 @@ window.addEventListener('DOMContentLoaded', function(){
 		vDeconnexion,
 		vProfileNavBar,
 		vNbrWaitingInvit,
-		vPad
+		vPad,
+		vDropDownDocs,
 	}
 
 	// -------------------------------------------------------------------------
@@ -1416,9 +1417,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		vULFriend = document.getElementById('idFriendUL'+vActiveProfile);
 		vFriendsCardMain.addFriendIntoCard(pMyFriend, vULFriend);
 
-			// Checker le statut de la connexion
-console.log('addFriendIntoHisList - pMyFriend : ',pMyFriend)
-
+		// Checker le statut de la connexion
 		var vMyFriend = {
 			friendPseudo	: pMyFriend.friendPseudo,
 			pseudo				: pMyFriend.myPseudo,
@@ -1669,7 +1668,9 @@ console.log('addFriendIntoHisList - pMyFriend : ',pMyFriend)
 	// ==> MAJ du badge du Nbre d'invitations en attente
 	// --------------------------------------------------------------
 	webSocketConnection.on('welcomeMember', function(pDataTransmitted){   
-		console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted);
+console.log('welcomeMember - pDataTransmitted : ',pDataTransmitted);
+		pDataTransmitted.member.password = vToolBox.decryptPWD(pDataTransmitted.member.password);														// Vient de la BDD (phase 2)
+
 		vMemberClient.member 	= pDataTransmitted.member;  
 		var askingMembers 		= pDataTransmitted.askingMembers;
 

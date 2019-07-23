@@ -453,6 +453,27 @@ ToolBox.prototype.pickPairColor2 = function() {
 	}
 	return vPairOfColors;
 }
+
+	// --------------------------------------------------------------
+	// Fonction retournant un MDP décrypté
+	// --------------------------------------------------------------
+	ToolBox.prototype.decryptPWD = function(pCryptedPWD){
+		var cstCharString  = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#$*_-'    
+		var vBytes  = CryptoJS.AES.decrypt(pCryptedPWD, cstCharString);					
+		var vPwdDeciphered =  vBytes.toString(CryptoJS.enc.Utf8);		
+
+		return vPwdDeciphered;
+	}										
+
+	// --------------------------------------------------------------
+	// Fonction retournant un MDP encrypté
+	// --------------------------------------------------------------
+	ToolBox.prototype.encryptPWD = function(pClearPWD){
+		var cstCharString  = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#$*_-'    
+		var vPWDCiphered = CryptoJS.AES.encrypt(pClearPWD, cstCharString).toString();					
+
+		return vPWDCiphered;
+	}										
 // -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
 		<!-- Meta -->
-		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  <!-- Nécessaire pour le coté "Responsive"-->
@@ -21,9 +20,6 @@
 		<!-- Styles -->
 		<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css">
 		<link href="static/css/index.css" rel="stylesheet" >
-
-<!-- XXXXX -->
-		<link href="static/css/timeline.css" rel="stylesheet">
 		<link href="static/css/cover.css" rel="stylesheet">
 		
 		<script>
@@ -63,7 +59,7 @@
 	<!-- ************************************************************************* -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<div class="navbar-brand pr-1 py-0">
-			<img class="d-inline-block align-top mr-2 my-1" alt="Logo du site 'Collect\'Or" src="static/images/brand.png" height="50px">
+			<img class="d-inline-block align-top mx-2 my-1" alt="Logo du site 'Collect\'Or" src="static/images/brand.png" height="50">
 		</div>
 		<span id="idNbrPopulation" class="infosOnNavBar"></span>
 		<button
@@ -88,9 +84,9 @@
 				
 				<li class="nav-item mx-1 dropdown">
 					<a class="nav-link dropdown-toggle my-0 py-0" id="idDropDownProfilMenu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img id="idImgAvatarDropDownMenu" class="avatarToken tokenSize50 ml-1 my-1" alt="Membre"><span id="idSpanAvatarDropDownMenu"></span>
+							<img id="idImgAvatarDropDownMenu" src="Nope" class="avatarToken tokenSize50 ml-1 my-1" alt="Membre"><span id="idSpanAvatarDropDownMenu"></span>
 					</a>
-					<div class="dropdown-menu" aria-labelledby="templates-dropdown">
+					<div class="dropdown-menu" aria-labelledby="idDropDownProfilMenu">
 						<a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount"><i class="fa fa-id-card-o"></i> Renseignements</a>
 <!-- <a class="dropdown-item" href="template-4.html"><i class="fa fa-sliders"></i> Administration</a>  -->
 						<hr />
@@ -98,6 +94,13 @@
 					</div>
 				</li>
 
+				<li class="nav-item mx-1 dropdown align-self-center">
+					<a class="nav-link dropdown-toggle my-0 py-0" id="idDropDownDocs" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-folder-open"></i> Documentation</a>
+					<div class="dropdown-menu" aria-labelledby="idDropDownDocs">
+						<a class="dropdown-item" href="static/docs/CDC-AtelierFinal.pdf"><i class="fa fa-book"></i> Cahier des charges</a>
+						<a class="dropdown-item" href="static/docs/DAT.docx" target="_top" ><i class="fa fa-cog"></i> Dossier technique</a>
+					</div>
+				</li>
 				<li class="nav-item align-self-center">
 					<a class="nav-link my-0 py-0" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><i class="fa fa-bell"></i> A propos</a>
 				</li>
@@ -162,7 +165,7 @@
 
 									<div class="cover-info">
 										<div class="avatar">
-											<img id="idAvatarImg1" alt="Avatar" src="">
+											<img id="idAvatarImg1" alt="Avatar" src="Nope">
 										</div>
 										<div class="name txt-yellow-stroke"><a href="#" id="idAvatarMemberNameImg1"></a></div>
 
@@ -228,9 +231,16 @@
 		<!-- ************************************************************************* -->
 		<footer class="footer fixed-bottom font-small bg-dark txt-yellow-shadow" id="idFooter">
 			<div class="container-fluid">
-				<div>
-					<img class="d-inline-block mr-2" alt="Copyright Vil-Coyote Product" src="static/images/Vil-Coyote - Pressé - Transparent.png" height="40">
-					<span class="footer-copyright">©Vil-Coyote Product - 2018</span>
+				<div class="row justify-content-between mt-1 mx-0 px-0">
+					<div>
+						<img class="d-inline-block mr-2" alt="Copyright Vil-Coyote Product" src="static/images/Vil-Coyote-Pressé-Transparent.png" height="40">
+						<span class="footer-copyright">©Vil-Coyote Product - 2018</span>
+					</div>
+					<div>
+						<div>
+							<img class="d-inline-block mr-2" alt="W3C certified Logos" src="static/images/W3C_HTML5-CSS_certified.png" height="40">
+						</div>
+					</div>
 				</div>
 			</div>
 		</footer>
@@ -253,15 +263,15 @@
 		<!--  Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu            -->
 		<!-- "idModalBodyText" sont alimentés par javascript                                     -->
 		<!-- *********************************************************************************** -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idAriaGenericModalTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idGenericModal" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idGenericModalHeader">
-						<h5 class="modal-title" id="idGenericModalTitle"></h5>
+						<h5 class="modal-title" id="idGenericModalTitle">Nope</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">
-						<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+						<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  height="72">
 						<div id="idGenericModalBodyText"></div>
 					</div>
 					<div class="modal-footer">
@@ -274,7 +284,7 @@
 		<!-- ************************************************************************* -->
 		<!--                             Fenêtre Modale Login                          -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idAriaModalLoginTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idModalLogin" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idModalLoginHeader">
@@ -283,14 +293,14 @@
 					</div>
 					<div class="modal-body">
 						<form class="form-Signin" id="idLoginForm">
-							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  height="72">
 							<h1 class="h3 mb-3 font-weight-normal">Veuillez vous identifier</h1>
 
 							<label for="idLoginPseudo" class="sr-only">Pseudonyme</label>
-							<input type="text" id="idLoginPseudo" name="loginPseudo" class="form-control" placeholder="Pseudonyme" required autofocus pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
+							<input type="text" id="idLoginPseudo" name="loginPseudo" class="form-control" placeholder="Pseudonyme" required autofocus pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_# \$\&\*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','$',' ','#','-','*', et la longueur comprise entre 3 et 20 caractères"><br />
 
 							<label for="idLoginPassword" class="sr-only">Mot de passe</label>
-							<input type="password" id="idLoginPassword" name="loginPassword" class="form-control" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+							<input type="password" id="idLoginPassword" name="loginPassword" class="form-control" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_#\$\&\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 
 							<div class="row justify-content-between">
 								<div class="mt-1 mb-2 col-6 xs-col-6 text-left speedKey" id="idSignIn">
@@ -313,7 +323,7 @@
 		<!-- ************************************************************************* -->
 		<!--                         Fenêtre Modale Inscription                        -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idAriaModalSignInTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idModalSignIn" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idModalSignInHeader">
@@ -322,7 +332,7 @@
 					</div>
 					<div class="modal-body">
 						<form class="form-Signin" id="idSignInForm">
-							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  height="72">
 							<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir vos informations</h1>
 
 							<div class="mb-3">
@@ -331,18 +341,18 @@
 									<div class="input-group-prepend">
 											<span class="input-group-text">@</span>
 									</div>
-									<input type="email" name="signInEmail" class="form-control" id="idSignInEmail" placeholder="exemple@provider.com" required autofocus >
+									<input type="email" name="signInEmail" class="form-control" id="idSignInEmail" placeholder="exemple@provider.com" required >
 								</div>
 							</div>
 
 							<fieldset class="border rounded p-3">
 								<label for="idSignInPseudo" class="sr-only">Pseudonyme</label>
-								<input type="text" id="idSignInPseudo" name="signInPseudo" class="form-control" placeholder="Pseudonyme" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
+								<input type="text" id="idSignInPseudo" name="signInPseudo" class="form-control" placeholder="Pseudonyme" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_# \&\$\*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
 								
-								<label for="iSignInPassword" class="sr-only">Mot de passe</label>
-								<input type="password" id="idSignInPassword" class="form-control" name="signInPassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+								<label for="idSignInPassword" class="sr-only">Mot de passe</label>
+								<input type="password" id="idSignInPassword" class="form-control" name="signInPassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_#\&\$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 
-								<input type="password" id="idSignInConfirmPassword" class="form-control" name="signInConfirmPassword" placeholder="Confirmez le mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+								<input type="password" id="idSignInConfirmPassword" class="form-control" name="signInConfirmPassword" placeholder="Confirmez le mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_#\&\$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 								<label for="idSignInConfirmPassword" class="sr-only">Confirmez le mot de passe</label>
 							</fieldset>
 
@@ -359,7 +369,7 @@
 		<!-- ************************************************************************* -->
 		<!--                     Fenêtre Modale de Mot de passe perdu                  -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idAriaModalLostPWDTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idModalLostPWD" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idModalLostPWDHeader">
@@ -368,7 +378,7 @@
 					</div>
 					<div class="modal-body">
 						<form class="form-LostPWD" id="idLostPWDForm">
-							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'" height="72">
 							<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
 
 							<div class="mb-3">
@@ -377,7 +387,7 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text">@</span>
 									</div>
-									<input type="email" name="lostPWDEmail" class="form-control" id="idLostPWDEmail" placeholder="exemple@provider.com" required autofocus >
+									<input type="email" name="lostPWDEmail" class="form-control" id="idLostPWDEmail" placeholder="exemple@provider.com" required>
 								</div>
 							</div>
 							<p id="idLostPWDAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
@@ -393,12 +403,12 @@
 		<!-- ************************************************************************* -->
 		<!--                         Fenêtre Modale du profil de mon ami               -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalFriendProfilePage" aria-labelledby="idAriaModalFriendProfilePageTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalFriendProfilePage" aria-labelledby="idModalFriendProfilePage" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom border-dark py-1" id="idModalFriendProfilePageHeader">
-						<img id="idModalFriendAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="">
-						<h5 class="modal-title align-self-center" id="idModalFriendProfilePageTitle"><i class="fa fa-users"></i></h5>
+						<img id="idModalFriendAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="Nope">
+						<h5 class="modal-title align-self-center" id="idModalFriendProfilePageTitle"><i class="fa fa-users">Nope</i></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body border-warning border" id="idModalFriendProfilePageBody" style="background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),url('static/images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png'), url('static/images/FondVert-60.png'); background-attachment: fixed; border-style: solid; border-width: 3px; overflow-x: hidden;">
@@ -447,7 +457,7 @@
 		<!-- ************************************************************************* -->
 		<!--                         Fenêtre Modale de renseignements                  -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idAriaModalAccountTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idModalAccount" aria-hidden="true">
 			<div class="modal-dialog modal-md modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idModalAccountHeader">
@@ -459,7 +469,7 @@
 						<!--                Texte de présentation de la modale en entête                    --> 
 						<!-- ****************************************************************************** -->
 						<div class="text-center">
-							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'" height="72">
 							<h2>Saisie des renseignements personnels</h2>
 							<p class="lead">Ces informations, optionnelles, vont permettre aux autres internautes de mieux vous connaître à travers vos centres d'intérêt, ou vos types de collections préférées par exemple...</p>
 						</div>
@@ -490,7 +500,7 @@
 								<fieldset class="border rounded p-3">
 									<div class="row justify-content-around">
 										<div class="col-md-3">
-											<img class="img-thumbnail mb-3" id="idAccountPhotoImg" src="" alt="Image du profile">
+											<img class="img-thumbnail mb-3" id="idAccountPhotoImg" src="Nope" alt="Image du profile">
 											<span class="btn btn-success btn-file mb-3">
 												Changer d'avatar 
 												<input type="file" name="AccountPhotoFile" id="idAccountPhotoFile" accept="image/png, image/jpeg, image/gif">
@@ -529,10 +539,10 @@
 										</div>
 
 										<div class="col-md-3 mb-3">
-											<label for="accountSexe" class="text-left">Sexe</label>
+											<label class="text-left">Sexe</label>
 											<fieldset class="border rounded p-3">                                        
 												<div class="form-check text-left">
-													<input class="form-check-input" type="radio" name="accountSexe" id="idAccountSexNone" value="Non divulgué" checked aria-checked="">
+													<input class="form-check-input" type="radio" name="accountSexe" id="idAccountSexNone" value="Non divulgué" checked aria-checked="true">
 													<label class="form-check-label" for="idAccountSexNone">Non divulgué</label>
 												</div>
 												<div class="form-check text-left">
@@ -694,97 +704,97 @@
 								<fieldset class="border rounded px-3 pt-3 mb-3">
 									<div class="row justify-content-around">
 										<div class="col-md-6 mb-3">
-											<label for="accountPref">Préférences</label>
+											<label>Préférences</label>
 											<div class="btn-group-toggle" data-toggle="buttons">
 												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefGravuresLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefGravures" autocomplete="off">Gravures
+													<input type="checkbox" name="accountPref" id="idAccountPrefGravures">Gravures
 												</label>
 												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefLivresLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefLivres" autocomplete="off">Livres
+													<input type="checkbox" name="accountPref" id="idAccountPrefLivres">Livres
 												</label>
 												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefFilmsLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefFilms" autocomplete="off">Films
+													<input type="checkbox" name="accountPref" id="idAccountPrefFilms">Films
 												</label>
 												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefJeuxLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefJeux" autocomplete="off">Jeux
+													<input type="checkbox" name="accountPref" id="idAccountPrefJeux">Jeux
 												</label>
 												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefMaquettesLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefMaquettes" autocomplete="off">Maquettes
+													<input type="checkbox" name="accountPref" id="idAccountPrefMaquettes">Maquettes
 												</label>
 												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefFigurinesLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefFigurines" autocomplete="off">Figurines
+													<input type="checkbox" name="accountPref" id="idAccountPrefFigurines">Figurines
 												</label>
 												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefBlindesLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefBlindes" autocomplete="off">Blindés
+													<input type="checkbox" name="accountPref" id="idAccountPrefBlindes">Blindés
 												</label>
 												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefAvionsLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefAvions" autocomplete="off">Avions
+													<input type="checkbox" name="accountPref" id="idAccountPrefAvions">Avions
 												</label>
 												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefBateauxLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefBateaux" autocomplete="off">Bateaux
+													<input type="checkbox" name="accountPref" id="idAccountPrefBateaux">Bateaux
 												</label>
 												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefDioramasLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefDioramas" autocomplete="off">Dioramas
+													<input type="checkbox" name="accountPref" id="idAccountPrefDioramas">Dioramas
 												</label>
 												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefPrehistoireLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefPrehistoire" autocomplete="off">Préhistoire
+													<input type="checkbox" name="accountPref" id="idAccountPrefPrehistoire">Préhistoire
 												</label>
 												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefAntiquiteLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefAntiquite" autocomplete="off">Antiquité
+													<input type="checkbox" name="accountPref" id="idAccountPrefAntiquite">Antiquité
 												</label>
 												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefMoyenAgeLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefMoyenAge" autocomplete="off">Moyen-âge
+													<input type="checkbox" name="accountPref" id="idAccountPrefMoyenAge">Moyen-âge
 												</label>
 												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefRenaissanceLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefRenaissance" autocomplete="off">Renaissance
+													<input type="checkbox" name="accountPref" id="idAccountPrefRenaissance">Renaissance
 												</label>
 												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefDentellesLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefDentelles" autocomplete="off">Guerre en dentelles
+													<input type="checkbox" name="accountPref" id="idAccountPrefDentelles">Guerre en dentelles
 												</label>
 												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAncienRegimeLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefAncienRegime" autocomplete="off">Ancien-régime
+													<input type="checkbox" name="accountPref" id="idAccountPrefAncienRegime">Ancien-régime
 												</label>
 												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefRevolutionLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefRevolution" autocomplete="off">Révolution Française
+													<input type="checkbox" name="accountPref" id="idAccountPrefRevolution">Révolution Française
 												</label>
 												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPref1erEmpireLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPref1erEmpire" autocomplete="off">1er Empire
+													<input type="checkbox" name="accountPref" id="idAccountPref1erEmpire">1er Empire
 												</label>
 												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPref2ndEmpireLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPref2ndEmpire" autocomplete="off">2nd Empire
+													<input type="checkbox" name="accountPref" id="idAccountPref2ndEmpire">2nd Empire
 												</label>
 												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefSecessionLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefSecession" autocomplete="off">Guerre de sécession
+													<input type="checkbox" name="accountPref" id="idAccountPrefSecession">Guerre de sécession
 												</label>
 												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefFarWestLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefFarWest" autocomplete="off">Far West
+													<input type="checkbox" name="accountPref" id="idAccountPrefFarWest">Far West
 												</label>
 												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefWW1Label">
-													<input type="checkbox" name="accountPref" id="idAccountPrefWW1" autocomplete="off">1ère Guerre Mondiale
+													<input type="checkbox" name="accountPref" id="idAccountPrefWW1">1ère Guerre Mondiale
 												</label>
 												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefWW2Label">
-													<input type="checkbox" name="accountPref" id="idAccountPrefWW2" autocomplete="off">2ème Guerre mondiale
+													<input type="checkbox" name="accountPref" id="idAccountPrefWW2">2ème Guerre mondiale
 												</label>
 												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefContemporainLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefContemporain" autocomplete="off">Contemporain
+													<input type="checkbox" name="accountPref" id="idAccountPrefContemporain">Contemporain
 												</label>
 												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefFuturisteLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefFuturiste" autocomplete="off">Futuriste
+													<input type="checkbox" name="accountPref" id="idAccountPrefFuturiste">Futuriste
 												</label>
 												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefFantastiqueLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefFantastique" autocomplete="off">Fantastique
+													<input type="checkbox" name="accountPref" id="idAccountPrefFantastique">Fantastique
 												</label>
 												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefHFrancaiseLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefHFrancaise" autocomplete="off">Histoire Française
+													<input type="checkbox" name="accountPref" id="idAccountPrefHFrancaise">Histoire Française
 												</label>
 												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefHAmericaineLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefHAmericaine" autocomplete="off">Histoire Américaine
+													<input type="checkbox" name="accountPref" id="idAccountPrefHAmericaine">Histoire Américaine
 												</label>
 												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefHInternationaleLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefHInternationale" autocomplete="off">Histoire internationale
+													<input type="checkbox" name="accountPref" id="idAccountPrefHInternationale">Histoire internationale
 												</label>
 												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAutreLabel">
-													<input type="checkbox" name="accountPref" id="idAccountPrefAutre" autocomplete="off">Autre
+													<input type="checkbox" name="accountPref" id="idAccountPrefAutre">Autre
 												</label>
 											</div>
 										</div>
@@ -808,12 +818,12 @@
 									<div class="col-md-6 mb-3">
 										<label for="idAccountCurrentPassword" >Changement de mot de passe</label>
 										<fieldset class="border rounded p-3">
-											<input type="password" id="idAccountCurrentPassword" class="form-control mb-3" name="accountCurrentPassword" placeholder="Mot de passe actuel" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+											<input type="password" id="idAccountCurrentPassword" class="form-control mb-3" name="accountCurrentPassword" placeholder="Mot de passe actuel" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_#\&\$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
 
 											<label for="idAccountPassword" class="sr-only">Mot de passe</label>
-											<input type="password" id="idAccountPassword" class="form-control" name="accountPassword" placeholder="Nouveau mot de passe" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required>
+											<input type="password" id="idAccountPassword" class="form-control" name="accountPassword" placeholder="Nouveau mot de passe" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_#\&\$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required>
 
-											<input type="password" id="idAccountConfirmPassword" class="form-control" name="accountConfirmPassword" placeholder="Confirmez le nouveau mot de passe" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required>
+											<input type="password" id="idAccountConfirmPassword" class="form-control" name="accountConfirmPassword" placeholder="Confirmez le nouveau mot de passe" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_#\&\$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required>
 											<label for="idAccountConfirmPassword" class="sr-only">Confirmez le mot de passe</label>
 										</fieldset>
 									</div>
@@ -837,7 +847,7 @@
 		<!-- ************************************************************************* -->
 		<!--                     Fenêtre Modale d'ajout d'amis                         -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idAriaModalMgrFriendTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idModalMgrFriend" aria-hidden="true">
 			<div id="idModalMgrFriendDialog" class="modal-dialog modal-md modal-dialog-centered" role="document" >
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idModalMgrFriendHeader">
@@ -855,7 +865,7 @@
 		<!-- ************************************************************************* -->
 		<!--                     Fenêtre Modale des membres                            -->
 		<!-- ************************************************************************* -->
-		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idAriaModalMemberListTitle" aria-hidden="true">
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idModalMemberList" aria-hidden="true">
 			<div id="idModalMemberListDialog" class="modal-dialog modal-md modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header border-bottom" id="idModalMemberListHeader">

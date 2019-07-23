@@ -188,7 +188,7 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vImgAvatToken);
 	vlineHTML.vImgAvatToken.setAttribute('class', 'avatarToken tokenSize32 ml-0');
 	vlineHTML.vImgAvatToken.setAttribute('alt', 'Avatar');
-	vlineHTML.vImgAvatToken.setAttribute('src', 'static/images/'+pPostToPublish.authorPhoto);
+	vlineHTML.vImgAvatToken.setAttribute('src', 'static/images/members/'+pPostToPublish.authorPhoto);
 
 	vlineHTML.vH5PostPseudo = window.document.createElement('h5');
 	vlineHTML.vDivCardHeaderRow.appendChild(vlineHTML.vH5PostPseudo);
@@ -460,8 +460,8 @@ PostsClient.prototype.publishPost = function(){
 	}
 
 	// Réinitialisation (Contenant et contenu) de la carte "PostEdit"
-	this.vPostTitle.value = null;
-	this.vPostMsg.value = null;
+	this.vPostTitle.value = '';
+	this.vPostMsg.value = '';
 	vToolBox.autoResizeElem(this.vPostMsg.id);
 }
 
@@ -565,7 +565,7 @@ PostsClient.prototype.publishCommentL1 = function(event){
 	}
 
 	// Après transmission au serveur, on reset la valeur du champ, on rétablit sa taille par défaut, et on lui redonne le focus
-	vCommentL1Msg.value = null;
+	vCommentL1Msg.value = '';
 	vToolBox.autoResizeElem(vCommentL1Msg.id);
 	$('#'+vCommentL1Msg.id).focus();
 }
@@ -630,7 +630,7 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 		vlineHTML.vDivMediaCommentL1.appendChild(vlineHTML.vImgCommentL1);
 		vlineHTML.vImgCommentL1.setAttribute('class', 'avatarToken tokenSize32 ml-2 mt-1');
 		vlineHTML.vImgCommentL1.setAttribute('alt', 'Avatar');
-		vlineHTML.vImgCommentL1.setAttribute('src', 'static/images/'+pCommentL1.commentL1AuthorPhoto);
+		vlineHTML.vImgCommentL1.setAttribute('src', 'static/images/members/'+pCommentL1.commentL1AuthorPhoto);
 
 		//   <div class="media-body">
 		vlineHTML.vDivMediaBodyL1 = window.document.createElement('div');
@@ -965,7 +965,7 @@ PostsClient.prototype.publishCommentL2 = function(event){
 	}
 
 	// Après transmission au serveur, on reset la valeur du champ, on rétablit sa taille par défaut, et on lui redonne le focus
-	vCommentL2Msg.value = null;
+	vCommentL2Msg.value = '';
 	vToolBox.autoResizeElem(vCommentL2Msg.id);
 	$('#'+vCommentL2Msg.id).focus();
 }
@@ -1060,7 +1060,7 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 		vlineHTML.vDivMediaCommentL2.appendChild(vlineHTML.vImgCommentL2);
 		vlineHTML.vImgCommentL2.setAttribute('class', 'avatarToken tokenSize32 ml-0 mt-1');
 		vlineHTML.vImgCommentL2.setAttribute('alt', 'Avatar');
-		vlineHTML.vImgCommentL2.setAttribute('src', 'static/images/'+pCommentL2.commentL2AuthorPhoto);
+		vlineHTML.vImgCommentL2.setAttribute('src', 'static/images/members/'+pCommentL2.commentL2AuthorPhoto);
 
 		//   <div class="media-body">
 		vlineHTML.vDivMediaBodyL2 = window.document.createElement('div');

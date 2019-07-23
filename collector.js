@@ -28,8 +28,7 @@ const PostsServer = require('./PostsServerSide');
 const SocketIOFileUpload = require('socketio-file-upload');
 const DBMgr = require('./dbMgr');
 const sgMail = require('@sendgrid/mail');
-const AES = require("crypto-js/aes");
-
+const CryptoJS = require("crypto-js");
 
 // -------------------------------------------------------------------------
 // Initilisations des variables, structures, constantes...
@@ -37,7 +36,7 @@ const AES = require("crypto-js/aes");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);														// Initialisation de la clé de sécurité de SendGrid
 
 let vDBMgr = new DBMgr();      																						// Instanciation de la base de données
-let vMemberServer = new MemberServer(vDBMgr, sgMail);   									// Instanciation de l'objet de gestion des membres
+let vMemberServer = new MemberServer(vDBMgr, sgMail, CryptoJS);   									// Instanciation de l'objet de gestion des membres
 let vPostsServer = new PostsServer(vDBMgr, sgMail, vMemberServer);     		// Instanciation de l'objet de gestion des Posts
 
 
@@ -69,9 +68,8 @@ const server = app.listen(process.env.PORT || 3000, function() {
 // -------------------------------------------------------------------------
 // Création de la liaison socket.io sur la base du serveur HTTP déja déclaré précédement
 // -------------------------------------------------------------------------
-// XXXXX
-// let socketIo = new SocketIo(server);
-let socketIo = new SocketIo(server,{ pingTimeout: 1000000 });
+let socketIo = new SocketIo(server);
+// let socketIo = new SocketIo(server,{ pingTimeout: 1000000 });			// Version avec TimeOut long, utile pour le debuggage)
 
 vMemberServer.checkDBConnect()																		// Verification de l'accessibilité de la base  
 .then( () => {
@@ -123,8 +121,8 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 		vMemberServer.initVisiteur(webSocketConnection, socketIo);    
 		
 		// On a reçu des données de Login --> Vérification dans la BDD que le prétendant-membre (Pseudo + PWD) existe bien
-		webSocketConnection.on('visiteurLoginData',function(pVisiteurLoginData){
-			vMemberServer.visitorLogin(pVisiteurLoginData, webSocketConnection, socketIo);
+		webSocketConnection.on('visitorLoginData',function(pVisitorLoginData){
+			vMemberServer.visitorLogin(pVisitorLoginData, webSocketConnection, socketIo);
 		});
 
 		// On a reçu des données de creation de membre --> Vérification dans la BDD que le prétendant-membre (Mail + Pseudo) n'existe pas déjà
@@ -378,13 +376,6 @@ vMemberServer.checkDBConnect()																		// Verification de l'accessibili
 			console.log('Déconnexion d\'un visiteur ou d\'un membre')      
 			vMemberServer.disconnectMember(webSocketConnection, socketIo);
 		});
-
-// XXXXX
-// Un membre se déconnecte
-// 	webSocketConnection.on('UserDisconnect', function() {
-// 		console.log('Déconnexion d\'un visiteur ou d\'un membre')        
-// 		vMemberServer.disconnectMember(webSocketConnection, socketIo);
-// 	});
 	});
 });
 

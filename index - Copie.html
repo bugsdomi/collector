@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+		<!-- Meta -->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  <!-- Nécessaire pour le coté "Responsive"-->
+		<meta name="description" content="Réseau social des Collectionneurs de sujets d'Histoire Militaire">
+		<meta name="author" content="Vil-Coyote Product">
+		
+		<!-- Favicon -->
+		<link rel="icon" href="static/images/favicon.png">
+		<title>Collect'Or</title>
+
+		<!-- Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+		<link href="static/css/font-awesome.css" rel="stylesheet" type="text/css">
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+
+		<!-- Styles -->
+		<link href="static/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<link href="static/css/index.css" rel="stylesheet" >
+		<link href="static/css/cover.css" rel="stylesheet">
+		
+		<script>
+				WebFont.load({
+						google: {
+								families: ['Ranga', 'Julius Sans One', 'Montserrat']
+						}
+				});
+		</script>
+
+		<script>
+		// ********************************************************************* //
+		// *                                                                   * //
+		// *       "Collect'Or" - Octobre-Novembre 2018                        * //
+		// *                                                                   * //
+		// ********************************************************************* //
+		// *                                                                   * //
+		// *   Dominique Hourdequin - Octobre 2018                             * //
+		// *   Projet N°3 - Type "Full-Stack"                                  * //
+		// *                                                                   * //
+		// *   Formation "Développeur Full Stack Javascript"                   * //
+		// *   Classe : "DIWJS08" - Printemps 2018                             * //
+		// *   IFOCOP - Paris XI                                               * //
+		// *                                                                   * //
+		// *   Contact à l'IFOCOP qui transmettra mes coordonnées sur demande  * //
+		// *   Responsable de formation                                        * //
+		// *   Madame Fabienne Thiry                                           * //
+		// *   mail : fthiry@ifocop.fr                                         * //
+		// *   Tel : 01-40-21-83-78                                            * //
+		// *                                                                   * //
+		// ********************************************************************* //
+		</script>
+</head>
+<body>     
+	<!-- ************************************************************************* -->
+	<!--                                NavBar                                     -->
+	<!-- ************************************************************************* -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<div class="navbar-brand pr-1 py-0">
+			<img class="d-inline-block align-top mr-2 my-1" alt="Logo du site 'Collect\'Or" src="static/images/brand.png" height="50px">
+		</div>
+		<span id="idNbrPopulation" class="infosOnNavBar"></span>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-toggle="collapse"
+			data-target="#mainScreenMenu"
+			aria-expanded="false"
+			aria-controls="mainScreenMenu" 
+			aria-label="Toggle mainScreenMenu">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="mainScreenMenu">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item mx-1">
+					<a class="nav-link my-0 py-0" id="idConnexion" href="#idModalLogin" data-toggle="modal" data-target="#idModalLogin" ><i class="fa fa-sign-in"></i> Connexion</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link my-0 py-0" id="idCreation" href="#idModalSignIn" data-toggle="modal" data-target="#idModalSignIn"><i class="fa fa-plus"></i>  Créer un compte</a>
+				</li>
+				
+				<li class="nav-item mx-1 dropdown">
+					<a class="nav-link dropdown-toggle my-0 py-0" id="idDropDownProfilMenu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<img id="idImgAvatarDropDownMenu" class="avatarToken tokenSize50 ml-1 my-1" alt="Membre"><span id="idSpanAvatarDropDownMenu"></span>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="templates-dropdown">
+						<a class="dropdown-item" id="idAccount" href="#idModalAccount" data-toggle="modal" data-target="#idModalAccount"><i class="fa fa-id-card-o"></i> Renseignements</a>
+<!-- <a class="dropdown-item" href="template-4.html"><i class="fa fa-sliders"></i> Administration</a>  -->
+						<hr />
+						<a class="dropdown-item disabled" id="idDeconnexion" href="#" target="_top" ><i class="fa fa-sign-out"></i> Déconnexion</a>
+					</div>
+				</li>
+
+				<li class="nav-item mx-1 dropdown align-self-center">
+					<a class="nav-link dropdown-toggle my-0 py-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-folder-open"></i> Documentation</a>
+					<div class="dropdown-menu" aria-labelledby="templates-dropdown">
+						<a class="dropdown-item" href="static/docs/CDC-AtelierFinal.pdf"><i class="fa fa-book"></i> Cahier des charges</a>
+						<a class="dropdown-item" href="static/docs/DAT.docx" target="_top" ><i class="fa fa-cog"></i> Dossier technique</a>
+					</div>
+				</li>
+				<li class="nav-item align-self-center">
+					<a class="nav-link my-0 py-0" id="idAbout" href="#idGenericModal" data-toggle="modal" data-target="#idGenericModal"><i class="fa fa-bell"></i> A propos</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div id="idWorkingSpace" class="workingSpace">			<!--	Ajouté pour créer une opacité sur l'ensemble de la page -->
+
+		<!-- ************************************************************************* -->
+		<!--                         Carroussel de fond d'écran                        -->
+		<!-- ************************************************************************* -->
+		<div class="container"	>
+			<div class="jumbotron">
+				<div class="row mb-4">
+					<div class="col-md-12 col-md-offset-2">
+						<div class="row">
+							<div class="col-md-12"> 
+								<div class="cover profile" id="idCoverProfile"> 
+									<div class="wrapper"> 
+										<div id="mainScreenCaroussel" class="carousel slide carousel-fade carousel-halfScreen" data-ride="carousel" data-interval="4000" data-pause="false" style="margin-top: 58px;">
+											<!-- Indicateurs de bas de slides-->
+											<ol class="carousel-indicators">
+												<li data-target="#mainScreenCaroussel" data-slide-to="0" class="active txt-yellow-stroke"></li>
+												<li data-target="#mainScreenCaroussel" data-slide-to="1" class="txt-yellow-stroke"></li>
+												<li data-target="#mainScreenCaroussel" data-slide-to="2" class="txt-yellow-stroke"></li>
+												<li data-target="#mainScreenCaroussel" data-slide-to="3" class="txt-yellow-stroke"></li>
+												<li data-target="#mainScreenCaroussel" data-slide-to="4" class="txt-yellow-stroke"></li>
+												<li data-target="#mainScreenCaroussel" data-slide-to="5" class="txt-yellow-stroke"></li>
+											</ol>
+
+											<!-- sliders -->
+											<div class="carousel-inner" role="listbox">
+												<div class="carousel-item active" style="background: url('static/images/PLANCHE-EUGENE-LELIEPVRE-Ancien-Régime.jpg') center 22%; background-size: cover;"></div> 
+												<div class="carousel-item" style="background: url('static/images/DIORAMA 23-Napoléonnien-03.jpg') center 25%; background-size: cover;"></div>
+												<div class="carousel-item" style="background: url('static/images/Diorama Corsair WWII-large.jpg') center 65%; background-size: cover;"></div> 
+												<div class="carousel-item" style="background: url('static/images/ob_3ff2db_retraite-russie-a-007.jpg') center 62%; background-size: cover;"></div> 
+												<div class="carousel-item" style="background: url('static/images/ChargeDeChevaliers.jpg') center 37%; background-size: cover;"></div> 
+												<div class="carousel-item" style="background: url('static/images/AfrikaCorpsjpg.jpg') center 10%; background-size: cover;"></div> 
+											</div> 
+
+											<div class="carousel-caption">
+												<div class="row my-auto">
+													<div class="col-lg-10 col-md-8 col-sm-12 text-center mx-auto py-5 my-5">
+														<h1 class="mb-4 display-1 mx-5 txt-yellow-stroke">Collect'Or</h1>
+														<p class="lead mt-5 display-4 txt-yellow-stroke">Réseau Social des collectionneurs de sujets d'Histoire Militaire</p>
+													</div>
+												</div>
+											</div>
+
+											<!-- Controls G et D -->
+											<a class="carousel-control-prev style=" style="z-index: 10;" href="#mainScreenCaroussel" role="button" data-slide="prev">
+												<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												<span class="sr-only">Previous</span>
+											</a>
+											<a class="carousel-control-next style=" style="z-index: 10;" href="#mainScreenCaroussel" role="button" data-slide="next">
+												<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												<span class="sr-only">Next</span>
+											</a>
+										</div>
+									</div>
+
+									<div class="cover-info">
+										<div class="avatar">
+											<img id="idAvatarImg1" alt="Avatar" src="">
+										</div>
+										<div class="name txt-yellow-stroke"><a href="#" id="idAvatarMemberNameImg1"></a></div>
+
+										<ul class="cover-nav" id="idProfileNavBar">
+											<li><a id="idAddFriend" href="#"><i class="fa fa-fw fa-user-plus"></i> Ajouter des amis</a></li>
+											<li><a id="idMemberList" href="#"><i class="fa fa-fw fa-search"></i> Rechercher des membres</a></li>
+											<li><a id="idInvitations" href="#"><i class="fa fa-fw fa-users"></i> Invitations reçues <span id="idNbrWaitingInvit" class="badge badge-danger"></span></a></li>
+	<!-- <li><a href="photos1.html"><i class="fa fa-fw fa-image"></i> Galerie</a></li> -->
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ****************************************************************************** -->
+		<!--                                Page de profil du membre                        --> 
+		<!-- ****************************************************************************** -->
+		<div id="idPad"></div>
+		<div id="idMainProfilePage" class="container d-none" >	
+			<div class="row mb-4">
+				<div class="col-md-12 col-md-offset-2">
+					<div class="row">
+						<div class="col-md-5" id="idDivMountPointMainProfile">
+						<!-- ****************************************************************************** -->
+						<!--                      Emplacement des Cartes :  					                      --> 
+						<!--                                Présentation							                      --> 
+						<!--                                Amis											                      --> 
+						<!--                                Invitations								                      --> 
+						<!--                       Toutes ces cartes sont gérées en JS			                --> 
+						<!-- ****************************************************************************** -->
+						</div>
+						
+						<!-- ****************************************************************************** -->
+						<!--                                Posts											                      --> 
+						<!-- ****************************************************************************** -->
+						<div class="col-md-7">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-12" id="idDivMountPointPostEditMain">
+											<!-- ****************************************************************************** -->
+											<!--                      Emplacement des Posts :  					                      	--> 
+											<!--                                PostEdit							                      		--> 
+											<!--                                Tous les autres Posts			                      --> 
+											<!--                       Toutes ces Posts sont gérés en JS			                	--> 
+											<!-- ****************************************************************************** -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+
+		<!-- ************************************************************************* -->
+		<!--                                 Footer                                    -->
+		<!-- ************************************************************************* -->
+		<footer class="footer fixed-bottom font-small bg-dark txt-yellow-shadow" id="idFooter">
+			<div class="container-fluid">
+				<div class="row justify-content-between mt-1 mx-0 px-0">
+					<div>
+						<img class="d-inline-block mr-2" alt="Copyright Vil-Coyote Product" src="static/images/Vil-Coyote - Pressé - Transparent.png" height="40">
+						<span class="footer-copyright">©Vil-Coyote Product - 2018</span>
+					</div>
+					<div>
+						<div>
+							<img class="d-inline-block mr-2" alt="W3C certified Logos" src="static/images/W3C_HTML5-CSS_certified.png" height="40">
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+
+
+	<!-- ****************************************************************************************************************************** -->
+	<!-- ****************************************************************************************************************************** -->
+	<!-- ****************************************************************************************************************************** -->
+	<!-- ****************************************************************************************************************************** -->
+	<!--																																																																-->
+	<!--																												Fenêtres Modales																												-->
+	<!--																																																																-->
+	<!-- ****************************************************************************************************************************** -->
+	<!-- ****************************************************************************************************************************** -->
+	<!-- ****************************************************************************************************************************** -->
+	<!-- ****************************************************************************************************************************** -->
+
+		<!-- *********************************************************************************** -->
+		<!--  Fenêtre Modale générique - Le titre "idGenericModalTitle" et le contenu            -->
+		<!-- "idModalBodyText" sont alimentés par javascript                                     -->
+		<!-- *********************************************************************************** -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idGenericModal" aria-labelledby="idAriaGenericModalTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idGenericModalHeader">
+						<h5 class="modal-title" id="idGenericModalTitle"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+						<div id="idGenericModalBodyText"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" id="idGenericModalBtn" data-dismiss="modal">Fermer</button>
+					</div>
+				</div>
+			</div>
+		</div>       
+		
+		<!-- ************************************************************************* -->
+		<!--                             Fenêtre Modale Login                          -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLogin" aria-labelledby="idAriaModalLoginTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idModalLoginHeader">
+						<h5 class="modal-title"><i class="fa fa-sign-in"></i> Connexion</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<form class="form-Signin" id="idLoginForm">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+							<h1 class="h3 mb-3 font-weight-normal">Veuillez vous identifier</h1>
+
+							<label for="idLoginPseudo" class="sr-only">Pseudonyme</label>
+							<input type="text" id="idLoginPseudo" name="loginPseudo" class="form-control" placeholder="Pseudonyme" required autofocus pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
+
+							<label for="idLoginPassword" class="sr-only">Mot de passe</label>
+							<input type="password" id="idLoginPassword" name="loginPassword" class="form-control" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+
+							<div class="row justify-content-between">
+								<div class="mt-1 mb-2 col-6 xs-col-6 text-left speedKey" id="idSignIn">
+										Créer un compte
+								</div>
+								<div class="mt-1 mb-2 col-6 xs-col-6 text-right speedKey" id="idLostPWD">
+										Mot de passe oublié ?
+								</div>
+							</div>
+							<p id="idLoginAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">Pseudo et/ou mot de passe inconnus</p>
+							<div class="modal-footer">
+								<button id='idConnectionBtn' class="btn btn-lg btn-success btn-block" type="submit">Connexion</button>
+							</div> 
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>       
+		
+		<!-- ************************************************************************* -->
+		<!--                         Fenêtre Modale Inscription                        -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalSignIn" aria-labelledby="idAriaModalSignInTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idModalSignInHeader">
+						<h5 class="modal-title"><i class="fa fa-plus"></i> Création de compte</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<form class="form-Signin" id="idSignInForm">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+							<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir vos informations</h1>
+
+							<div class="mb-3">
+								<label for="idSignInEmail" class="sr-only">Email <span class="text-muted"></span></label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+											<span class="input-group-text">@</span>
+									</div>
+									<input type="email" name="signInEmail" class="form-control" id="idSignInEmail" placeholder="exemple@provider.com" required autofocus >
+								</div>
+							</div>
+
+							<fieldset class="border rounded p-3">
+								<label for="idSignInPseudo" class="sr-only">Pseudonyme</label>
+								<input type="text" id="idSignInPseudo" name="signInPseudo" class="form-control" placeholder="Pseudonyme" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$ \*\-]{2,19}$" title="Le 1er caractère doit être alphanumérique, les suivants également + ' ','_','&','#','-','*','$', et la longueur comprise entre 3 et 20 caractères"><br />
+								
+								<label for="iSignInPassword" class="sr-only">Mot de passe</label>
+								<input type="password" id="idSignInPassword" class="form-control" name="signInPassword" placeholder="Mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+
+								<input type="password" id="idSignInConfirmPassword" class="form-control" name="signInConfirmPassword" placeholder="Confirmez le mot de passe" required pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+								<label for="idSignInConfirmPassword" class="sr-only">Confirmez le mot de passe</label>
+							</fieldset>
+
+							<p id="idSignInAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail et/ou le pseudo sont déjà attribués</p>
+							<div class="modal-footer">
+								<button id='idSignInBtn' class="btn btn-lg btn-success btn-block" type="submit">Création</button>
+							</div> 
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>       
+
+		<!-- ************************************************************************* -->
+		<!--                     Fenêtre Modale de Mot de passe perdu                  -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalLostPWD" aria-labelledby="idAriaModalLostPWDTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idModalLostPWDHeader">
+						<h5 class="modal-title"><i class="fa fa-key"></i> Mot de passe perdu</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<form class="form-LostPWD" id="idLostPWDForm">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72px">
+							<h1 class="h3 mb-3 font-weight-normal">Veuillez saisir votre e-mail</h1>
+
+							<div class="mb-3">
+								<label for="idLostPWDEmail" class="sr-only">Email <span class="text-muted"></span></label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text">@</span>
+									</div>
+									<input type="email" name="lostPWDEmail" class="form-control" id="idLostPWDEmail" placeholder="exemple@provider.com" required autofocus >
+								</div>
+							</div>
+							<p id="idLostPWDAlertMsg" class="lead mt-5 display-4 text-danger text-center alertMsg">L'e-mail fourni n'a pas été trouvé, veuillez le resaisir</p>
+							<div class="modal-footer">
+									<button id='idLostPWDBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
+							</div> 
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>       
+
+		<!-- ************************************************************************* -->
+		<!--                         Fenêtre Modale du profil de mon ami               -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalFriendProfilePage" aria-labelledby="idAriaModalFriendProfilePageTitle" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom border-dark py-1" id="idModalFriendProfilePageHeader">
+						<img id="idModalFriendAvatarToken" class="avatarToken tokenSize50 ml-0" alt="Avatar" src="">
+						<h5 class="modal-title align-self-center" id="idModalFriendProfilePageTitle"><i class="fa fa-users"></i></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body border-warning border" id="idModalFriendProfilePageBody" style="background-image: linear-gradient(rgba(1, 44, 1, 0.95), rgba(1, 44, 1, 0.95)),url('static/images/laurier_de_napoleon_avec_des_abeilles-FondVert-60.png'), url('static/images/FondVert-60.png'); background-attachment: fixed; border-style: solid; border-width: 3px; overflow-x: hidden;">
+						<div class="container">
+							<div class="row mb-4">
+								<div class="col-md-12 col-md-offset-2">
+									<div class="row">
+										<div class="col-md-5 pl-0" id="idDivMountPointFriendProfile">
+											<!-- ****************************************************************************** -->
+											<!--                      Emplacement des Cartes :  					                      --> 
+											<!--                                Présentation							                      --> 
+											<!--                                Amis											                      --> 
+											<!--                                Invitations								                      --> 
+											<!--                       Toutes ces cartes sont gérées en JS			                --> 
+											<!-- ****************************************************************************** -->
+										</div>
+											
+										<!-- ****************************************************************************** -->
+										<!--                                Posts											                      --> 
+										<!-- ****************************************************************************** -->
+										<div class="col-md-7">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="row">
+														<div class="col-md-12" id="idDivMountPointPostEditFriend">
+															<!-- ****************************************************************************** -->
+															<!--                      Emplacement des Posts :  					                      	--> 
+															<!--                                PostEdit							                      		--> 
+															<!--                                Tous les autres Posts			                      --> 
+															<!--                       Toutes ces Posts sont gérés en JS			                	--> 
+															<!-- ****************************************************************************** -->
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ************************************************************************* -->
+		<!--                         Fenêtre Modale de renseignements                  -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalAccount" aria-labelledby="idAriaModalAccountTitle" aria-hidden="true">
+			<div class="modal-dialog modal-md modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idModalAccountHeader">
+						<h5 class="modal-title"><i class="fa fa-id-card-o"></i> Renseignements personnels</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						<!-- ****************************************************************************** -->
+						<!--                Texte de présentation de la modale en entête                    --> 
+						<!-- ****************************************************************************** -->
+						<div class="text-center">
+							<img class="mb-4 mx-auto d-block" src="static/images/favicon.png" alt="Logo du site 'Collect\'Or'"  width="auto" height="72">
+							<h2>Saisie des renseignements personnels</h2>
+							<p class="lead">Ces informations, optionnelles, vont permettre aux autres internautes de mieux vous connaître à travers vos centres d'intérêt, ou vos types de collections préférées par exemple...</p>
+						</div>
+						
+						<!-- ****************************************************************************** -->
+						<!--                             Pseudo + Mail                                      --> 
+						<!-- ****************************************************************************** -->
+						<div class="text-center">
+<!-- <form class="form-Account" id="idAccountForm">     -->
+							<form class="form-Account novalidate" id="idAccountForm">    
+								<fieldset class="border rounded p-3">
+									<div class="row justify-content-around">
+										<div class="col-md-5 mb-3">
+											<label for="idAccountPseudo">Pseudonyme</label>
+											<input type="text" class="form-control"  id="idAccountPseudo" name="accountPseudo" disabled tabindex="-1">
+										</div>
+
+										<div class="col-md-5 mb-3">
+											<label for="idAccountEmail">Email</label>
+											<input type="email" class="form-control" id="idAccountEmail" name="accountEmail" disabled tabindex="-1">
+										</div>
+									</div>
+								</fieldset>
+
+								<!-- ****************************************************************************** -->
+								<!--                             Avatar + Nom + Prénom                              --> 
+								<!-- ****************************************************************************** -->
+								<fieldset class="border rounded p-3">
+									<div class="row justify-content-around">
+										<div class="col-md-3">
+											<img class="img-thumbnail mb-3" id="idAccountPhotoImg" src="" alt="Image du profile">
+											<span class="btn btn-success btn-file mb-3">
+												Changer d'avatar 
+												<input type="file" name="AccountPhotoFile" id="idAccountPhotoFile" accept="image/png, image/jpeg, image/gif">
+											</span>
+										</div>
+
+										<div class="col-md-8 mb-3">
+											<label for="idAccountFirstName">Prénom</label>
+											<input type="text" class="form-control mb-3" name="accountFirstName" id="idAccountFirstName" placeholder="Prénom" pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$">                                
+
+											<label for="idAccountName">Nom de famille</label>
+											<input type="text" class="form-control mb-3" name="accountName" id="idAccountName" placeholder="Nom" pattern="^[a-zA-Z\u00C0-\u00FF-'[a-zA-Z\u00C0-\u00FF-']{1,30}$">
+											<div class="invalid-feedback">
+												Un nom valide est requis.
+											</div>
+										</div>
+									</div>        
+								</fieldset>
+
+								<!-- ****************************************************************************** -->
+								<!--                             Date naissance + Age + Sexe                        --> 
+								<!-- ****************************************************************************** -->
+								<fieldset class="border rounded p-3">
+									<div class="row justify-content-around">
+										<div class="col-md-4 mb-3">
+											<label for="idAccountBirthDate">Date de naissance</label>
+											<input type="date" class="form-control" name="accountBirthdate" id="idAccountBirthDate">
+											<div class="invalid-feedback">
+												Une date valide est requise et non située dans le futur
+											</div>
+										</div>
+
+										<div class="col-md-2 mb-3">
+											<label for="idAccountAge">Age</label>
+											<input type="text" class="form-control" name="accountAge" id="idAccountAge" disabled>
+										</div>
+
+										<div class="col-md-3 mb-3">
+											<label for="accountSexe" class="text-left">Sexe</label>
+											<fieldset class="border rounded p-3">                                        
+												<div class="form-check text-left">
+													<input class="form-check-input" type="radio" name="accountSexe" id="idAccountSexNone" value="Non divulgué" checked aria-checked="">
+													<label class="form-check-label" for="idAccountSexNone">Non divulgué</label>
+												</div>
+												<div class="form-check text-left">
+													<input class="form-check-input" type="radio" name="accountSexe" id="idAccountSexMale" value="masculin">
+													<label class="form-check-label" for="idAccountSexMale">Masculin</label>
+												</div>
+												<div class="form-check text-left">
+													<input class="form-check-input" type="radio" name="accountSexe" id="idAccountSexFemale" value="feminin">
+													<label class="form-check-label" for="idAccountSexFemale">Féminin</label>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</fieldset>
+
+								<!-- ****************************************************************************** -->
+								<!--                    Adresse + Ville + Code Postal + Département                 --> 
+								<!-- ****************************************************************************** -->
+								<fieldset class="border rounded p-3">
+									<div class="row justify-content-around">
+										<div class="col-md-6 mb-3">
+											<label for="idAccountStreet">Adresse</label>
+											<input type="text" class="form-control" name="accountStreet" id="idAccountStreet" placeholder="N° et voie">
+											<div class="invalid-feedback">
+												Veuillez saisir votre adresse
+											</div>
+										</div>
+
+										<div class="col-md-6 mb-3">
+											<label for="idAccountCity">Ville</label>
+											<input type="text" class="form-control" name="accountCity" id="idAccountCity" placeholder="Ville">
+										</div>
+									</div>
+
+									<div class="row justify-content-around">
+										<div class="col-md-3 mb-3">
+											<label for="idAccountZipCode">Code postal</label>
+											<input type="text" class="form-control" id="idAccountZipCode" placeholder="Code postal">
+											<div class="invalid-feedback">
+												Code postal requis.
+											</div>
+										</div>
+
+										<div class="col-md-5 mb-3">
+											<label for="idAccountDepartment">Département</label>
+											<select class="custom-select" name="accountDepartment" id="idAccountDepartment">
+												<option selected>Non renseigné</option>
+												<option value="00">(00) Hors France</option>
+												<option value="01">(01) Ain </option>
+												<option value="02">(02) Aisne </option>
+												<option value="03">(03) Allier </option>
+												<option value="04">(04) Alpes de Haute Provence </option>
+												<option value="05">(05) Hautes Alpes </option>
+												<option value="06">(06) Alpes Maritimes </option>
+												<option value="07">(07) Ardèche </option>
+												<option value="08">(08) Ardennes </option>
+												<option value="09">(09) Ariège </option>
+												<option value="10">(10) Aube </option>
+												<option value="11">(11) Aude </option>
+												<option value="12">(12) Aveyron </option>
+												<option value="13">(13) Bouches du Rhône </option>
+												<option value="14">(14) Calvados </option>
+												<option value="15">(15) Cantal </option>
+												<option value="16">(16) Charente </option>
+												<option value="17">(17) Charente Maritime </option>
+												<option value="18">(18) Cher </option>
+												<option value="19">(19) Corrèze </option>
+												<option value="2A">(2A) Corse du Sud </option>
+												<option value="2B">(2B) Haute-Corse </option>
+												<option value="21">(21) Côte d'Or </option>
+												<option value="22">(22) Côtes d'Armor </option>
+												<option value="23">(23) Creuse </option>
+												<option value="24">(24) Dordogne </option>
+												<option value="25">(25) Doubs </option>
+												<option value="26">(26) Drôme </option>
+												<option value="27">(27) Eure </option>
+												<option value="28">(28) Eure et Loir </option>
+												<option value="29">(29) Finistère </option>
+												<option value="30">(30) Gard </option>
+												<option value="31">(31) Haute Garonne </option>
+												<option value="32">(32) Gers </option>
+												<option value="33">(33) Gironde </option>
+												<option value="34">(34) Hérault </option>
+												<option value="35">(35) Ille et Vilaine </option>
+												<option value="36">(36) Indre </option>
+												<option value="37">(37) Indre et Loire </option>
+												<option value="38">(38) Isère </option>
+												<option value="39">(39) Jura </option>
+												<option value="40">(40) Landes </option>
+												<option value="41">(41) Loir et Cher </option>
+												<option value="42">(42) Loire </option>
+												<option value="43">(43) Haute Loire </option>
+												<option value="44">(44) Loire Atlantique </option>
+												<option value="45">(45) Loiret </option>
+												<option value="46">(46) Lot </option>
+												<option value="47">(47) Lot et Garonne </option>
+												<option value="48">(48) Lozère </option>
+												<option value="49">(49) Maine et Loire </option>
+												<option value="50">(50) Manche </option>
+												<option value="51">(51) Marne </option>
+												<option value="52">(52) Haute Marne </option>
+												<option value="53">(53) Mayenne </option>
+												<option value="54">(54) Meurthe et Moselle </option>
+												<option value="55">(55) Meuse </option>
+												<option value="56">(56) Morbihan </option>
+												<option value="57">(57) Moselle </option>
+												<option value="58">(58) Nièvre </option>
+												<option value="59">(59) Nord </option>
+												<option value="60">(60) Oise </option>
+												<option value="61">(61) Orne </option>
+												<option value="62">(62) Pas de Calais </option>
+												<option value="63">(63) Puy de Dôme </option>
+												<option value="64">(64) Pyrénées Atlantiques </option>
+												<option value="65">(65) Hautes Pyrénées </option>
+												<option value="66">(66) Pyrénées Orientales </option>
+												<option value="67">(67) Bas Rhin </option>
+												<option value="68">(68) Haut Rhin </option>
+												<option value="69">(69) Rhône </option>
+												<option value="70">(70) Haute Saône </option>
+												<option value="71">(71) Saône et Loire </option>
+												<option value="72">(72) Sarthe </option>
+												<option value="73">(73) Savoie </option>
+												<option value="74">(74) Haute Savoie </option>
+												<option value="75">(75) Paris </option>
+												<option value="76">(76) Seine Maritime </option>
+												<option value="77">(77) Seine et Marne </option>
+												<option value="78">(78) Yvelines </option>
+												<option value="79">(79) Deux Sèvres </option>
+												<option value="80">(80) Somme </option>
+												<option value="81">(81) Tarn </option>
+												<option value="82">(82) Tarn et Garonne </option>
+												<option value="83">(83) Var </option>
+												<option value="84">(84) Vaucluse </option>
+												<option value="85">(85) Vendée </option>
+												<option value="86">(86) Vienne </option>
+												<option value="87">(87) Haute Vienne </option>
+												<option value="88">(88) Vosges </option>
+												<option value="89">(89) Yonne </option>
+												<option value="90">(90) Territoire de Belfort </option>
+												<option value="91">(91) Essonne </option>
+												<option value="92">(92) Hauts de Seine </option>
+												<option value="93">(93) Seine Saint Denis </option>
+												<option value="94">(94) Val de Marne </option>
+												<option value="95">(95) Val d'Oise </option>
+												<option value="971">(971) Guadeloupe </option>
+												<option value="972">(972) Martinique </option>
+												<option value="973">(973) Guyane </option>
+												<option value="974">(974) Réunion </option>
+												<option value="975">(975) Saint Pierre et Miquelon </option>
+												<option value="976">(976) Mayotte </option>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+
+								<!-- ****************************************************************************** -->
+								<!--                                   Préférences                                  --> 
+								<!-- ****************************************************************************** -->
+								<fieldset class="border rounded px-3 pt-3 mb-3">
+									<div class="row justify-content-around">
+										<div class="col-md-6 mb-3">
+											<label for="accountPref">Préférences</label>
+											<div class="btn-group-toggle" data-toggle="buttons">
+												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefGravuresLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefGravures" autocomplete="off">Gravures
+												</label>
+												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefLivresLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefLivres" autocomplete="off">Livres
+												</label>
+												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefFilmsLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefFilms" autocomplete="off">Films
+												</label>
+												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefJeuxLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefJeux" autocomplete="off">Jeux
+												</label>
+												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefMaquettesLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefMaquettes" autocomplete="off">Maquettes
+												</label>
+												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefFigurinesLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefFigurines" autocomplete="off">Figurines
+												</label>
+												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefBlindesLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefBlindes" autocomplete="off">Blindés
+												</label>
+												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefAvionsLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefAvions" autocomplete="off">Avions
+												</label>
+												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefBateauxLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefBateaux" autocomplete="off">Bateaux
+												</label>
+												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefDioramasLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefDioramas" autocomplete="off">Dioramas
+												</label>
+												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefPrehistoireLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefPrehistoire" autocomplete="off">Préhistoire
+												</label>
+												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefAntiquiteLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefAntiquite" autocomplete="off">Antiquité
+												</label>
+												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefMoyenAgeLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefMoyenAge" autocomplete="off">Moyen-âge
+												</label>
+												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefRenaissanceLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefRenaissance" autocomplete="off">Renaissance
+												</label>
+												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefDentellesLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefDentelles" autocomplete="off">Guerre en dentelles
+												</label>
+												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAncienRegimeLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefAncienRegime" autocomplete="off">Ancien-régime
+												</label>
+												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefRevolutionLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefRevolution" autocomplete="off">Révolution Française
+												</label>
+												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPref1erEmpireLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPref1erEmpire" autocomplete="off">1er Empire
+												</label>
+												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPref2ndEmpireLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPref2ndEmpire" autocomplete="off">2nd Empire
+												</label>
+												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefSecessionLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefSecession" autocomplete="off">Guerre de sécession
+												</label>
+												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefFarWestLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefFarWest" autocomplete="off">Far West
+												</label>
+												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefWW1Label">
+													<input type="checkbox" name="accountPref" id="idAccountPrefWW1" autocomplete="off">1ère Guerre Mondiale
+												</label>
+												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefWW2Label">
+													<input type="checkbox" name="accountPref" id="idAccountPrefWW2" autocomplete="off">2ème Guerre mondiale
+												</label>
+												<label class="btn btn-outline-warning badge badge-pill mr-1" id="idAccountPrefContemporainLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefContemporain" autocomplete="off">Contemporain
+												</label>
+												<label class="btn btn-outline-info badge badge-pill mr-1" id="idAccountPrefFuturisteLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefFuturiste" autocomplete="off">Futuriste
+												</label>
+												<label class="btn btn-outline-primary badge badge-pill mr-1" id="idAccountPrefFantastiqueLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefFantastique" autocomplete="off">Fantastique
+												</label>
+												<label class="btn btn-outline-secondary badge badge-pill mr-1" id="idAccountPrefHFrancaiseLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefHFrancaise" autocomplete="off">Histoire Française
+												</label>
+												<label class="btn btn-outline-dark badge badge-pill mr-1" id="idAccountPrefHAmericaineLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefHAmericaine" autocomplete="off">Histoire Américaine
+												</label>
+												<label class="btn btn-outline-success badge badge-pill mr-1" id="idAccountPrefHInternationaleLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefHInternationale" autocomplete="off">Histoire internationale
+												</label>
+												<label class="btn btn-outline-danger badge badge-pill mr-1" id="idAccountPrefAutreLabel">
+													<input type="checkbox" name="accountPref" id="idAccountPrefAutre" autocomplete="off">Autre
+												</label>
+											</div>
+										</div>
+
+										<!-- ****************************************************************************** -->
+										<!--                              Texte de présentation                             --> 
+										<!-- ****************************************************************************** -->
+										<div class="col-md-6 mb-3">
+											<div class="form-group">
+												<label for="idAccountPresentation">Présentation</label>
+												<textarea class="form-control" rows="8" name="accountPresentation" id="idAccountPresentation"></textarea>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+
+								<!-- ****************************************************************************** -->
+								<!--                    Changement de Mot de Passe + zone d'alerte                  --> 
+								<!-- ****************************************************************************** -->
+								<div class="row justify-content-around">
+									<div class="col-md-6 mb-3">
+										<label for="idAccountCurrentPassword" >Changement de mot de passe</label>
+										<fieldset class="border rounded p-3">
+											<input type="password" id="idAccountCurrentPassword" class="form-control mb-3" name="accountCurrentPassword" placeholder="Mot de passe actuel" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères">
+
+											<label for="idAccountPassword" class="sr-only">Mot de passe</label>
+											<input type="password" id="idAccountPassword" class="form-control" name="accountPassword" placeholder="Nouveau mot de passe" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required>
+
+											<input type="password" id="idAccountConfirmPassword" class="form-control" name="accountConfirmPassword" placeholder="Confirmez le nouveau mot de passe" pattern="^[a-zA-Z0-9]{1}[a-zA-Z0-9_&#$\*\-]{5,11}$" title="Le 1er caractère doit être alphanumérique, les suivants également + '_','&','#','-','*','$', et la longueur comprise entre 6 et 12 caractères" required>
+											<label for="idAccountConfirmPassword" class="sr-only">Confirmez le mot de passe</label>
+										</fieldset>
+									</div>
+								</div>
+
+								<p id="idAccountAlertMsg" class="lead mt-2 display-4 text-danger text-center alertMsg"></p>
+
+								<!-- ****************************************************************************** -->
+								<!--                    Footer et bouton de validation de la Form                   --> 
+								<!-- ****************************************************************************** -->
+								<div class="modal-footer">
+									<button id='idAccountBtn' class="btn btn-lg btn-success btn-block" type="submit">Envoi</button>
+								</div> 
+							</form>
+						</div>
+					</div> 
+				</div>
+			</div> 
+		</div>
+
+		<!-- ************************************************************************* -->
+		<!--                     Fenêtre Modale d'ajout d'amis                         -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMgrFriend" aria-labelledby="idAriaModalMgrFriendTitle" aria-hidden="true">
+			<div id="idModalMgrFriendDialog" class="modal-dialog modal-md modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idModalMgrFriendHeader">
+						<button id="idModalMgrFriendExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body mb-3" id="idModalBodyMgrFriend" style="overflow-x: hidden;">
+						<div class="container px-0" id="idModalMgrFriendTitle"></div>
+						<div class="list-group" id="idModalMgrFriendListGroup">
+						</div>
+					</div>			
+				</div>			
+			</div>	
+		</div>
+
+		<!-- ************************************************************************* -->
+		<!--                     Fenêtre Modale des membres                            -->
+		<!-- ************************************************************************* -->
+		<div class="modal px-0" tabindex="-1" role="dialog" id="idModalMemberList" aria-labelledby="idAriaModalMemberListTitle" aria-hidden="true">
+			<div id="idModalMemberListDialog" class="modal-dialog modal-md modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header border-bottom" id="idModalMemberListHeader">
+						<button id="idModalMemberListExitBtn" type="button" class="close" data-dismiss="modal" aria-label="Fermer" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body mb-3" id="idModalBodyMemberList" style="overflow-x: hidden;">
+						<div class="container px-0" id="idModalMemberListTitle"></div>
+						<div class="list-group" id="idModalMemberListGroup"></div>
+					</div>			
+				</div>			
+			</div>	
+		</div>		
+
+		<!-- ************************************************************************* -->
+		<!--        Vérification Javascript activé + chargement des librairies         -->
+		<!-- ************************************************************************* -->
+		<noscript><p>Veuillez activer JavaScript</p></noscript>    
+		<script src="staticNodeModules/jquery/dist/jquery.min.js"></script>
+		<script src="static/js/popper.min.js"></script>
+		<script src="static/js/bootstrap.min.js"></script>
+		<script src="staticNodeModules/moment/min/moment-with-locales.min.js"></script>
+		<script src="staticNodeModules/crypto-js/crypto-js.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="static/js/ToolBox.js"></script>
+		<script src="static/js/variables.js"></script>
+		<script src="static/js/SPAMgr.js"></script>
+		<script src="static/js/MemberClientSide.js"></script>
+		<script src="static/js/FriendRequestMgr.js"></script>
+		<script src="static/js/PresentationCard.js"></script>
+		<script src="static/js/FriendsCard.js"></script>
+		<script src="static/js/MembersMgr.js"></script>
+		<script src="static/js/InvitationsMgr.js"></script>
+		<script src="static/js/MicroFicheMember.js"></script>
+		<script src="static/js/FriendPopUpMenu.js"></script>
+		<script src="static/js/ChatLoungesMgr.js"></script>
+		<script src="static/js/RecommendFriendsMgr.js"></script>
+		<script src="static/js/InvitationsCard.js"></script>
+		<script src="static/js/InitHeaderColor.js"></script>
+		<script src="static/js/DisplayModalHeader.js"></script>
+		<script src="static/js/SearchFilter.js"></script>
+		<script src="static/js/AccountModal.js"></script>
+		<script src="static/js/ViewFriendProfile.js"></script>
+		<script src="static/js/PostsClientSide.js"></script>
+		<script src="siofu/client.js"></script>
+	</div>		
+</body>
+</html>

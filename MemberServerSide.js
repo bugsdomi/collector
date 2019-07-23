@@ -20,8 +20,8 @@ const cstSuperAdmin = 1;  // Statut du Super-Admin - Il n'y a qu'un seul SuperAd
 const cstAdmin = 2;       					// Statut définissant les Admin standards (Qui peuvent accéder à la console d'administration (avec le SuperAdmin))
 const cstMembre = 4;      					// Membre standard qui ne peut qu'utiliser la partie publique de l'application 
 const cstMailFrom = 'collector@vcp.com';    // Adresse "From" du mail
-const constFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'    // Caractères autorisés pour le 1er caractère du PWD
-const constNextCharString = constFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
+const cstFirstCharString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'    // Caractères autorisés pour le 1er caractère du PWD
+const cstNextCharString = cstFirstCharString+'&#$*_-'                                         // Caractères autorisés pour les 11 autres caractères du PWD
 const cstLostPWD = 0;     					// Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par une déclaration de MDP perdu
 const cstChangedPWD = 1;  					// Constante qui désigne que le Chjt de MDP (PWD) a été provoqué par le mebre dans sa fiche de renseignement
 const cstAmiConfirme  = 0; 					// Statut pour un ami confirmé
@@ -30,7 +30,7 @@ const cstAttenteConfirm = 2; 				// Attente d'acceptation d'une invitation lanc�
 const cstWithoutNewModal 	= false;	// Dans le cadre de l'affichage filtré des membres, la modale étant deja affichée, on veut pas en ouvrir une seconde
 const cstWithNewModal 		= true;		// Dans le cadre de l'affichage non filtré des membres, la modale n'étant pas encore affichée, on veut pas en ouvrir une
 
-module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeur exportée
+module.exports = function MemberServer(pDBMgr, pSGMail, pCryptoJS){ // Fonction constructeur exportée
 	this.sgMail = pSGMail;									// Instance du gestionnaire de mails
 	this.vDBMgr = pDBMgr;										// Récupération des infos de la BDD
 	this.newPassword;                       // Variable de stockage provisoire du nouveau mot de passe créé
@@ -116,6 +116,27 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	}
 
 	// --------------------------------------------------------------
+	// Fonction retournant un MDP décrypté
+	// --------------------------------------------------------------
+	MemberServer.prototype.decryptPWD = function(pCryptedPWD){
+		var cstCharString  = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#$*_-'    
+		var vBytes  = pCryptoJS.AES.decrypt(pCryptedPWD, cstCharString);					
+		var vPwdDeciphered =  vBytes.toString(pCryptoJS.enc.Utf8);		
+
+		return vPwdDeciphered;
+	}										
+
+	// --------------------------------------------------------------
+	// Fonction retournant un MDP encrypté
+	// --------------------------------------------------------------
+	MemberServer.prototype.encryptPWD = function(pClearPWD){
+		var cstCharString  = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#$*_-'    
+		var vPWDCiphered = pCryptoJS.AES.encrypt(pClearPWD, cstCharString).toString();					
+
+		return vPWDCiphered;
+	}										
+
+	// --------------------------------------------------------------
 	// Fonction retournant le Pseudo d'un ami éventuellement splitté
 	// à partir d'un combo "PseudoAmiRecommandé/PseudoAmiRecommandeur"
 	// --------------------------------------------------------------
@@ -171,20 +192,19 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// Vérification des données du visiteur (Pseudo + MDP) :
 	// On cherche la combinaison Pseudo et MDP
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.findVisitorBecomeMember = (pVisiteurLoginData) => {
+	MemberServer.prototype.findVisitorBecomeMember = (pVisitorLoginData) => {
 		return new Promise((resolve, reject) => {
 			this.vDBMgr.collectionMembers.find(
 			{ 
-				'pseudo': pVisiteurLoginData.pseudo, 
-				'password': pVisiteurLoginData.password, 
+				'pseudo': pVisitorLoginData.pseudo, 
 			})
 			.limit(1)
 			.toArray((error, documents) => {
 				if (error) {
 					console.log('-------------------------------------------------------------');
 					console.log('findVisitorBecomeMember - Erreur de lecture dans la collection \'members\' : ',error);   // Si erreur technique... Message et Plantage
-					console.log('findVisitorBecomeMember - pVisiteurLoginData.pseudo : ',pVisiteurLoginData.pseudo);
-					console.log('findVisitorBecomeMember - pVisiteurLoginData.password : ',pVisiteurLoginData.password);
+					console.log('findVisitorBecomeMember - pVisitorLoginData.pseudo : ',pVisitorLoginData.pseudo);
+					console.log('findVisitorBecomeMember - pVisitorLoginData.password : ',pVisitorLoginData.password);
 					console.log('-------------------------------------------------------------');
 					reject(error);
 					throw error;
@@ -257,13 +277,17 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// - Par contre, si elle existe, il s'agit d'un membre et on demande au client de désactiver l'icône de Login et d'activer 
 	// l'icône de déconnexion ('welcomeMember')
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.visitorBecomeMember = (pDocuments, pWebSocketConnection, pSocketIo) => {
-
+	MemberServer.prototype.visitorBecomeMember = (pDocuments, pVisitorLoginData, pWebSocketConnection, pSocketIo) => {
 		// Le login n'a pas été trouvé dans la BDD et est donc erroné --> la tentative de connexion est refusée
-		if (!pDocuments.length){  
+		if (!pDocuments.length){  // Si document vide
 			pWebSocketConnection.emit('retryLoginForm');   
 			return;
 		} 
+
+		if (this.decryptPWD(pDocuments[0].password) !== this.decryptPWD(pVisitorLoginData.password)){			// Si PWD erroné --> la tentative de connexion est refusée
+			pWebSocketConnection.emit('retryLoginForm');   
+			return;
+		}
 
 		this.member = pDocuments[0];                             // Récupération des infos du membre dans l'objet de stockage provisoire
 		this.member.oldPassword = '';                            // RAZ de l'ancien MDP avant envoi au client
@@ -305,10 +329,10 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// - Par contre, si elle existe, il s'agit d'un membre et on demande au client de désactiver l'icône de Login et d'activer 
 	// l'icône de déconnexion ('welcomeMember')
 	// ---------------------------------------------------------------------------------------------------------------------------
-	MemberServer.prototype.visitorLogin = (pVisiteurLoginData, pWebSocketConnection, pSocketIo) => {
-		this.findVisitorBecomeMember(pVisiteurLoginData, pWebSocketConnection, pSocketIo)
+	MemberServer.prototype.visitorLogin = (pVisitorLoginData, pWebSocketConnection, pSocketIo) => {
+		this.findVisitorBecomeMember(pVisitorLoginData, pWebSocketConnection, pSocketIo)
 		.then ((documents) => {
-			this.visitorBecomeMember(documents, pWebSocketConnection, pSocketIo);
+			this.visitorBecomeMember(documents, pVisitorLoginData, pWebSocketConnection, pSocketIo);
 		})
 	};
 
@@ -318,9 +342,9 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// - Par contre, s'il existe, on génère un PWD aléatoire et on le transmet par mail ('sendNewPWD')
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.buildAndSendNewPWD = function(){
-		this.newPassword = constFirstCharString[this.random(0, 61)];
+		this.newPassword = cstFirstCharString[this.random(0, 61)];
 		for (let i=1; i<=11; i++){
-			this.newPassword += constNextCharString[this.random(0, 67)];
+			this.newPassword += cstNextCharString[this.random(0, 67)];
 		}
 
 		this.sendEMail(
@@ -415,8 +439,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			let myDataSet = 
 			{   
 				email       : this.member.email,
-				oldPassword : this.member.password,
-				password    : this.newPassword,
+				oldPassword : this.encryptPWD(this.member.password),
+				password    : this.encryptPWD(this.newPassword)
 			}
 			this.updatePasswordChange(myDataSet, cstLostPWD, pWebSocketConnection);
 		})
@@ -484,6 +508,7 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 			// text  : 'Félicitations\n\nVous êtes dorénavant membre de la Communauté \'Collect\'Or\'',      // Variante pour une version "Text" (Non HTML)
 			html     : pHTML,
 		}
+
 		this.sgMail.send(messageToSend)
 		.catch((error) => {
 			console.log('--------------------------------------------------------------------------');
@@ -618,7 +643,6 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.addMemberInDatabase = function(pMember, pCount){
 		return new Promise((resolve, reject) => {
-
 			let myRole;
 			if (pCount === 0 ){
 				this.createTechnicalRecord();   // Si c'est le 1er membre qui s'enregistre, création de l'enregistrement technique avec le Nbre de messages initialisé à 0
@@ -715,12 +739,12 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 	// ---------------------------------------------------------------------------------------------------------------------------
 	MemberServer.prototype.finalizeAddingMember = function(pWebSocketConnection, pSocketIo){
 		let myIndex = this.searchMemberInTableOfMembers('idSocket', pWebSocketConnection.id);  
-						
+
 		this.sendEMail(
 			this.member.email, 
 			'Votre inscription à Collect\'Or', 
 			'<h1 style="color: black;">Félicitations '+this.member.pseudo+'</h1><p><h2>Vous êtes dorénavant membre de la Communauté \'Collect\'Or\'.</h2><br />' +
-			'Vos identifiants sont : <p><strong>Pseudonyme : </strong>'+this.member.pseudo+'<p><strong>Mot de passe : </strong>'+this.member.password +
+			'Vos identifiants sont : <p><strong>Pseudonyme : </strong>'+this.member.pseudo+'<p><strong>Mot de passe : </strong>'+this.decryptPWD(this.member.password) +
 			'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 		);
 
@@ -1722,7 +1746,8 @@ module.exports = function MemberServer(pDBMgr, pSGMail){ // Fonction constructeu
 					pDataProfilMembre.email, 
 					'Vous avez changé votre de mot de passe', 
 					'<h1 style="color: black;">Votre nouveau mot de passe ...</h1><p><h2>Voici vos nouveaux identifiants :</h2><br />' +
-					'Vos identifiants sont : <p><strong>Pseudonyme : </strong>'+pDataProfilMembre.pseudo+'<p><strong>Mot de passe : </strong>'+pDataProfilMembre.password +
+					'Vos identifiants sont : <p><strong>Pseudonyme : </strong>'+pDataProfilMembre.pseudo+'<p><strong>Mot de passe : </strong>'+
+					this.decryptPWD(pDataProfilMembre.password) +
 					'</p><br /><br /><br /><i>Vil-Coyote Products</i>'
 				);
 			};
