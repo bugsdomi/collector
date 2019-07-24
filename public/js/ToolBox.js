@@ -16,71 +16,71 @@
 // ************************************************************************
 // --------------------------------------------------------------
 function ToolBox(){
-    this.screenWidth;              // Largeur de l'écran visible du navigateur
-    this.screenHeight;             // Hauteur de l'écran visible du navigateur
-    this.sensVertical = true;      // Constante pour la conversion Pourcentages / pixels
-    this.sensHorizontal = false;   // Constante pour la conversion Pourcentages / pixels
+	this.screenWidth;              // Largeur de l'écran visible du navigateur
+	this.screenHeight;             // Hauteur de l'écran visible du navigateur
+	this.sensVertical = true;      // Constante pour la conversion Pourcentages / pixels
+	this.sensHorizontal = false;   // Constante pour la conversion Pourcentages / pixels
 }
 // --------------------------------------------------------------
 // Méthodes prototypées de l'objet "ToolBox"
 // --------------------------------------------------------------
 ToolBox.prototype.random = function(pValInf, pValSup){
-    return Math.round(((pValSup - pValInf) * Math.random()) + pValInf);
+	return Math.round(((pValSup - pValInf) * Math.random()) + pValInf);
 }
 // --------------------------------------------------------------
 // Polyfill pour MSIE qui n'accepte pas la fonction Math.sign
 // --------------------------------------------------------------
 ToolBox.prototype.sign = function(x){
-    return !(x = parseFloat(x)) ? x 
-                                : x > 0 ? 1 
-                                        : -1;
+	return !(x = parseFloat(x)) ? x 
+															: x > 0 ? 1 
+																			: -1;
 };
 // --------------------------------------------------------------
 ToolBox.prototype.getScreenSize = function(){
-    this.screenWidth = (window.innerWidth);
-    this.screenHeight = (window.innerHeight);
+	this.screenWidth = (window.innerWidth);
+	this.screenHeight = (window.innerHeight);
 }
 // --------------------------------------------------------------
 ToolBox.prototype.refreshScreen = function(){   
-    this.getScreenSize();
-    window.location.href = window.location.href; // Apres un redimensionnement de l'écran, je le régénère from scratch;
+	this.getScreenSize();
+	window.location.href = window.location.href; // Apres un redimensionnement de l'écran, je le régénère from scratch;
 }
 // --------------------------------------------------------------
 ToolBox.prototype.convertPercentToPixels = function(pValue,pOrientation){   
-    return pOrientation ? (this.screenHeight / (100 / pValue))
-                        : (this.screenWidth / (100 / pValue));
+	return pOrientation ? (this.screenHeight / (100 / pValue))
+											: (this.screenWidth / (100 / pValue));
 }
 // --------------------------------------------------------------
 // Transforme les secondes du joueurs stockées dans la BDD en H:Min:Sec
 // --------------------------------------------------------------
 ToolBox.prototype.addZero = function(pSection) { 
-    return pSection < 10 ? '0' + pSection : pSection; 
+	return pSection < 10 ? '0' + pSection : pSection; 
 };
 // --------------------------------------------------------------
 // Transforme les secondes du joueurs stockées dans la BDD en H:Min:Sec
 // --------------------------------------------------------------
 ToolBox.prototype.convertSecsToHoursMinsSecs = function(pNbreSecondes) {
-    var vDate = new Date(pNbreSecondes * 1000); 
-    var vFormattedTime = [];
+	var vDate = new Date(pNbreSecondes * 1000); 
+	var vFormattedTime = [];
 
-    vFormattedTime.push(this.addZero(vDate.getHours()-1));
-    vFormattedTime.push(this.addZero(vDate.getMinutes()));
-    vFormattedTime.push(this.addZero(vDate.getSeconds()));
+	vFormattedTime.push(this.addZero(vDate.getHours()-1));
+	vFormattedTime.push(this.addZero(vDate.getMinutes()));
+	vFormattedTime.push(this.addZero(vDate.getSeconds()));
 
-    return vFormattedTime.join(':');
+	return vFormattedTime.join(':');
 }
 // --------------------------------------------------------------
 // Transforme les secondes du joueurs stockées dans la BDD en Jours:H:Min:Sec
 // --------------------------------------------------------------
 ToolBox.prototype.convertSecsToDaysHoursMinsSecs = function(pNbreSecondes) {
-    var nbJours = Math.floor(pNbreSecondes/(86400));
-    pNbreSecondes -= nbJours * 86400;
-    return this.addZero(nbJours)+'j ' + this.convertSecsToHoursMinsSecs(pNbreSecondes);
+	var nbJours = Math.floor(pNbreSecondes/(86400));
+	pNbreSecondes -= nbJours * 86400;
+	return this.addZero(nbJours)+'j ' + this.convertSecsToHoursMinsSecs(pNbreSecondes);
 }
 // --------------------------------------------------------------
 ToolBox.prototype.simpleRefreshScreen = function(){   
-    self.location.reload();                                 // Régénération de l'écran from scratch;
-    // window.location.assign(window.location.href)
+	self.location.reload();                                 // Régénération de l'écran from scratch;
+	// window.location.assign(window.location.href)
 }
 // -----------------------------------------------------------------------------
 // Cette fonction calcule l'age en fonction de la date de naissance et du jour actuel
@@ -474,6 +474,12 @@ ToolBox.prototype.pickPairColor2 = function() {
 
 		return vPWDCiphered;
 	}										
-// -----------------------------------------------------------------------------
+// --------------------------------------------------------------
+ToolBox.prototype.refreshWorkingSpace = function(){   
+	var vWorkingSpace = document.getElementById('idWorkingSpace');
+	vWorkingSpace.style.height = document.getElementById('idFooter').offsetTop - vWorkingSpace.offsetTop + 'px';
+}
+
+	// -----------------------------------------------------------------------------
 //  Fin du module
 // -----------------------------------------------------------------------------

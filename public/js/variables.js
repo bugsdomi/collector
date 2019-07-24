@@ -7,7 +7,9 @@
 // ***                                                                  ***
 // ************************************************************************
 // --------------------------------------------------------------
-var vToolBox;                       // Instance de la Boîte à outils
+var vCompliantBrowsers = ['Firefox','Chrome','Edge','Opera'];
+var vBrowserNameAndVersion;         // Instanciation du détecteur de version de Navigateur
+var vToolBox;                       // Instanciation de la Boîte à outils
 var vMemberClient;                  // Instanciation de l'objet decrivant un Membre et les méthodes de gestion de ce Membre
 var vFriendPopUpMenu;               // Instanciation de l'objet Popup Menu de mes amis
 var vFriendRequestMgr;              // Instanciation de l'objet gestionnaire des demandes d'amis

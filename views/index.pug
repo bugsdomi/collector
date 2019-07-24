@@ -82,7 +82,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           i.fa.fa-folder-open
           |  Documentation
         .dropdown-menu(aria-labelledby='idDropDownDocs')
-          a.dropdown-item(href='static/docs/CDC-AtelierFinal.pdf')
+          a.dropdown-item(href='static/docs/CDC-AtelierFinal.pdf' target='_blank')
             i.fa.fa-book
             |  Cahier des charges
           a.dropdown-item(href='static/docs/DAT.docx' target='_top')
@@ -136,7 +136,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                       span.sr-only Next
                 .cover-info
                   .avatar
-                    img#idAvatarImg1(alt='Avatar' src='Nope')
+                    img#idAvatarImg1(alt='Avatar' src='static/images/visiteur.jpg')
                   .name.txt-yellow-stroke
                     a#idAvatarMemberNameImg1(href='#')
                   ul#idProfileNavBar.cover-nav
@@ -215,7 +215,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
     .modal-dialog.modal-dialog-centered(role='document')
       .modal-content
         #idGenericModalHeader.modal-header.border-bottom
-          h5#idGenericModalTitle.modal-title Nope
+          h5#idGenericModalTitle.modal-title A propos...
           button.close(type='button' data-dismiss='modal' aria-label='Fermer' aria-hidden='true') &times;
         .modal-body
           img.mb-4.mx-auto.d-block(src='static/images/favicon.png' alt="Logo du site 'Collect\'Or'" height='72')
@@ -372,7 +372,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
           // Pseudo + Mail
           // ******************************************************************************
           .text-center
-            // <form class="form-Account" id="idAccountForm">
             form#idAccountForm.form-Account.novalidate
               fieldset.border.rounded.p-3
                 .row.justify-content-around
@@ -706,6 +705,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
   script(src='staticNodeModules/moment/min/moment-with-locales.min.js')
   script(src='staticNodeModules/crypto-js/crypto-js.js')
   script(src='/socket.io/socket.io.js')
+  script(src='static/js/BrowserNameAndVersion.js')
   script(src='static/js/ToolBox.js')
   script(src='static/js/variables.js')
   script(src='static/js/SPAMgr.js')

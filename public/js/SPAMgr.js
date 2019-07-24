@@ -66,10 +66,26 @@ window.addEventListener('DOMContentLoaded', function(){
 	vInvitationsCardMain	= new InvitationsCard(vMemberClient);						// Instanciation de l'objet "Carte des invitations"
 	vViewFriendProfile		= new ViewFriendProfile(vMemberClient);					// Instanciation de l'objet présentant le profil d'un ami
 	vPostsClientSideMain	= new PostsClient(vMemberClient);								// Instanciation de l'objet affichant les Posts
+	vBrowserNameAndVersion= new BrowserNameAndVersion();									// Instanciation de l'objet détectant la version du Navigateur Internet
 
+	vToolBox.getScreenSize();				// Récupère les dimensions de l'écran pour les adapter en cas de changement de taille, de résolution, etc....
+	window.addEventListener('resize',vToolBox.refreshWorkingSpace.bind(vToolBox));
+	moment.locale('fr');						// Choisit le Preset "France" pour les dates et heures (Mode global)
 	vToolBox.InitPopOverAndToolTipAndDropDown();
-	moment.locale('fr');	// Choisit le Preset "France" pour les dates et heures (Mode global)
 
+	// Vérification de la compatibilté du Browser
+	var vBrowserName = vBrowserNameAndVersion.getBrowserName();
+	var myIndex = vCompliantBrowsers.indexOf(vBrowserName);
+
+	if (myIndex === -1){
+		alert('Votre navigateur est '+vBrowserName+' qui n\'est pas supporté par cette application\n'+
+					'Cette fenêtre de votre navigateur va se fermer, et ouvrir 2 fenêtres vous permettant de télécharger "Chrome" et/ou "FireFox"');
+		open('https://www.google.com/intl/fr_fr/chrome/', 'Chrome', 'directories=yes,menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,toolbar=yes');
+		open('https://www.mozilla.org/fr/firefox/new/', 'Firefox', 'directories=yes,menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,toolbar=yes');
+		window.open('','_parent','');
+		window.close();
+	}
+	
 	// -------------------------------------------------------------------------
 	// 
 	// Eléments du menu principal (Header Menu)
@@ -80,9 +96,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vDeconnexion = document.getElementById('idDeconnexion');
 	var vAccount = document.getElementById('idAccount');
 	var vAbout = document.getElementById('idAbout');
-	var vDropDownDocs = document.getElementById('idDropDownDocs');
-	
-	var vGenericModal = document.getElementById('idGenericModal');
+// XXXXX	
+// var vGenericModal = document.getElementById('idGenericModal');
 	var vDropDownProfilMenu = document.getElementById('idDropDownProfilMenu');
 	var vImgAvatarDropDownMenu = document.getElementById('idImgAvatarDropDownMenu');
 	var vSpanAvatarDropDownMenu = document.getElementById('idSpanAvatarDropDownMenu');
@@ -129,7 +144,6 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vWorkingSpace = document.getElementById('idWorkingSpace');
 	vWorkingSpace.style.height = document.getElementById('idFooter').offsetTop - vWorkingSpace.offsetTop + 'px';
 
-
 	// Affiche une Div "Pad" qui vient s'intercaler entre le bas du menu du profil 
 	// et le haut du Footer, pour que le fond d'écran ne soit pas interrompu lorsque 
 	// la page de profil n'est pas affichée
@@ -164,7 +178,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vGenericModalHeader = document.getElementById('idGenericModalHeader');
 	var vGenericModalTitle = document.getElementById('idGenericModalTitle');
 	var vGenericModalBodyText = document.getElementById('idGenericModalBodyText');
-	var vGenericModalBtn = document.getElementById('idGenericModalBtn');
+// XXXXX
+// var vGenericModalBtn = document.getElementById('idGenericModalBtn');
 	
 	vAbout.addEventListener('click', function(){
 		var vModalHeaderColorParams = 
@@ -327,22 +342,25 @@ window.addEventListener('DOMContentLoaded', function(){
 	// -------------------------------------------------------------------------
 	var vAccountForm = document.getElementById('idAccountForm');
 	var vModalAccountHeader = document.getElementById('idModalAccountHeader');
-	var vAccountPseudo = document.getElementById('idAccountPseudo');
-	var vAccountEmail = document.getElementById('idAccountEmail');
+// XXXXX
+// var vAccountPseudo = document.getElementById('idAccountPseudo');
+// var vAccountEmail = document.getElementById('idAccountEmail');
+// var vAccountFirstName = document.getElementById('idAccountFirstName');
+// var vAccountName = document.getElementById('idAccountName');
+// var vAccountAge = document.getElementById('idAccountAge');
+// var vAccountStreet = document.getElementById('idAccountStreet');
+// var vAccountCity = document.getElementById('idAccountCity');
+// var vAccountZipCode = document.getElementById('idAccountZipCode');
+// var vAccountPresentation = document.getElementById('idAccountPresentation');
+// var vAccountBtn = document.getElementById('idAccountBtn');1
 	var vAccountPhotoImg = document.getElementById('idAccountPhotoImg');
 	var vAccountPhotoFile = document.getElementById('idAccountPhotoFile');
-	var vAccountFirstName = document.getElementById('idAccountFirstName');
-	var vAccountName = document.getElementById('idAccountName');
 	var vAccountBirthDate = document.getElementById('idAccountBirthDate');
-	var vAccountAge = document.getElementById('idAccountAge');
 
 	var vAccountSexNone = document.getElementById('idAccountSexNone');
 	var vAccountSexMale = document.getElementById('idAccountSexMale');
 	var vAccountSexFemale = document.getElementById('idAccountSexFemale');
 	
-	var vAccountStreet = document.getElementById('idAccountStreet');
-	var vAccountCity = document.getElementById('idAccountCity');
-	var vAccountZipCode = document.getElementById('idAccountZipCode');
 	var vAccountDepartment = document.getElementById('idAccountDepartment');
 
 	var vAccountPrefGravures = document.getElementById('idAccountPrefGravures');
@@ -376,12 +394,10 @@ window.addEventListener('DOMContentLoaded', function(){
 	var vAccountPrefHInternationale = document.getElementById('idAccountPrefHInternationale');
 	var vAccountPrefAutre = document.getElementById('idAccountPrefAutre');
 
-	var vAccountPresentation = document.getElementById('idAccountPresentation');
 	var vAccountCurrentPassword = document.getElementById('idAccountCurrentPassword');
 	var vAccountPassword = document.getElementById('idAccountPassword');
 	var vAccountConfirmPassword = document.getElementById('idAccountConfirmPassword');
 	var vAccountAlertMsg = document.getElementById('idAccountAlertMsg');1
-	var vAccountBtn = document.getElementById('idAccountBtn');1
 
 	$('#idModalAccount').on('shown.bs.modal', function(){
 		$('#idAccountFirstName').focus();
@@ -537,7 +553,8 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Eléments des champs de saisie de la Modale d'ajout d'amis
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	var vModalMgrFriend = document.getElementById('idModalMgrFriend');
+// XXXXX
+// var vModalMgrFriend = document.getElementById('idModalMgrFriend');
 	var vModalMgrFriendDialog = document.getElementById('idModalMgrFriendDialog');
 	var vModalMgrFriendHeader = document.getElementById('idModalMgrFriendHeader');
 	var vModalMgrFriendExitBtn = document.getElementById('idModalMgrFriendExitBtn');
@@ -571,8 +588,9 @@ window.addEventListener('DOMContentLoaded', function(){
 	// Eléments des champs de saisie de la Modale de listage des membres
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	var vModalMemberList = document.getElementById('idModalMemberList');
-	var vModalMemberListDialog = document.getElementById('idModalMemberListDialog');
+// XXXXX
+// var vModalMemberList = document.getElementById('idModalMemberList');
+// var vModalMemberListDialog = document.getElementById('idModalMemberListDialog');
 	var vModalMemberListHeader = document.getElementById('idModalMemberListHeader');
 	var vModalMemberListExitBtn = document.getElementById('idModalMemberListExitBtn');
 	var vModalMemberListTitle = document.getElementById('idModalMemberListTitle');
@@ -638,7 +656,6 @@ window.addEventListener('DOMContentLoaded', function(){
 		vProfileNavBar,
 		vNbrWaitingInvit,
 		vPad,
-		vDropDownDocs,
 	}
 
 	// -------------------------------------------------------------------------

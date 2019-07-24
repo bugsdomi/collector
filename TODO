@@ -1,4 +1,7 @@
 Todo:
+☐ Faire un jeu d'essai
+☐ Faire les Profils "Examinateurs"
+☐ README.MD
 ☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
 ☐ Voir s'il est possible d'eliminer la duplication des images téléchargées
 ☐ Dans index.html, harmoniser col-sm et col-md

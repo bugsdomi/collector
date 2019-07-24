@@ -136,9 +136,12 @@ MemberClient.prototype.validateBirthDate = function(pAccountBirthDate){
 MemberClient.prototype.initModalTextAbout = function(pModalTitle, pModalBodyText){
 	pModalTitle.innerHTML = '<i class="fa fa-bell"></i> A propos...';
 	pModalBodyText.innerHTML = '<h5>Bienvenue dans Collect\'Or</h5>';
-	pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus.</p>';
+	pModalBodyText.innerHTML += '<p>Collector est un réseau social destiné aux collectionneurs de figurines, véhicules, avions, bateaux, et autres sujets historiques, principalement militaires, mais les autres types de collections sont également les bienvenus tant qu\'elles sont basées sur des thèmes historiques.</p>';
 	pModalBodyText.innerHTML += '<p>Vous pourrez notamment discuter en public ou en privé avec d\'autres collectionneurs, déposer / lire des annonces de vente, d\'échange, de recherche, de manifestations...</p>';
-	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions à la Communauté.</p>';
+	pModalBodyText.innerHTML += '<p>De plus, vous pourrez laisser vos avis sur des sujets particuliers, accéder à la galerie pour admirer les collections ou y déposer vos propres photos, accéder aux trucs et astuces de modéliste, y déposer vos expériences, et enfin poser vos questions à la Communauté.</p><br />';
+	pModalBodyText.innerHTML += '<h5>Avertissement...</h5>' + 
+															'<p>Cette application ne fonctionne de façon optimale que sur les navigateurs Internet modernes et récents (Chrome, Firefox, Edge...)</p>'+
+															'<p>Si nécessaire, veuillez télécharger et installer un des navigateurs cités (Chrome / Firefox de préférence)...</p>';
 }
 
 // -----------------------------------------------------------------------------
@@ -276,7 +279,6 @@ MemberClient.prototype.initModalAcceptInvitToChat = function(pModalTitle, pModal
 MemberClient.prototype.setMemberContext = function(pContextInfo, pAvatarInfo, pAskingMembers){
 	pContextInfo.vConnexion.style.display = 'none';         			// Désactivation du bouton 'Connexion'
 	pContextInfo.vCreation.style.display = 'none';          			// Désactivation du bouton 'Creation de compte'
-	pContextInfo.vDropDownDocs.style.display = 'none';          	// Désactivation du bouton 'Documentations'
 	pContextInfo.vDropDownProfilMenu.style.display = 'block';			// Affiche le sous-menu dans la NavBar d'entête spécifique au membre connecté
 	
 	// Affiche le nom et la photo du membre dans la NavBar d'entête
