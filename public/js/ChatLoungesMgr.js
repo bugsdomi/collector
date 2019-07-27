@@ -592,16 +592,6 @@ ChatLoungesMgr.prototype.sendInvitToChat = function(pInvitChat){
 	webSocketConnection.emit('invitToChat', vDataInvitChat); 
 } 
 
-
-
-
-
-
-
-
-
-
-
 // --------------------------------------------------------------
 // Création et gestion de la modale de réponse à l'invitation du TChat
 // --------------------------------------------------------------

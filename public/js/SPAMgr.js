@@ -1337,7 +1337,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	webSocketConnection.on('deleteFriendFromMyFriendListFriend', function(pFriendToDelete){ 
 		if (vActiveProfile === cstFriendProfileActive){
 			if ((vFriendProfileViewed.member.pseudo === pFriendToDelete.myPseudo) ||			// Si un profil consulté est concerné par la suppression d'un ami
-					(vFriendProfileViewed.member.pseudo === pFriendToDelete.friendPseudo)){		// je le laiisse entrer dans la procvedure de suppression de l'Avatar
+					(vFriendProfileViewed.member.pseudo === pFriendToDelete.friendPseudo)){		// je le laisse entrer dans la procedure de suppression de l'Avatar
 
 				if (vFriendProfileViewed.member.pseudo === pFriendToDelete.friendPseudo) {
 					pFriendToDelete.indexFriendToDelete = vToolBox.searchObjectInArray(vFriendProfileViewed.vMyFriendList, 'friendPseudo', pFriendToDelete.myPseudo);

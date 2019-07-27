@@ -106,7 +106,7 @@ PostsClient.prototype.displayPostEdit = function(){
 	// Card-Footer
 	vlineHTML.vDivFooterPostEdit = window.document.createElement('div');
 	vlineHTML.vDivCard.appendChild(vlineHTML.vDivFooterPostEdit);
-	vlineHTML.vDivFooterPostEdit.setAttribute('class', 'card-footer border mt-1 py-1');
+	vlineHTML.vDivFooterPostEdit.setAttribute('class', 'card-footer mt-1 py-1');
 
 	vlineHTML.vDivCardFooterRow = window.document.createElement('div');
 	vlineHTML.vDivFooterPostEdit.appendChild(vlineHTML.vDivCardFooterRow);

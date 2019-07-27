@@ -2,19 +2,18 @@ Todo:
 ☐ Faire un jeu d'essai
 ☐ Faire les Profils "Examinateurs"
 ☐ README.MD
-☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
 ☐ Voir s'il est possible d'eliminer la duplication des images téléchargées
-☐ Dans index.html, harmoniser col-sm et col-md
 
 A la fin du Dev :
-    ☐ Virer tous les id et les variables associées inutilisées
-    
-    Non demandé mais qui serait pals :
-    ☐ Mettre un bouton "like" et partager dans les Posts / commentaires
-    ☐ Ajouter la version du produit en bas a droite de l'écran
-    ☐ Piquer le style wyylde
-    ☐ Gérer un journal de tous les évenements (connexion/deconnexion, creation de cpte, chgt de PWd, messages envoyé de qui vers qui, etc...)
-    ☐ Passer les adresses email en minuscules
+
+Non demandé mais qui serait pas mal :
+☐ Mettre un bouton "like" et partager dans les Posts / commentaires
+☐ Ajouter la version du produit en bas a droite de l'écran
+☐ Piquer le style wyylde
+☐ Gérer un journal de tous les évenements (connexion/deconnexion, creation de cpte, chgt de PWd, messages envoyé de qui vers qui, etc...)
+☐ Passer les adresses email en minuscules
+☐ Refactoriser 'thisContext' avec des fonctions "=>" ou .bind(this)
+☐ Dans index.html, harmoniser col-sm et col-md
 
 Mode Responsive :
     ☐ Les modales sont trop larges
@@ -34,9 +33,7 @@ Dans le DAT :
     ☐ Mettre les feuilles volantes à la fin du CDC
     
     
-    
-    
-    Rattrapé (A fusionner) :
+Rattrapé (A fusionner) :
     ☐ Virer les contraintes de saisie du Pseudo (Initiale en majuscule, etc..)
     ☐ En mode Mobile, modifier le stroke du nom de l avatar
     ☐ En mode Mobile, modifier la largeur de la  modale de succes de connexion 
@@ -124,7 +121,7 @@ Dans le DAT :
     ✔ Dans la carte de présentation, si les champs ne sont pas remplis dans la fiche de renseignement, mettre "non renseigné" @done(19-05-11 13:06)
     ✔ Montrer un effet "Bouton bouton appuyé" sur les icones de demande d'amis, d'acceptation et de refus @done(19-05-11 13:07)
     ✔ Convertir les fonctions anonymes en fonctions fleches @done(19-05-11 13:07)
-    ✔ Ajouter une Popover ssur l'annulation d'une invitation @done(19-05-22 09:09)
+    ✔ Ajouter une Popover sur l'annulation d'une invitation @done(19-05-22 09:09)
     ✔ Pourquoi les bordures des champs de saisie sont en rouge sur Firefox ? @done(19-06-12 11:02)
     ✔ Gerer le nombre de messages : @done(19-06-17 19:26)
         ✔ A l'ouverture, charger le Nbre de Msg de la BDD vers la mémoire @done(19-06-17 19:26)
@@ -159,6 +156,8 @@ Dans le DAT :
     ✔ Virer les "XXXXX", les "Console.log", et toutes les lignes endormies "//" @done(19-07-23 16:27)
     ✔ Regex a affiner pour tous les champs @done(19-07-23 16:27)
     ✔ Virer les fichiers CSS, les outils et autres fichiers inutiles @done(19-07-23 16:28)
+    ✔ Virer tous les id et les variables associées inutilisées @done(19-07-24 17:16)
+
 
 
 ✔ Propager les champs entre le coté serveur et le coté client : @done(19-07-20 10:21)
