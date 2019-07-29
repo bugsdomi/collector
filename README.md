@@ -1,13 +1,14 @@
 # Collect'Or
 **Ce projet est le 3ème et dernier de la Formation "Développeur - Integrateur Web Full-Stack" pourvue par l'IFOCOP à Paris 11ème, en 2018.**  
-**Il vise à prouver mes compétences en développement Client / Serveur (Front, Back, BDD), ainsi que ma faculté à gérer l'intégrralité d'un projet en toute autonomie.**  
-**"Collect'Or" est la réponse au cahier des charges rédigé par "VirtuoWorks"**  
+**Il vise à prouver mes compétences en développement Client / Serveur (Front, Back, BDD), ainsi que ma faculté à gérer l'intégralité d'un projet en toute autonomie.**  
+**"Collect'Or" est ma réponse au cahier des charges rédigé par "VirtuoWorks"**  
 
 **Le sujet imposé était de créer un réseau social dont la thématique était laissée libre.**
 **Le thème que j'ai choisi est le monde des collectionneurs de sujets d'Histoire Militaires :**  
 * **Livres**  
 * **Films**
 * **Figurines**
+* **Maquettes**
 * **...**  
 
 ![screen_title](public/images/LandingPage.png)
@@ -145,9 +146,9 @@ Collect'Or                      Répertoire applicatif (coté serveur)
 │  ├─ memberServerSide.js       Module de Gestion des membres coté serveur
 │  └─ PostsServerSide.js        Module de gestion des Posts
 |
-├─ Font-awesome.4.6.1/          Police d'Icones Bootstrap 4
+├─ Font-awesome.4.6.1           Police d'Icones Bootstrap 4
 |
-├─ Node_modules/                Librairies JS
+├─ Node_modules                 Librairies JS
 |
 ├─ public                       Répertoire des Assets pour le coté client
 |   ├─ css                      Fichiers CSS
