@@ -156,8 +156,8 @@ Collect'Or                      Répertoire applicatif (coté serveur)
 |   |                                           2) Document technique
 |   ├─ fonts                    Polices de caractères
 |   ├─ images                   Images diverses
-|   ├─    └─ members             Avatars des membres                     
-|   └─ js                      Sources Javascript
+|   ├─    └─ members            Avatars des membres                     
+|   └─ js                       Sources Javascript
 |
 └─ views                        Vue PUG
     └─ index.pug                Interface front-end minimisée
