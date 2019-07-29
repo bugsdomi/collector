@@ -1,14 +1,18 @@
 # Collect'Or
-> **"Collect'Or" est la réponse au cahier des charges rédigé par "VirtuoWorks"
+**Ce projet est le 3ème et dernier de la Formation "Développeur - Integrateur Web Full-Stack" pourvue par l'IFOCOP à Paris 11ème, en 2018.**  
+**Il vise à prouver mes compétences en développement Client / Serveur (Front, Back, BDD), ainsi que ma faculté à gérer l'intégrralité d'un projet en toute autonomie.**  
+**"Collect'Or" est la réponse au cahier des charges rédigé par "VirtuoWorks"**  
 
-« Collect’Or » est un réseau social dédié aux collectionneurs d’Histoire Militaire.**
+**Le sujet imposé était de créer un réseau social dont la thématique était laissée libre.**
+**Le thème que j'ai choisi est le monde des collectionneurs de sujets d'Histoire Militaires :**  
+* **Livres**  
+* **Films**
+* **Figurines**
+* **...**  
 
-![screen_title](images/screenshots/LandingPage.png)
+![screen_title](public/images/LandingPage.png)
 
 ## Fonctionnalités principales
-Ce projet est le 3ème et dernier de la Formation "Développeur et Integrateur Web Full-Stack" pourvue par l'IFOCOP à Paris 11ème
-Le sujet imposé était de créer un réseau social
-
 Ce réseau social possède les fonctions suivantes :
 *	MAJ en temps réel sur les postes des membres concernés et connectés des informations telles que :
     *	Modification des informations de la fiche de renseignement (y compris de l’avatar)
@@ -82,116 +86,143 @@ Ce réseau social possède les fonctions suivantes :
 
 *	Espace de dialogue en temps réel entre les membres (TChat Multi-membres et Multi-Rooms).
 
-*	Notification par mail lors des diverses actions
+*	Notification par mail lors des diverses actions    
+  
+## Collect’Or en quelques chiffres :
+« Collect’Or », c’est :
 
 
-## Gameplay
-
-![screen_game](images/screenshots/screen_game.png)
-
-### Startup
-First step to launch the game is to click on the start button located at the bottom right corner of the TV set. This will lead you to the game title screen. From then you have the ability to either use your keyboard or a standard gamepad to control the game.
-
-### Commands
-Gamepad support is provided using the **[HTML5 Gamepad API](https://www.w3.org/TR/gamepad/)**, for now only standard gamepads are supported in this game. Among popular supported gamepads we can safely use **PS3, PS4, XBox 360 and XBox One** controllers. However when you plug a gamepad to your computer it might be detected as a mouse device by your operating system. This is quite annoying because while playing the game you'll see the mouse pointer moving across the screen and this can interfer with the game display. To prevent that there are dedicated options to toggle in Windows:
-* On Windows: there are dedicated options to toggle off inside the XInput driver configuration of the gamepad
-* On Linux: I've provided a small script allowing to deactivate the gamepad mouse events. Just replace NAME according to your gamepad ID and execute this script before playing => [disable_ps3_gamepad_mouse.sh](shell/disable_ps3_gamepad_mouse.sh)
-
-If a compliant gamepad is connected and detected by your browser, the gamepad picture located below the TV set will light up. On the other hand, if you unplug your gamepad, the picture will change back to normal.
-
-Available commands for the gamepad are the **directional pad** and the **left analog stick**, allowing the user to move the character in **8 directions** (up, up-right, right, down-right, down, down-left, left, up-left). The **"X"** (for PlayStation) or **"A"** (for XBox) action button is dedicated for firing at enemies. And finally the **"START"** button whose purpose is to pause the game or to proceed to next screen.
-
-In case you decide to stick with the default keyboard gameplay, here is the controls list displayed by key:
-* **1**: move down-left
-* **2** or **down arrow**: move down
-* **3**: move down-right
-* **4** or **left arrow**: move left
-* **6** or **right arrow**: move right
-* **7**: move up-left
-* **8** or **up arrow**: move up
-* **9**: move up-right
-* **Spacebar**: fire
-* **Enter**: pause or skip screen
-
-### Goal
-The goal of the game is to shoot enemies in order to collect the content of chests dropped onto the field without being killed by enemies attacks. This will allow you to unlock parts of my CV hidden in the chests. The more you kill enemies, the more you'll be rewarded by bonus chests and game points. In the event you run out of health points and are about to lose, you'll hear a warning buzz and if you're eventually killed, you'll have to start all over again.
-
-Enemies and background items are populated randomly on the map at startup. If the character wanders to close to enemies, they start chasing him, otherwise they just move randomly on the field. When the enemy count reaches a minimum threshold, a new batch of fresh enemies is generated, so the game is virtually endless!
-
-You'll find below the main specs of the character and enemies.
-
-### Character specs
-* **health points**: 100
-* **motion speed**: 1 (in pixel/frame)
-* **fireball damage points**: 5
-* **fireball delay**: 0.8 (in seconds)
-* **fireball limit**: 5
+### Nombre de sources :
+*	1 fichier HTML  
+*	1 fichier CSS (hors Bootstrap.css, font-awesome.css, et cover.css)  
+*	21 modules personnels coté client  
+*	4 modules personnels coté serveur
 
 
-### Enemy specs
-* **health points**: 10
-* **point scoring**: 5
-* **motion direction**: can move in the same 8 directions as the character
-* **motion speed**: between 0.2 and 0.5 (in pixel/frame)
-* **motion duration**: between 3 and 7 (in seconds)
-* **chase move radius**: 140 (distance in pixel where enemies start chasing the character)
-* **chase speed**: 0.7 (the speed in pixel/frame of enemies when chasing the character)
-* **attack move radius**: 60 (distance in pixel where enemies adopt an agressive stance while chasing the character)
-* **attack damage points**: 10 (the number of health points withdrawn from the character at each attack)
-* **attack delay**: 1 (the delay in seconds between two attacks)
+**Nombre de lignes :**
+*	Coté client 	: 	10903 lignes  
+*	Coté serveur 	: 	   2924 lignes
+*	Soit	13827 lignes pour l’ensemble du projet
 
-## Reference
 
-### Graphic resources and tools
-* Pixelized pictures generator: https://www.pixel-stitch.net/ 
-* CSS spritesheet positions generator from image:  http://www.spritecow.com/
-* Spritesheet for the main character: https://www.spriters-resource.com/snes/thefiremen/
-* Spritesheet for enemies and other games assets: https://www.spriters-resource.com/snes/secretofmanaseikendensetsu2/
+**Nombre de messages entre le client et le serveur :**
+*	Coté client 	: 	40 types de messages émis par les clients
+*	Coté serveur 	: 	58 types de messages émis par le serveur
+*	Soit 	98 types de messages gérés pour l’ensemble du projet
 
-### Audio resources
-* Sound effects: https://www.sounds-resource.com/snes/legendofzeldaalinktothepast/sound/7573/
-* Soundtrack: https://downloads.khinsider.com/game-soundtracks/album/secret-of-mana-original-soundtrack
+## Environnement technique
+« Collect’Or » est une Single Page Application » (SPA).  
 
-### JavaScript design patterns
-* https://gist.github.com/lucastan/5421897
-* https://toddmotto.com/mastering-the-module-pattern/
+### Stack utilisé
+|Coté client               |Coté serveur              |
+|:------------------------:|:------------------------:|
+|HTML|Node.js|
+|CSS|Socket.io|
+|Javascript|MongoDB|
+|Bootstrap 4|Express.js / Pug|  
 
-### Game loop and frame refresh
-* http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/index.html
-* https://stackoverflow.com/questions/1955687/best-way-for-simple-game-loop-in-javascript
-* https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
 
-### CSS animations
-* https://www.sitepoint.com/frame-by-frame-animation-css-javascript/
+## Topologie
+* **1 La Base données :**  
+La BDD MongoDB est hébergée chez **« mLab ».**  
+Site hébergeur **"mLab"**:  
+https://mlab.com/databases/collect-or  
 
-### Collision detection
-* https://developer.mozilla.org/fr/docs/Games/Techniques/2D_collision_detection
-* http://happycoding.io/tutorials/processing/collision-detection#rectangle-rectangle-collision-detection
+* **2 L'application :**  
+Accès au DashBoard **« Heroku »**  
+Site hébergeur **"heroku"**:  
+https://dashboard.heroku.com/apps/collectoronheroku  
 
-### Keyboard support
-* https://stackoverflow.com/questions/12273451/how-to-fix-delay-in-javascript-keydown
-* https://developer.mozilla.org/fr/docs/Web/API/KeyboardEvent/key
-* http://keycode.info/
+![topologie](public/images/topologie.png)
 
-### Gamepad support
-* https://www.w3.org/TR/gamepad/
-* https://developer.mozilla.org/fr/docs/Web/Guide/API/Gamepad
-* http://html5gamepad.com/
-* https://notes.georgboe.com/post/connect-an-8bitdo-gamepad-on-linux/
-* https://ubuntuforums.org/showthread.php?t=1879616
 
-## Acknowledgements
+## Arborescence des répertoires
+```
+Collect'Or                      Répertoire applicatif (coté serveur)
+│  ├─ collector.js              Application principale coté serveur
+│  ├─ dbmgr.js                  Connectivité avec la BDD MongoDB "Collect-or"
+│  ├─ index.html                Interface Front-end
+│  ├─ memberServerSide.js       Module de Gestion des membres coté serveur
+│  └─ PostsServerSide.js        Module de gestion des Posts
+|
+├─ Font-awesome.4.6.1/          Police d'Icones Bootstrap 4
+|
+├─ Node_modules/                Librairies JS
+|
+├─ public                       Répertoire des Assets pour le coté client
+|   ├─ css                      Fichiers CSS
+|   ├─ docs                     Documentation   1) Cahier des charges
+|   |                                           2) Document technique
+|   ├─ fonts                    Polices de caractères
+|   ├─ images                   Images diverses
+|   ├─    └─ members             Avatars des membres                     
+|   └─ js                      Sources Javascript
+|
+└─ views                        Vue PUG
+    └─ index.pug                Interface front-end minimisée
 
-I'd like to thank all the staff from IFOCOP and my colleagues from the DIWJS08 promotion for their advices and support.
+
+## Déploiement
+
+Voici un exemple de déploiement d'une application sur heroku[Heroku](https://heroku.com) using [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line):
+
+```bash
+# Créez un nouveau répertoire local git
+git init
+
+# Créez une nouvelle application heroku
+heroku apps:create my-new-app
+
+# Ajoutez une référence distante de heroku sur le répertoire local
+heroku git:remote --app my-new-app
+
+# Création des variables d'environnement sur l'application heroku
+heroku config:set MONGOLAB_URI=mongodb://Collect-OrAdmin:fakeUserAdmin@ds123753.mlab.com:23753/collect-or
+heroku config:set SENDGRID_API_KEY:XX.dCjZY4ADSDGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx              (clé secrète)
+
+# commit and push des fichiers
+git add -A
+git commit -m "Initial commit"
+git push heroku master
+
+# Lancement de l'application dans le navigateur
+heroku open
+```
+
+Les deploiements suivants, vous devrez juste effectuer les opérations suivantes :
+
+```bash
+git add -A
+git commit -m "Update code"
+git push heroku master
+```  
+
+## Lancement de l’application "Collect'Or"
+https://collectoronheroku.herokuapp.com/  
+
+
+## Remerciements
+
+Je remercie toutes les personnes qui m'ont supportées durant ce projet, qui m'ont conseillé eaidé au testing :
+- T. Rudrauff
+- B. Grandclaude
+- P. Vanneste  
+Je remercie également tout le corps professoral de l'IFOCOP qui a été très performant et très pédagogique, en particulier les gens de "VirtuoWorks"
 
 ## Contact
-
-Romain Joly – [@Rom1_Joly](https://twitter.com/rom1_joly) – [contact@romain-joly.com](mailto:contact@romain-joly.com)
-
-## Contributing
-
-1. Fork it (<https://gitlab.com/elazul51/cv_game/forks/new>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+ > **"Collect'Or"**  
+```bash
+Dominique Hourdequin - 2018 / 2019                              
+Projet N°3 - Type "Front + Back"                                
+                                                            
+Formation "Développeur Full-Stack Javascript"                   
+Classe : "DIWJS08" - année 2018                                 
+IFOCOP - Paris XI                                               
+                                                             
+Contact à l`IFOCOP qui transmettra mes coordonnées sur demande  
+Responsable de formation                                        
+Madame Fabienne Thiry                                           
+mail : fthiry@ifocop.fr                                         
+Tel : 01-40-21-83-78     
+```
+Mon compte **LinkedIn** : https://www.linkedin.com/in/dominique-hourdequin-247997107/
