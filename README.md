@@ -8,6 +8,7 @@
 * **Livres**  
 * **Films**
 * **Figurines**
+* **Maquettes**
 * **...**  
 
 ![screen_title](public/images/LandingPage.png)
