@@ -51,11 +51,8 @@ Rattrapé (A fusionner) :
     ☐ Tester le type et la version du navigateur et envoyer un message si <= IE9 
     ☐ Faire en sorte que les boutons des modales generiques soient selectionnés par défaut (qu on puisse les activer par [Enter] sans avoir a cliquer dessus)
     ☐ Réduire la hauteur prise par les Msg d'alerte dans les fenetres modales génériques
-    ✘ Voir pour stopper proprement la BDD et le serveur ExpressJS @cancelled(19-07-20 11:01)
     ☐ Gestion d'erreurs globalisée (try...catch)
-    ✔ Faire apparaitre les bordures de champs de saisie en erreur en rouge @done(19-07-20 11:01)
     ☐ Voir pour faire un journal des connexions / Deconnexions / Creations / Suppression / Chgt MDP
-    ✘ Passer les images du carroussel en mode "Slide" @cancelled(19-07-20 11:01)
 
     Fiche Renseignements :
     ✔ A l'ouverture, rechercher les infos dejà stockées en BDD et les afficher, @done(19-03-25 10:06)
@@ -157,7 +154,7 @@ Rattrapé (A fusionner) :
     ✔ Virer les fichiers CSS, les outils et autres fichiers inutiles @done(19-07-23 16:28)
     ✔ Virer tous les id et les variables associées inutilisées @done(19-07-24 17:16)
     ✔ README.MD @done(19-07-29 20:25)
-
+    ✔ Faire apparaitre les bordures de champs de saisie en erreur en rouge @done(19-07-20 11:01)
 
 
 ✔ Propager les champs entre le coté serveur et le coté client : @done(19-07-20 10:21)
@@ -191,3 +188,5 @@ Gerer la lecture des champs au fur et a mesure de leur creation :
 ✘ Voir pourquoi la puce du Nbre d invits decale le menu suivant a son 1er affichage @cancelled(19-07-20 10:54)
 ✘ changer les couleurs de menu déroulants (gris foncé et bleu quand sélectionné moche) @cancelled(19-07-20 10:55)
 ✘ Enlever le coté "Deformé" des AvatarsToken (Voir avec backgroundImage pour cadrer l image dans l"AvatarToken") @cancelled(19-07-20 10:54)
+✘ Voir pour stopper proprement la BDD et le serveur ExpressJS @cancelled(19-07-20 11:01)
+✘ Passer les images du carroussel en mode "Slide" @cancelled(19-07-20 11:01)

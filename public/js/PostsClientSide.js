@@ -285,10 +285,14 @@ PostsClient.prototype.displayPublishedPosts = function(pPostToPublish, pActivePr
 			vlineHTML.vBtnDeletePost.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters border-danger px-1 py-0 mr-3');
 			vlineHTML.vBtnDeletePost.setAttribute('style', 'visibility: hidden;');
 			vlineHTML.vBtnDeletePost.innerHTML = 'Supprimer';
-
+// XXXXX
+// if 	((vMemberClient.member.pseudo === vlineHTML.vH5PostPseudo.innerHTML) || // Si je suis l'auteur du post, je peux effacer mon Post
+// 		(pActiveProfile === cstMainProfileActive)){															// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
+// 	vlineHTML.vBtnDeletePost.style.visibility='visible';											// Alors Affichage du bouton de suppression du Post
 			if 	((vMemberClient.member.pseudo === vlineHTML.vH5PostPseudo.innerHTML) || // Si je suis l'auteur du post, je peux effacer mon Post
-					(pActiveProfile === cstMainProfileActive)){															// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
-				vlineHTML.vBtnDeletePost.style.visibility='visible';											// Alors Affichage du bouton de suppression du Post
+					(pActiveProfile === cstMainProfileActive) || 												// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)	
+					(vMemberClient.member.role < cstMembre)){														// Les Admin peuvent tout effacer
+						vlineHTML.vBtnDeletePost.style.visibility='visible';							// Alors Affichage du bouton de suppression du Post
 
 				vDataToTransmit = {
 					activeProfile 	: pActiveProfile,
@@ -712,10 +716,14 @@ PostsClient.prototype.displayCommentL1 = function(pCommentL1, pActiveProfile){
 			vlineHTML.vBtnDeleteCommentL1.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters border-danger px-1 py-0 mr-3');
 			vlineHTML.vBtnDeleteCommentL1.setAttribute('style', 'visibility: hidden;');
 			vlineHTML.vBtnDeleteCommentL1.innerHTML = 'Supprimer';
-
+// XXXXX
+// if 	((vMemberClient.member.pseudo === vlineHTML.vH5CommentL1Pseudo.innerHTML) || // Si je suis l'auteur du commentaire L1, je peux effacer mon commentaire
+// 		(pActiveProfile === cstMainProfileActive)){													// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
+// 	vlineHTML.vBtnDeleteCommentL1.style.visibility='visible';									// Alors Affichage du bouton de suppression du commentaire
 			if 	((vMemberClient.member.pseudo === vlineHTML.vH5CommentL1Pseudo.innerHTML) || // Si je suis l'auteur du commentaire L1, je peux effacer mon commentaire
-					(pActiveProfile === cstMainProfileActive)){													// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
-				vlineHTML.vBtnDeleteCommentL1.style.visibility='visible';									// Alors Affichage du bouton de suppression du commentaire
+					(pActiveProfile === cstMainProfileActive) ||												// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
+					(vMemberClient.member.role < cstMembre)){														// Les Admin peuvent tout effacer
+				vlineHTML.vBtnDeleteCommentL1.style.visibility='visible';							// Alors Affichage du bouton de suppression du commentaire
 
 				vDataToTransmit = {
 					activeProfile : pActiveProfile,
@@ -1128,10 +1136,14 @@ PostsClient.prototype.displayCommentL2 = function(pCommentL2, pActiveProfile){
 			vlineHTML.vBtnDeleteCommentL2.setAttribute('class', 'btn btn-sm bg-light pushBtnFilters border-danger px-1 py-0 mr-3');
 			vlineHTML.vBtnDeleteCommentL2.setAttribute('style', 'visibility: hidden;');
 			vlineHTML.vBtnDeleteCommentL2.innerHTML = 'Supprimer';
-
+// XXXXX
+// if 	((vMemberClient.member.pseudo === vlineHTML.vH5CommentL2Pseudo.innerHTML) || // Si je suis l'auteur du commentaire L1, je peux effacer mon commentaire
+// 		(pActiveProfile === cstMainProfileActive)){													// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
+// 	vlineHTML.vBtnDeleteCommentL2.style.visibility='visible';									// Alors Affichage du bouton de suppression du commentaire
 			if 	((vMemberClient.member.pseudo === vlineHTML.vH5CommentL2Pseudo.innerHTML) || // Si je suis l'auteur du commentaire L1, je peux effacer mon commentaire
-					(pActiveProfile === cstMainProfileActive)){													// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
-				vlineHTML.vBtnDeleteCommentL2.style.visibility='visible';									// Alors Affichage du bouton de suppression du commentaire
+					(pActiveProfile === cstMainProfileActive) ||											// Le propriétaire du mur peut effacer tous les Posts qu'il désire (les siens et ceux des autres)
+					(vMemberClient.member.role < cstMembre)){													// Les Admin peuvent tout effacer
+				vlineHTML.vBtnDeleteCommentL2.style.visibility='visible';						// Alors Affichage du bouton de suppression du commentaire
 
 				vDataToTransmit = {
 					activeProfile : pActiveProfile,
