@@ -248,7 +248,7 @@ var myIdLabel = document.getElementById(pPrefLabel)
 AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 	var cstWaitForUpladToDisplayAvatar = false;
 
-	var vFormValid = !(this.memberClient.newPasswordKO || this.memberClient.birthDateKO);										// On vérifie qu'il n'y a pas de c!(hamps en erreur
+	var vFormValid = !(this.memberClient.newPasswordKO || this.memberClient.birthDateKO);										// On vérifie qu'il n'y a pas de champs en erreur
 
 	if (vFormValid){
 		if (pAccountParams.vAccountPhotoFile.value.length){                                                    // Si un fichier image a été choisi dans l explorateur windows
@@ -315,9 +315,7 @@ AccountModal.prototype.updateProfile = function(pAccountParams, pAvatarInfo){
 		pAccountParams.vAccountAlertMsg.style.visibility = 'hidden';  
 
 		if (!cstWaitForUpladToDisplayAvatar) {					// Si c est un avatar qui n'a pas eu besoin d être téléchargé (Soit Photo déja existante, soit avatar par défaut)
-			setTimeout(() => {
 				this.memberClient.displayAvatar(pAvatarInfo);	// MAJ L'avatar sur la barre de menu, et l'avatar principal du profile
-			}, 500);
 		};
 	}
 }

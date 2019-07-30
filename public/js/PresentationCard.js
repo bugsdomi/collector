@@ -607,7 +607,9 @@ PresentationCard.prototype.displayPresentationCard = function(){
 // Cette fonction affiche le contenu de la carte "Présentation" sur la page de profil
 // -----------------------------------------------------------------------------
 PresentationCard.prototype.fillPresentationCard = function(pMember){
-	document.getElementById('idAvatarToken'+vActiveProfile).setAttribute('src', 'static/images/members/'+pMember.etatCivil.photo);
+	setTimeout(() => {
+		document.getElementById('idAvatarToken'+vActiveProfile).setAttribute('src', 'static/images/members/'+pMember.etatCivil.photo);
+	}, 500);
 
 // pProfileInfo.vAboutPrenom.innerHTML = this.memberClient.member.etatCivil.firstName
 	document.getElementById('idAboutPrenom'+vActiveProfile).innerHTML = pMember.etatCivil.firstName
