@@ -92,7 +92,6 @@ Ce réseau social possède les fonctions suivantes :
 
 *	Notification par mail lors des diverses actions
 <br>
-<br>
 
 ## Collect’Or en quelques chiffres :
 **« Collect’Or »**, c’est :
@@ -104,7 +103,6 @@ Ce réseau social possède les fonctions suivantes :
 *	21 modules personnels coté client  
 *	4 modules personnels coté serveur
 <br>
-<br>
 
 ### Nombre de lignes :
 |Coté client               |Coté serveur              |
@@ -112,13 +110,11 @@ Ce réseau social possède les fonctions suivantes :
 |10903 lignes|2924 lignes|
 *	Soit	13827 lignes pour l’ensemble du projet
 <br>
-<br>
 
 ### Nombre de messages entre le client et le serveur :
 *	Coté client 	: 	40 types de messages émis par les clients
 *	Coté serveur 	: 	58 types de messages émis par le serveur
 *	Soit 	98 types de messages gérés pour l’ensemble du projet
-<br>
 <br>
 
 ## Environnement technique
@@ -149,8 +145,6 @@ Accès au DashBoard **« Heroku » :** https://dashboard.heroku.com/apps/collect
 
 ![topologie](public/images/topologie.png)
 <br>
-<br>
-
 
 ## Arborescence des répertoires
 ```
@@ -230,7 +224,6 @@ Je remercie toutes les personnes qui m'ont supportées durant ce projet, qui m'o
 - B. Grandclaude
 - P. Vanneste  
 Je remercie également tout le corps professoral de l'IFOCOP qui a été très performant et très pédagogique, en particulier les gens de "VirtuoWorks"
-<br>
 <br>
 
 ## Contact
