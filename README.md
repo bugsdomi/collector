@@ -102,14 +102,12 @@ Ce réseau social possède les fonctions suivantes :
 *	1 fichier CSS (hors Bootstrap.css, font-awesome.css, et cover.css)  
 *	21 modules personnels coté client  
 *	4 modules personnels coté serveur
-<br>
 
 ### Nombre de lignes :
 |Coté client               |Coté serveur              |
 |:------------------------:|:------------------------:|
 |10903 lignes|2924 lignes|
 *	Soit	13827 lignes pour l’ensemble du projet
-<br>
 
 ### Nombre de messages entre le client et le serveur :
 *	Coté client 	: 	40 types de messages émis par les clients
