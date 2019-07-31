@@ -10,8 +10,11 @@
 * **Figurines**
 * **Maquettes**
 * **...**  
+<br>
 
 ![screen_title](public/images/LandingPage.png)
+<br>
+<br>
 
 ## Fonctionnalités principales
 Ce réseau social possède les fonctions suivantes :
@@ -87,10 +90,12 @@ Ce réseau social possède les fonctions suivantes :
 
 *	Espace de dialogue en temps réel entre les membres (TChat Multi-membres et Multi-Rooms).
 
-*	Notification par mail lors des diverses actions    
-  
+*	Notification par mail lors des diverses actions
+<br>
+<br>
+
 ## Collect’Or en quelques chiffres :
-« Collect’Or », c’est :
+**« Collect’Or »**, c’est :
 
 
 ### Nombre de sources :
@@ -98,21 +103,32 @@ Ce réseau social possède les fonctions suivantes :
 *	1 fichier CSS (hors Bootstrap.css, font-awesome.css, et cover.css)  
 *	21 modules personnels coté client  
 *	4 modules personnels coté serveur
+<br>
+<br>
 
-
-**Nombre de lignes :**
-*	Coté client 	: 	10903 lignes  
-*	Coté serveur 	: 	   2924 lignes
+### Nombre de lignes :
+|Coté client               |Coté serveur              |
+|:------------------------:|:------------------------:|
+|10903 lignes|2924 lignes|
 *	Soit	13827 lignes pour l’ensemble du projet
+<br>
+<br>
 
-
-**Nombre de messages entre le client et le serveur :**
+### Nombre de messages entre le client et le serveur :
 *	Coté client 	: 	40 types de messages émis par les clients
 *	Coté serveur 	: 	58 types de messages émis par le serveur
 *	Soit 	98 types de messages gérés pour l’ensemble du projet
+<br>
+<br>
 
 ## Environnement technique
-« Collect’Or » est une Single Page Application » (SPA).  
+**« Collect’Or »** est une Single Page Application » (SPA). 
+<br>
+
+
+**Dépôt github :**  https://github.com/bugsdomi/collector
+<br>
+<br>
 
 ### Stack utilisé
 |Coté client               |Coté serveur              |
@@ -120,21 +136,20 @@ Ce réseau social possède les fonctions suivantes :
 |HTML|Node.js|
 |CSS|Socket.io|
 |Javascript|MongoDB|
-|Bootstrap 4|Express.js / Pug|  
-
+|Bootstrap 4|Express.js / Pug|
+<br>
 
 ## Topologie
 * **1 La Base données :**  
-La BDD MongoDB est hébergée chez **« mLab ».**  
-Site hébergeur **"mLab"**:  
-https://mlab.com/databases/collect-or  
+La BDD MongoDB est hébergée chez **« mLab » :** https://mlab.com/databases/collect-or  
 
 * **2 L'application :**  
-Accès au DashBoard **« Heroku »**  
-Site hébergeur **"heroku"**:  
-https://dashboard.heroku.com/apps/collectoronheroku  
+Accès au DashBoard **« Heroku » :** https://dashboard.heroku.com/apps/collectoronheroku  
+<br>
 
 ![topologie](public/images/topologie.png)
+<br>
+<br>
 
 
 ## Arborescence des répertoires
@@ -161,13 +176,17 @@ Collect'Or                      Répertoire applicatif (coté serveur)
 |
 └─ views                        Vue PUG
     └─ index.pug                Interface front-end minimisée
-
+```
+<br>
 
 ## Déploiement
 
-Voici un exemple de déploiement d'une application sur heroku[Heroku](https://heroku.com) using [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line):
+Voici un exemple de déploiement d'une application sur heroku(https://heroku.com)  
+(voir https://devcenter.heroku.com/articles/heroku-command-line):  
+<br>
 
-```bash
+```
+Dans un terminal (type vsc, git-bash,...) :
 # Créez un nouveau répertoire local git
 git init
 
@@ -179,7 +198,7 @@ heroku git:remote --app my-new-app
 
 # Création des variables d'environnement sur l'application heroku
 heroku config:set MONGOLAB_URI=mongodb://Collect-OrAdmin:fakeUserAdmin@ds123753.mlab.com:23753/collect-or
-heroku config:set SENDGRID_API_KEY:XX.dCjZY4ADSDGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx              (clé secrète)
+heroku config:set SENDGRID_API_KEY:XX.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx       (clé secrète)
 
 # commit and push des fichiers
 git add -A
@@ -190,16 +209,18 @@ git push heroku master
 heroku open
 ```
 
-Les deploiements suivants, vous devrez juste effectuer les opérations suivantes :
+**Lors des déploiements suivants, vous devrez juste effectuer les opérations suivantes :**
 
 ```bash
 git add -A
 git commit -m "Update code"
 git push heroku master
 ```  
+<br>
 
 ## Lancement de l’application "Collect'Or"
 https://collectoronheroku.herokuapp.com/  
+<br>
 
 
 ## Remerciements
@@ -209,21 +230,23 @@ Je remercie toutes les personnes qui m'ont supportées durant ce projet, qui m'o
 - B. Grandclaude
 - P. Vanneste  
 Je remercie également tout le corps professoral de l'IFOCOP qui a été très performant et très pédagogique, en particulier les gens de "VirtuoWorks"
+<br>
+<br>
 
 ## Contact
- > **"Collect'Or"**  
-```bash
+```
 Dominique Hourdequin - 2018 / 2019                              
 Projet N°3 - Type "Front + Back"                                
                                                             
 Formation "Développeur Full-Stack Javascript"                   
 Classe : "DIWJS08" - année 2018                                 
 IFOCOP - Paris XI                                               
-                                                             
+                                                              
 Contact à l`IFOCOP qui transmettra mes coordonnées sur demande  
 Responsable de formation                                        
 Madame Fabienne Thiry                                           
 mail : fthiry@ifocop.fr                                         
 Tel : 01-40-21-83-78     
 ```
-Mon compte **LinkedIn** : https://www.linkedin.com/in/dominique-hourdequin-247997107/
+Mon compte **LinkedIn** : https://www.linkedin.com/in/dominique-hourdequin-247997107/  
+Dépôt github **Collect'Or** : https://github.com/bugsdomi/collector
