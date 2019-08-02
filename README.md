@@ -1,5 +1,5 @@
 # Collect'Or
-**Ce projet est le 3ème et dernier de la Formation "Développeur - Integrateur Web Full-Stack" pourvue par l'IFOCOP à Paris 11ème, en 2018.**  
+**Ce projet est le 3ème et dernier projet de la Formation "Développeur - Integrateur Web Full-Stack" pourvue par l'IFOCOP à Paris 11ème, en 2018.**  
 **Il vise à prouver mes compétences en développement Client / Serveur (Front, Back, BDD), dans l'univers JavaScript, ainsi que ma faculté à gérer l'intégralité d'un projet en toute autonomie.**  
 **"Collect'Or" est ma réponse au cahier des charges rédigé par "VirtuoWorks"**  
 
